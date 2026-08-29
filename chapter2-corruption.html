@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>归川往事 · 第二节 · 腐</title>
+<style>
+  :root{
+    --ink:#1d1410; --paper:#f5efe6; --stain:#efe4d4; --blood:#8c1c1c; --wet:#3a4a52; --ghost:#bda888;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#ece5d6;color:var(--ink);font-family:"Songti SC","STSong","宋体",serif;line-height:1.85;-webkit-font-smoothing:antialiased}
+  body{padding-bottom:120px;min-height:120vh}
+  /* 顶端 */
+  .topbar{position:sticky;top:0;z-index:60;background:rgba(236,229,214,.95);backdrop-filter:blur(8px);border-bottom:1px solid #b89c70;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#6e5536;letter-spacing:.2em}
+  .topbar .mark{font-family:"STKaiti","楷体",cursive}
+  .topbar .nav{color:#5b3a1f;cursor:pointer;text-decoration:underline dotted}
+  /* 单幕 */
+  .act{max-width:780px;margin:0 auto;padding:64px 28px 36px;position:relative}
+  .act .num{font-size:11px;letter-spacing:.45em;color:#8a6a44;margin-bottom:8px}
+  .act h2{font-size:26px;font-weight:500;letter-spacing:.18em;margin-bottom:18px;color:#2a1d11}
+  .act .lead{margin-bottom:22px;font-size:15px;color:#3d2c1d}
+  .act p{margin-bottom:14px;font-size:15.5px;color:#2a1d11}
+  .act p .sep{display:inline-block;width:6px;height:6px;background:#8a6a44;margin:0 10px;vertical-align:middle;border-radius:50%}
+  .act .pull{font-style:italic;color:#5b3a1f;border-left:2px solid #b89c70;padding:6px 0 6px 14px;margin:18px 0;font-size:14.5px}
+  .act .quote{font-family:"STKaiti","楷体",cursive;background:rgba(184,156,112,.08);padding:14px 18px;border:1px dashed #b89c70;color:#5b3a1f;margin:22px 0;font-size:14px}
+  .act .scratch{color:#888;text-decoration:line-through;font-style:italic}
+  /* 血腥文字恐怖谷特效 ， 从灰褐渐变到血色 */
+  @keyframes bleed  {
+    0%   { color:#3d2c1d; text-shadow:none; }
+    35%  { color:#6e3a32; }
+    65%  { color:var(--blood); text-shadow:0 0 1px rgba(140,28,28,.6); }
+    100% { color:#5a0e0e; text-shadow:0 0 2px rgba(140,28,28,.9), 0 0 6px rgba(140,28,28,.4); }
+  }
+  .bleed-line{display:inline-block;animation:bleed 5s ease-in forwards; will-change:color,text-shadow}
+  .bleed-block p{animation:bleed 6s ease-in forwards}
+  .drip{position:relative}
+  .drip::after{content:"";position:absolute;left:14px;top:0;width:2px;height:0;background:linear-gradient(180deg, transparent, var(--blood) 30%, transparent);animation:dripF 5.5s ease-in forwards}
+  @keyframes dripF{0%{height:0;opacity:0}30%{opacity:1}100%{height:80px;opacity:.5}}
+  /* 图片卡 */
+  .fig{margin:28px auto;max-width:680px;position:relative}
+  .fig img{display:block;width:100%;border:1px solid #b89c70;filter:saturate(.78) contrast(.92)}
+  .fig .cap{position:absolute;left:14px;bottom:12px;font-size:12px;color:#f0e6d2;letter-spacing:.2em;background:rgba(0,0,0,.45);padding:4px 10px;text-shadow:0 1px 0 rgba(0,0,0,.5)}
+  .fig-left{filter:brightness(.78) sepia(.2)}
+  .fig-flesh{filter:saturate(1.3) hue-rotate(-12deg) contrast(1.1)}
+  /* 视频块 */
+  .video{margin:34px auto;max-width:680px;background:#000;border:1px solid #b89c70;padding:0;text-align:center}
+  .video video{width:100%;display:block;max-height:75vh}
+  .video .cap{padding:10px;color:#9a7a4a;font-size:12px;letter-spacing:.2em;background:#0a0a0a}
+  /* 终章按钮 */
+  .foot-nav{max-width:780px;margin:60px auto 30px;padding:24px;text-align:center;border-top:1px solid #b89c70;color:#5b3a1f}
+  .foot-nav a{color:#8c1c1c;cursor:pointer;text-decoration:underline dotted;font-size:14px;margin:0 14px}
+  .foot-nav a:hover{color:#5a0e0e}
+  /* 节奏分节 */
+  .divider{text-align:center;color:#8a6a44;font-size:13px;letter-spacing:.6em;margin:32px 0}
+  /* 字体恐怖 ， 某些字抖动 */
+  @keyframes jitter  {0%{transform:translate(0,0)} 25%{transform:translate(.3px,-.3px)} 50%{transform:translate(-.3px,.2px)} 75%{transform:translate(.2px,.3px)} 100%{transform:translate(0,0)}}
+  .jitter{animation:jitter .12s steps(4) infinite;color:var(--blood)}
+  /* 段落切换 */
+  .act.in-view{animation:rise .8s ease forwards}
+  @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<scroll-container></scroll-container>
+<div class="topbar">
+  <span class="mark">回 川 往 事 · 第 二 节</span>
+  <span class="nav" onclick="window.close()">× 关 闭</span>
+</div>
+
+<!-- 幕零 · 序 -->
+<section class="act in-view" id="act-pre">
+  <div class="num">序 · 怀 疑</div>
+  <h2>鱼 是 元 凶</h2>
+  <p class="lead">你那朋友，从回川水库吃完那顿鱼回来，嘴就再没停过。</p>
+  <p>连着三天，ta的饭桌上只有鱼。蒸鱼、煎鱼、煲汤的鱼、生鱼片，<span class="jitter">ta咽下去的样子，不像在吃饭，像在吞药。</span>你拦ta，ta笑着说好吃。你问ta哪条鱼这么好吃，ta噎了半天，说不出来，只翻来覆去一句话：<em>「你再没尝过吗。」</em></p>
+  <p>你想起那天吃得半截的鱼。从腹腔开始，一路烂到底，肉的纹理像在水里沤了三天。<span class="scratch">不对，那鱼根本就没在活水里养过。</span></p>
+  <p>第五天，你看见ta蹲在厨房的水槽边，用手指抠鱼鳞。抠到一半抬起头看见你，眼睛很亮，亮得不像ta。ta没哭，却像在哭。</p>
+  <p>当晚你定了两张去回川的火车票。硬座。你本想叫上别人，但没人愿意跟你走。</p>
+</section>
+
+<div class="divider">◇　◇　◇</div>
+
+<!-- 幕一 · 赴 -->
+<section class="act" id="act-1">
+  <div class="num">幕 一 · 赴</div>
+  <h2>沿 水 而 下</h2>
+  <p class="lead">梅雨刚停，回川市闷得像捂在水汽底下。</p>
+  <p>下车的时候，朋友先你一步出站。ta说ta叔在这边办鱼场，做水产生意，绝对能带你们吃顿正经的。你随口应着，背上行李往ta指的巷子跟。巷子窄，两边水渍漫到鞋面，没人来收。</p>
+  <p>第三天，叔真请你们上桌了。<span class="pull">一桌子鱼。一桌子。</span>做法都是寻常做法，蒸、炸、炖、煲，但每一条鱼都缺了一只眼睛，破膛露肉的地方发白发灰，鱼皮紧贴着盘子，像被抽过。</p>
+</section>
+
+<!-- 幕二 · 宴 -->
+<section class="act bleed-block" id="act-2">
+  <div class="num">幕 二 · 宴</div>
+  <h2>吃 不 下 的 鱼</h2>
+  <p class="lead">朋友动筷动得极快。一桌人都动筷动得极快。</p>
+  <p><span class="bleed-line">朋友夹起一块鱼腹，咬开；汁液从ta嘴角往下流，不是汤色，是</span>暗的，像墨水。ta笑着说好吃，含含糊糊，要把一整条都吃下去。你夹了一筷，凑近。</p>
+
+  <div class="fig" style="margin-top:20px">
+    <img src="assets/desktop/fish-rotten.jpg" alt="腐鱼">
+    <div class="cap">餐 桌 · 全 是 鱼</div>
+  </div>
+
+  <p>从鱼的眼睛看它，先是一层白翳。白翳下面，原本该是眼珠的地方，<span class="bleed-line">长着第二层眼皮。第二层是张开的。第二层不是张开的，是</span>里外同时开。鱼的嘴一直没闭，到底为止。</p>
+  <p class="drip">盘子底下压着一张湿透的旧报，纸质泡烂，墨字糊成一片；能看清的只剩三个字「<span class="bleed-line">不可</span>」，不可什么，已经烂透。</p>
+  <p><span class="bleed-line">你说吃不下。朋友顿了一下，抬起头看你。ta的笑还挂着，眼神却像隔着玻璃。</span>ta说：「那就看着我们吃。」</p>
+  <p>你借口出去透气。人还坐在桌上，又不在桌上了。</p>
+</section>
+
+<div class="divider">◇　◇　◇</div>
+
+<!-- 幕三 · 献祭 -->
+<section class="act" id="act-3">
+  <div class="num">幕 三 · 献</div>
+  <h2>湖 心 跪 着 个 人</h2>
+  <p class="lead">你走错路，绕到了湖边。</p>
+  <p>月荷水库的堤坝空着。雾是倒着走的，从湖心往岸上压，压到你下巴底下。你本来是想抽根烟，摸到打火机，才发现手是冰的。</p>
+  <p>湖心的小岛。你远远看见一座破旧祠堂，门脸朝水。祠堂门口跪着一个人。白衣，正中，两侧依次有人。<span class="pull">ta们没在祈祷。ta们都在笑。</span>笑得肩膀抖。笑着笑着，有人把手里的杯子举起来，杯子里是水，水是红的。</p>
+
+  <div class="fig">
+    <img id="lin-sacrifice" src="assets/desktop/lin-sacrifice-before.jpg" alt="莲之庭仪式">
+    <div class="cap">湖 心 · 白 袍</div>
+  </div>
+
+  <p>跪着的那人慢慢抬手，<span class="scratch">自己</span>自己打开胸口一道口子。<span class="bleed-line">血流得很慢。不像喷的，像从里面一点一点渗出来，和</span>鱼腹里那点脓似的。血流进湖水，被雾抹开。</p>
+  <p>那人侧过脸。你认出那张脸，</p>
+  <p><b>是林茂才。</b></p>
+  <p>你从来没在某市某文件里看见过这个名字，但你认得。你在五楼ta办公室外面的水泥地上抽烟的时候，见过ta一面。ta朝你笑了笑，给你递过一根软中华。</p>
+  <p>ta跪在湖心，胸口慢慢裂开，<span class="bleed-line">还朝岸边笑了一下。</span></p>
+</section>
+
+<div class="divider">◇　◇　◇</div>
+
+<!-- 幕四 · 发现 -->
+<section class="act" id="act-4">
+  <div class="num">幕 四 · 现</div>
+  <h2>ta 们 看 见 了 你</h2>
+  <p class="lead">脚下一个芦苇结断掉，声音很轻。</p>
+  <p>笑声停了。所有白袍同时侧头，不对，<span class="bleed-line">ta们没有侧头，ta们的脸是从肩膀那边直接转过来的，先转的脸，再转的眼睛。</span>眼睛像是粘在湖上的灯笼，亮得很齐。</p>
+  <p>ta们看见你了。</p>
+  <p>ta们笑得更厉害。笑得不出声，只是嘴角咧到耳根，你听见湖面上有什么东西响，像<span class="jitter">很多根筋同时被扯断</span>。有人悄悄朝你这边走了两步，走得不像人，像芦苇丛在水下慢慢推。</p>
+  <p class="drip">你往后退。退了一步。</p>
+  <p>你视野开始闪烁。闪一下，是你蹲在岸边的草丛里，远处有人喊你名字；闪一下，岸边的水草全是<span class="bleed-line">红色的。红的不是水。是</span>一些贴着水面的东西，像肠，又像没开的花。</p>
+
+  <div class="fig fig-flesh">
+    <img src="assets/desktop/flesh-world.jpg" alt="血肉世界">
+    <div class="cap">闪 回 · 不 是 这 个 世 界</div>
+  </div>
+
+  <p>闪一下，再闪一下。你按住自己的眼睛，眼睑底下有什么东西在动，像有人把鱼鳞一片一片往下贴。你不敢看，也不敢闭。</p>
+</section>
+
+<div class="divider">◇　◇　◇</div>
+
+<!-- 幕五 · 跑 -->
+<section class="act" id="act-5">
+  <div class="num">幕 五 · 逃</div>
+  <h2>湿 地 里 跑</h2>
+  <p class="lead">你松开步子就往堤外跑。</p>
+  <p>脚底踩不实。<span class="bleed-line">湿地里每一步都踩在软的上面，像踩在</span>动物肚子上。芦苇刮面，刮出血痕。身后那些笑还在，慢慢挪远，但没断。你听见鞋底啪叽啪叽响，鞋底黏住了什么东西，你不敢低头看。</p>
+  <p>下了堤坝，进了巷子。路灯全亮着，但颜色不对。沿着巷子跑了两个路口，你的腿<span class="bleed-line">软下来，膝盖里像有一根筋一松，又一紧，又一松。</span></p>
+  <p>你倒下去。后脑勺磕在石板地上，不疼，麻。</p>
+  <p>你听见湖的方向有人在敲木鱼。木鱼声很远，像隔着一个雨季。<span class="scratch">不对，是敲你脑壳。</span></p>
+  <p>你没来得及确认任何事，眼皮就闭上了。</p>
+</section>
+
+<div class="divider">◇　◇　◇</div>
+
+<!-- 幕六 · 醒 -->
+<section class="act" id="act-6">
+  <div class="num">幕 六 · 醒</div>
+  <h2>ta 用 莲 藕 撑 起 你 的 下 巴</h2>
+  <p class="lead">醒过来的时候，嘴里是甜的，藕粉味。</p>
+  <p>你张口。有人<span class="scratch">用手指</span>用一截冷水里泡过的藕节抵住你下巴，抬起来，再放下一口温的。你咳了两声，慢慢把人看清，</p>
+  <p>ta正太模样。十二三岁。<span class="pull">头上顶着一朵荷花，半开半合，粉的。荷花下面是一双没表情的脸，眼底没有光，只有浅浅的回川味的潮湿。</span></p>
+  <p>ta低头看你，没出声，像看一只被雨淹了的蚂蚁。</p>
+  <p>你抖着问，谁。ta用那双没表情的眼看了你一眼，把手里的藕节换了一节新的，又凑到你嘴边。ta轻轻说了一句话，像在念一个五年前就写好的剧本：</p>
+
+  <div class="quote">「鱼 别 再 吃。」<br>「那 鱼 不 是 鱼。」</div>
+
+  <p>ta看起来不太关心你死活。ta只是<span class="scratch">顺路</span>碰巧没走。ta把手在你衣服上擦干净，转身要走，走了两步，又回一下头，看你那副哭不出来的样子，看得有点高兴。</p>
+  <p>ta最<span class="scratch">后</span>后把藕节丢给你，<span class="bleed-line">笑了一声。</span></p>
+</section>
+
+<!-- 视频 -->
+<section class="act" id="act-video">
+  <div class="video">
+    <video controls preload="metadata" src="assets/desktop/xuehe-save.mp4"></video>
+    <div class="cap">雪 禾 · 醒 · 路 过</div>
+  </div>
+</section>
+
+<!-- 第七幕·归 -->
+<section class="act" id="act-7">
+  <div class="num">幕 七 · 归</div>
+  <h2>回 到 你 应 该 在 的 地 方</h2>
+  <p class="lead">你不知道是怎么回到朋友家的。</p>
+  <p>推门进去，朋友一个人坐在桌边，面前那条鱼已经凉透。ta回头看你，像从梦里被人拎起来，眼睛里的呆气还没退。</p>
+  <p>你叫了ta一声。ta愣了，应了。</p>
+  <p>你问ta：「还去吗？」</p>
+  <p>ta摇摇头，没吭声，把那条鱼推到桌沿边上，<span class="scratch">推了三下，最后把整盘推到地上</span>。</p>
+  <p>第二天你们就离开了回川市。火车上，ta靠在窗边睡了七个小时，醒来问你一句，「昨天我是不是跟谁打过招呼了？」你说没有。ta点点头，又睡了。</p>
+  <p>你想起湖心朝你笑的那张脸。那个人，这会儿不知道还在不在岸上。</p>
+  <p>你再想起林茂才那三个字的时候，心里一紧，<span class="pull">以后，再看到「林茂才同志归位」这一句话，你知道这六个字是买命钱。</span></p>
+
+  <p style="margin-top:30px;color:#5a0e0e;text-align:center;font-size:13.5px;letter-spacing:.2em">， 第二节 · 腐 · 终 ，<br><span style="color:#888;font-size:11px">原 先 那 条 鱼 · 还 在 你 胃 里</span></p>
+</section>
+
+<div class="foot-nav">
+  <a href="javascript:history.length>1?history.back():window.close()">← 返 回 上 一 页</a>
+  <span style="color:#888;font-size:12px;letter-spacing:.3em">回川市公众信息网 · 第三节 待 解</span>
+</div>
+
+<script>
+  // 进入页面就定位到顶端（铁律）
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('beforeunload', function(){ window.scrollTo(0,0); });
+  window.addEventListener('pageshow', function(){ window.scrollTo(0,0); });
+  setTimeout(function(){ window.scrollTo(0,0); }, 0);
+  // 分段进入视图动画
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in-view'); } });
+  }, {threshold:.15});
+  document.querySelectorAll('.act').forEach(function(a){ if(!a.classList.contains('in-view')) io.observe(a); });
+  // 血腥文字：滚动到幕二时整体浸血
+  // (CSS 已内置 animation forwards，无需 JS 触发)
+</script>
+</body>
+</html>

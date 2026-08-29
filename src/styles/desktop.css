@@ -1,0 +1,736 @@
+/* 钓渊 · 假桌面样式（主页/入口层）
+   铁律：禁全页动效；hover 只用色变/边框过渡（120ms ease）。
+   允许：单元素 hover 微缩放（图标 1.05）、box-shadow 微光、静态扫描线/暗角（无 animation）。 */
+:root {
+  --desk-bg-dark: rgba(20, 20, 20, 0.78);
+  --desk-border: rgba(255, 255, 255, 0.08);
+  --desk-text: #ccc;
+  --desk-text-dim: #888;
+  --desk-accent: #c64;
+  --desk-accent-soft: rgba(198, 68, 68, 0.35);
+  --desk-window-bg: #1a1a1a;
+  --desk-titlebar-bg: #262626;
+}
+
+/* ============ 桌面（壁纸+图标） ============ */
+.desktop-root {
+  position: fixed;
+  inset: 0;
+  background-image: url('../../assets/desktop/wallpaper.jpg');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* 桌面氛围层：壁纸亮度 100%，不加暗角压黑；只保留一层极淡 CRT 扫描线，让屏幕有"在亮着"的质感。
+   静态、无 animation；pointer-events:none；z-index 1 < 图标 2 < 任务栏 50 < 窗口 100。 */
+.desktop-root::before { content: none; }
+.desktop-root::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  inset: 0;
+  z-index: 1;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0px,
+    rgba(0,0,0,0) 2px,
+    rgba(0,0,0,0.03) 3px,
+    rgba(0,0,0,0) 4px
+  );
+}
+
+/* 桌面激活时，彻底隐藏深渊高潮眼（corrupt-3 的大眼睛），不要让它挡住壁纸猫 */
+body.on-desktop .abyss-climax { display: none !important; }
+
+.desktop-icons {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 2; /* 高于氛围层（z-index 1），低于窗口 */
+}
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+  padding: 8px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 140ms ease, outline-color 140ms ease, box-shadow 140ms ease;
+  outline: 1px solid transparent;
+}
+.desktop-icon:hover {
+  background: rgba(255, 255, 255, 0.10);
+  outline-color: rgba(198, 68, 68, 0.35);
+  box-shadow: 0 0 14px rgba(198, 68, 68, 0.22);
+}
+.desktop-icon:hover img { transform: scale(1.06); }
+.desktop-icon.selected {
+  background: rgba(255, 255, 255, 0.18);
+  outline-color: rgba(198, 68, 68, 0.55);
+  box-shadow: 0 0 20px rgba(198, 68, 68, 0.32);
+}
+.desktop-icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+  transition: transform 140ms ease, filter 140ms ease;
+}
+.desktop-icon:hover img { filter: drop-shadow(0 2px 6px rgba(198, 68, 68, 0.45)); }
+.desktop-icon span {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  transition: color 140ms ease;
+}
+.desktop-icon:hover span { color: #ffe5d6; }
+
+/* ============ 任务栏 ============ */
+.taskbar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: var(--desk-bg-dark);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--desk-border);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  z-index: 50;
+}
+.taskbar-items {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  overflow: auto;
+}
+.taskbar-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--desk-text);
+  transition: background 120ms ease, outline-color 120ms ease;
+  outline: 1px solid transparent;
+  white-space: nowrap;
+  position: relative; /* 让 active 顶部高亮条定位 */
+}
+.taskbar-item:hover { background: rgba(255, 255, 255, 0.12); }
+.taskbar-item.active {
+  background: rgba(255, 255, 255, 0.18);
+  outline-color: rgba(198, 68, 68, 0.45);
+}
+.taskbar-item.active::before {
+  content: "";
+  position: absolute;
+  top: -1px; left: 6px; right: 6px;
+  height: 2px;
+  background: var(--desk-accent);
+  border-radius: 1px;
+  box-shadow: 0 0 6px rgba(198, 68, 68, 0.6);
+}
+.taskbar-item img {
+  width: 18px; height: 18px; object-fit: contain;
+}
+.taskbar-clock {
+  font-size: 13px;
+  color: #ddd;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  padding: 0 10px;
+  border-left: 1px solid var(--desk-border);
+}
+.taskbar-status {
+  font-size: 11px;
+  color: var(--desk-accent);
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  padding: 0 10px;
+  border-left: 1px solid var(--desk-border);
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 6px rgba(198, 68, 68, 0.45);
+}
+
+/* ============ 假窗口（app-window） ============ */
+.app-window {
+  position: absolute;
+  background: var(--desk-window-bg);
+  border: 1px solid #444;
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100; /* 盖在 corrupt 之上 */
+  min-width: 280px;
+  min-height: 200px;
+}
+.win-titlebar {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  background: var(--desk-titlebar-bg);
+  padding: 0 8px;
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+  border-bottom: 1px solid #333;
+}
+.win-titlebar:active { cursor: grabbing; }
+.win-icon img {
+  width: 16px; height: 16px; object-fit: contain;
+  margin-right: 6px;
+  display: block;
+}
+.win-title {
+  flex: 1;
+  font-size: 12px;
+  color: #ccc;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.win-close {
+  width: 22px; height: 22px;
+  border: none;
+  background: transparent;
+  color: #999;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 120ms ease, color 120ms ease;
+}
+.win-close:hover { background: #c00; color: #fff; }
+.win-body {
+  flex: 1;
+  overflow: auto;
+  background: #0e0e0e;
+  position: relative;
+}
+
+/* ============ Edge 浏览器 ============ */
+.edge-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.browser-chrome {
+  background: #1f1f1f;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+.browser-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  gap: 8px;
+}
+.browser-back {
+  width: 28px; height: 24px;
+  border: 1px solid #444;
+  background: #2a2a2a;
+  color: #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 120ms ease;
+}
+.browser-back:hover:not(:disabled) { background: #333; }
+.browser-back:disabled { opacity: 0.4; cursor: default; }
+.browser-url {
+  flex: 1;
+  padding: 4px 12px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 12px;
+  color: #999;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+  user-select: text;
+}
+.browser-bookmarks {
+  display: flex;
+  padding: 2px 8px 6px;
+  gap: 4px;
+  border-top: 1px solid #2a2a2a;
+}
+.bookmark {
+  padding: 4px 10px;
+  font-size: 11px;
+  color: #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.bookmark:hover { background: rgba(255, 255, 255, 0.10); color: #fff; }
+.browser-canvas {
+  flex: 1;
+  overflow: auto;
+  background: #0a0a0a;
+  position: relative;
+}
+/* ============ 洄川门户（Edge 新标签页 · 仿 MSN/网易风）============ */
+/* 浅色主题 + 多种模块（顶部Tab / 分类导航 / 大Hero / 6张资讯卡 / 三栏Widget），
+   让浏览器"看起来像个真网页"，而不是只有两块瓷砖的占位。
+   字体用系统中文字栈；涨红跌绿（中文股市配色）。 */
+.portal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f5f5f5;
+  color: #222;
+  font-size: 12px;
+  overflow: auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+.portal-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 6px 8px 0;
+  background: #e8e8e8;
+  border-bottom: 1px solid #d0d0d0;
+  flex-shrink: 0;
+}
+.portal-tab {
+  padding: 6px 14px;
+  background: #ddd;
+  border-radius: 6px 6px 0 0;
+  font-size: 11px;
+  color: #555;
+  cursor: pointer;
+  transition: background 120ms ease;
+  border: 1px solid transparent;
+  border-bottom: none;
+  user-select: none;
+}
+.portal-tab:hover { background: #e8e8e8; }
+.portal-tab.active {
+  background: #f5f5f5;
+  color: #111;
+  font-weight: 600;
+  border-color: #d0d0d0;
+}
+.portal-tab.disabled { color: #aaa; cursor: not-allowed; background: #e2e2e2; }
+.portal-nav {
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px;
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.portal-nav-item {
+  color: #666;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 3px;
+  transition: color 120ms ease, background 120ms ease;
+}
+.portal-nav-item:hover { color: #c00; background: #f0f0f0; }
+.portal-nav-item.active { color: #c00; font-weight: 700; }
+.portal-main {
+  display: grid;
+  grid-template-columns: 1.3fr 1.5fr 1fr;
+  gap: 14px;
+  padding: 14px;
+  flex: 1;
+  align-content: start;
+  align-items: start;
+  min-height: 0;
+}
+.portal-hero {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  min-height: 320px;
+  background: linear-gradient(135deg, #0a1a2a 0%, #1a0a2a 50%, #2a0a1a 100%);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+.portal-hero:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(192,0,0,0.15);
+}
+.hero-overlay {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.88), transparent);
+  color: #fff;
+}
+.hero-tag {
+  display: inline-block;
+  background: #c00;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.hero-title { font-size: 17px; font-weight: 700; line-height: 1.45; }
+.hero-meta { font-size: 11px; color: #ccc; margin-top: 8px; }
+.portal-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-content: start;
+}
+.portal-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  cursor: pointer;
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+.portal-card:hover {
+  border-color: #c00;
+  box-shadow: 0 2px 10px rgba(192,0,0,0.12);
+  transform: translateY(-1px);
+}
+.card-thumb {
+  height: 78px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; color: rgba(255,255,255,0.78); font-weight: 700;
+  font-family: 'Consolas', 'Monaco', monospace;
+  letter-spacing: 2px;
+}
+.portal-card:nth-child(1) .card-thumb { background: linear-gradient(135deg, #1a3a5a, #0a1a3a); }
+.portal-card:nth-child(2) .card-thumb { background: linear-gradient(135deg, #0a3a2a, #1a4a3a); }
+.portal-card:nth-child(3) .card-thumb { background: linear-gradient(135deg, #3a1a2a, #2a0a1a); }
+.portal-card:nth-child(4) .card-thumb { background: linear-gradient(135deg, #2a1a3a, #1a0a2a); }
+.portal-card:nth-child(5) .card-thumb { background: linear-gradient(135deg, #2a2a3a, #1a1a2a); }
+.portal-card:nth-child(6) .card-thumb { background: linear-gradient(135deg, #3a2a1a, #2a1a0a); }
+.card-title { padding: 8px 10px 4px; font-size: 12px; color: #222; line-height: 1.5; }
+.card-meta { padding: 0 10px 8px; font-size: 10px; color: #999; }
+.portal-widgets {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.widget {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+.widget-h {
+  font-size: 11px;
+  font-weight: 700;
+  color: #c00;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 4px;
+  letter-spacing: 1px;
+}
+.widget-b { font-size: 12px; color: #333; }
+.w-city { font-size: 11px; color: #999; margin-bottom: 2px; }
+.w-temp { font-size: 30px; font-weight: 700; color: #222; line-height: 1.2; }
+.w-info { font-size: 11px; color: #888; margin-top: 4px; }
+.w-info.warn { color: #c00; font-weight: 600; }
+.hot ol { list-style: none; padding: 0; margin: 0; counter-reset: hotrank; }
+.hot li {
+  counter-increment: hotrank;
+  padding: 4px 0;
+  font-size: 12px;
+  color: #333;
+  border-bottom: 1px dashed #f4f4f4;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+.hot li::before {
+  content: counter(hotrank);
+  display: inline-block;
+  width: 18px;
+  color: #999;
+  font-weight: 700;
+}
+.hot li:nth-child(-n+3)::before { color: #c00; }
+.hot li:hover { color: #c00; }
+.hot li:last-child { border-bottom: none; }
+.idx { display: flex; justify-content: space-between; padding: 5px 0; font-size: 12px; border-bottom: 1px dashed #f4f4f4; }
+.idx:last-child { border-bottom: none; }
+.idx-n { color: #555; }
+.idx-v.up { color: #c00; font-weight: 700; }      /* 涨红（中文股市）*/
+.idx-v.down { color: #0a8a0a; font-weight: 700; } /* 跌绿 */
+.browser-page {
+  padding: 40px;
+  color: #888;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* ============ 线索档案（文件夹） ============ */
+.folder-app {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+}
+.folder-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  padding: 16px;
+  align-content: start;
+  overflow: auto;
+}
+.folder-file {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 120ms ease, outline-color 120ms ease;
+  outline: 1px solid transparent;
+}
+.folder-file:hover { background: rgba(255, 255, 255, 0.08); }
+.folder-file.selected {
+  background: rgba(198, 68, 68, 0.18);
+  outline-color: rgba(198, 68, 68, 0.5);
+}
+.folder-file.locked { opacity: 0.55; cursor: pointer; }
+.file-icon { font-size: 32px; margin-bottom: 4px; }
+.file-name {
+  font-size: 10px;
+  color: #aaa;
+  text-align: center;
+  word-break: break-all;
+  line-height: 1.3;
+}
+.folder-preview {
+  width: 300px;
+  border-left: 1px solid #333;
+  padding: 16px;
+  background: #131313;
+  color: #ccc;
+  font-size: 13px;
+  overflow: auto;
+  flex-shrink: 0;
+}
+.folder-preview h4 {
+  margin: 0 0 8px;
+  color: #ddd;
+  font-size: 12px;
+  word-break: break-all;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+.folder-preview p {
+  margin: 0;
+  line-height: 1.7;
+  color: #aaa;
+}
+.folder-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  font-size: 13px;
+  padding: 24px;
+  text-align: center;
+}
+
+/* ============================================================
+   洄川门户 · 居民信息网（首版）
+   按污染等级渲染不同层级的内容：
+   - portal-clean      阳间：本地新闻、镇办政务、便民生活
+   - portal-compliant  自欺：边角混入「不对劲」字眼
+   - portal-unstable   渗血：板块层级崩坏、水域异常唱主角
+   - portal-marked     深标：被腐生社内网覆写
+   ============================================================ */
+.portal-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px;
+  background: #fff;
+  border-bottom: 2px solid #c00;
+  flex-shrink: 0;
+}
+.portal-marked .portal-header {
+  background: #1a0000;
+  border-bottom-color: #7d3a3a;
+}
+.portal-header.dark {
+  background: #1a0000;
+  border-bottom: 2px solid #7d3a3a;
+}
+.portal-logo {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: #c00;
+  color: #fff;
+  font-size: 22px; font-weight: 700;
+  border-radius: 4px;
+  font-family: 'KaiTi', 'STKaiti', serif;
+}
+.portal-header.dark .portal-logo { background: #7d3a3a; }
+.portal-titles { flex: 1; min-width: 0; }
+.portal-t { font-size: 16px; font-weight: 700; color: #222; letter-spacing: 1px; }
+.portal-header.dark .portal-t { color: #f0dada; }
+.portal-s { font-size: 11px; color: #999; margin-top: 2px; }
+.portal-search {
+  width: 220px;
+  padding: 5px 12px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  color: #aaa;
+  font-size: 12px;
+}
+.portal-header.dark .portal-search { background: #2a0000; border-color: #5a1a1a; color: #b68585; }
+
+.portal-nav-item.disabled { color: #c0c0c0; cursor: not-allowed; }
+.portal-nav-item.disabled:hover { color: #c0c0c0; background: transparent; }
+
+/* 阳间版：纯浅 */
+.portal-clean .portal-t  { color: #1a1a1a; }
+.portal-clean .widget-h  { color: #c00; }
+.portal-clean .idx-v.up   { color: #c00; }
+.portal-clean .idx-v.down { color: #0a8a0a; }
+.portal-clean .hot li:nth-child(-n+3)::before { color: #c00; }
+
+/* 自欺版：标题色变暗、Hero 灰金 */
+.portal-compliant {
+  background: #f3f1ec;
+}
+.portal-compliant .portal-header { background: #fafafa; border-bottom-color: #bfa14a; }
+.portal-compliant .widget-h { color: #8a6e1a; }
+.portal-compliant .hot li:nth-child(-n+3)::before { color: #bfa14a; }
+.portal-compliant .card-thumb { filter: hue-rotate(15deg) saturate(0.85); }
+
+/* 渗血版：偏冷、字距诡异 */
+.portal-unstable { background: #ede9e3; color: #3a2828; }
+.portal-unstable .portal-header { background: #2a1a1a; border-bottom-color: #7d3a3a; }
+.portal-unstable .portal-t { color: #d6c2c2; }
+.portal-unstable .portal-s { color: #b08585; }
+.portal-unstable .portal-search { background: #1a0a0a; border-color: #3a2a2a; color: #b68585; }
+.portal-unstable .widget { background: #1f1414; border-color: #3a2a2a; }
+.portal-unstable .widget-h { color: #c66; border-bottom-color: #3a2a2a; }
+.portal-unstable .widget-b { color: #d6c2c2; }
+.portal-unstable .hero-overlay { background: linear-gradient(to top, rgba(120,30,30,0.85), transparent); }
+.portal-unstable .card-thumb { filter: hue-rotate(-25deg) saturate(0.7) brightness(0.7); }
+.portal-unstable .portal-card { background: #1f1414; border-color: #3a2a2a; }
+.portal-unstable .card-title { color: #d6c2c2; }
+.portal-unstable .card-meta  { color: #876a6a; }
+.portal-unstable .browser-article,
+.portal-unstable .weather-page { background: #1f1414; color: #d6c2c2; }
+
+/* 深标版：彻底被吞并 */
+.portal-marked { background: #1a0808; color: #f0dada; }
+.portal-marked .widget { background: #2a0a0a; border-color: #4a1a1a; }
+.portal-marked .widget-h { color: #7d3a3a; border-bottom-color: #4a1a1a; }
+.portal-marked .widget-b, .portal-marked .hot li { color: #b68585; border-bottom-color: #3a0a0a; }
+.portal-marked .hot li:nth-child(-n+3)::before { color: #7d3a3a; }
+
+/* ============ 文章详情 / 天气 / 钓友（门户内的子页） ============ */
+.browser-article {
+  padding: 24px 32px;
+  background: #fff;
+  color: #222;
+  max-width: 760px;
+  margin: 0 auto;
+  font-size: 13px;
+}
+.portal-unstable .browser-article { background: #1f1414; color: #d6c2c2; }
+.portal-marked  .browser-article { background: #1a0808; color: #f0dada; }
+.article-bread { font-size: 11px; color: #888; margin-bottom: 12px; }
+.article-tag {
+  display: inline-block;
+  background: #c00;
+  color: #fff; font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+.article-title {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.45;
+  margin: 0 0 10px;
+}
+.article-by { font-size: 11px; color: #888; margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px dashed #e0e0e0; }
+.portal-marked  .article-by { border-bottom-color: #3a0a0a; }
+.portal-unstable .article-by { border-bottom-color: #3a2a2a; }
+.article-body p { margin: 0 0 16px; line-height: 1.85; }
+.article-related {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px dashed #e0e0e0;
+}
+.portal-marked  .article-related { border-top-color: #3a0a0a; }
+.portal-unstable .article-related { border-top-color: #3a2a2a; }
+.related-h { font-size: 11px; color: #888; margin-bottom: 8px; letter-spacing: 1px; }
+.related-item {
+  padding: 6px 0;
+  font-size: 13px;
+  color: #c00;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+.related-item:hover { color: #800; text-decoration: underline; }
+.article-back {
+  margin-top: 28px;
+  padding: 8px 14px;
+  display: inline-block;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #555;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+.portal-marked  .article-back { background: #2a0a0a; border-color: #4a1a1a; color: #b68585; }
+.portal-unstable .article-back { background: #1f1414; border-color: #3a2a2a; color: #b68585; }
+.article-back:hover { background: #ececec; }
+.portal-marked  .article-back:hover { background: #3a0a0a; }
+.portal-unstable .article-back:hover { background: #2a1a1a; }
+
+.weather-page { background: #fff; color: #222; padding: 28px 36px; }
+.portal-unstable .weather-page { background: #1f1414; color: #d6c2c2; }
+.portal-marked  .weather-page { background: #1a0808; color: #f0dada; }
+.weather-city { font-size: 14px; color: #888; margin-bottom: 4px; }
+.weather-h    { font-size: 18px; font-weight: 700; margin: 4px 0 18px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+.weather-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+.weather-table th, .weather-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+.weather-table th { background: #fafafa; color: #555; font-weight: 600; }
+.weather-table td.warn { color: #c00; font-weight: 700; }
+.weather-note { padding: 10px 14px; background: #fff7e8; color: #8a4a00; border-left: 3px solid #bfa14a; font-size: 12px; border-radius: 0 4px 4px 0; }
+
+.catch-list { list-style: none; padding: 0; margin: 12px 0; }
+.catch-list li {
+  padding: 9px 12px;
+  border-bottom: 1px dashed #eee;
+  font-size: 13px;
+  color: #333;
+}
+.catch-list li b { color: #c00; margin-right: 6px; }
+.catch-note { padding: 12px 14px; background: #f7f7f7; color: #666; font-size: 12px; border-radius: 4px; margin-top: 14px; }
+.catch-list li:last-child { border-bottom: none; }

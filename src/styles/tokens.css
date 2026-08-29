@@ -1,0 +1,48 @@
+/* 钓渊 · Token 总表（全站唯一颜色/字号/间距源）
+   表层 = 湖畔夜（平静可信的夜钓基线）；里层 = 渊域（与伪官网同源） */
+:root {
+  /* ===== 表层 Surface · 湖畔夜 ===== */
+  --paper:        #0e1620;   /* 夜空湖底深蓝 */
+  --paper-2:      #14202e;   /* 卡片 / 侧栏 */
+  --paper-3:      #1b2c3e;   /* 分区 */
+  --ink:          #d8e2ec;   /* 月光白正文 */
+  --ink-muted:    #8ea3b5;   /* 次级 */
+  --ink-faint:    #5d7286;   /* 提示 */
+  --rule:         #243748;   /* 标准边框 */
+  --rule-2:       #1b2c3e;
+  --link:         #6fb6d6;   /* 水光蓝 */
+  --link-hover:   #9fd6ef;
+  --brand:        #2f6f8f;   /* 主色 */
+  --brand-soft:   #16323f;
+  --success:      #4f9d6b;
+  --warn:         #c79a4b;
+  --danger:       #b5444f;
+
+  /* ===== 里层 Deep · 渊域（corrupt-2/3 启用，与伪官网同源）===== */
+  --abyss:        #0a0000;
+  --abyss-2:      #1a0202;
+  --flesh:        #3a0000;
+  --blood:        #8b0000;
+  --blood-bright: #ff1a1a;
+  --bone:         #c0b8a8;
+  --bone-dim:     #6b6557;
+  --cyan-ghost:   #00e5ff;
+  --magenta-ghost:#ff00ff;
+  --eye-gold:     #d4af37;
+  --pupil:        #000000;
+  --term-green:   #00ff41;
+
+  /* ===== 字体 ===== */
+  --font-ui:    -apple-system, BlinkMacSystemFont, "Segoe UI",
+                "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono:  ui-monospace, "SF Mono", Menlo, Consolas,
+                "Courier New", monospace;
+
+  /* ===== 字号阶梯（rem 基准 16px）===== */
+  --fs-xs: 0.75rem;  --fs-sm: 0.875rem; --fs-base: 1rem;
+  --fs-lg: 1.125rem; --fs-h3: 1.25rem;  --fs-h2: 1.5rem; --fs-h1: 2rem;
+
+  /* ===== 间距（8 进制）===== */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 16px;
+  --sp-4: 24px; --sp-5: 32px; --sp-6: 48px;
+}

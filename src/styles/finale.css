@@ -1,0 +1,47 @@
+/* 钓渊 · 终局三结局（网页门户形态） */
+.finale-root {
+  position: fixed; inset: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #0b0406 0%, #050203 72%);
+  padding: 24px;
+}
+.finale-portal {
+  width: min(680px, 94vw);
+  background: #0e0a0c;
+  border: 1px solid #3a2230; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.02) inset;
+}
+.finale-chrome {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; background: #161017; border-bottom: 1px solid #2a1a24;
+}
+.fc-dot { width: 10px; height: 10px; border-radius: 50%; background: #4a3340; }
+.fc-url { margin-left: 8px; font-family: var(--font-mono); font-size: 12px; color: #9a8a92; }
+.finale-body { padding: 28px 30px 32px; color: var(--ink, #e8dfe4); }
+.finale-title { font-size: 26px; letter-spacing: 2px; margin: 0 0 14px; color: #f3e9ee; }
+.finale-lead { line-height: 1.8; color: #c9bcc4; font-size: 15px; }
+.finale-lead b { color: #ff5a7a; }
+.finale-prompt { margin: 18px 0 16px; color: #b9a9b2; font-size: 14px; }
+.finale-choices { display: grid; gap: 12px; }
+.finale-choice {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+  text-align: left; padding: 14px 16px;
+  background: #140d12; border: 1px solid #34202c; border-radius: 8px;
+  color: #e8dfe4; cursor: pointer; font-family: var(--font-mono);
+  transition: border-color .15s, background .15s;
+}
+.finale-choice:hover { border-color: #ff5a7a; background: #1a0f16; }
+.fc-name { font-size: 17px; letter-spacing: 3px; color: #ffd9e2; }
+.fc-desc { font-size: 13px; color: #a99aa3; }
+.finale-term { margin-top: 6px; min-height: 120px; }
+
+/* 三结局视觉态（全屏 tint，不位移正文，守「③ 氛围呼吸」） */
+body.finale-raise   { --tint: rgba(255,120,160,.10); }
+body.finale-submit  { --tint: rgba(212,175,55,.10); }
+body.finale-reverse { --tint: rgba(200,20,30,.16); }
+body.finale-raise::before,
+body.finale-submit::before,
+body.finale-reverse::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 59;
+  background: var(--tint);
+}

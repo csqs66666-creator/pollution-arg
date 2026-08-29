@@ -1,0 +1,30 @@
+/* 钓渊 · 可访问性（Basic 等级） */
+
+/* 减弱动效：所有抖动/闪烁降级为静态，但保留 corrupt token 变化与红发丝线 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  body.corrupt-1, body.corrupt-2, body.corrupt-3 { animation: none; }
+}
+
+/* 键盘可达：藏匿点必须可被 Tab 扫到 */
+.hidden-clue:focus-visible { outline: 1px solid var(--link); outline-offset: 2px; }
+
+/* 对比度兜底：里层红字只作强调，正文用 --bone（见 tokens.css 自查） */
+body.corrupt-2, body.corrupt-3 { color: var(--ink); }
+
+/* noscript 兜底 */
+noscript {
+  display: block; padding: var(--sp-4); text-align: center;
+  color: var(--ink-muted); background: var(--paper-2);
+}
+
+/* 视觉隐藏但屏幕阅读器可读 */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}

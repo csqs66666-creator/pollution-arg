@@ -1,0 +1,1752 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>回川市公众信息网</title>
+<style>
+/* ==== 设计令牌 ==== */
+:root{
+  --ink:#222; --ink2:#555; --line:#e5e5e5; --line2:#eee;
+  --blue:#00479D; --blue2:#0a5bb5; --red:#d63031;
+  --paper:#f6f1e3; --paper2:#efe6cf;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fff;color:var(--ink);
+  font-family:"SimSun","宋体",serif;font-size:13px;line-height:1.7}
+a{color:var(--ink);text-decoration:none;cursor:pointer}
+a:hover{color:var(--blue);text-decoration:underline}
+img{max-width:100%;display:block}
+
+/* ==== 顶栏 ==== */
+.gov-top{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 22px;background:var(--blue);color:#fff}
+.gov-top .site{font-size:20px;font-weight:700;letter-spacing:6px}
+.gov-top .right{display:flex;align-items:center;gap:10px;font-size:12px}
+.gov-top .right a{color:#fff;cursor:pointer}
+.gov-top .right a:hover{text-decoration:underline}
+.gov-top .right .sep{color:rgba(255,255,255,.6);margin:0 4px}
+.gov-top .right input{height:24px;border:1px solid rgba(255,255,255,.4);
+  background:rgba(255,255,255,.15);color:#fff;border-radius:12px;padding:0 12px;
+  font-size:12px;outline:none;font-family:inherit;width:150px}
+.gov-top .right input::placeholder{color:rgba(255,255,255,.7)}
+
+/* ==== 主导航 ==== */
+.gov-nav{display:flex;background:linear-gradient(180deg,#0052ad,#00479d);border-bottom:3px solid #003570}
+.gov-nav a{flex:1;text-align:center;padding:12px 0;color:#fff;font-size:14px;
+  letter-spacing:2px;border-right:1px solid rgba(255,255,255,.15);cursor:pointer;transition:background .12s}
+.gov-nav a:last-child{border-right:none}
+.gov-nav a:hover{background:rgba(255,255,255,.12);text-decoration:none}
+.gov-nav a.active{background:#003570;font-weight:600;position:relative}
+.gov-nav a.active::after{content:"";position:absolute;left:50%;bottom:-3px;
+  transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;
+  border-right:6px solid transparent;border-bottom:6px solid #fff}
+
+/* ==== 内容容器 ==== */
+.gov-wrap{padding:0;background:#fff}
+
+/* ==== 首页 Banner ==== */
+.gb{display:flex;height:320px;overflow:hidden;background:var(--paper);
+  border-bottom:3px solid var(--blue);position:relative}
+.gb .img{flex:0 0 60%;height:100%;
+  background:url('assets/desktop/gov-banner.jpg') center/cover no-repeat}
+.gb .paper{flex:1;padding:30px 36px;display:flex;flex-direction:column;justify-content:center;position:relative;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255,255,255,.4), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(120,90,40,.04) 0 2px, transparent 2px 6px),
+    var(--paper)}
+.gb .paper::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;
+  background:linear-gradient(180deg,transparent,rgba(120,80,30,.15),transparent)}
+.gb .title{font-family:"SimHei","黑体",sans-serif;font-size:34px;font-weight:700;
+  color:#1f5c3a;letter-spacing:6px;line-height:1.3}
+.gb .sub{margin-top:16px;font-size:15px;color:#4a6b55;letter-spacing:3px}
+.gb .badge{position:absolute;left:36px;bottom:18px;font-size:11px;color:#8a7a55;
+  border:1px solid #c9b98a;padding:3px 10px;letter-spacing:1px;background:rgba(255,255,255,.4)}
+
+/* ==== 三栏布局 ==== */
+.g3{display:grid;grid-template-columns:60% 20% 20%;gap:18px;padding:18px 22px;background:#fff}
+.g3 .col-l,.g3 .col-m,.g3 .col-r{min-width:0}
+
+/* 区块标题 */
+.bt{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);
+  padding-bottom:6px;margin-bottom:10px}
+.bt .t{font-family:"SimHei","黑体",sans-serif;font-size:15px;font-weight:700;color:var(--ink)}
+.bt.red .t{color:var(--red);border-left:3px solid var(--red);padding-left:8px}
+.bt .more{font-size:12px;color:var(--ink2)}
+.bt .more:hover{color:var(--blue)}
+
+/* 新闻列表 */
+.news-list{list-style:none;margin:0;padding:0}
+.news-list li{display:flex;justify-content:space-between;align-items:center;padding:7px 4px;
+  border-bottom:1px dashed var(--line2);cursor:pointer;font-size:13px}
+.news-list li:hover .ttl{color:var(--blue)}
+.news-list .ttl{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:10px}
+.news-list .dt{color:#999;font-size:12px;flex-shrink:0}
+
+/* 文旅区块 */
+.travel{margin-top:16px;border:1px solid var(--line);padding:12px;background:#fafbfc}
+.travel .stage{position:relative;width:100%;aspect-ratio:16/7;
+  background:url('assets/desktop/gov-travel.jpg') center/cover no-repeat;border:1px solid var(--line2)}
+.travel svg.route{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.travel .pin{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--red);
+  border:2px solid #fff;box-shadow:0 0 0 2px rgba(214,48,49,.25),0 2px 4px rgba(0,0,0,.3);
+  cursor:pointer;transform:translate(-50%,-50%);transition:transform .15s,box-shadow .15s}
+.travel .pin:hover{transform:translate(-50%,-50%) scale(1.2);
+  box-shadow:0 0 0 4px rgba(214,48,49,.35),0 2px 6px rgba(0,0,0,.4)}
+.travel .pin .tip{position:absolute;left:50%;top:130%;transform:translateX(-50%);
+  background:#fff;color:var(--ink);font-size:12px;padding:3px 10px;border-radius:12px;
+  white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.15);opacity:0;pointer-events:none;transition:opacity .15s}
+.travel .pin:hover .tip{opacity:1}
+.travel .cap{display:flex;justify-content:space-between;align-items:center;margin-top:10px;
+  font-size:13px;color:var(--ink2)}
+.travel .cap .btn{background:var(--blue);color:#fff;border:none;padding:5px 14px;font-size:12px;
+  cursor:pointer;letter-spacing:1px}
+.travel .cap .btn:hover{background:var(--blue2)}
+
+/* 便民服务 */
+.svc{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px}
+.svc .card{background:#f5f7fa;border:1px solid #e8ecf2;border-radius:6px;padding:12px 8px;
+  text-align:center;cursor:pointer;transition:background .12s,border-color .12s}
+.svc .card:hover{background:#fff;border-color:var(--blue)}
+.svc .card .ic{font-size:22px;line-height:1}
+.svc .card .nm{margin-top:6px;font-size:12px;color:var(--ink)}
+
+/* 右栏子块 */
+.sub{margin-bottom:14px}
+.notice-list{list-style:none;margin:0;padding:0}
+.notice-list li{padding:6px 4px;border-bottom:1px dashed var(--line2);font-size:12.5px;cursor:pointer;transition:background 0.2s}
+.notice-list li:hover .nt{color:var(--blue)}
+.notice-list .nt{font-weight:600;color:var(--ink);line-height:1.4}
+.notice-list .nb{color:var(--ink2);margin-top:3px;line-height:1.65}
+.notice-list .nb .mk{color:var(--red);font-weight:700;margin-left:1px}
+.notice-list .nd{color:#999;font-size:11px;margin-top:3px}
+.notice-list li.has-detail{position:relative;padding-right:18px}
+.notice-list li.has-detail::after{content:"›";position:absolute;right:6px;top:6px;font-size:14px;color:var(--blue);opacity:0.55;transition:all 0.2s}
+.notice-list li.has-detail:hover{background:rgba(0,71,157,0.04)}
+.notice-list li.has-detail:hover::after{opacity:1;transform:translateX(2px)}
+.notice-list li.no-detail{opacity:0.92}
+.notice-list li.no-detail::after{content:"·";position:absolute;right:8px;top:6px;font-size:12px;color:#b5b5b5;opacity:0.6}
+
+/* === 公告公文详情页 === */
+.nd-wrap{max-width:860px;margin:0 auto;padding:8px 0 40px}
+.nd-paper{
+  background:#fefdf9;
+  border:1px solid #d9d4c5;
+  padding:40px 56px 36px;
+  position:relative;
+  box-shadow:0 4px 18px rgba(0,0,0,0.06);
+  color:#222;
+  line-height:1.95;
+  font-size:14.5px;
+}
+.nd-paper::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:6px;
+  background:linear-gradient(90deg,#b22222 0,#b22222 28%,#fff 28%,#fff 32%,#b22222 32%,#b22222 60%,#fff 60%,#fff 64%,#b22222 64%,#b22222 100%);
+}
+.nd-paper .doc-no{
+  text-align:center;font-size:13px;color:#666;letter-spacing:0.2em;margin-bottom:14px;
+  border-bottom:1px solid #e2dccb;padding-bottom:14px;
+}
+.nd-paper h1.nd-title{
+  text-align:center;font-size:24px;color:#222;margin:6px 0 4px;letter-spacing:0.1em;font-weight:700;
+}
+.nd-paper .nd-sub{
+  text-align:center;color:#666;font-size:13px;margin-bottom:24px;letter-spacing:0.05em;
+}
+.nd-paper .nd-meta{
+  display:flex;justify-content:space-between;font-size:12.5px;color:#666;
+  border-bottom:1px solid #e2dccb;padding-bottom:12px;margin-bottom:18px;
+}
+.nd-paper .nd-meta b{color:#333}
+.nd-paper .nd-body p{margin:0 0 14px;text-indent:2em;text-align:justify;text-justify:inter-ideograph}
+.nd-paper .nd-body h3{font-size:16px;margin:22px 0 10px;color:#111;border-left:3px solid #b22222;padding-left:10px}
+.nd-paper .nd-body ul,.nd-paper .nd-body ol{padding-left:1.6em;margin:6px 0 14px}
+.nd-paper .nd-body li{margin-bottom:6px}
+.nd-paper .nd-body .stamp{
+  display:inline-block;border:2px solid #b22222;color:#b22222;font-weight:700;
+  padding:2px 10px;border-radius:2px;margin:18px 0 0;letter-spacing:0.2em;font-size:12px;
+  transform:rotate(-3deg);opacity:0.85;
+}
+.nd-paper .nd-sig{margin-top:30px;font-size:13px;color:#444;line-height:1.85;border-top:1px dashed #d9d4c5;padding-top:14px}
+.nd-paper .nd-sig div{margin-bottom:4px}
+.nd-paper .nd-back{
+  display:block;margin:24px auto 0;text-align:center;color:var(--blue);font-size:13px;cursor:pointer;
+}
+.nd-paper .nd-back:hover{text-decoration:underline}
+.msg-list{list-style:none;margin:0;padding:0}
+.msg-list li{padding:5px 4px;font-size:12.5px;border-bottom:1px dashed var(--line2);cursor:pointer}
+.msg-list li:hover{color:var(--blue)}
+.btn-ghost{display:inline-block;background:#fff;color:var(--blue);border:1px solid var(--blue);
+  padding:4px 12px;font-size:12px;cursor:pointer;margin-top:8px;letter-spacing:1px}
+.btn-ghost:hover{background:var(--blue);color:#fff}
+.map-mini{position:relative;width:100%;aspect-ratio:4/3;
+  background:url('assets/desktop/gov-map.jpg') center/cover no-repeat;border:1px solid var(--line2);margin-top:4px}
+.map-mini .pin{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--red);
+  border:1.5px solid #fff;box-shadow:0 0 0 2px rgba(214,48,49,.2);transform:translate(-50%,-50%);
+  cursor:pointer;transition:transform .15s}
+.map-mini .pin.hot:hover{transform:translate(-50%,-50%) scale(1.6)}
+.map-mini .pin .tip{position:absolute;left:50%;top:140%;transform:translateX(-50%);
+  background:#fff;font-size:11px;padding:2px 8px;border-radius:10px;white-space:nowrap;
+  box-shadow:0 2px 6px rgba(0,0,0,.15);opacity:0;pointer-events:none}
+.map-mini .pin:hover .tip{opacity:1}
+.map-link{display:block;text-align:center;margin-top:6px;font-size:12px;color:var(--blue);text-decoration:underline}
+
+/* ==== 全域地理信息图 ==== */
+.gmap-title{text-align:center;font-family:"SimHei","黑体",sans-serif;font-size:20px;color:var(--ink);
+  padding:22px 0 12px;letter-spacing:3px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.gmap-stage-wrap{display:flex;justify-content:center;padding:0 22px 14px}
+.gmap-stage{position:relative;width:100%;max-width:820px;aspect-ratio:4/3;
+  background:url('assets/desktop/gov-map.jpg') center/cover no-repeat;border:1px solid #ccc;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);transition:filter .4s}
+.gmap-stage .pin{position:absolute;width:16px;height:16px;border-radius:50%;background:var(--red);
+  border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4),0 0 0 3px rgba(214,48,49,.25);
+  cursor:pointer;transform:translate(-50%,-50%);transition:transform .15s}
+.gmap-stage .pin:hover{transform:translate(-50%,-50%) scale(1.3)}
+.gmap-stage .pin .tip{position:absolute;left:50%;top:130%;transform:translateX(-50%);
+  background:#fff;padding:6px 12px;border-radius:6px;white-space:nowrap;font-size:12px;
+  box-shadow:0 4px 14px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .15s;
+  min-width:190px;text-align:left;line-height:1.5}
+.gmap-stage .pin:hover .tip{opacity:1}
+/* 时间锁伪装工具 */
+/* === 地图页 · 22:00 时间门（输入 HH:MM = 22:00 进入 chapter1 启程） === */
+.time-gate{display:flex;align-items:center;gap:8px;max-width:680px;margin:8px auto 14px;padding:8px 14px;background:rgba(255,255,255,.92);border:1px solid #c8c0a8;border-radius:2px;font-size:12px;letter-spacing:.1em}
+.time-gate .tg-label{color:var(--ink2);font-family:"Songti SC",serif}
+.time-gate input{width:68px;border:1px solid #bbb;padding:3px 6px;font-size:13px;font-family:monospace;letter-spacing:.05em;background:#fff;color:#231f18}
+.time-gate input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 2px rgba(31,79,140,.15)}
+.time-gate button{background:var(--blue);color:#fff;border:none;padding:4px 14px;font-size:12px;letter-spacing:.2em;cursor:pointer;border-radius:1px}
+.time-gate button:hover{background:#1a3f6e}
+.time-gate .tg-hint{color:#a02020;font-size:11px;letter-spacing:.1em;min-width:160px}
+.time-gate.ok .tg-hint{color:#2c5b2c}
+.time-gate input.shake{animation:tgShake .35s linear 1}
+@keyframes tgShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+
+.timelock{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.95);
+  border:1px solid #aaa;border-radius:4px;padding:5px 8px;font-size:12px;display:flex;
+  align-items:center;gap:6px;box-shadow:0 2px 6px rgba(0,0,0,.12);z-index:5}
+.timelock label{color:var(--ink2);font-size:11px}
+.timelock input{width:58px;border:1px solid #bbb;padding:2px 4px;font-size:12px;
+  font-family:inherit;outline:none}
+.timelock input:focus{border-color:var(--blue)}
+.timelock button{background:var(--blue);color:#fff;border:none;padding:2px 8px;font-size:11px;cursor:pointer}
+/* 夜间模式 */
+.gmap-stage.night{filter:brightness(.42) saturate(.55)}
+.gmap-stage.night .pin{opacity:.15}
+.gmap-stage .secret-pin{position:absolute;width:14px;height:14px;border-radius:50%;
+  background:#5a0a0a;border:2px solid rgba(120,20,30,.7);box-shadow:0 0 12px 4px rgba(120,0,0,.6);
+  transform:translate(-50%,-50%);display:none;animation:blink 1.2s infinite}
+.gmap-stage.night .secret-pin{display:block}
+@keyframes blink{0%,100%{opacity:.5;box-shadow:0 0 8px 2px rgba(120,0,0,.5)}
+  50%{opacity:1;box-shadow:0 0 16px 6px rgba(180,0,0,.8)}}
+.gmap-stage .secret-pop{position:absolute;background:rgba(20,0,0,.82);color:#f0d0d0;
+  padding:7px 11px;border:1px solid rgba(180,40,40,.5);font-size:12px;border-radius:4px;
+  display:none;max-width:240px;line-height:1.6;z-index:6}
+.gmap-stage.night .secret-pop{display:block}
+/* 血色荷纹水印 */
+.gmap-stage .wm{position:absolute;width:90px;height:90px;opacity:.08;pointer-events:none}
+.gmap-stage .wm.tl{top:6px;left:6px}.gmap-stage .wm.tr{top:6px;right:6px}
+.gmap-stage .wm.bl{bottom:6px;left:6px}.gmap-stage .wm.br{bottom:6px;right:6px}
+.gmap-scale{position:absolute;left:14px;bottom:10px;background:rgba(255,255,255,.85);
+  padding:2px 8px;font-size:11px;color:var(--ink);border:1px solid #aaa;z-index:4}
+.gmap-stage.night .gmap-scale{background:rgba(0,0,0,.7);color:#ddd;border-color:#555}
+.gmap-toolbar{display:flex;justify-content:center;gap:8px;padding:6px 22px 18px}
+.gmap-toolbar button{background:#fff;border:1px solid #aaa;padding:4px 12px;font-size:12px;cursor:pointer}
+.gmap-toolbar button:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.gmap-toolbar .scale{margin-left:12px;line-height:24px;font-size:12px;color:var(--ink2)}
+
+/* ==== 文旅攻略 ==== */
+.lv{padding:22px 36px;max-width:1080px;margin:0 auto}
+.lv h1{font-family:"SimHei","黑体",sans-serif;font-size:22px;text-align:center;color:var(--ink);
+  letter-spacing:3px;margin:6px 0 14px}
+.lv .sub-title{text-align:center;color:var(--ink2);font-size:13px;margin-bottom:18px}
+.lv .pan{position:relative;width:100%;aspect-ratio:16/6;
+  background:url('assets/desktop/gov-travel.jpg') center/cover no-repeat;border:1px solid var(--line);margin-bottom:18px}
+.lv .pan .pin{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--red);
+  border:2px solid #fff;box-shadow:0 0 0 2px rgba(214,48,49,.25);cursor:pointer;
+  transform:translate(-50%,-50%);transition:transform .15s}
+.lv .pan .pin:hover{transform:translate(-50%,-50%) scale(1.2)}
+.lv .pan .pin .tip{position:absolute;left:50%;top:130%;transform:translateX(-50%);background:#fff;
+  padding:3px 10px;border-radius:12px;font-size:12px;white-space:nowrap;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);opacity:0;pointer-events:none}
+.lv .pan .pin:hover .tip{opacity:1}
+.lv .points{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.lv .pt{border:1px solid var(--line);background:#fafbfc;padding:14px}
+.lv .pt h3{font-family:"SimHei","黑体",sans-serif;color:var(--blue);margin:0 0 8px;font-size:15px;
+  border-bottom:1px solid var(--line2);padding-bottom:6px}
+.lv .pt .row{font-size:12.5px;margin:4px 0;color:var(--ink2)}
+.lv .pt .row b{color:var(--ink)}
+.lv .pt .anomaly{margin-top:8px;padding:6px 10px;background:#fdf5e6;border-left:2px solid #c79a3a;
+  font-size:12px;color:#7a5a20}
+.lv .routes{margin-bottom:18px}
+.lv .routes h3{font-family:"SimHei","黑体",sans-serif;font-size:15px;color:var(--ink);
+  border-bottom:1px solid var(--line);padding-bottom:6px}
+.lv .route{margin-top:8px;font-size:13px;line-height:1.9}
+.lv .route b{color:var(--blue)}
+.lv .safety{margin-bottom:18px}
+.lv .safety h3{font-family:"SimHei","黑体",sans-serif;font-size:15px;color:var(--ink);
+  border-bottom:1px solid var(--line);padding-bottom:6px}
+.lv .safety ol{padding-left:22px;margin:8px 0 0}
+.lv .safety li{padding:4px 0;font-size:13px;border-bottom:1px dashed var(--line2)}
+.lv .icp-box{margin-top:18px;padding:10px 14px;background:#fbf3e0;border:1px dashed #c79a3a;
+  font-size:12px;color:#7a5a20}
+.lv .back-btn{display:block;width:max-content;margin:14px 0 0 auto;background:var(--blue);color:#fff;
+  border:none;padding:6px 18px;font-size:13px;cursor:pointer}
+.lv .back-btn:hover{background:var(--blue2)}
+
+/* ==== 互动交流 ==== */
+.hd{display:grid;grid-template-columns:60% 1fr;gap:18px;padding:22px}
+.hd-l,.hd-r{min-width:0}
+.hd h2{font-family:"SimHei","黑体",sans-serif;font-size:17px;color:var(--ink);
+  border-bottom:2px solid var(--blue);padding-bottom:6px;margin:0 0 10px}
+.hd .ann{font-size:13px;color:var(--ink2);margin-bottom:10px;line-height:1.8}
+.hd textarea{width:100%;height:70px;border:1px solid #ccc;padding:8px;font-family:inherit;
+  font-size:13px;outline:none;resize:vertical}
+.hd textarea:focus{border-color:var(--blue)}
+.hd .submit{background:var(--blue);color:#fff;border:none;padding:6px 18px;font-size:13px;cursor:pointer;margin-top:6px}
+.hd .msg{margin-top:14px;border-top:1px dashed var(--line);padding-top:10px}
+.hd .msg .item{margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed var(--line2)}
+.hd .msg .q{font-size:13px;color:var(--ink)}
+.hd .msg .a{margin-top:4px;padding:6px 10px;background:#f5f7fa;border-left:2px solid var(--blue);
+  font-size:12.5px;color:var(--ink2)}
+.hd .faq{margin:18px 22px;padding:14px;background:#fafbfc;border:1px solid var(--line)}
+.hd .faq h3{font-family:"SimHei","黑体",sans-serif;font-size:15px;color:var(--ink);
+  margin:0 0 10px;border-bottom:1px solid var(--line);padding-bottom:4px}
+.hd .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.hd .faq-grid .f{padding:8px 10px;background:#fff;border:1px solid var(--line2)}
+.hd .faq-grid .f b{color:var(--blue)}
+
+/* 文旅点弹窗 */
+.travel-pop-mask{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:center;justify-content:center}
+.travel-pop{background:#fff;border-radius:6px;width:min(420px,90vw);padding:22px 26px;box-shadow:0 12px 40px rgba(0,0,0,.25);font-family:'Microsoft YaHei',sans-serif}
+.travel-pop .t{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;border-bottom:1px solid var(--line2);padding-bottom:8px}
+.travel-pop .b{font-size:13px;color:var(--ink2);line-height:1.8;letter-spacing:0.04em}
+.travel-pop .f{margin-top:16px;text-align:right}
+.travel-pop .f button{background:var(--blue);color:#fff;border:none;padding:6px 16px;border-radius:3px;cursor:pointer;font-size:12px}
+
+/* 用户留言块（提交后追加） */
+.user-msg{background:#fffbe6;border-left:3px solid #f0c040;padding-left:10px}
+.user-msg .q{font-weight:600}
+
+/* 22:00 提示条 */
+.tl-hint{font-size:11px;color:#666;margin-bottom:5px;letter-spacing:0.06em;background:rgba(255,255,240,.85);padding:3px 6px;border:1px dashed #b0a070;border-radius:2px;display:inline-block}
+.hd .complain{margin:14px 22px 22px;padding:16px;background:linear-gradient(135deg,#f0f5fb,#fff);
+  border:1px solid var(--blue);text-align:center}
+.hd .complain .btn{background:var(--red);color:#fff;border:none;padding:8px 28px;font-size:14px;
+  cursor:pointer;margin-top:6px;letter-spacing:2px}
+.hd .complain .btn:hover{background:#a82323}
+
+/* ==== 占位页 / 搜索 / 404 ==== */
+.ph{padding:60px 22px;text-align:center;color:var(--ink2);font-size:15px}
+.ph .ic{font-size:48px;margin-bottom:14px;opacity:.5}
+.srch{padding:22px 36px}
+.srch h2{font-family:"SimHei","黑体",sans-serif;font-size:17px;border-left:3px solid var(--blue);padding-left:8px}
+
+/* ==== 页脚 ==== */
+.gov-footer{padding:18px 22px;background:#f5f5f5;color:#666;font-size:12px;text-align:center;
+  line-height:2;border-top:2px solid var(--blue);margin-top:14px}
+.gov-footer .links a{color:#666;margin:0 8px;cursor:pointer}
+.gov-footer .links a:hover{color:var(--blue)}
+
+/* ==== 解密归档面板（22:00 触发后追加显示，不破坏现有布局） ==== */
+.archive{padding:18px 22px 22px;background:#0d0d12;color:#d8c8c8;border-top:2px solid #5a0a0a;animation:archfade .6s ease}
+@keyframes archfade{from{opacity:0}to{opacity:1}}
+.archive h2{font-family:"SimHei","黑体",sans-serif;font-size:16px;color:#c0392b;letter-spacing:2px;
+  margin:0 0 4px;border-left:3px solid #c0392b;padding-left:8px}
+.archive .hint{font-size:11px;color:#7a5a5a;margin-bottom:14px;letter-spacing:1px}
+.archive .grp{margin-bottom:16px}
+.archive .grp h3{font-family:"SimHei","黑体",sans-serif;font-size:13px;color:#a85040;margin:0 0 6px;
+  border-bottom:1px dashed #4a2020;padding-bottom:3px}
+.archive .grp .row{font-size:12.5px;line-height:1.85;padding:4px 0;border-bottom:1px dotted #2a1818}
+.archive .grp .row b{color:#c0392b}
+.archive .grp .row .tag{display:inline-block;background:#2a0a0a;color:#c0392b;font-size:10px;
+  padding:1px 6px;margin-right:6px;border:1px solid #5a2020}
+.archive .end{margin-top:10px;padding:10px 12px;background:#1a0a0a;border:1px solid #4a2020;font-size:12.5px;line-height:1.85}
+.archive .end b{color:#c0392b}
+/* ARG2 CSS injection — appended before style-end */
+body.arg-mode .gov-wrap{filter:contrast(1.05) saturate(0.92) hue-rotate(-2deg)}
+.arg-mute{color:#888;font-size:12px;font-style:italic}
+/* 管理员账号密码：模糊遮罩 + hover 才解 */
+.admin-pw{filter:blur(5px);color:#7a1a1a;transition:filter .35s, color .35s;cursor:pointer;user-select:none;display:inline-block;padding:0 4px;letter-spacing:0.05em}
+.admin-pw:hover,.admin-pw:focus{filter:none;color:#4a0a0a;outline:none}
+/* .admin-block 样式已移除 · 管理员凭据改在 forum 帖子里输入 */
+.eye-photo{position:relative;width:140px;height:170px;flex-shrink:0;background:linear-gradient(160deg,#e6e6e6,#cdcdcd);border:1px solid #b9b9b9;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.eye-photo .photo-cap{position:absolute;top:6px;left:0;right:0;font-size:11px;color:#888;text-align:center;letter-spacing:0.1em}
+.eye-photo .photo-big{font-size:54px;color:#aaa;opacity:0.65;margin-top:14px}
+.eye-photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:1}
+.sig-img{display:block;max-width:220px;margin-top:10px;border:1px solid #ddd;background:#fff;padding:6px}
+.sig-bleed{display:inline-block;animation:sigBloom 7s ease-in-out infinite}
+.sig-bleed img{display:block}
+@keyframes sigBloom{0%,100%{filter:drop-shadow(0 0 0 rgba(178,34,34,0));opacity:.92}50%{filter:drop-shadow(0 0 7px rgba(178,34,34,.6));opacity:1}}
+.flicker-text{display:inline-block;color:#222;animation:textFlicker 3.7s steps(6) infinite}
+@keyframes textFlicker{0%,13%{color:#222;opacity:1}14%,17%{color:#b22222;opacity:0.85}18%,21%{color:#222;opacity:1}22%,25%{color:#b22222;opacity:0.4}26%,100%{color:#222;opacity:1}}
+.sideface-flick{position:fixed;right:0;top:28%;width:140px;height:220px;pointer-events:none;z-index:9300;background:radial-gradient(ellipse at 40% 50%, rgba(180,200,220,0.28) 0%, transparent 70%),radial-gradient(ellipse at 40% 30%, rgba(120,150,180,0.18) 0%, transparent 50%);opacity:0;animation:sidefaceFlash 14s ease-in-out infinite}
+@keyframes sidefaceFlash{0%,7%,100%{opacity:0}8%,9%{opacity:1}10%,11%{opacity:0}12%,13%{opacity:0.6}14%,16%{opacity:0}}
+body.night-mode{background:#0a0c10}
+body.night-mode .gov-top,body.night-mode .gov-nav,body.night-mode .gov-footer{background:#1a1c20 !important;color:#777 !important;border-color:#333 !important}
+body.night-mode .gov-nav a{color:#888 !important}
+body.night-mode .gov-nav a.active{color:#a08080 !important}
+body.night-mode .gov-wrap{background:#0e1014;color:#a8a8a8;position:relative}
+body.night-mode .gov-wrap::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(255,255,255,0.025) 3px);animation:scan 7s linear infinite}
+@keyframes scan{0%{background-position:0 0}100%{background-position:0 240px}}
+body.night-mode button,body.night-mode .btn,body.night-mode .btn-ghost{border-color:#444 !important;animation:btnTremor 0.18s infinite}
+@keyframes btnTremor{0%,100%{transform:translate(0,0)}25%{transform:translate(0.4px, -0.3px)}50%{transform:translate(-0.3px, 0.4px)}75%{transform:translate(0.3px, 0.2px)}}
+.water-blood{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 22% 80%, rgba(180,30,30,0.18), transparent 50%),radial-gradient(ellipse at 70% 30%, rgba(150,40,40,0.10), transparent 60%);animation:bloodPulse 8s ease-in-out infinite;mix-blend-mode:multiply}
+@keyframes bloodPulse{0%,100%{opacity:0.6}50%{opacity:1}}
+.finale-trigger{color:#888;text-decoration:underline dotted;cursor:pointer;transition:all 0.3s}
+.finale-trigger:hover{color:#b22222;text-decoration:underline}
+/* ==== 结局页（插图居中，不铺满视口） ==== */
+.ending-page{min-height:100vh;background:#0b0b0e;color:#cfcfd4;padding:54px 20px 84px;font-family:"Songti SC","STSong","宋体",serif}
+.ending-page .ed-head{max-width:760px;margin:0 auto;text-align:center}
+.ending-page .ed-head h2{font-size:30px;letter-spacing:0.3em;margin:0 0 12px;color:#e8e6e1}
+.ending-page .ed-head .ed-cond{font-size:12px;letter-spacing:0.22em;color:#7a6a5a;line-height:1.9}
+.ending-page .ending-img{max-width:75%;max-height:70vh;object-fit:contain;display:block;margin:26px auto;border-radius:2px;box-shadow:0 12px 46px rgba(0,0,0,.6)}
+.ending-page .ed-body{max-width:680px;margin:36px auto 0}
+.ending-page .ed-sec{margin-bottom:30px}
+.ending-page .ed-sec .ed-tag{font-size:11px;letter-spacing:0.35em;color:#7a6a6a;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:8px;margin-bottom:12px}
+.ending-page .ed-sec p{font-size:15px;line-height:2.05;color:#c9c6bf;text-align:justify;text-justify:inter-ideograph;text-indent:2em;margin:0 0 10px}
+.ending-page .ed-actions{margin-top:52px;text-align:center}
+.ending-page .ed-actions button{padding:10px 24px;background:rgba(255,255,255,.06);color:#cfcfd4;border:1px solid rgba(255,255,255,.25);cursor:pointer;font-family:inherit;font-size:13px;letter-spacing:0.2em;margin:0 8px}
+.ending-page .ed-actions button:hover{background:rgba(178,34,34,.18);border-color:#b22222;color:#fff}
+
+/* ==== 最终抉择弹窗（终极页手动三选一） ==== */
+.finale-modal{position:fixed;inset:0;z-index:9850;background:rgba(0,0,0,.74);display:none;align-items:center;justify-content:center}
+.finale-modal.on{display:flex}
+.finale-modal .fm-box{background:#12100e;border:1px solid #5a3a2a;max-width:540px;width:92%;padding:34px 30px 24px;border-radius:4px;box-shadow:0 18px 70px rgba(0,0,0,.7)}
+.finale-modal .fm-note{font-family:'Songti SC','STSong','宋体',serif;font-size:15px;color:#d8c0a8;text-align:center;letter-spacing:.12em;line-height:2;margin-bottom:22px}
+.finale-modal .fm-sub{font-size:11px;color:#6a5a4a;text-align:center;letter-spacing:.3em;margin-bottom:20px}
+.finale-modal .fm-opt{display:block;width:100%;text-align:left;background:rgba(255,255,255,.04);border:1px solid #3a2c22;color:#cfc6ba;padding:13px 16px;margin-bottom:12px;cursor:pointer;font-family:inherit;font-size:14px;line-height:1.75;transition:all .2s}
+.finale-modal .fm-opt:hover{background:rgba(178,34,34,.14);border-color:#b22222;color:#fff}
+.finale-modal .fm-opt b{color:#c88a6a}
+.finale-modal .fm-close{display:block;margin:8px auto 0;background:none;border:none;color:#6a5a4a;cursor:pointer;font-size:12px;letter-spacing:.25em;font-family:inherit}
+.finale-modal .fm-close:hover{color:#c8a888}
+
+.xuehe-clip{position:fixed;inset:0;background:rgba(0,0,0,0.94);z-index:9950;display:none;align-items:center;justify-content:center;flex-direction:column;color:#d0d0d0;font-family:"Songti SC",serif}
+.xuehe-clip.on{display:flex}
+.xuehe-clip video{max-width:90vw;max-height:78vh;border:1px solid #333;box-shadow:0 8px 40px rgba(0,0,0,0.7)}
+.xuehe-clip .cap{margin-top:18px;font-size:13px;color:#999;letter-spacing:0.3em;text-align:center;max-width:520px}
+.xuehe-clip .close{margin-top:24px;padding:6px 20px;background:transparent;border:1px solid #555;color:#aaa;cursor:pointer;letter-spacing:0.2em}
+.xuehe-clip .close:hover{color:#fff;border-color:#888}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<!-- 最终抉择弹窗（终极页手动三选一） -->
+<div class="finale-modal" id="finaleModal">
+  <div class="fm-box">
+    <div class="fm-note">ta要的不是命，是带你走。<br>选吧。</div>
+    <div class="fm-sub">， 沈清川 · 旧档末页</div>
+    <button class="fm-opt" onclick="closeFinaleChoice();renderEnding(1)"><b>① 夺取束缚</b><br>将雪禾带离回川市 → 结局一 · 携邪远行</button>
+    <button class="fm-opt" onclick="closeFinaleChoice();renderEnding(2)"><b>② 放弃抵抗</b><br>走向湖心，接受同化 → 结局二 · 归位入列</button>
+    <button class="fm-opt" onclick="closeFinaleChoice();renderEnding(3)"><b>③ 直接反抗</b><br>破坏湖心仪式 → 结局三 · 殒命湖心</button>
+    <button class="fm-close" onclick="closeFinaleChoice()">再想想</button>
+  </div>
+</div>
+
+<script>
+'use strict';
+const $app = document.getElementById('app');
+
+/* ===== 主导航 ===== */
+const NAV = [
+  { key:'home',     label:'首页',     hash:'#home' },
+  { key:'zhengwu',  label:'政务公开', hash:'#zhengwu' },
+  { key:'minsheng', label:'民生资讯', hash:'#minsheng' },
+  { key:'fuwu',     label:'政务服务', hash:'#fuwu' },
+  { key:'hudong',   label:'互动交流', hash:'#hudong' },
+  { key:'shuju',    label:'数据开放', hash:'#shuju' },
+  { key:'ditu',     label:'网站地图', hash:'#zoujin' },
+  { key:'zoujin',   label:'走进回川', hash:'#zoujin' }
+];
+
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ===== 通用外壳 ===== */
+function topBar(){
+  return `<div class="gov-top">
+    <div class="site">回川市公众信息网</div>
+    <div class="right">
+      <a onclick="alert('已设为主页')">设为首页</a><span class="sep">|</span>
+      <a onclick="alert('已添加收藏')">加入收藏</a><span class="sep">|</span>
+      <a>无障碍浏览</a>
+      <input placeholder="站内搜索" onkeydown="if(event.key==='Enter'){doSearch(this.value)}">
+    </div>
+  </div>`;
+}
+function navBar(active){
+  return `<nav class="gov-nav">` + NAV.map(n =>
+    `<a class="${n.key===active?'active':''}" onclick="go('${n.hash}')">${n.label}</a>`
+  ).join('') + `</nav>`;
+}
+function footer(icp){
+  const 备案 = icp || '回ICP备0000000号';
+  return `<div class="gov-footer">
+    主办单位：回川市人民政府办公室　地址：回川市 · 政府办公区　邮政编码：000000<br>
+    网站标识码：0000000000　ICP备案号：${esc(备案)}　公安机关备案号：00000000000000<br>
+    <span class="links"><a>联系我们</a>|<a onclick="go('#zoujin')">网站地图</a>|© 回川市公众信息网</span>
+  </div>`;
+}
+function page(active, body, icp){
+  return topBar() + navBar(active) + `<div class="gov-wrap">${body}</div>` + footer(icp);
+}
+
+window.go = function(hash){ location.hash = hash; };
+/* 微信：不再新开标签页/iframe，改通知桌面(desktop-portal)打开其内置微信窗口 */
+window.openWechatStory = function(){
+  try{
+    localStorage.setItem('hc_unlockTime', Date.now());
+    localStorage.setItem('hc_ritual', GAME_STATE.ritual ? '1' : '0');
+    localStorage.setItem('hc_npcs', JSON.stringify(GAME_STATE.npcUnlocked));
+  }catch(e){}
+  try{ if(window.parent && window.parent !== window){ window.parent.postMessage({type:'hc-open-wechat'}, '*'); } }catch(e){}
+};
+window.doSearch = function(q){
+  q = (q||'').trim();
+  if(!q) return;
+  location.hash = '#search/' + encodeURIComponent(q);
+};
+
+/* ===== 路由 ===== */
+function activeOf(h){
+  if(h==='#home' || h==='') return 'home';
+  if(h==='#zoujin' || h==='#ditu') return 'zoujin';
+  if(h==='#lvyou') return 'minsheng';
+  if(h==='#hudong') return 'hudong';
+  const k = h.replace('#','');
+  return NAV.find(n => n.key===k) ? k : 'home';
+}
+function render(){
+  let h = location.hash || '#home';
+  h = h.replace(/^#\/?/, '#');
+  if(h==='#home' || h===''){ renderHome(); return; }
+  if(h==='#finale'){
+    renderFinaleArchive();
+    setTimeout(function(){
+      var fm = document.getElementById('finaleModal');
+      if(fm) fm.classList.add('on');
+    }, 5000);
+    return;
+  }
+  if(h==='#zoujin'){ renderGeo(); return; }
+  if(h==='#lvyou'){ renderGuide(); return; }
+  if(h==='#hudong'){ renderHudong(); return; }
+  if(h==='#zhengwu'){ renderPh('政务公开','本栏目集中公开干部信息、重点工作进展。'); return; }
+  if(h==='#minsheng'){ renderPh('民生资讯','本栏目发布民生新闻、惠民政策与解读回应。'); return; }
+  if(h==='#fuwu'){ renderPh('政务服务','本栏目提供办事指南、在线申报、进度查询等政务服务。'); return; }
+  if(h==='#shuju'){ renderPh('数据开放','本栏目归集开放统计数据，供社会公众查询利用。'); return; }
+  if(h==='#doc1'){ renderNoticeDetail('doc1'); return; }
+  if(h==='#doc2'){ renderNoticeDetail('doc2'); return; }
+  if(h==='#notice-blank'){ renderNoticeBlank(); return; }
+  if(h==='#rawdata'){ renderRawData(); return; }
+  if(h==='#ledger'){ renderRitualLedger(); return; }
+  if(h==='#ritual'){ renderRitualLedger(); return; }
+  if(h.startsWith('#search/')){ renderSearch(decodeURIComponent(h.replace('#search/',''))); return; }
+  render404();
+}
+
+/* ===== 首页 ===== */
+function renderHome(){
+  // 政务要闻 6 条：表面正常政务标题，暗埋污染/红纹鱼/湖水异常/景区管控，植入四人表层官方伏笔
+  const NEWS = [
+    {t:'副市长周秉坤主持召开上半年生态环境保护工作推进会', d:'2026-06-28'},
+    {t:'市生态环境局局长林茂才签署月荷水库水质季度检测报告', d:'2026-06-15'},
+    {t:'市档案馆沈清川同志获评全市档案工作先进个人', d:'2026-06-10'},
+    {t:'市水务局许清同志荣获年度优秀科员表彰', d:'2026-06-05'},
+    {t:'月荷水库汛前检测发现库区部分鱼群出现异常红纹', d:'2026-05-22'},
+    {t:'西湾郊野公园露营区加强夜间管控回应市民关切', d:'2026-05-08'}
+  ];
+  // 通知公告 5 条：第 1、2 条点击进公文详情（核心解谜线索·不可改）；其余点击空白占位
+  // 结尾摩斯符号 · — · — · 保留（解密埋藏 → 线索「入口」）
+  const NOTICES = window.NOTICES = [
+    // 解密线索：分区管控·禁钓食用水产·亲友执念记录·异常最早显现于 6 月
+    {t:'关于月荷水库及环湖水域实施管控的公告', date:'2026-06-22', punct:'·', detail:'doc1',
+     body:'经市生态环境局检测评估，月荷水库自 2026 年 6 月以来多次出现水生生物异常情况，为保障水源安全、公共卫生与生态平衡，决定即日起对月荷水库及环湖水域实施分区管控。一级保护区（含湖心岛周边 500 米）全年全面禁钓；二级保护区每日 6:00—18:00 限时开放；管控缓冲区（西湾露营区、环湖步道南岸段）禁止垂钓与下水。在以上各区域，严禁垂钓、捕捞，严禁携带、转移、食用、交易任何水产及其制品；严禁使用诱饵打窝、夜间贴近水岸；严禁触碰水面漂浮异物。市民若发现身边亲友出现「反复邀约前往月荷水库垂钓」「反复表述水库鱼类味道鲜美」「由热衷、念叨到神情恍惚」等异常行为，请记录其执念开始日期，并主动向所在社区或疾控中心报送。审批签字：市生态环境局局长 林茂才'},
+    // 解密线索：常规指标达标·水底不明生物组织碎片·污染不显现在表层·异变最先出现在生物躯体内部
+    {t:'月荷水库 2026 年第二季度水质检测结果的公告', date:'2026-06-18', punct:'—', detail:'doc2',
+     body:'依据相关法律法规，市生态环境局会同市水务集团于 2026 年 4—6 月对月荷水库及主要入库支流开展第二季度水质检测。pH、溶解氧、高锰酸盐指数、氨氮、总磷、化学需氧量等 23 项常规地表水指标在库区各采样点均符合地表水Ⅲ类及以上标准，水面表层亦未检出肉眼可见污染带或异常颜色；在库底沉积物与下层水样的专项检测中，检出若干不明生物组织碎片，经测序比对不属于本地已知鱼种、甲壳类或底栖生物谱系，与周边水产品样本比对后排除本地物种降解可能。依据湖心岛周边多次抽样数据，污染不会显现在水体表层，人工例行水质抽检难以察觉，异变最先出现在水生生物躯体内部，仅在生物被捕捞离水后烹饪、食用过程中暴露。请市民近期勿在库区及一二级管控区内垂钓、捕捞与食用相关水产。报告由市生态环境局局长林茂才签字确认，已报副市长周秉坤批示备案'},
+    {t:'城南片区供水管网冲洗计划公告', date:'2026-06-12', punct:'·', detail:'doc3',
+     body:'为保障城南片区供水水质稳定，市水务集团计划于 2026 年 6 月 16 日 22 时至 6 月 17 日 6 时对城南加压站至回川大道沿线 DN800 供水主管进行例行冲洗。届时城南片区、回川大道两侧及周边部分小区可能出现短时水压偏低或间歇性停水，请居民提前储水。冲洗期间如发现水色发黄、轻微浑浊，属正常扰动现象，开阀排放 1—2 分钟即可。咨询 24 小时服务热线 0731-1100。'},
+    {t:'回川市文旅局暑期出游温馨提示', date:'2026-05-30', punct:'·', detail:'doc4',
+     body:'暑期临近，回川市文旅局提醒广大游客：月荷水库一级保护区（含湖心岛周边 500 米范围）全年全面禁钓、禁捕、禁入；二级保护区每日 6:00—18:00 限时开放，请勿滞留至夜间；西湾露营区实行预约制，请通过「回川文旅」小程序提前预约；如在景区发现不明来源的鱼、虾、贝类或红色丝状漂浮物，请勿触碰、勿食用，及时联系景区工作人员或拨打 0731-1100。文旅咨询服务热线 0731-6622。'},
+    {t:'回川市 2026 年第二批公租房配租公告', date:'2026-05-21', punct:'·', detail:'doc5',
+     body:'根据《回川市公共租赁住房管理办法》，经资格审核与公开摇号，现将 2026 年第二批公租房配租方案予以公告。本批次共推出房源分布在城南、城西、月荷文创区周边 9 个小区，户型为一居室与两居室。本批配租登记时间为 2026 年 6 月 1 日至 6 月 15 日，申请人可通过市民中心一楼窗口或「回川住建」小程序提交申请。咨询电话 0731-3370。'}
+  ];
+  const MSGS = [
+    {t:'建议公开月荷水库湖心岛开放时间与维护安排'},
+    {t:'反映西湾露营区夜间水面异常光斑问题'}
+  ];
+  const SVC = [
+    {ic:'🗂️', nm:'社保查询'}, {ic:'🏦', nm:'公积金办理'},
+    {ic:'📋', nm:'办事指南'}, {ic:'🪪', nm:'证件办理'},
+    {ic:'💡', nm:'民生缴费'}, {ic:'🏢', nm:'企业服务'},
+    {ic:'🧭', nm:'旅游咨询'}, {ic:'📣', nm:'投诉建议'}
+  ];
+
+  const newsHtml = NEWS.map(n => `<li><span class="ttl">${esc(n.t)}</span><span class="dt">${esc(n.d)}</span></li>`).join('');
+  const noticeHtml = NOTICES.map(n =>
+    (n.detail
+      ? `<li class="has-detail" data-detail="${esc(n.detail)}" onclick="go('#'+this.dataset.detail)" title="点击查看详情">`
+      : `<li class="no-detail" data-blank="1" onclick="go('#notice-blank')" title="点击查看（暂无内容）">`
+    ) +
+    `<div class="nt">${esc(n.t)}</div>` +
+    `<div class="nb">${esc(n.body)}<span class="mk">${n.punct}</span></div>` +
+    `<div class="nd">${esc(n.date)}</div></li>`).join('');
+  const msgHtml = MSGS.map(m => `<li>${esc(m.t)}</li>`).join('');
+  const svcHtml = SVC.map(s => `<div class="card"><div class="ic">${s.ic}</div><div class="nm">${s.nm}</div></div>`).join('');
+
+  // 文旅：三个红色定位点 + 游览路线（红点=·，长虚线=—，顺序 ·—··· 对应数字 4 → 解密「4号入口」）
+  const travelBody = `
+    <div class="travel">
+      <div class="stage">
+        <svg class="route" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <polyline points="30,25 18,62 70,70" fill="none" stroke="#c0392b"
+            stroke-width="0.5" stroke-dasharray="2.5 2" opacity="0.85"/>
+        </svg>
+        <span class="pin" style="left:30%;top:25%;cursor:pointer" onclick="travelPoint('北库观日','北库观日平台，三面环水，可远眺湖心岛。夏季清晨可观日出，水面常见鱼群跳跃；冬季偶有候鸟落脚。注：平台西侧步道自 2026 年 6 月起临时封闭。')"><span class="tip">北库观日 · 点击查看详情</span></span>
+        <span class="pin" style="left:18%;top:62%;cursor:pointer" onclick="travelPoint('西湾露营','西湾郊野露营基地，环湖绿道核心节点。设营位 92 个，配有公共卫生间、淋浴间与电瓶车充电桩。注：3 号营位自 2026 年 6 月起停用维护。')"><span class="tip">西湾露营 · 点击查看详情</span></span>
+        <span class="pin" style="left:70%;top:70%;cursor:pointer" onclick="travelPoint('南岸步道','南岸步道，全长 4.8 公里，前段平缓适于家庭休闲，后段接南荡山古村。注：K2+300 处山体边坡自 2026 年 6 月起夜间封闭。')"><span class="tip">南岸步道 · 点击查看详情</span></span>
+      </div>
+      <div class="cap">
+        <span>回川是个好地方 · 一湖一库皆有清风</span>
+        <button class="btn" onclick="go('#lvyou')">查看游玩攻略</button>
+      </div>
+    </div>`;
+
+  const mapMini = `
+    <div class="map-mini">
+      <span class="pin hot" style="left:50%;top:52%"><span class="tip">城央老城区</span></span>
+      <span class="pin" style="left:78%;top:44%"><span class="tip">月荷文创区</span></span>
+      <span class="pin" style="left:21%;top:49%"><span class="tip">西湾郊野区</span></span>
+      <span class="pin" style="left:47%;top:79%"><span class="tip">南荡山区</span></span>
+      <span class="pin" style="left:53%;top:17%"><span class="tip">青柏古迹区</span></span>
+    </div>
+    <a class="map-link" onclick="go('#zoujin')">点击查看完整地图</a>`;
+
+  const body = `
+    <div class="gb">
+      <div class="img"></div>
+      <div class="paper">
+        <div class="title">山水回川<br>生态宜居</div>
+        <div class="sub">游青山·听溪水·寻古镇烟火</div>
+        <div class="badge">国家生态文明建设示范市</div>
+      </div>
+    </div>
+    <div class="g3">
+      <div class="col-l">
+        <div class="bt red"><span class="t">政务要闻</span><span class="more">更多 &gt;&gt;</span></div>
+        <ul class="news-list">${newsHtml}</ul>
+        <div class="bt" style="margin-top:16px"><span class="t">城市名片 · 文旅回川</span></div>
+        ${travelBody}
+      </div>
+      <div class="col-m">
+        <div class="bt"><span class="t">便民服务</span></div>
+        <div class="svc">${svcHtml}</div>
+      </div>
+      <div class="col-r">
+        <div class="sub">
+          <div class="bt"><span class="t">通知公告</span><span class="more">更多 &gt;&gt;</span></div>
+          <ul class="notice-list">${noticeHtml}</ul>
+        </div>
+        <div class="sub">
+          <div class="bt"><span class="t">民意征集</span></div>
+          <ul class="msg-list">${msgHtml}</ul>
+          <button class="btn-ghost" onclick="go('#hudong')">参与留言</button>
+        </div>
+        <div class="sub">
+          <div class="bt"><span class="t">市域地图</span></div>
+          ${mapMini}
+        </div>
+      </div>
+    </div>`;
+  // 首页页脚 ICP 备案号（与攻略页一致：44220000 → 前 6 位每位 -2 → 22:00 时间锁密码）
+  $app.innerHTML = page('home', body, '回ICP备44220000号-1');
+}
+
+/* ===== 全域地理信息图 ===== */
+function renderGeo(){
+  const dots = [
+    {l:50, t:52, label:'城央老城区', intro:'钟楼广场、回川市政府所在地，城区核心商圈与历史街区集中于此。'},
+    {l:78, t:44, label:'月荷文创区', intro:'月荷水库周边文创园区，环湖绿道与水岸景观为城市名片。'},
+    {l:21, t:49, label:'西湾郊野区', intro:'西湾露营基地与郊野公园所在，户外活动与生态旅游核心区。'},
+    {l:47, t:79, label:'南荡山地区', intro:'南岸步道与南荡山溪头古村分布，自然与人文兼具。'},
+    {l:53, t:17, label:'青柏古迹区', intro:'青柏寺与古城墙遗址所在，文物古迹保护核心区。'}
+  ];
+  const pinsHtml = dots.map(d =>
+    `<span class="pin" style="left:${d.l}%;top:${d.t}%">` +
+    `<span class="tip"><b>${d.label}</b><br><span style="color:#666;font-size:11px">${d.intro}</span></span></span>`
+  ).join('');
+
+  const body = `
+    <div class="gmap-title">走进回川 · 全域地理信息图</div>
+    <div class="time-gate">
+      <span class="tg-label">湖心岛心开放维护窗口：</span>
+      <input id="geoTime" type="text" inputmode="numeric" maxlength="5" placeholder="HH:MM" autocomplete="off">
+      <button onclick="geoTimeCheck()">进 入</button>
+      <span id="geoTimeHint" class="tg-hint"></span>
+    </div>
+    <div class="gmap-stage-wrap">
+      <div class="gmap-stage" id="gmapStage">
+      ${pinsHtml}
+        <span class="secret-pin" style="left:64%;top:48%"></span>
+        <div class="secret-pop" style="left:54%;top:55%">月荷水库湖心岛管理处 | 非开放区域 | 每周三 00:00 开放维护</div>
+        <div class="gmap-scale" id="gmapScale">比例尺 1:50000</div>
+        <svg class="wm tl" viewBox="0 0 100 100"><g fill="#7a0a0a"><path d="M50 18 C 28 35, 28 55, 50 72 C 72 55, 72 35, 50 18 Z M50 26 C 38 38, 38 55, 50 66 C 62 55, 62 38, 50 26 Z"/><circle cx="50" cy="46" r="3"/><path d="M50 30 L 46 50 L 54 50 Z"/></g></svg>
+        <svg class="wm tr" viewBox="0 0 100 100"><g fill="#7a0a0a"><path d="M50 18 C 28 35, 28 55, 50 72 C 72 55, 72 35, 50 18 Z"/></g></svg>
+        <svg class="wm bl" viewBox="0 0 100 100"><g fill="#7a0a0a"><path d="M50 18 C 28 35, 28 55, 50 72 C 72 55, 72 35, 50 18 Z"/></g></svg>
+        <svg class="wm br" viewBox="0 0 100 100"><g fill="#7a0a0a"><path d="M50 18 C 28 35, 28 55, 50 72 C 72 55, 72 35, 50 18 Z"/></g></svg>
+      </div>
+    </div>
+    <div class="gmap-toolbar">
+      <button onclick="zoomMap(0.2)">放大</button>
+      <button onclick="zoomMap(-0.2)">缩小</button>
+      <button>图层</button>
+      <button>测距</button>
+      <span class="scale" id="gmapScaleBar">比例尺 1:50000</span>
+    </div>
+    <div id="unlockArchive"></div>`;
+  $app.innerHTML = page('zoujin', body);
+}
+
+let _gScale = 1;
+window.zoomMap = function(d){
+  _gScale = Math.max(0.6, Math.min(2.4, _gScale + d));
+  const stage = document.getElementById('gmapStage');
+  if(stage) stage.style.backgroundSize = (100 * _gScale) + '%';
+};
+
+/* 地图页 22:00 时间门校验 · 通过则进入回川往事 · 启程 */
+window.geoTimeCheck = function(){
+  const wrap = document.querySelector('.time-gate');
+  const input = document.getElementById('geoTime');
+  const hint = document.getElementById('geoTimeHint');
+  if(!input || !wrap) return;
+  const v = (input.value || '').trim();
+  if(!/^\d{1,2}:\d{2}$/.test(v)){
+    hint.textContent = '请输入 HH:MM 格式的时间';
+    hint.style.color = '#a02020';
+    wrap.classList.remove('ok');
+    input.classList.remove('shake'); void input.offsetWidth; input.classList.add('shake');
+    return;
+  }
+  if(v === '22:00'){
+    hint.textContent = '✔ 湖心岛心 · 当晚 · 22:03 启程';
+    hint.style.color = '#2c5b2c';
+    wrap.classList.add('ok');
+    input.disabled = true;
+    try{ localStorage.setItem('hc_geo_unlocked_22','1'); }catch(e){}
+    setTimeout(function(){ window.location.href = 'chapter1-departure.html'; }, 600);
+    return;
+  }
+  // 非 22:00：尊重仪式时间提示
+  const hh = parseInt(v.split(':')[0],10);
+  let msg = '';
+  if(hh < 22){ msg = '窗口尚未开放 · 22:00 之后'; }
+  else if(hh > 22){ msg = '已过窗口 · 仅 22:00 · 当晚'; }
+  else{ msg = '分钟不到 · 等到 22:00'; }
+  hint.textContent = msg;
+  hint.style.color = '#a02020';
+  wrap.classList.remove('ok');
+  input.classList.remove('shake'); void input.offsetWidth; input.classList.add('shake');
+};
+
+/* ===== 解密后隐藏归档数据（22:00 触发，增量填充，不破坏现有解密逻辑） ===== */
+const UNLOCK_NEWS = [
+  {tag:'已删除', t:'月荷水库底层惊现成片红色丝状生物膜，送检样本离奇失踪', d:'2026-04-17',
+   body:'本报讯（记者 署名已隐去）市水务局例行库底采样时，在湖心岛方向水下30米处发现成片红色丝状生物膜，附着力极强，取样后送往市生态环境局实验室。次日值班员发现样本柜被撬，样本全部消失，监控录像"恰好"故障。市生态环境局对此未作回应。'},
+  {tag:'已删除', t:'西湾露营区一夜失踪三人，官方称自行离营', d:'2025-10-09',
+   body:'本报讯 10月8日清晨，西湾露营区3号营位附近三名露营者失联，帐篷、车辆、私人物品均留在原地，唯独人不知所踪。景区管理处通报称"三人已于凌晨自行离营"，但其家属明确表示未曾接到任何联系。辖区派出所已立案，至今无果。'},
+  {tag:'已删除', t:'市水务局科员许清提交举报材料后失联', d:'2026-05-20',
+   body:'本报讯 市水务局科员许清于5月18日通过内部系统提交一份题为《关于月荷水库湖心岛异常现象的举报》的材料，5月19日起未再到岗。单位对外称其"因个人原因请假调离"，但同事反映未曾见到任何调令。许清家属已报警。'}
+];
+const UNLOCK_MSGS = [
+  '【已被后台删除】我说的是真的，钓上来的红纹鱼我亲眼见过，回家后整夜睡不着，耳朵里全是嗡嗡声。',
+  '【已被后台删除】湖心岛每晚12点都有船靠岸，不是工作人员，穿的衣服不对。',
+  '【已被后台删除】市档案馆沈清川的工牌照片，和我爷爷六十年前合影里站ta旁边那个人是同一张脸。',
+  '【已被后台删除】林茂才局长亲自给我打电话，让我把关于水质的帖子删了，语气很平静，但我后背发凉。',
+  '【已被后台删除】周秉坤副市长的车，每周三晚上都停在湖心岛码头，车牌我记下了。'
+];
+/* ===== 渲染：解密后隐藏归档面板（22:00 触发）=====
+ *   注：「四大人物专属隐藏据点」与「三条结局伏笔」两块已移除（移入新剧情页 chapter2-ritual.html）。
+ *   此处仅保留：被删除的真实事故报道 + 被后台删除的市民留言 + 微信剧情入口。 */
+window.renderUnlockArchive = function(){
+  const el = document.getElementById('unlockArchive');
+  if(!el) return;
+  const news = UNLOCK_NEWS.map(n =>
+    `<div class="row"><span class="tag">${n.tag}</span><b>${esc(n.t)}</b><br><span style="color:#8a6a6a">${esc(n.body)}</span><br><span style="color:#5a3a3a;font-size:11px">${esc(n.d)}</span></div>`).join('');
+  const msgs = UNLOCK_MSGS.map(m => `<div class="row">${esc(m)}</div>`).join('');
+  el.innerHTML = `<div class="archive">
+    <h2>解密归档 · 已被系统抹除的真相</h2>
+    <div class="hint">本面板仅在时间锁 22:00 触发后显示 · 以下内容已被官方删除或封存<br>被抹除的真相，散落在手机聊天、人事档案与事故台账的边角里，一处接着一处。</div>
+    <div class="grp"><h3>被删除的真实事故报道</h3>${news}</div>
+    <div class="grp"><h3>被后台删除的市民留言</h3>${msgs}</div>
+    <div style="margin-top:18px;padding:14px;border-top:1px solid #4a2020;text-align:center">
+      <a style="color:#d0a0a0;cursor:pointer;font-size:14px;letter-spacing:0.2em;text-decoration:underline dotted" onclick="window.open('chapter1-departure.html','_self')">▸ 打开那条 22:03 的回顾录音<br><span style="color:#7a6a6a;font-size:11px;letter-spacing:0.1em">， 当晚 · 湖心岛 · 你回头了</span></a>
+    </div>
+  </div>`;
+};
+
+window.triggerTimeLock = function(){
+  const v = (document.getElementById('tlInput').value || '').trim();
+  const stage = document.getElementById('gmapStage');
+  const scaleEl = document.getElementById('gmapScale');
+  const scaleBar = document.getElementById('gmapScaleBar');
+  if(v === '22:00'){
+    stage.classList.add('night');
+    if(scaleEl)   scaleEl.textContent = '1:15 15';
+    if(scaleBar) scaleBar.textContent = '比例尺 1:15 15';
+    window.renderUnlockArchive();
+  } else {
+    stage.classList.remove('night');
+    if(scaleEl)   scaleEl.textContent = '1:50000';
+    if(scaleBar) scaleBar.textContent = '比例尺 1:50000';
+    const arc = document.getElementById('unlockArchive');
+    if(arc) arc.innerHTML = '';
+  }
+};
+
+/* ===== 文旅攻略 ===== */
+function renderGuide(){
+  // 安全须知 5 条：第 N 条取第(N+3)个字 → 水 / 月 / 荷 / 心 / 岛（解谜埋藏 → 地点「水月荷心岛」）；超长正文埋污染/幻视/红疹/寄生铺垫
+  const SAFETY = [
+    '请勿在水库深水区单独下水，汛期水位骤涨且水下暗流复杂，近期有目击者反映水面偶现淡红色光斑，请勿靠近',
+    '游客须知月亮西沉之后湖区进入静默时段，但夜间有露营者反映湖面浮现淡红色雾气并伴有低频嗡鸣，切勿靠近',
+    '请勿采摘池荷花茎部附着的红色丝状物，经检测该附着物含有未知微生物，直接接触可能引发皮肤红斑与持续瘙痒',
+    '夜游须避开湖心小岛方向，近期有露营者反映听见岛上传出似人非人的低吟，安保力量已加强巡逻，切勿靠近',
+    '每周三维护封闭岛屿通行通道，岛内植被近年出现异常疯长的红色蔓生植物，管理处已组织专项清除但效果有限'
+  ];
+  const safetyHtml = SAFETY.map((s,i) => `<li>${i+1}. ${esc(s)}</li>`).join('');
+  const body = `
+    <div class="lv">
+      <h1>回川市水库游玩全攻略</h1>
+      <div class="sub-title">一湖一库皆有清风 · 三段式深度体验</div>
+      <div class="pan">
+        <span class="pin" style="left:30%;top:25%"><span class="tip">北库观日</span></span>
+        <span class="pin" style="left:18%;top:62%"><span class="tip">西湾露营</span></span>
+        <span class="pin" style="left:70%;top:70%"><span class="tip">南岸步道</span></span>
+      </div>
+      <div class="points">
+        <div class="pt">
+          <h3>北库观日</h3>
+          <div class="row"><b>点位特色：</b>登高观日出最佳点位，海拔约 320 米，俯瞰整片月荷水库湖面。晨光穿透晨雾与水汽形成丁达尔光柱，云海翻涌、湖面如镜，是回川市摄影家协会推荐拍摄点。</div>
+          <div class="row"><b>配套设施：</b>观景平台 2 处、免费停车场（车位 40 个）、公共卫生间、应急电话、观景望远镜 4 台。</div>
+          <div class="row"><b>开放时间：</b>05:00 – 08:00（旺季延长至 09:00）</div>
+          <div class="anomaly">⚠ 近期多名晨练游客反映，日出前后山顶偶闻水下传来低沉嗡鸣，观景望远镜对焦湖心方向时偶见水面浮现淡红色光斑。景区已在入口张贴提示，称系水库泄洪设施运行所致，请勿逗留。</div>
+        </div>
+        <div class="pt">
+          <h3>西湾露营</h3>
+          <div class="row"><b>点位特色：</b>湖畔草地露营基地，占地约 12 公顷，水杉环抱、星空通透，是亲子户外与天文观测热门地。营位编号清晰，配套淋浴与充电设施齐全。</div>
+          <div class="row"><b>配套设施：</b>标准营位 20 个、卫生间、淋浴间、充电桩、夜间值班室、救生器材柜。</div>
+          <div class="row"><b>开放时间：</b>全天开放（夜间须 21:00 前完成入营登记）</div>
+          <div class="anomaly">⚠ 3 号营位夜间请勿靠近水边。近一周多位露营者反映夜间湖面浮现淡红色雾气，并伴随低频嗡鸣；救生器材柜偶有"无故缺货"现象。景区称系雾气折射与库存盘点滞后，建议游客移步北侧营位。</div>
+        </div>
+        <div class="pt">
+          <h3>南岸步道</h3>
+          <div class="row"><b>点位特色：</b>沿湖滨水步道全长约 3.2 公里，水杉林荫与荷塘相间，秋季红叶尤为出名。步道沿线设休息亭 6 座、饮水点 3 处，适合慢跑与亲子散步。</div>
+          <div class="row"><b>配套设施：</b>步道休息亭、饮水点、应急电话、无障碍坡道（前 1.5 公里）。</div>
+          <div class="row"><b>开放时间：</b>06:00 – 20:00</div>
+          <div class="anomaly">⚠ 步道终点"心岛观荷台"已封闭，禁止进入。封闭告示称"设施维护"，但本地村民反映围栏加固频繁，夜间偶见工作人员进入。请勿翻越。</div>
+        </div>
+      </div>
+      <div class="routes">
+        <h3>推荐行程</h3>
+        <div class="route"><b>半日轻徒步：</b>09:00 北库观日观景平台 → 10:30 沿湖步道慢行 → 12:00 返程，全程步行约 5 公里，适合亲子家庭。</div>
+        <div class="route"><b>一日深度游：</b>05:30 北库观日 → 09:00 西湾露营休整 → 14:00 南岸步道 → 17:00 返程。注意：原"心岛观荷台"现已封闭，禁止进入，请勿绕行。</div>
+        <h3 style="margin-top:14px">游客须知</h3>
+        <div class="route">· 景区实行实名预约入内，请携带身份证件配合核验；· 严禁下水游泳、捕捞及进入未开放区域；· 夜间封闭时段（21:00–次日 05:00）切勿滞留库区；· 露营须在指定营位搭设，禁止明火；· 发现水面异常光斑、红色雾气或身体不适，请立即联系景区服务热线 0731-1100。</div>
+        <h3 style="margin-top:14px">历年异常记录（景区存档摘录）</h3>
+        <div class="route">· 2024 年 8 月：北库观日平台多名游客反映听见水下嗡鸣，官方解释为泄洪设施运行噪声；· 2025 年 5 月：西湾露营区救生器材柜连续 3 次缺货，官方称系库存盘点滞后；· 2025 年 11 月：南岸步道"心岛观荷台"封闭至今，告示为"设施维护"；· 2026 年 3 月：库区部分鱼群被发现体表出现异常红色纹路，市生态环境局已取样送检。</div>
+        <h3 style="margin-top:14px">官方说明</h3>
+        <div class="route">针对市民关注的"湖心岛封闭""水面光斑""鱼群红纹"等问题，市生态环境局已多次公开发布说明：上述现象均系水库正常运行维护与自然生态变化所致，水质检测符合国家标准，不存在安全隐患。请市民不传谣、不信谣，以官方公告为准。</div>
+      </div>
+      <div class="safety">
+        <h3>安全须知（共 5 条）</h3>
+        <ol>${safetyHtml}</ol>
+      </div>
+      <div class="icp-box">
+        📌 网站备案信息：回ICP备 <b>44220000</b> 号-1　|　本站信息仅供参考，游玩前请关注实时天气与景区公告。
+      </div>
+      <button class="back-btn" onclick="go('#home')">← 返回首页</button>
+    </div>`;
+  // 攻略页页脚 ICP = 44220000（前 6 位每位 -2 → 2200 → 时间锁密码 22:00）
+  $app.innerHTML = page('minsheng', body, '回ICP备44220000号-1');
+}
+
+/* ===== 互动交流 ===== */
+function renderHudong(){
+  const body = `
+    <div class="hd">
+      <div class="hd-l">
+        <h2>民意征集 · 关于公开征集文旅路线优化建议的公告</h2>
+        <div class="ann">
+          为进一步提升我市文旅线路规划水平，现面向社会公开征集优化建议。征集时间为 2026 年 7 月 1 日至 8 月 31 日。市民可通过下方留言框提交建议，或发送邮件至 <b>wenlv@huichuan.gov.cn</b>。我们将对每一条建议认真研处，并适时反馈采纳情况。
+        </div>
+        <textarea id="msgInput" placeholder="请输入您的留言内容，我们将逐条审核..."></textarea>
+        <button class="submit" onclick="submitMsg()">提交留言</button>
+        <div class="msg">
+          <div class="item">
+            <div class="q">市民@钓友老周：上周在月荷水库钓上一条体表布满红色纹路的鱼，带回家后连着三天失眠，梦里总听见湖里有声音在喊名字。</div>
+            <div class="a">【官方回复】经核实，库区鱼群体表色斑系自然变异，与水质无关。建议调整作息，如持续失眠请至市医院睡眠科就诊。</div>
+          </div>
+          <div class="item">
+            <div class="q">市民@西湾住户：我家小孩去西湾露营回来手臂起了一片红斑，医院查不出原因，邻居几个小孩也是。</div>
+            <div class="a">【官方回复】经市疾控中心排查，未发现传染性病原，初步判断为蚊虫叮咬过敏。建议做好户外防护，必要时复诊。</div>
+          </div>
+          <div class="item">
+            <div class="q">市民@夜钓爱好者：凌晨看到月荷水库湖心方向有一团淡红色光，一动不动，不像渔火，也不像反光。</div>
+            <div class="a">【官方回复】经核实系库区夜间维护照明设施运行所致，属正常现象，请勿误传。</div>
+          </div>
+          <div class="item">
+            <div class="q">市民@回川土著：村里老人说市档案馆那个沈清川，三十年前长这样，三十年后还是长这样，没见老过。</div>
+            <div class="a">【官方回复】本栏目仅受理政务咨询，涉及个人言论请勿发表未经证实的信息，留言已记录备案。</div>
+          </div>
+          <div class="item">
+            <div class="q">市民@水务局同事：许清同志上月突然请假后再没来上班，单位说ta调走了，可没人见过调令。</div>
+            <div class="a">【官方回复】人事调动属正常工作安排，相关信息以组织部门公告为准，不便透露个人情况。</div>
+          </div>
+          <div class="item">
+            <div class="q">市民@露营爱好者：西湾3号营位附近那个银饰摊主说，ta打的银器近半年发暗发红，以前从不会这样。</div>
+            <div class="a">【官方回复】银饰氧化变色系正常化学现象，与空气湿度有关，与本地区环境无直接关联。</div>
+          </div>
+          <div class="item">
+            <div class="q">市民@月荷村民：村里最近好几个老人变得不爱说话、眼神发直，送去检查也说没事，可就是不对劲。</div>
+            <div class="a">【官方回复】已转交卫健部门关注，建议家属带老人至市医院心身科就诊，社区将跟进回访。</div>
+          </div>
+        </div>
+      </div>
+      <div class="hd-r">
+        <h2>咨询留言选登</h2>
+        <div class="msg">
+          <div class="item"><div class="q">Q：外地游客如何办理回川市旅游惠民卡？</div><div class="a">A：可凭身份证至市民中心一楼窗口办理，或在「回川文旅」小程序线上申领。<span style="float:right;color:var(--blue);font-size:11px">【已回复】</span></div></div>
+          <div class="item"><div class="q">Q：月荷水库能否进行商业性拍摄？</div><div class="a">A：需提前 3 个工作日向景区管理处报备，并缴纳场地费。<span style="float:right;color:var(--blue);font-size:11px">【已回复】</span></div></div>
+          <div class="item"><div class="q">Q：西湾郊野公园宠物能否入园？</div><div class="a">A：小型宠物允许入园并全程牵绳；大型犬只禁止进入。<span style="float:right;color:var(--blue);font-size:11px">【已回复】</span></div></div>
+          <div class="item"><div class="q">Q：南岸步道是否有无障碍通道？</div><div class="a">A：前 1.5 公里设有无障碍坡道，后续路段因地形限制暂不通行轮椅。<span style="float:right;color:var(--blue);font-size:11px">【已回复】</span></div></div>
+          <div class="item"><div class="q">Q：景区游客最大承载量是多少？</div><div class="a">A：月荷水库日承载 8000 人，西湾露营日承载 500 人，预约制入营。<span style="float:right;color:var(--blue);font-size:11px">【已回复】</span></div></div>
+          <div class="item"><div class="q">Q：为什么湖心岛长期封闭，到底在维护什么？</div><div class="a">A：湖心岛位于水源保护区核心区，按国家规定不对外开放，维护作业属常规水库管理。<span style="float:right;color:var(--blue);font-size:11px">【已回复】</span></div></div>
+          <div class="item"><div class="q">Q：网传月荷水库有"红纹鱼"吃了会失眠，是真的吗？</div><div class="a">A：该信息不实，库区鱼群经检测符合食品安全标准，请勿信谣传谣。<span style="float:right;color:var(--blue);font-size:11px">【已回复】</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="faq">
+      <h3>常见问题 FAQ</h3>
+      <div class="faq-grid">
+        <div class="f"><b>Q：景区是否收费？</b><br>A：月荷水库、西湾郊野公园免门票；露营、停车另计费。</div>
+        <div class="f"><b>Q：宠物能否携带入园？</b><br>A：小型宠物可入园并全程牵绳；大型犬禁止。</div>
+        <div class="f"><b>Q：露营如何预约？</b><br>A：通过「回川文旅」小程序提前 7 天预约。</div>
+        <div class="f"><b>Q：景区求助电话？</b><br>A：景区服务热线 0731-1100，紧急情况拨打 110 / 120。</div>
+      </div>
+    </div>
+    <div class="complain">
+      <div style="font-size:15px;color:var(--ink)"><b>投诉建议入口</b></div>
+      <div style="color:var(--ink2);font-size:12px;margin-top:4px">工作日 24 小时内回复 · 节假日 48 小时内回复</div>
+      <button class="btn" onclick="go('#hudong')">提交投诉建议</button>
+    </div>`;
+  $app.innerHTML = page('hudong', body);
+}
+
+/* ===== 占位页 ===== */
+function renderPh(name, desc){
+  const body = `<div class="ph"><div class="ic">📋</div><div>${esc(name)}</div>` +
+    `<div style="font-size:13px;margin-top:8px">${esc(desc)}</div></div>`;
+  $app.innerHTML = page(activeOf('#'+name), body);
+}
+
+/* ===== 搜索结果 ===== */
+function renderSearch(q){
+  const body = `<div class="srch"><h2>站内搜索：${esc(q)}</h2>
+    <ul class="news-list">
+      <li><span class="ttl">关于月荷水库夏季蓄水调度运行的公告</span><span class="dt">2026-06-22</span></li>
+      <li><span class="ttl">月荷水库完成汛前泄洪闸安全检测</span><span class="dt">2026-05-08</span></li>
+      <li><span class="ttl">西湾郊野公园露营区预约登记的通知</span><span class="dt">2026-06-18</span></li>
+    </ul>
+    <p style="margin-top:14px;color:#888;font-size:12px">（搜索结果占位，更多结果请关注栏目分类。）</p>
+  </div>`;
+  $app.innerHTML = page('home', body);
+}
+
+/* ===== 404 ===== */
+function render404(){
+  $app.innerHTML = page('home', `<div class="ph"><div class="ic">404</div><div>您访问的页面不存在</div></div>`);
+}
+
+/* ===== 公告正文详情页（核心解谜公文，点击首页通知公告 1/2 进入）===== */
+function renderNoticeDetail(id){
+  const DOCS = {
+    doc1:{
+      no:'回政公告〔2026〕第 47 号',
+      title:'关于月荷水库及环湖水域实施管控的公告',
+      sub:'（一稿）已对一级保护区采取临时管控措施',
+      meta_l:'发文单位：回川市人民政府办公室',
+      meta_r:'印发日期：2026 年 6 月 22 日',
+      stamp:'回川市人民政府',
+      body:`
+        <p>经市生态环境局检测评估，月荷水库自 <b>2026 年 6 月</b>以来多次出现水生生物异常情况，为保障水源安全、公共卫生与生态平衡，市政府决定即日起对月荷水库及环湖水域实施<b>分区管控</b>，现就有关事项公告如下：</p>
+        <h3>一、管控分区</h3>
+        <ul>
+          <li><b>一级保护区</b>（含湖心岛周边 500 米范围、库心至西湾南岸沿线）：全年全面禁钓。</li>
+          <li><b>二级保护区</b>（其余环湖水域、河口湿地区）：每日 6:00 至 18:00 凭垂钓证限时开放。</li>
+          <li><b>管控缓冲区</b>（西湾露营区、环湖步道南岸段）：允许公众休闲，<b>禁止垂钓与下水</b>。</li>
+        </ul>
+        <h3>二、严格禁止事项</h3>
+        <ul>
+          <li>在以上一二级管控区域内<b>严禁任何形式的垂钓、捕捞、网具作业</b>；</li>
+          <li>严禁<b>携带、转移、食用、交易</b>任何水体相关产品（含鱼、虾、蟹、贝及藻类制品）；</li>
+          <li>严禁使用诱饵打窝、夜间贴近水岸；严禁触碰漂浮于水面的任何异物。</li>
+        </ul>
+        <p>违者由市公安、水务、生态环境、市场监管等部门依法依规处理，情节严重涉嫌犯罪的，依法移送司法机关。</p>
+        <h3>三、亲友异常情况登记</h3>
+        <p>月荷水库管委会、市疾控中心、市精神卫生中心联合设立登记渠道。请广大市民留意身边亲友：</p>
+        <ul>
+          <li>若亲友出现<b>「反复邀约前往月荷水库垂钓」</b>、</li>
+          <li>出现<b>「反复表述水库鱼类味道鲜美」</b>、</li>
+          <li>由<b>热衷、念叨、执念到神情恍惚</b>等异常行为，</li>
+        </ul>
+        <p>请<b>记录其执念开始日期</b>，并主动向所在社区或市疾控中心报送。市民报送受法律保护，相关个人信息严格保密，作为早期干预与流行病学调查依据。</p>
+        <h3>四、加强值守</h3>
+        <p>库区沿岸已增设视频监控、夜间警示广播；公安与水务部门联合开展 24 小时巡查；如发现水域异常颜色、漂浮异物、水岸红疹、暗夜异响等情况，请立即拨打 110 或市长热线 12345。</p>
+        <h3>五、其ta</h3>
+        <p>本公告自发布之日起施行。本月 22 日起已先行对一级保护区采取临时管控措施，恢复开放时间另行公告。</p>
+        <p class="nd-sig">
+          <div>主办：回川市人民政府办公室</div>
+          <div>会签：市生态环境局　市水务局　市公安局　市市场监管局　市疾控中心</div>
+          <div>签发：副市长 <b>周秉坤</b>　|　签发执行：市生态环境局局长 <b>林茂才</b></div>
+        </p>`,
+      back:'← 返回首页通知公告'
+    },
+    doc2:{
+      no:'环公告〔2026〕第 32 号',
+      title:'月荷水库 2026 年第二季度水质检测结果的公告',
+      sub:'常规指标达标；深层及专项检测发现异常生物组织',
+      meta_l:'检测单位：回川市生态环境局（市环境监测站）',
+      meta_r:'印发日期：2026 年 6 月 18 日',
+      stamp:'回川市生态环境局',
+      body:`
+        <p>依据《中华人民共和国水污染防治法》《地表水环境质量标准》（GB 3838-2002）及本市相关规定，市生态环境局会同市水务集团，于 <b>2026 年 4 月至 6 月</b>对月荷水库及主要入库支流开展第二季度水质检测。现将检测结果公告如下：</p>
+        <h3>一、常规检测项目结果</h3>
+        <p>pH 值、溶解氧、高锰酸盐指数、氨氮、总磷、化学需氧量等 23 项常规地表水指标，在库区各采样点（含南北岸、西湾、湖心岛周边）<b>均符合地表水Ⅲ类及以上标准</b>。水体感官性状（色度、浑浊度、嗅味）未发生明显异常，<b>水面表层亦未检出肉眼可见的污染带或异常颜色</b>。</p>
+        <h3>二、深层及专项检测</h3>
+        <p>在库底沉积物（5m、10m、15m 深度取样点共 27 处）与下层水样的专项检测中，检出<b>若干不明生物组织碎片</b>，经 DNA 条形码测序与本地物种库、邻省已知物种库进行逐项比对，结果显示<b>不属于本地已知鱼种、甲壳类或底栖生物谱系</b>；与库区周边水产品市场在售样本比对后，排除本地物种自然降解的可能。其组织来源、形态特征、生态风险正在进一步鉴定中，相关样本已全部封存送检，原始采样录像、检测记录、实验室图谱一并留档备查。</p>
+        <h3>三、风险提示</h3>
+        <p>依据湖心岛周边多次抽样数据综合分析，本次水质异常具有明显的空间分层特征：<b>污染不会显现在水体表层，人工例行水质抽检难以察觉</b>，常规出厂自来水水质符合饮用标准，请市民无需恐慌。</p>
+        <p><b>异变最先出现在水生生物躯体内部</b>，仅在生物被捕捞离水后进行烹饪、食用的过程中暴露，继而对摄食者构成风险。建议市民近期请勿在库区及一二级管控区内进行垂钓、捕捞与食用活动。</p>
+        <h3>四、检测结论</h3>
+        <p>本次常规地表水水质检测数据稳定可靠，饮用水供应正常。下一步将组织专项溯源、加密重点断面频次，并适时另行公告。</p>
+        <p class="nd-sig">
+          <div>检测：市环境监测站　|　复核：副局长 王立群</div>
+          <div>签发：市生态环境局局长 <b>林茂才</b></div>
+          <div>批示：副市长 <b>周秉坤</b></div>
+        </p>`,
+      back:'← 返回首页通知公告'
+    }
+  };
+  const d = DOCS[id];
+  if(!d){ render404(); return; }
+  const body = `<div class="nd-wrap"><div class="nd-paper">
+    <div class="doc-no">${esc(d.no)}</div>
+    <h1 class="nd-title">${esc(d.title)}</h1>
+    <div class="nd-sub">${esc(d.sub)}</div>
+    <div class="nd-meta"><span>${esc(d.meta_l)}</span><span>${esc(d.meta_r)}</span></div>
+    <div class="nd-body">${d.body}</div>
+    <div class="nd-sig"><span class="stamp">${esc(d.stamp)} 印</span></div>
+    <a class="nd-back" onclick="go('#home')">${esc(d.back)}</a>
+  </div></div>`;
+  $app.innerHTML = page('home', body);
+}
+
+/* ===== 文旅点详情弹窗 ===== */
+window.travelPoint = function(name, body){
+  const ov = document.createElement('div');
+  ov.className = 'travel-pop-mask';
+  ov.innerHTML = `<div class="travel-pop"><div class="t">${name}</div><div class="b">${body}</div><div class="f"><button onclick="this.closest('.travel-pop-mask').remove()">关闭</button></div></div>`;
+  ov.addEventListener('click', e => { if(e.target===ov) ov.remove(); });
+  document.body.appendChild(ov);
+};
+
+/* ===== 民意征集：用户提交留言 + 官方回复 + 网友评论 ===== */
+window.submitMsg = function(){
+  const ta = document.getElementById('msgInput');
+  if(!ta) return;
+  const txt = (ta.value || '').trim();
+  if(!txt){ ta.focus(); ta.placeholder='留言不能为空，请先输入内容...'; return; }
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  const dt = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  const wrap = document.querySelector('.msg');
+  if(!wrap){ alert('留言板加载失败，请刷新后重试'); return; }
+  const id = 'umsg_' + Date.now();
+
+  // 官方回复模板：依内容关键词切换话术
+  let reply;
+  if(/水库|湖|鱼|水/.test(txt)) reply = '【官方回复】您反映的情况已转市生态环境局与市水务集团核实。如涉及月荷水库管控区内异常，请拨打 0731-1100；请勿在库区及一二级管控区内垂钓、捕捞与食用相关水产。';
+  else if(/老人|老人斑|异|失眠|幻觉|梦里/.test(txt)) reply = '【官方回复】已转交卫健部门关注，建议家属至市医院心身科或神经内科就诊，社区将跟进回访。';
+  else if(/红|纹|丝/.test(txt)) reply = '【官方回复】您所述现象与库区生物自然变异特征不一致，市生态环境局将组织专项排查，请保护好现场并及时联系属地街道。';
+  else if(/沈清川|不老者|三十年|档案/.test(txt)) reply = '【官方回复】本栏目仅受理政务咨询，涉及个人言论请勿发表未经证实的信息，留言已记录备案。';
+  else if(/周秉坤|林茂才|许清/.test(txt)) reply = '【官方回复】人事信息以组织部门公告为准，不便透露个人情况；如需举报干部违纪违法问题，请通过 12388 渠道反映。';
+  else reply = '【官方回复】您的留言已收到，我们将转交相关科室研处，工作日 24 小时内回复，节假日 48 小时内回复。';
+
+  // 网友评论（随机抽一条预设）
+  const netizen = [
+    '【网友@回川老饕】同问！上次我也在水库边闻到过那股味儿。',
+    '【网友@夜钓人】劝你一句，最近真别去湖边。',
+    '【网友@档案室小王】楼上别乱说，沈姐三十年没换过头像是有原因的。',
+    '【网友@城南小胖】我家孩子最近也不爱说话，跟你描述的有点像。',
+    '【网友@西湾阿婆】我家营位今年春天关的，没解释。',
+    '【网友@湖心岛渔民】湖里那几天红雾散了，鱼都不见了。'
+  ];
+  const nz = netizen[Math.floor(Math.random() * netizen.length)];
+
+  const el = document.createElement('div');
+  el.className = 'item user-msg';
+  el.id = id;
+  el.innerHTML = `
+    <div class="q" style="color:#222"><b style="color:var(--blue)">我的留言 · ${dt}</b><br>${escapeHTML(txt)}</div>
+    <div class="a">${reply}</div>
+    <div class="nz" style="font-size:11.5px;color:#888;margin-top:4px;border-top:1px dashed #e0e0e0;padding-top:4px">${nz}</div>`;
+  wrap.insertBefore(el, wrap.firstChild);
+  ta.value = '';
+  try{ el.scrollIntoView({behavior:'smooth', block:'center'}); }catch(e){}
+};
+
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+/* ===== 公告空白详情页（点击其余公告打开，无任何内容）===== */
+function renderNoticeBlank(){
+  // 根据 hash 末段（doc3/4/5）取出对应公告，渲染为标准公文格式
+  const m = (location.hash||'').match(/#(doc\d+)/);
+  const id = m ? m[1] : '';
+  const n = NOTICES.find(x => x.detail === id);
+  if(!n){
+    $app.innerHTML = page('home',
+      `<div class="nd-wrap"><div class="nd-paper" style="min-height:280px;display:flex;align-items:center;justify-content:center;text-align:center;color:#999;font-size:13px;letter-spacing:0.4em">该公告正文暂未发布</div></div>`);
+    return;
+  }
+  $app.innerHTML = page('home',
+    `<div class="nd-wrap"><div class="nd-paper">
+      <div class="nd-meta"><span>编号：回政公告〔2026〕第 ${id==='doc3'?'74':id==='doc4'?'68':id==='doc5'?'55':'—'} 号</span><span>印发日期：${esc(n.date)}</span></div>
+      <h1>${esc(n.t)}</h1>
+      <div class="nd-body">${esc(n.body)}</div>
+      <a class="nd-back" onclick="go('#home')">← 返回首页通知公告</a>
+    </div></div>`);
+}
+
+/* ARG2-INJECT-START */
+/* ============================================================
+   ARG2 · 剧情叠加层注入（不破坏原有任何机制）
+   ============================================================ */
+
+const GAME_STATE = {
+  npcUnlocked: (function(){ try{ return JSON.parse(localStorage.getItem('hc_npcs')||'{}'); }catch(e){ return {}; } })(),
+  npcTimes:    (function(){ try{ return JSON.parse(localStorage.getItem('hc_npc_times')||'{}'); }catch(e){ return {}; } })(),
+  rawUnlocked: (function(){ try{ return localStorage.getItem('hc_timeLock')==='1'; }catch(e){ return false; } })(),
+  ritual: (function(){ try{ return localStorage.getItem('hc_ritual')==='1'; }catch(e){ return false; } })(),
+  /* 解锁链（递进，未完成前置则对应页面提示"尚未收集足够线索"） */
+  wxSeen: (function(){ try{ return JSON.parse(localStorage.getItem('hc_wx_seen')||'{}'); }catch(e){ return {}; } })(),   // {1:ts,2:ts,3:ts,4:ts}
+  linSeen: (function(){ try{ return localStorage.getItem('hc_lin_seen')==='1'; }catch(e){ return false; } })(),
+  ritualSeen: (function(){ try{ return localStorage.getItem('hc_ritual_seen')==='1'; }catch(e){ return false; } })(),
+  finale: false
+};
+function lsGet(k, d){ try{ const v = localStorage.getItem(k); return v==null ? d : v; }catch(e){ return d; } }
+function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+function blockedPage(tip){
+  return `<div style="text-align:center;padding:80px 20px;color:#888">
+    <div style="font-size:46px;margin-bottom:14px">🔒</div>
+    <div style="font-size:16px;color:#7a5a5a">尚未收集足够线索，请继续寻找信息</div>
+    <div style="font-size:13px;margin-top:10px;color:#9a8a8a">${tip||''}</div>
+    <button class="back-btn" style="margin-top:26px" onclick="go('#home')">← 返回首页</button>
+  </div>`;
+}
+
+const SECRET_KEY_MAP = {
+  'zhoubinkun':'zhoubinkun','周秉坤':'zhoubinkun','zhoubinkun 履历':'zhoubinkun','周秉坤 履历':'zhoubinkun','zhoubinkun 背景':'zhoubinkun','周秉坤 背景':'zhoubinkun',
+  'linmaocai':'linmaocai','林茂才':'linmaocai','linmaocai 签字':'linmaocai','林茂才 签字':'linmaocai','林茂才 最后一页':'linmaocai','linmaocai 最后一页':'linmaocai',
+  'shenqingchuan':'shenqingchuan','沈清川':'shenqingchuan','shenqingchuan 旧档':'shenqingchuan','沈清川 旧档':'shenqingchuan',
+  'xuqing':'xuqing','许清':'xuqing','xuqing 邮件':'xuqing','许清 邮件':'xuqing'
+};
+function matchSecretKey(q){
+  q = (q||'').trim();
+  if(SECRET_KEY_MAP[q]) return SECRET_KEY_MAP[q];
+  for(const k of Object.keys(SECRET_KEY_MAP)){ if(q.includes(k)) return SECRET_KEY_MAP[k]; }
+  return null;
+}
+
+const NPC_DOCS = {
+  zhoubinkun:{
+    name:'周秉坤', role:'回川市人民政府副市长 · 莲之庭在回川市的主导者',
+    cover:'干部履历公示', coverIcon:'👤', eyes:true, img:'assets/desktop/npc-zhou.jpg',
+    summary:'分管生态环境与工业；公开形象沉稳寡言、清廉实干。',
+    bullets:[
+      '1972 年生，回川本地人；河海大学环境工程硕士',
+      '历任县环保局长、副县长、市生态环境局局长、2024 年升任副市长',
+      '所有重大水务/环保决策均由其签发；林茂才干部人事调动由其拍板'
+    ],
+    admin:{user:'ZhouBinkun_72', pw:'ying_snow_2024', where:'回川水阁论坛 · z_h_72 的管理后台口令'},
+    body:`
+      <p>周秉坤同志出生于 1972 年 11 月，祖籍回川市西河县。父辈务农，本人自河海大学环境工程专业毕业后，回乡进入县环保局，先后任科员、监测站副站长、局长。2014 年调任县人民政府副县长，分管环保与城建；2018 年进入市生态环境局任局长；2024 年 1 月经市委组织部考察，提任市人民政府副市长，分管生态环境、工业与应急。</p>
+      <p>公开讲话中，ta强调"绿水青山就是金山银山"，多次在月度推进会上提出"以最严的尺子守住月荷水库"。但据市纪委 2025 年第一轮巡查通报，未发现其本人及直系亲属存在违纪违法问题，"干部履历真实、家庭情况清楚、个人事项报告完整"。</p>
+      <p>私生活层面极为低调。除公务接待外几乎不在公开场合露面；2025 年 9 月起其妻女长居加拿大，本人独居于市内指定公寓。司机小马每日 07:50 接其至市委大院，19:30 准时送回，几乎不参加饭局。一位常年跟踪报道的本地记者私下说："ta像一个干净的影子。"</p>
+      <p>履历中间有一段对不上。档案上写他九六到九八在县环保局见习。当年跟他在同一条宿舍走廊住过的人说，他那会儿在南方一家化工厂，食堂的菜是紫的，他没解释过。中间那两年的档案字，是后来补的。</p>
+      <p>九八年请假三个月。批假单是补签的，墨跟那一年的档案袋不是同一批。人事科没问。</p>
+      <p>零二年调回回川。提拔的速度，几个老同志看着不习惯。饭桌上有人说过一回，"运气总归好"。后来没人再说。说了不合适。<span style="color:#8a5a5a">（旁批。归档时删。）</span></p>
+      <p>，<span class="arg-mute">（人事档案部分，仅供组织查阅；本档案经数字化处理）</span></p>
+    `
+  },
+  linmaocai:{
+    name:'林茂才', role:'市生态环境局局长 · 自愿献祭者',
+    cover:'水质公报审批签字样本', coverIcon:'🖋️', bleed:true, signImg:'assets/desktop/npc-lin-sign.jpg',
+    summary:'所有官方水质公报、管控文件的审批签字人；一丝不苟的官僚。',
+    bullets:[
+      '1979 年生；省内重点高校环境工程本科',
+      '历任县监测站站长、市环境监察支队支队长、2023 年升任局长',
+      '签发文件数量居市直机关前列；个人被誉为"文件机器"'
+    ],
+    admin:{user:'LinMaocai77', pw:'family', where:'回川水阁论坛 · 老干部-49 的管理后台口令'},
+    body:`
+      <p>林茂才同志出生于 1979 年 6 月，省内重点高校环境工程本科毕业。2001 年进入县环境监测站任技术员，2009 年任站长；2014 年调入市环境监察支队，2018 年起任支队长；2023 年 4 月经民主推荐、组织考察，任市生态环境局局长、党组书记。</p>
+      <p>ta的同事们对ta的评价高度一致，"一丝不苟""文件机器"。任内签发各类水质公报、专项排查、督办函件年均 1700 余份，连续 3 年个人签批数量居市直机关第一。在一次内部通报表扬中，时任领导写道："林茂才同志日均处理文件 7.8 份，从未出现错漏。"</p>
+      <p>二〇二五年起，公示推迟。从十五号，拖到月底，拖到月初。<br>笔也换了。黑钢笔，换成红毛笔。红得……同事说，像刚出窑的釉。<br>每份公报右下角，一枚暗红的印。指甲盖大，不拿灯照，看不见。化验室比了，不是ta的指纹。<br><span style="color:#8a5a5a">（涂掉）</span>不对。是ta签的。是ta签的。ta签了，就不能是ta。</p>
+      <p>ta妻子提离婚，二〇二四年底。理由写了三条，每条都不像人话：长期无性；回避家庭；对孩子"称呼不像父亲"。孩子一直住省城寄宿，二〇二五年起生活费涨了，ta却从不主动联系。<br>最后一次上线：六月十八日，凌晨一点零三分。在月荷湖水位曲线那一页，停了四十七分钟。之后，再没上过线。<br>四十七分钟。够把一张图看一百遍。也够把一条命，看完。</p>
+      <p>上个月，局里清点档案。那本<b>内部事故</b>的台账，缺了近几年的几页。<br>问ta。ta说不知道。走的时候，我瞥见ta抽屉里，压着半张<b>归位名单</b>。<br><span style="color:#8a5a5a">（这段边角被撕了。）</span></p>
+      <p>，<span class="arg-mute">（签字样本同步存档，下方为原始比对图谱）</span></p>
+      <p style="margin-top:14px">本次签字：<span class="arg-mute">（签字时间：2026 年 6 月 18 日 01:03）</span></p>
+      <p style="margin-top:6px"><span class="sig-bleed"><img class="sig-img" src="assets/desktop/npc-lin-sign.jpg" alt="林茂才签字样本"></span></p>
+      <p style="margin-top:14px;font-size:11.5px;color:#8a5a5a">档案备注：月荷水库全部异常舆情报告，均由本人签字封存不予公示。</p>
+    `
+  },
+  shenqingchuan:{
+    name:'沈清川', role:'河西工业园区档案管理处负责人 · 中立旁观者',
+    cover:'档案数字化工作启动报告 · 负责人署名', coverIcon:'👩', sideface:true, img:'assets/desktop/npc-shen.jpg',
+    summary:'女性，25 岁上下御姐外形，深居简出；25 年样貌未变。',
+    bullets:[
+      '档案管理专业出身；具体学历未公开',
+      '入职档案管理处 25 年以上',
+      '公开信息中无任何社会关系；本人无家庭信息登记'
+    ],
+    admin:{user:'ShenQingchuan_25', pw:'chu-yu-2014', where:'回川水阁论坛 · 旁观者·1956 的管理后台口令'},
+    body:`
+      <p>沈清川同志，档案管理处负责人，1998 年起任职，具体出生年月未在公开档案中登记。ta常年穿深色衬衫，眉眼疏离冷淡，声线低，近五年内仅在公开场合露面 3 次，分别是 2021 年园区档案数字化启动会、2023 年市档案学会年会以及 2025 年内部消防演练。</p>
+      <p>同事们对其印象两极分化：老同志说ta"二十多年了，跟第一天入职时一模一样"；年轻同志则说"漂亮是真漂亮，但眼神让人不敢靠近"。ta不参加聚餐、不挂名任何课题、不申报任何个人荣誉，绩效考评年年"称职"，从不"优秀"。人事系统里ta的照片每 5 年更新一次，每次都是同一张。</p>
+      <p>ta手里的档案，比谁都全。<br>零八年前的纸档，都是ta一个人扫的。九〇年代那几卷"非正常死亡"，本该移交市档案馆，ta二〇一四年写了个申请："涉及跨部门，移交影响查阅。"批了。就这么留下了。<br>后来审计提过一次。又批了。"尊重业务部门意见。"<br>那几卷，从此再没人翻过。除了ta。</p>
+      <p>二〇二六年三月起，ta频繁调卷。月荷水库的卷。<br>四月，ta把九八年到二四年的"水域非正常死亡"，全部重新归类：事故 → 水域事件·待复核。<br>待复核。复核什么。等谁复核。<br>五月，ta报了一份二十八页的《月荷水库历史事件分类建议》。至今没有批示。<br>ta大概，也没指望有批示。</p>
+      <p>，<span class="arg-mute">（非公开材料，请勿外传）</span></p>
+      <p style="margin-top:18px;font-size:11.5px;color:#888">如果你读到这一行，请点开右下的<span class="finale-trigger" onclick="renderFinaleArchive()">「非生非死」</span>四个字。</p>
+    `
+  },
+  xuqing:{
+    name:'许清', role:'市生态环境局科员 · 第一个发现真相的普通人',
+    cover:'环保先进个人表彰材料 · 调岗前最后邮件', coverIcon:'👨', flicker:true, img:'assets/desktop/npc-xu.jpg',
+    summary:'曾获季度先进个人；2026 年 3 月调岗后失联。',
+    bullets:[
+      '1996 年生；省内重点高校环境法本科',
+      '2022 年入职市生态环境局环评科',
+      '2025 年度第一、第二季度先进个人'
+    ],
+    admin:{user:'XuQing_0221', pw:'jiuHuLaiYe27', where:'回川水阁论坛 · 湖心岛渔民 的管理后台口令'},
+    body:`
+      <p>许清同志，1996 年 2 月生，省内重点高校环境法本科毕业，2022 年通过省考进入市生态环境局环评科。初任科员期间，参与本市 11 个重点项目的环评文件复核，连续两年获评"季度先进个人"。同事们评价其"认真负责、敢于表达、文件思路清晰"，"问到ta想不通的地方，ta能一条条把法规翻给你看"。</p>
+      <p>2025 年 7 月起，ta的态度开始明显改变。先是在一次内部业务讨论会上公开质疑某项目的环评结论与现场情况不符；同年 9 月，ta在工作群里转发了一篇关于"内陆水体未知生物组织碎片"的学术论文，并附了一句"我们局的检测也见过类似样本，不知道有没有人跟进"。该消息被群主周副局长删除，本人随后被要求"减少不必要的群消息"。</p>
+      <p>2026 年 1 月，ta在个人邮箱内连续发出 9 封加密邮件，前 8 封均被退回，第 9 封的部分内容如下，</p>
+      <blockquote style="border-left:3px solid #b22222;padding-left:14px;color:#5a3a3a;margin:14px 0">
+      收件人：省纪委监委驻生态环境厅纪检监察组<br>
+      主题：关于回川市月荷水库及环湖区域异常事件的情况反映<br>
+      <p>……材料我备份了。在公开网上。用关键词，能搜到。关键词我不能写在这儿，会被人看到……<br>
+      ……我可能被盯上了。下班的路上，那辆黑色 SUV，总是隔着 200 米。不远不近，正好 200 米……<br>
+      ……样本。DNA 比对结果，和人类高度同源。您没看错，人类。水里捞上来的东西，测出来是人……<br>
+      ……我知道我在做什么。我只是想，让您知道。如果哪天我"调岗"，或者"出差"，<br>
+      ……<span class="flicker-text">ta在看我</span>。
+      </blockquote>
+      <p>邮件在发出 7 小时后显示"已送达"，但截至 2026 年 8 月，未见任何回复。2026 年 3 月，许清同志经组织程序调岗至市辖某县环保局；同月起，其个人手机、邮箱、单位门禁卡先后失效。同事最后一次见到ta是 3 月 11 日上午 10 时，ta独自一人走出办公楼，向西。</p>
+      <p>，<span class="arg-mute">（本邮件内容来自其个人邮箱的本地缓存副本，与原始邮件内容一致）</span></p>
+    `
+  }
+};
+
+/* ----- 原始检测数据 ----- */
+const RAW_HEAD = ['采样点','日期','PH','DO','COD','NH3-N','TP','叶绿素-a','不明组织碎片','备注'];
+const RAW_ROWS = [
+  ['湖心岛西 200m','2026-06-12','7.4','8.1','12','0.21','0.04','12 颗/L','DNA: 不属于本地物种'],
+  ['湖心岛南 500m','2026-06-12','7.5','7.9','13','0.24','0.05','14 颗/L','—'],
+  ['湖心岛东 800m','2026-06-12','7.6','8.2','11','0.20','0.03','7 颗/L','—'],
+  ['北库观日脚下','2026-06-12','7.2','8.4','9','0.18','0.02','0 颗/L','合格'],
+  ['西湾露营区','2026-06-12','7.3','8.3','10','0.19','0.02','0 颗/L','合格'],
+  ['南岸步道中段','2026-06-12','7.4','8.2','11','0.20','0.03','0 颗/L','合格'],
+  ['湖心岛底泥 5m','2026-06-12','—','—','—','—','—','37 颗/kg','组织形态：类根茎'],
+  ['湖心岛底泥 10m','2026-06-12','—','—','—','—','—','64 颗/kg','部分组织可轻微搏动'],
+  ['湖心岛底泥 15m','2026-06-12','—','—','—','—','—','142 颗/kg','<span style="color:#b22222">组织切面渗出浅红色汁液</span>'],
+  ['湖心岛心 0m','2026-06-13','—','—','—','—','—','<span style="color:#b22222">无法计数，肉眼可见丝状物悬浮</span>','现场记录员拒绝签字'],
+  ['湖心岛心 0m 复采','2026-06-13','—','—','—','—','—','<span style="color:#b22222">采样瓶内自行生长</span>','<span style="color:#b22222">样本在 4 小时内扩大 11 倍</span>']
+];
+const RAW_LIN_NOTE = `
+  <p style="margin-top:14px;color:#7a3a3a;font-family:'STKaiti','KaiTi',serif">
+  6 月 13 日凌晨。样本自己长了。没人敢开灯。我把它带回 12 层，放冰箱。<br>明天 7 点还得去园区。不能带回家。<br><br>
+  — 林
+  </p>
+  <p style="margin-top:8px;color:#999;font-size:11px">
+  （以上批注未归档。原报告提交版本中此页被替换为"全部采样点均符合地表水Ⅲ类标准"，由林茂才本人签字确认。）
+  </p>`;
+
+/* ----- 内部事故台账 ----- */
+const RITUAL_ROWS = [
+  ['1996','陈玉珍','女','43','西湾码头失足落水','已火化'],
+  ['1999','马建设','男','37','北库观日山下失足','已火化'],
+  ['2003','贺淑兰','女','28','南岸步道落水','已火化'],
+  ['2007','吕志国','男','52','湖心岛周边失足','已火化'],
+  ['2011','罗海燕','女','34','西湾露营区失足','已火化'],
+  ['2015','韩建设','男','45','北库失足','已火化'],
+  ['2019','沈秀芬','女','26','南岸步道失足','已火化'],
+  ['2024','吴新国','男','49','湖心岛周边失足','已火化'],
+  ['2026','林茂才','男','47','凌晨巡查失足落水','已火化'],
+  ['2026','__________','—','—','_________________','<span style="color:#b22222">尚未填入</span>']
+];
+
+/* ----- 终极隐藏页数据 ----- */
+const FINALE_DESCENTS = [
+  ['清·光绪十二年（1886）','月荷水库前身·莲池','赵氏女·19 岁','初献','全家自此温饱有余；里人改姓赵'],
+  ['民国二十三年（1934）','月荷池','无名男·约 40 岁','再临','里人纷纷弃渔改种荷，莲之庭雏形'],
+  ['1958','月荷水库建成','罗姓知青·22 岁','断代','组织送葬、销档；莲之庭转入地下'],
+  ['1971','月荷水库','外乡木匠·38 岁','复燃','本地第一次出现"圣骸"交易'],
+  ['1996','月荷水库','陈玉珍·43 岁','现世','莲之庭重新公开化；周秉坤家族首次被记录'],
+  ['2026','月荷水库','林茂才·47 岁','终章','档案副本被多渠道备份；下一位待定']
+];
+const FINALE_LIANZHITING = `
+  <p>莲之庭，不是一开始就有的。</p>
+  <p>光绪十二年，月荷还只是片莲池。赵家十九岁的小女儿，那晚之后，再没人见过。赵家自此温饱有余。村里人记着这份余，也就把那一晚，按进了水底。池边遍植荷，荷叶一遮，水面就什么也看不见了。</p>
+  <p>民国二十三年，池边又少了个人。无名无姓，约莫四十岁，外乡来的。那之后，打渔的收了网，改种藕。种荷收莲，成了糊口的营生，也成了心照不宣的规矩，莲之庭，是在淤泥里生根的。</p>
+  <p>五八年，修水库。罗姓知青，二十二岁，填了坝基。上头来人，送葬、销档，把事埋了个干净。莲之庭缩回水下，一躲十几年。七一年，一个外乡木匠，在湖心搭了三天脚手。人没了，脚手还立着。从那年起，这地方有了自己的账本。</p>
+  <p>九六年，陈玉珍，四十三岁，西湾码头失足。那一年，莲之庭重新上岸。上岸头一件事，是往局里塞人。生态、水务、应急，管水的衙门，一个没落下。</p>`;
+const FINALE_XUEHE = `
+  <p>ta不是这世上的人。ta来自渊域，四首之一，名号<b>腐土青莲</b>。</p>
+  <p>人间借不到ta的身体。ta拿藕节捏了一个，十二三岁的少年，白得像初雪，眉眼间一点艳。没有内脏，没有血；若有伤，流出来的是青莲色的汁，甜腥，闻久了要疯。头顶会开荷花，想得越深，开得越盛；脚底的触须，平日收着，只在夜里，一寸一寸探进水里。</p>
+  <p>ta在水下沉眠，千年。淤泥养着ta，ta也养着淤泥。世间那句"出淤泥而不染"，ta读了一千年，越读越觉得有趣，人这种东西，什么花都能赋出意义来。ta决定，有朝一日，把这些意义，一朵一朵，掐掉。</p>
+  <p>ta不觉得自己残忍。把人的眼睛泡成一片红，泡成一个只剩血肉的地狱，于ta，不过是踩死一只蚂蚁。高处的看低处的，从来谈不上恶意。ta说这叫"纯真"。</p>
+  <p>ta是被人意外弄醒的。那人不该在那个时辰走到水边。ta没恼，反而觉得这人有意思，"勉强有点意思"。于是ta跟了那人回家，赖着不走，寄居在人家眼皮底下，像一只漂亮的、谁也管不住的小兽。救人也好，害人也罢，都是顺手。ta说ta看不懂人的表情，不管是痛苦还是欢喜，可ta觉得，"真是丰富"。</p>
+  <p style="color:#8a5a5a">（旁注：ta找乐子，随手救过那人一次。别谢ta。谢ta，ta就觉得你更好玩了。）</p>
+  <p>ta不会死。杀不死。可ta也不盼着谁死，ta只是好奇。好奇到，残忍。</p>`;
+const FINALE_SHEN_NOTE = 'ta要的不是命，是带你走。选吧。';
+
+/* ----- 三结局 ----- */
+const ENDINGS = {
+  1:{
+    title:'结局一 · 携邪远行',
+    cond:'收集齐许清的全部证据 + 沈清川的旧档全部线索，在周三零点前找到湖心献祭口，用反向仪式束缚雪禾，最终带ta离开回川市。',
+    img:'assets/desktop/ending-1-home.jpg',
+    webText:'官网还是那个官网。异常数据一条条自己归了位，像退潮。林茂才的殉职通告撤了，没人发过更正，它就是不见了。周秉坤的履历公示，从列表里消失，连搜索记录都没有。整座站，像被一场雨洗过，什么都没留下。\n只有沈清川的档案，最末一行，添了四个极淡的字：\n「走了？也好。」',
+    wechatText:'沈清川发来一条消息，只有四个字：「一路小心。」\n再问。已读。不回。',
+    scene:'出租屋朝南，下午的日光把地板晒得发白。少年窝在沙发里，抱着一只旧抱枕，脚趾头露在外面，白得像刚剥的藕。ta非要吃莲藕饭，隔三差五就要一顿。你切藕的时候，ta就在旁边看，看得极认真，像在研究什么了不起的仪式。\n日子过得像水，平平静静。ta只是偶尔在夜里醒着，望着窗外回川的方向，不响。你装作没看见。ta装作你没看见。\n你知道ta不是人。可ta现在窝在沙发上的样子，确实很像个人，或者说，像一只终于肯被收养的、漂亮的、危险的猫。你给ta搭了个窝。ta好像，也认了。'
+  },
+  2:{
+    title:'结局二 · 归位入列',
+    cond:'线索收集不全，污染程度持续加深，精神被逐步侵蚀，最终在周三零点主动走向湖心献祭口，自愿完成仪式。',
+    img:'assets/desktop/ending-2-throne.jpg',
+    webText:'首页多了一条通告：《关于 XXX 同志因公殉职的决定》。"夜间私自进入未开放区域，不慎落水。"六个字，把一个人收走了。\n内部台账里，你的名字被工工整整填进第 10 行。那笔迹，和林茂才的，一模一样。\n周秉坤的履历，多了一行小字："妥善处置库区意外事件。"',
+    wechatText:'你的头像，永久灰了。联系人列表里，你还在。可发出的消息，再没有一条，显示"已读"。',
+    scene:'青白的莲，开满一殿。瓣尖凝着露，露里掺着红，红顺着莲脉往下淌，淌进地砖的缝里。缝里，也生出了莲花。\n雪禾懒懒倚在王座上，藕白的脚垂下来，触须在暗处轻轻摆。ta看你，像看一只终于肯凑近的蚂蚁，又像终于肯收下一件玩物。ta笑了一下。那笑落在ta脸上，艳得让人挪不开眼。\n你垂首立在阶下。眼角，开出一线红纹。你不觉得疼，只觉得空茫，又虔诚。你终于明白，那些信徒为什么肯为ta死，因为那一刻，在你眼睛里，ta确实比你见过的任何人都要好看。好看得，连命都想给ta。'
+  },
+  3:{
+    title:'结局三 · 殒命湖心',
+    cond:'强行破坏献祭仪式、正面对抗雪禾，未收集足够线索也没有准备制约方法。',
+    img:'assets/desktop/ending-3-cement.jpg',
+    webText:'首页发了一行通告："一男子非法闯入库区，意外溺亡。"没有姓名，没有详情，没有后续。\n站内搜索，关于你的一切，全部清空。查无此人。\n内部台账里，多了一行无名氏记录。归档情况那栏，写着两个字：清理。',
+    wechatText:'你的聊天记录，一条一条，自己消失。先是群里的，再是私聊的，最后连联系人列表里，也找不到你了。\n第二天，本地群里没人再提起你。像你从未来过回川市。',
+    scene:'那天是晴天。天很蓝，墙很白。\n水泥地上，有一滩暗红的血。少年站在旁边，垂着眼看。ta看了一会儿，转身走了。没回头。\n风一吹，那摊血干得更快了。下午保洁拖了一遍，就什么也没有了。\n人死在这地方，和死一只虫子，没什么两样。'
+  }
+};
+
+/* ===== 渲染：NPC 档案 ===== */
+function renderNpcDoc(key){
+  const d = NPC_DOCS[key];
+  if(!d){ renderSearch(''); return; }
+  /* 解锁链：林茂才档案需先看完微信【四人之秘】全部聊天（实时读 localStorage，不依赖缓存状态） */
+  const _wxSeen = lsGet('hc_wx_seen','{}');
+  let wxSeen2 = false;
+  try{ wxSeen2 = !!(JSON.parse(_wxSeen)||{})[2]; }catch(e){}
+  if(key==='linmaocai' && !wxSeen2){
+    $app.innerHTML = page('home', blockedPage('先打开手机，看完「四人之秘」的全部聊天内容。'));
+    return;
+  }
+  GAME_STATE.npcUnlocked[key] = true;
+  GAME_STATE.npcTimes[key] = Date.now();
+  try{ localStorage.setItem('hc_npcs', JSON.stringify(GAME_STATE.npcUnlocked));
+       localStorage.setItem('hc_npc_times', JSON.stringify(GAME_STATE.npcTimes)); }catch(e){}
+  if(key==='linmaocai'){ GAME_STATE.linSeen = true; try{ localStorage.setItem('hc_lin_seen','1'); }catch(e){} }
+  document.body.classList.add('arg-mode');
+  let sideface = d.sideface ? '<div class="sideface-flick"></div>' : '';
+  const photoHtml = d.img
+    ? `<img src="${esc(d.img)}" alt="${esc(d.name)}">`
+    : `<div class="photo-big">${esc(d.coverIcon)}</div>`;
+  const body = `
+    ${sideface}
+    <div style="max-width:880px;margin:0 auto;padding:0 0 40px">
+      <div style="background:#f5f3ee;border:1px solid #c8b78d;padding:36px 50px;color:#2a261f;line-height:1.95;font-size:14.5px;box-shadow:0 6px 22px rgba(0,0,0,0.12)">
+        <div style="display:flex;gap:30px;align-items:flex-start;border-bottom:1px solid #d6c8a3;padding-bottom:18px;margin-bottom:18px">
+          <div class="eye-photo" id="npcEye">
+            <div class="photo-cap">${esc(d.cover)}</div>
+            ${photoHtml}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;color:#888;letter-spacing:0.2em">人事档案 · ${esc(d.role)}</div>
+            <h1 style="font-size:26px;margin:6px 0 8px;color:#1a1a1a">${esc(d.name)}</h1>
+            <div style="font-size:13.5px;color:#444">${esc(d.summary)}</div>
+            <ul style="margin:10px 0 0;padding-left:18px;font-size:12.5px;color:#666">
+              ${d.bullets.map(b=>'<li>'+esc(b)+'</li>').join('')}
+            </ul>
+          </div>
+        </div>
+        <div>${d.body}</div>
+        <div style="margin-top:18px;font-size:11px;color:#888">
+          ⚠ 本档案为组织内部查阅件；严禁外传。如发现异常文字、闪烁字符、签字晕开等现象，请视为纸质老化所致，<b>不必上报</b>。
+        </div>
+      </div>
+      <button class="back-btn" style="margin-top:24px" onclick="go('#home')">← 返回首页</button>
+    </div>`;
+  $app.innerHTML = page('home', body);
+  // 照片上的两个黑点（眼睛）已按用户要求移除
+}
+
+/* ===== 渲染：原始数据 ===== */
+function renderRawData(){
+  if(!GAME_STATE.rawUnlocked){
+    $app.innerHTML = page('home', `
+      <div style="text-align:center;padding:80px 20px;color:#888">
+        <div style="font-size:48px;margin-bottom:14px">🔒</div>
+        <div style="font-size:16px">本页面需要时间锁 22:00 触发后方可访问</div>
+        <div style="font-size:13px;margin-top:8px">请前往「走进回川·全域地理信息图」页输入密码</div>
+        <button class="back-btn" style="margin-top:24px" onclick="go('#zoujin')">前往地图页</button>
+      </div>`);
+    return;
+  }
+  const head = RAW_HEAD.map(h => '<th style="padding:6px 8px;border:1px solid #888;background:#1a1a1a;color:#a8a8a8;font-size:11px">'+h+'</th>').join('');
+  const rows = RAW_ROWS.map(r =>
+    '<tr>'+r.map(c=>{
+      const bad = String(c).includes('#b22222') || String(c).includes('红色') || String(c).includes('生长') || String(c).includes('搏动');
+      return '<td style="padding:6px 8px;border:1px solid #555;font-size:11.5px;color:'+(bad?'#b22222':'#c0c0c0')+';background:'+(bad?'rgba(178,34,34,0.12)':'transparent')+'">'+c+'</td>';
+    }).join('')+'</tr>'
+  ).join('');
+  $app.innerHTML = page('home', `
+    <div style="background:#0e1014;color:#a8a8a8;padding:36px 50px;border:1px solid #333;margin:0 0 24px;box-shadow:inset 0 0 24px rgba(178,34,34,0.05);position:relative">
+      <div style="font-size:13px;color:#888;letter-spacing:0.2em">月荷水库 · 原始检测数据表 · 内部存档</div>
+      <h1 style="font-size:24px;color:#c0c0c0;margin:6px 0 14px">水质深层专项检测 · 2026 年第二季度</h1>
+      <div style="font-size:12.5px;color:#888;margin-bottom:14px">本表为市生态环境局原始存档，与官网公示版本存在差异。红色标注项为超标 / 异常 / 拒绝签字。</div>
+      <table style="border-collapse:collapse;width:100%"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table>
+      ${RAW_LIN_NOTE}
+      <div style="margin-top:18px;font-size:11.5px;color:#666">⚠ 警告：原始数据中含失控样本。请勿将本页面截图外传。</div>
+    </div>
+    <button class="back-btn" onclick="go('#zoujin')">← 返回地图页</button>
+  `);
+  document.body.classList.add('night-mode');
+}
+
+/* ===== 渲染：内部事故台账 ===== */
+function renderRitualLedger(){
+  if(!GAME_STATE.linSeen){
+    $app.innerHTML = page('home', blockedPage('先浏览完林茂才同志的人事档案。'));
+    return;
+  }
+  /* 看完台账（归位名单）→ 开放终极隐藏页（非生非死） */
+  GAME_STATE.ritualSeen = true;
+  try{ localStorage.setItem('hc_ritual_seen','1'); }catch(e){}
+  const rows = RITUAL_ROWS.map(r =>
+    '<tr style="background:'+(r[1]==='林茂才'?'rgba(178,34,34,0.22)':(r[0]==='2026'?'rgba(178,34,34,0.07)':'transparent'))+'">'
+    +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:#c0c0c0">'+esc(r[0])+'</td>'
+    +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:'+(r[1]==='林茂才'?'#b22222':(r[1]==='__________'?'#b22222':'#c0c0c0'))+'">'+esc(r[1])+'</td>'
+    +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:#888">'+esc(r[2])+'</td>'
+    +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:#888">'+esc(r[3])+'</td>'
+    +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:#a8a8a8">'+esc(r[4])+'</td>'
+    +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:#888">'+esc(r[5])+'</td>'
+    +'</tr>'
+  ).join('');
+  $app.innerHTML = page('home', `
+    <div style="background:#fbf6e8;border:1px solid #d8c89b;padding:30px 48px;color:#231f18;line-height:2;margin:0 0 20px;box-shadow:0 4px 16px rgba(0,0,0,0.1);position:relative">
+      <div style="position:absolute;right:18px;top:18px;font-size:11px;color:#a04040;border:1px solid #c08080;padding:2px 8px;letter-spacing:0.2em">通 告</div>
+      <div style="text-align:center;font-size:13px;color:#888;letter-spacing:0.2em;border-bottom:1px solid #e2d3a7;padding-bottom:10px;margin-bottom:14px">回川市人民政府办公室 · 回政人字〔2026〕第 091 号</div>
+      <h1 style="text-align:center;font-size:22px;margin:0 0 12px;letter-spacing:0.15em">关于林茂才同志因公殉职暨内部归位事宜的通告</h1>
+      <div style="text-align:center;font-size:13px;color:#666;margin-bottom:18px">（本通告仅供组织内部传阅 · 不对外公示）</div>
+      <p style="margin:0 0 10px;text-indent:2em">各部门、各直属单位：</p>
+      <p style="margin:0 0 10px;text-indent:2em">市生态环境局局长、党组书记林茂才同志，于 <b>2026 年 7 月 8 日凌晨</b>在月荷水库一线执行巡查任务期间，因公殉职，终年 47 岁。林茂才同志自参加工作以来，长期奋战在水污染防治、生态保护与河湖治理一线，先后 7 次获评优秀共产党员，3 次记三等功；任内牵头完成《月荷水库水质提升三年行动方案》《环湖农村污水治理专项规划》等多项重要工作，为全市生态文明建设作出突出贡献。</p>
+      <p style="margin:0 0 10px;text-indent:2em">经市政府第 17 次常务会议研究，并报市委组织部备案：</p>
+      <p style="margin:0 0 6px;text-indent:2em">一、<b>定性</b>：因公殉职。事故原因系夜间执行湖心岛水质采样巡查任务时，突遇能见度降低，不慎落水。</p>
+      <p style="margin:0 0 6px;text-indent:2em">二、<b>善后</b>：已妥善安抚家属；丧葬事宜按《机关事业单位工作人员病故抚恤办法》执行；遗体已于 7 月 12 日火化，骨灰安厝家属指定地点。</p>
+      <p style="margin:0 0 6px;text-indent:2em">三、<b>档案移交</b>：林茂才同志在任期间经手的全部文件、台账、原始检测数据，按《干部人事档案条例》封存于市档案馆专用库房；档案副本同步备份至省生态环境厅与市委组织部，<b>未经批准不对外查询、不对外复印、不对外公示</b>。</p>
+      <p style="margin:0 0 6px;text-indent:2em">四、<b>职责交接</b>：林茂才同志生前所承担的月荷水库水质检测、环湖水域分区管控等职责，由副局长赵方远同志临时代管；对外发布的水质公告、信息公开回复，统一以"系统升级、流程优化"为口径，不再单独列出责任人。</p>
+      <p style="margin:0 0 10px;text-indent:2em">各部门要按本通告口径统一对外答复；遇有群众咨询、媒体问询、信访来访，一律以"按程序办理、不便透露"原则回应。任何单位、个人不得在公开场合、自媒体平台对林茂才同志事件进行<b>猜测性、不确切、与本通告口径不一致</b>的描述。</p>
+      <p style="margin:14px 0 0;text-indent:2em;color:#8a1a1a;font-style:italic;font-size:12.5px">附：林茂才同志《档案交接清单》《责任水域检测数据汇总》《环评公示会议纪要》各一份，由市档案馆专用库房封存。</p>
+      <div style="margin-top:18px;text-align:right;font-size:13px;color:#231f18;line-height:1.9">
+        <div>回川市人民政府办公室</div>
+        <div>2026 年 7 月 13 日印发</div>
+      </div>
+      <div style="margin-top:18px;display:flex;gap:12px;align-items:center;font-size:12px;color:#888">
+        <span style="display:inline-block;border:2px solid #8a1a1a;color:#8a1a1a;padding:2px 10px;letter-spacing:0.2em">市档案馆 内部归档</span>
+        <span>本通告共印 12 份，分送相关部门，与原件一并封存。</span>
+      </div>
+      <div style="margin-top:14px;font-size:11.5px;color:#8a1a1a;font-style:italic">， 同一支签字笔，同一句话，念给十二位同事听过。今夜，轮到ta自己签。，</div>
+    </div>
+    <div style="background:#f4ecd9;background-image:repeating-linear-gradient(45deg, transparent 0, transparent 8px, rgba(0,0,0,0.02) 8px, rgba(0,0,0,0.02) 9px);border:1px solid #c8b78d;padding:36px 50px;color:#2a261f;line-height:1.85;margin:0 0 24px;box-shadow:0 6px 22px rgba(0,0,0,0.12)">
+      <div style="text-align:center;font-size:13px;color:#888;letter-spacing:0.2em;border-bottom:1px solid #d6c8a3;padding-bottom:12px;margin-bottom:18px">回川市水域事件 · 内部事故台账 · 1990—2026</div>
+      <h1 style="text-align:center;font-size:24px;color:#1a1a1a;margin:6px 0 6px;letter-spacing:0.1em">月荷水库 · 失足溺亡记录</h1>
+      <div style="text-align:center;font-size:13px;color:#666;margin-bottom:18px">（本台账仅供组织内部查阅；不对外公开）</div>
+      <table style="width:100%;border-collapse:collapse"><thead><tr style="background:#1a1a1a;color:#a8a8a8">
+        <th style="padding:8px;border:1px solid #888;font-size:12px">年份</th><th style="padding:8px;border:1px solid #888;font-size:12px">姓名</th><th style="padding:8px;border:1px solid #888;font-size:12px">性别</th><th style="padding:8px;border:1px solid #888;font-size:12px">年龄</th><th style="padding:8px;border:1px solid #888;font-size:12px">官方口径</th><th style="padding:8px;border:1px solid #888;font-size:12px">归档情况</th>
+      </tr></thead><tbody>${rows}</tbody></table>
+      <div style="margin-top:18px;font-size:12px;color:#666">
+        · 上表"年份"为农历；姓名末位加色者为非本市户籍；<br>
+        · 2024 年起组织要求所有失足事件归档前必须由副市长签字；<br>
+        · 2026 年共发生 2 起；第 10 行为预留位。<br>
+        · 末页盖有一枚红色归档章，印文已漫漶不清。
+      </div>
+    </div>
+    <button class="back-btn" onclick="go('#home')">← 返回首页</button>
+  `);
+}
+
+/* ===== 渲染：终极隐藏页 ===== */
+function renderFinaleArchive(){
+  var adminDone = false;
+  try{ adminDone = localStorage.getItem('hc_admin_done') === '1'; }catch(e){}
+  if(!GAME_STATE.ritualSeen && !adminDone){
+    $app.innerHTML = page('home', blockedPage('先看完归位名单，再回来。'));
+    return;
+  }
+  GAME_STATE.finale = true;
+  try{ localStorage.setItem('hc_finale','1'); }catch(e){}
+  const rows = FINALE_DESCENTS.map(r =>
+    '<tr><td style="padding:8px 10px;border:1px solid #b9a378;font-size:13px">'+esc(r[0])+'</td><td style="padding:8px 10px;border:1px solid #b9a378;font-size:13px">'+esc(r[1])+'</td><td style="padding:8px 10px;border:1px solid #b9a378;font-size:13px">'+esc(r[2])+'</td><td style="padding:8px 10px;border:1px solid #b9a378;font-size:13px">'+esc(r[3])+'</td><td style="padding:8px 10px;border:1px solid #b9a378;font-size:13px">'+esc(r[4])+'</td></tr>'
+  ).join('');
+  $app.innerHTML = page('home', `
+    <div style="background:#f4ecd9;background-image:radial-gradient(circle at 30% 30%, rgba(0,0,0,0.04), transparent 60%),repeating-linear-gradient(45deg, transparent 0, transparent 8px, rgba(0,0,0,0.015) 8px, rgba(0,0,0,0.015) 9px);border:1px solid #b9a378;padding:36px 50px;color:#2a261f;line-height:1.95;margin:0 0 24px;box-shadow:0 8px 28px rgba(0,0,0,0.18)">
+      <div style="text-align:center;font-size:13px;color:#888;letter-spacing:0.2em;border-bottom:1px solid #d6c8a3;padding-bottom:14px;margin-bottom:18px">回川市水域事件 · 旧档扫描件 · 仅供查阅</div>
+      <h1 style="text-align:center;font-size:26px;color:#1a1a1a;margin:6px 0 6px;letter-spacing:0.1em">月荷 · 百年圣降记录</h1>
+      <div style="text-align:center;font-size:13px;color:#666;margin-bottom:18px;font-family:'STKaiti','KaiTi',serif">，非生非死、非圣非凡；惟一在场者所书，</div>
+      <h3 style="font-size:16px;border-left:3px solid #8a1a1a;padding-left:10px;margin:18px 0 8px">一、圣降记录（清光绪—2026）</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:#1a1a1a;color:#a8a8a8">
+        <th style="padding:8px;border:1px solid #888">时间</th><th style="padding:8px;border:1px solid #888">地点</th><th style="padding:8px;border:1px solid #888">祭品</th><th style="padding:8px;border:1px solid #888">周期</th><th style="padding:8px;border:1px solid #888">备注</th>
+      </tr></thead><tbody>${rows}</tbody></table>
+      <h3 style="font-size:16px;border-left:3px solid #8a1a1a;padding-left:10px;margin:24px 0 8px">二、莲之庭的起源</h3>
+      <div style="font-size:14px;line-height:1.95">${FINALE_LIANZHITING}</div>
+      <h3 style="font-size:16px;border-left:3px solid #8a1a1a;padding-left:10px;margin:24px 0 8px">三、雪禾其人</h3>
+      <div style="font-size:14px;line-height:1.95">${FINALE_XUEHE}</div>
+      <div style="margin-top:24px;padding-top:14px;border-top:1px solid #b9a378;font-size:14px;line-height:1.95;font-family:'Songti SC','STSong','宋体',serif">
+        <div style="color:#666;font-size:12px;letter-spacing:0.2em">沈清川 · 御姐口吻</div>
+        <div style="margin-top:6px;font-size:15px">${esc(FINALE_SHEN_NOTE)}</div>
+      </div>
+      <div style="margin-top:18px"><span style="display:inline-block;border:2px solid #8a1a1a;color:#8a1a1a;font-weight:700;padding:2px 10px;border-radius:2px;letter-spacing:0.2em;font-size:12px;transform:rotate(-3deg);opacity:0.8">沈清川 · 私章</span></div>
+      <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <a style="color:#8a1a1a;cursor:pointer;text-decoration:underline dotted;font-size:13px" onclick="openWechatStory()">▸ 打开手机，查看ta发给你的最后一条消息</a>
+      </div>
+      <div style="margin-top:28px;text-align:center">
+        <button class="back-btn" style="background:#8a1a1a;padding:10px 34px;font-size:15px;letter-spacing:0.3em" onclick="openFinaleChoice()">做出你的选择</button>
+        <div style="margin-top:10px;font-size:11px;color:#8a7a6a;letter-spacing:0.2em">（选择不可撤销）</div>
+      </div>
+    </div>
+  `);
+  const fm = document.getElementById('finaleModal');
+  if(fm) fm.classList.remove('on');
+}
+
+/* ===== 最终抉择弹窗（手动三选一，取代搜索关键词跳结局） ===== */
+function openFinaleChoice(){
+  const fm = document.getElementById('finaleModal');
+  if(fm) fm.classList.add('on');
+}
+function closeFinaleChoice(){
+  const fm = document.getElementById('finaleModal');
+  if(fm) fm.classList.remove('on');
+}
+
+/* ===== 渲染：三结局 ===== */
+function renderEnding(n){
+  const d = ENDINGS[n];
+  if(!d){ render404(); return; }
+  GAME_STATE.ending = n;
+  document.body.className = '';
+  closeFinaleChoice();
+  $app.innerHTML =
+    '<div class="ending-page">'
+    +'<div class="ed-head"><h2>'+esc(d.title)+'</h2>'
+    +'<div class="ed-cond">'+esc(d.cond)+'</div></div>'
+    +'<img class="ending-img" src="'+esc(d.img)+'" alt="'+esc(d.title)+'">'
+    +'<div class="ed-body">'
+    +'<div class="ed-sec"><div class="ed-tag">官 网 表 现</div>'
+    +  d.webText.split('\n').map(t=>'<p>'+esc(t)+'</p>').join('') +'</div>'
+    +'<div class="ed-sec"><div class="ed-tag">微 信 端 对 应</div>'
+    +  d.wechatText.split('\n').map(t=>'<p>'+esc(t)+'</p>').join('') +'</div>'
+    +'<div class="ed-sec"><div class="ed-tag">故 事 收 尾</div>'
+    +  d.scene.split('\n').map(t=>'<p>'+esc(t)+'</p>').join('') +'</div>'
+    +'<div class="ed-actions"><button onclick="location.hash=\'#home\'">回到主页</button>'
+    +'<button onclick="openWechatStory()">打开手机</button>'
+    +'<button onclick="location.reload()">重看序幕</button></div>'
+    +'<div style="margin-top:40px;text-align:center;font-size:11px;color:#555;letter-spacing:0.2em">© 回川 · 月荷 · 录到异常</div>'
+    +'</div></div>';
+}
+
+/* ===== 触发林茂才归位（解锁内部事故台账+首页水纹）===== */
+function triggerRitual(){
+  GAME_STATE.ritual = true;
+  try{ localStorage.setItem('hc_ritual', '1'); }catch(e){}
+}
+
+/* ===== 视频：雪禾弄醒 ===== */
+function playXueheWake(){
+  const v = document.getElementById('xueheWakeVideo');
+  if(!v) return;
+  v.classList.add('on');
+  const vid = v.querySelector('video');
+  if(vid){ vid.currentTime = 0; vid.play().catch(()=>{}); }
+}
+function closeXueheWake(){
+  const v = document.getElementById('xueheWakeVideo');
+  if(!v) return;
+  v.classList.remove('on');
+  const vid = v.querySelector('video');
+  if(vid) vid.pause();
+}
+
+/* ===== 路由增强：search 先查 secretPages，再走原搜索 ===== */
+(function(){
+  const _orig = window.renderSearch;
+  window.renderSearch = function(q){
+    q = (q||'').trim();
+    // 1. NPC 档案（林茂才受解锁链约束，其余直接开放）
+    const npcKey = matchSecretKey(q);
+    if(npcKey){ renderNpcDoc(npcKey); return; }
+    // 2. 原始数据入口（需 22:00）
+    if(q.includes('原始数据')){ renderRawData(); return; }
+    // 3. 林茂才归位 / 内部事故（需先浏览完林茂才档案）
+    if(q.includes('内部事故') || q.includes('林茂才 归位') || q.includes('归位')){
+      if(!GAME_STATE.linSeen){
+        $app.innerHTML = page('home', blockedPage('先浏览完林茂才同志的人事档案。'));
+        return;
+      }
+      triggerRitual();
+      renderRitualLedger();
+      return;
+    }
+    // 5. 默认原搜索
+    _orig(q);
+  };
+})();
+
+/* ===== 简化 triggerTimeLock：22:00 成功 → 夜间模式 + 仅解锁「当晚湖心岛·调查」入口 =====
+ *   移除原雪禾视频彩蛋自动弹出（彩蛋延后到 chapter1-departure.html）；
+ *   移除原"原始数据·内部存档"入口（链跳转 #rawdata 已不再诱导玩家跳转）。
+ *   不在此处解释任何 NPC 与结局伏笔。 */
+(function(){
+  const _orig = window.triggerTimeLock;
+  window.triggerTimeLock = function(){
+    _orig();
+    const v = (document.getElementById('tlInput').value || '').trim();
+    if(v === '22:00'){
+      GAME_STATE.rawUnlocked = true;
+      try{ localStorage.setItem('hc_timeLock', '1'); localStorage.setItem('hc_unlockTime', Date.now()); }catch(e){}
+      document.body.classList.add('night-mode');
+      // unlockArchive 末尾追加：前往当晚的湖心岛（hueiwu-chapter1.html）
+      const arc = document.getElementById('unlockArchive');
+      if(arc && !document.getElementById('hueiwuEntry')){
+        const link = document.createElement('div');
+        link.id = 'hueiwuEntry';
+        link.style.cssText = 'margin-top:18px;padding:16px 14px;border-top:1px dashed #4a2020;text-align:center;background:rgba(60,8,8,0.18)';
+        link.innerHTML = '<a style="color:#d0a0a0;cursor:pointer;font-size:14px;letter-spacing:0.2em;text-decoration:underline dotted" onclick="window.open(\'chapter1-departure.html\',\'_self\')">▸ 打开那条 22:03 的回顾录音<br><span style="color:#7a6a6a;font-size:11px;letter-spacing:0.1em">， 当晚 · 湖心岛 · 你回头了</span></a>';
+        arc.appendChild(link);
+      }
+    } else {
+      document.body.classList.remove('night-mode');
+    }
+  };
+})();
+/* ARG2-INJECT-END */
+
+/* ===== ARG2 · 首页后处理钩子（不破坏 renderHome 自身结构）===== */
+(function(){
+  const _renderHome = window.renderHome || renderHome;
+  // 用一个明确的全局函数
+  window._orig_renderHome = _renderHome;
+  window.applyArg2Home = function(){
+    if(!GAME_STATE.ritual) return;
+    // 1. Banner 水纹
+    const banner = document.querySelector('.gb');
+    if(banner && !document.getElementById('waterBlood')){
+      const wb = document.createElement('div');
+      wb.id = 'waterBlood'; wb.className = 'water-blood';
+      banner.style.position = 'relative';
+      banner.appendChild(wb);
+    }
+    // 2. 政务要闻：插入"林茂才同志归位通告"，可点击链接 + hover 切换字（殉职 ↔ 归位）
+    const newsList = document.querySelector('.news-list');
+    if(newsList && !document.getElementById('arg2-ritual-news')){
+      const li = document.createElement('li');
+      li.id = 'arg2-ritual-news';
+      li.style.cssText='background:rgba(178,34,34,0.06);padding:6px 8px;border-left:3px solid #b22222;cursor:pointer';
+      li.setAttribute('role','link');
+      li.title = '点击查看《关于林茂才同志因公殉职·内部归位通告》';
+      li.innerHTML = '<span class="ttl" style="color:#b22222;text-decoration:underline dotted" data-hover="林茂才同志因公殉职通告" data-rest="林茂才同志归位通告"><span style="color:#b22222">林茂才同志因公殉职通告</span></span><span class="dt">2026-07-08 ▸</span>';
+      const ttl = li.querySelector('.ttl');
+      ttl.addEventListener('mouseenter', function(){ this.innerHTML = '<span style="color:#b22222">' + this.dataset.rest + '</span>'; });
+      ttl.addEventListener('mouseleave', function(){ this.innerHTML = '<span style="color:#b22222">' + this.dataset.hover + '</span>'; });
+      li.addEventListener('click', function(){ window.go('#ritual'); });
+      newsList.insertBefore(li, newsList.firstChild);
+    }
+    // 3. 通知公告底部追加空白乱码公告
+    const noticeList = document.querySelector('.notice-list');
+    if(noticeList && !document.getElementById('arg2-garbled')){
+      const li = document.createElement('li');
+      li.id = 'arg2-garbled';
+      li.style.cssText='opacity:0;transition:opacity 0.4s';
+      li.innerHTML = '<div class="nt" style="color:transparent">　</div><div class="nb" style="color:transparent;user-select:none">　</div><div class="nd" style="color:transparent">　</div>';
+      li.addEventListener('mouseenter', function(){
+        this.style.opacity = '1';
+        this.querySelector('.nt').innerHTML =
+          '<div style="font-family:STKaiti,KaiTi,serif;color:#8a1a1a;font-size:12px;letter-spacing:0.4em;text-align:center;margin-bottom:6px">回川市人民政府 · 临时管控通告</div>'+
+          '<div style="font-family:STKaiti,KaiTi,serif;color:#b22222;font-size:15px;font-weight:700;letter-spacing:0.08em;text-align:center;border-bottom:1px solid #8a1a1a;padding-bottom:10px;margin-bottom:12px">关于月荷水库湖心岛心区域实施临时管控的通告</div>';
+        this.querySelector('.nb').innerHTML =
+          '<div style="text-align:left;font-size:12.5px;color:#2a201a;line-height:1.9">'+
+            '<p>各相关单位、沿岸各村（居）民委员会：</p>'+
+            '<p>因近期月荷水库湖心岛心区域多次出现异常情况（水域生物异常、岸线监测设备报警、外来人员擅自进入），为保障沿岸群众生命财产安全与社会稳定，经市政府研究决定，<b>自 2026 年 6 月 23 日 22 时起</b>，对湖心岛心半径 500 米水域及对应岸线实施临时管控，解除时间另行通知。</p>'+
+            '<p>管控期间：<b>禁止人员进入、禁止一切船舶通行、禁止夜间垂钓。</b>违者按《治安管理处罚法》第五十条及相关规定处理；涉嫌犯罪的，移送司法机关。</p>'+
+            '<p>责任单位：市生态环境局 · 市水务局 · 莲之庭镇人民政府 · 市公安局生态环境保护支队</p>'+
+            '<p>应急联络：0731-XXXX-XXXX（24 小时值班）</p>'+
+            '<p style="margin-top:12px;color:#7a3a3a;font-family:monospace;letter-spacing:0.1em;font-size:12.5px;border-top:1px dashed #c4b08a;border-bottom:1px dashed #c4b08a;padding:6px 0;text-align:center">仪　式：周　三 · 22:00 · 湖 心 岛 心 · 仅 一 次 · 不 可 逆</p>'+
+          '</div>';
+        this.querySelector('.nd').innerHTML =
+          '<div style="text-align:right;font-size:12px;color:#5a4a3a;margin-top:10px;line-height:1.7;font-family:STKaiti,KaiTi,serif">'+
+            '特此通告。<br>'+
+            '回川市人民政府办公室<br>'+
+            '2026-06-23 22:38'+
+          '</div>';
+      });
+      li.addEventListener('mouseleave', function(){
+        this.style.opacity = '0';
+      });
+      noticeList.appendChild(li);
+    }
+    // 4. 政务要闻首条原 hover 散落密码块已删除 · 凭据改在 forum 后台输入
+  };
+  // Wrap renderHome to apply hook after rendering
+  window.renderHome = function(){
+    _renderHome();
+    setTimeout(applyArg2Home, 30);
+  };
+})();
+
+
+window.addEventListener('hashchange', function(){
+  closeXueheWake();
+  render();
+  /* 路由切换后强制回到页面顶端，避免停在页面中间 */
+  try{ window.scrollTo(0,0); }catch(e){}
+  const appEl = document.getElementById('app');
+  if(appEl && appEl.scrollTop){ try{ appEl.scrollTop = 0; }catch(e){} }
+});
+render();
+/* 页面初次加载直接定到最顶 */
+try{ window.scrollTo(0,0); }catch(e){}
+</script>
+
+<!-- ARG2 · 雪禾视频容器（22:00 解锁后自动播放一次）-->
+<div id="xueheWakeVideo" class="xuehe-clip" onclick="closeXueheWake()">
+  <video src="assets/desktop/xuehe-wake.mp4" controls playsinline preload="metadata" onclick="event.stopPropagation()"></video>
+  <div class="cap">，夜里，水底的青莲翻了个身。见你睡得死，觉得没意思，<br>随手一拨，把你弄醒。戏还没演完，ta还不许你下场。</div>
+  <button class="close" onclick="closeXueheWake();event.stopPropagation()">关 闭</button>
+</div>
+</body>
+</html>

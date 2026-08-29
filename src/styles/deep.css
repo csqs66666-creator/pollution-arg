@@ -1,0 +1,90 @@
+/* 钓渊 · 里层（渊域腐化阶梯 + 母题 + 藏匿语言）
+   铁律：版式/栅格不动，腐化的只是 token 与动画。 */
+
+/* ===== 腐化阶梯（针对湖畔夜深底微调，语义同渊域：边缘→渗血→深渊）===== */
+body.corrupt-1 {                 /* subliminal：水面开始不对 */
+  --link: #b5444f;
+  --rule: #6b1818;
+}
+body.corrupt-2 {                 /* bleeding：渗血 */
+  --paper:    #1a0202;
+  --paper-2:  #240404;
+  --ink:      var(--bone);
+  --link:     var(--blood-bright);
+  --rule:     var(--blood);
+  --brand-soft: var(--abyss-2);
+}
+body.corrupt-3 {                 /* marked：深渊 */
+  --paper:    var(--abyss);
+  --ink:      var(--blood-bright);
+  --link:     var(--eye-gold);
+  --rule:     var(--blood);
+}
+
+/* 永久红发丝线（corrupt-2/3 恒定出现，右下） */
+body.corrupt-2::after,
+body.corrupt-3::after {
+  content: ""; position: fixed; right: 0; bottom: 0;
+  width: 1px; height: 40vh; background: var(--blood-bright);
+  opacity: .7; pointer-events: none; z-index: 50;
+}
+
+/* ===== 血覆层（整页半透明叠加） ===== */
+.blood-overlay {
+  position: fixed; inset: 0; pointer-events: none; z-index: 45;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(139,0,0,.5) 0%, transparent 35%),
+    radial-gradient(circle at 80% 100%, rgba(139,0,0,.35) 0%, transparent 40%);
+  mix-blend-mode: multiply; opacity: 0; transition: opacity 1.2s;
+}
+body.corrupt-2 .blood-overlay { opacity: .6; }
+body.corrupt-3 .blood-overlay { opacity: .9; }
+
+/* ===== 眼睛母题（全站仅两处：顶栏 + 深渊高潮） ===== */
+.eye { display: inline-block; }
+.eye .iris, .eye .pupil { opacity: 0; transition: opacity .6s, fill .6s; }
+.eye[data-state="awake"] .iris { opacity: 1; fill: var(--eye-gold); }
+.eye[data-state="bleed"] .iris { opacity: 1; fill: var(--blood); }
+.eye[data-state="bleed"] .pupil { opacity: 1; fill: var(--pupil); }
+.eye[data-state="abyss"] .iris { opacity: 1; fill: var(--blood); }
+.eye[data-state="abyss"] .pupil { opacity: 1; fill: var(--pupil); transform: scaleY(2.4); transform-origin: center; }
+
+/* ===== 深渊高潮屏（corrupt-3 中央大眼） ===== */
+/* 修复：去掉不透明白底（改为透明 + 暗角），让场景文字能在眼珠周围可见；
+   pointer-events:none 确保高潮层永远不吞点击；z-index 35 < 顶栏 50，重置按钮始终在它之上。 */
+.abyss-climax {
+  position: fixed; inset: 0; z-index: 35; display: none;
+  align-items: center; justify-content: center;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 70%);
+}
+body.corrupt-3 .abyss-climax { display: flex; }
+.abyss-climax svg { width: min(60vmin, 420px); height: min(60vmin, 420px); animation: eyePulse 1.4s ease-in-out infinite; }
+
+/* ===== 藏匿语言（渊域同源） ===== */
+.hidden-clue {
+  color: transparent; background: transparent;
+  border-bottom: 1px dashed transparent; cursor: help;
+  transition: color .4s, text-shadow .4s;
+}
+.hidden-clue:hover, .hidden-clue:focus-visible {
+  color: var(--blood-bright);
+  text-shadow: 0 0 6px var(--blood), 0 0 2px var(--blood-bright);
+  outline: none;
+}
+.hidden-clue::selection { color: var(--paper); background: var(--blood); }
+
+.zalgo {
+  display: inline-block; text-shadow:
+    0 0 .5px currentColor, 1px 0 0 rgba(255,26,26,.5), -1px 0 0 rgba(0,229,255,.5);
+  animation: zalgoCrawl 2.4s steps(8) infinite;
+}
+
+.terminal {
+  background: #000; color: var(--term-green);
+  font-family: var(--font-mono); font-size: var(--fs-sm);
+  padding: 12px 16px; border: 1px solid var(--term-green);
+  box-shadow: 0 0 12px rgba(0,255,65,.15) inset; border-radius: 4px;
+  white-space: pre-wrap; line-height: 1.5;
+}
+.terminal::before { content: "> "; opacity: .6; }

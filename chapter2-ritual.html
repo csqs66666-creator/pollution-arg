@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>回川往事 · 第二节 · 献祭</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --ink:#d8c8a8;
+  --ink2:#a89978;
+  --line:#3a1c1c;
+  --red:#a02020;
+  --bleed:#5a0e0e;
+  --night:#080202;
+  --night2:#160808;
+  --paper:#0e0606;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;padding:0;
+  background:var(--night);
+  color:var(--ink);
+  font-family:"Noto Serif SC","Source Han Serif","Songti SC","STSong",serif;
+  letter-spacing:0.04em;
+}
+.page{
+  width:100%;
+  min-height:100vh;
+  background:linear-gradient(180deg, #080202 0%, #160606 60%, #080202 100%);
+}
+.article-wrap{
+  max-width:780px;
+  margin:0 auto;
+  padding:0 32px 110px;
+}
+@media (max-width:820px){
+  .article-wrap{padding:0 22px 80px}
+}
+
+/* 顶部血污条 */
+.topbar{
+  position:sticky;
+  top:0;
+  background:rgba(20,4,4,0.95);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid #3a0c0c;
+  padding:10px 32px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:12px;
+  letter-spacing:0.15em;
+  z-index:5;
+  color:#a89078;
+}
+.topbar a{color:#a89078;text-decoration:none;cursor:pointer}
+.topbar a:hover{color:#d8a8a8}
+.topbar .marker{color:#c05050;font-weight:700;letter-spacing:0.3em}
+
+/* 干净版头（中央红字 + 副标） */
+.cover{
+  position:relative;
+  width:100%;
+  min-height:62vh;
+  background:linear-gradient(180deg, #0a0202 0%, #160606 60%, #080202 100%);
+  overflow:hidden;
+  border-bottom:1px solid #3a0c0c;
+}
+.cover-text{
+  position:absolute;left:0;right:0;bottom:18%;text-align:center;
+  color:#d8c8a8;font-family:"Songti SC","STSong",serif;letter-spacing:0.4em;
+}
+.cover-text .big{
+  font-size:88px;color:#b22222;letter-spacing:0.5em;font-weight:900;line-height:1;
+  text-shadow:0 0 20px rgba(178,34,34,0.55), 3px 3px 0 #0a0a0a, -2px -2px 0 #1a0a0a;
+  margin-bottom:18px;
+}
+.cover-text .sub{
+  font-size:14px;color:#0a0a0a;letter-spacing:0.32em;background:rgba(244,240,232,.78);
+  display:inline-block;padding:6px 18px;margin-top:8px;font-weight:700;
+}
+.cover-text .stroke{
+  display:inline-block;border:1px solid #6a2020;padding:5px 18px;font-size:12px;
+  color:#e0a8a0;letter-spacing:0.4em;margin-top:14px;background:rgba(8,2,2,.7);
+}
+.cover-text .num{
+  display:inline-block;border:1px solid #0a0a0a;color:#0a0a0a;background:rgba(244,240,232,.78);
+  padding:4px 12px;font-size:12px;letter-spacing:0.3em;margin-top:14px;font-weight:800;
+}
+.cover-foot{
+  position:absolute;left:0;right:0;bottom:30px;text-align:center;
+  color:#c08080;font-size:14px;letter-spacing:0.5em;
+  font-family:"Songti SC","STSong",serif;
+}
+
+.chap{
+  font-size:10px;
+  color:#8a6a5a;
+  letter-spacing:0.4em;
+  text-align:center;
+  border-top:1px solid #3a1c1c;
+  border-bottom:1px solid #3a1c1c;
+  padding:6px 0;
+  margin:36px auto 30px;
+  width:60%;
+}
+
+h2{
+  position:relative;
+  font-size:19px;
+  color:#c84040;
+  margin:42px 0 14px;
+  border-bottom:1px solid #3a0c0c;
+  padding:0 0 8px 24px;
+  letter-spacing:0.2em;
+  font-family:"Songti SC","STSong",serif;
+  text-shadow:0 0 8px rgba(178,34,34,0.4);
+}
+h2::before{
+  content:"";
+  position:absolute;left:0;top:6px;bottom:8px;width:3px;
+  background:linear-gradient(180deg, #c04040, #5a0e0e);
+  box-shadow:0 0 6px rgba(178,34,34,0.6);
+}
+h2::after{
+  content:attr(data-num);
+  position:absolute;left:-6px;top:-22px;
+  font-size:11px;color:#6a2020;letter-spacing:0.4em;
+  border:1px solid #3a0c0c;padding:1px 6px;background:rgba(0,0,0,0.5);
+}
+h3{
+  font-size:14px;
+  color:#d8c8a8;
+  margin:18px 0 6px;
+  letter-spacing:0.1em;
+}
+p{
+  line-height:2.1;
+  font-size:14.5px;
+  color:#c8b898;
+  margin:0 0 14px;
+  text-align:justify;
+  text-indent:2em;
+}
+p.flat{text-indent:0}
+p.quote{
+  margin:18px 28px;
+  padding:12px 16px;
+  border-left:3px solid var(--red);
+  background:rgba(178,34,34,0.07);
+  color:#d8b8a8;
+  font-style:italic;
+  text-indent:0;
+  font-size:13.5px;
+  line-height:2;
+}
+.valley{
+  transition:color 1.4s linear, text-shadow 1.4s linear, transform 0.18s ease, letter-spacing 0.6s ease;
+  font-family:"Songti SC","STSong",serif;
+}
+.valley.fade{color:#a02020;text-shadow:0 0 6px rgba(178,34,34,0.55);letter-spacing:0.05em}
+.valley.shake{
+  animation:shudder 0.14s linear infinite alternate;
+  color:#7a1a1a;
+  text-shadow:0 0 12px rgba(178,34,34,0.7);
+}
+@keyframes shudder{
+  0%{transform:translate(0,0) rotate(0)}
+  100%{transform:translate(0.4px,-0.4px) rotate(-0.18deg)}
+}
+.blink-warn{display:inline-block;animation:blip 0.9s steps(2,end) infinite;color:#c04040;letter-spacing:0.15em}
+@keyframes blip{50%{opacity:0.25}}
+
+/* === 崩坏入口：网页崩坏 + 无数眼睛疯狂眨动 === */
+.crash-block{position:relative;min-height:8px;margin:34px -20px}
+.crash-block::before{content:"\00a0";display:block}
+
+/* 全屏眼睛疯狂眨动：滚动到「他们看见你了」时触发 */
+.blink-stage{
+  position:fixed;inset:0;z-index:9999;pointer-events:none;background:#000;opacity:0;transition:opacity .25s;
+}
+.blink-stage.run{opacity:1}
+.blink-stage .eb{
+  position:absolute;
+  background:url('assets/desktop/eyeball.png') center/contain no-repeat;
+  filter:drop-shadow(0 0 14px rgba(178,34,34,.7)) brightness(.9) contrast(1.15);
+  transform-origin:center;
+  animation:ebBlink var(--d,0.6s) steps(2,end) infinite;
+}
+.blink-stage .eb.c{filter:drop-shadow(0 0 18px rgba(255,80,80,.7)) brightness(.75) contrast(1.3)}
+@keyframes ebBlink{
+  0%,48%{transform:scaleY(1) scale(var(--s,1));opacity:var(--o,.92)}
+  49%,100%{transform:scaleY(0.04) scale(var(--s,1));opacity:.35}
+}
+.blink-stage .scrim{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%, transparent 22%, rgba(0,0,0,.7) 100%);animation:scrimShift 0.3s steps(2,end) infinite}
+@keyframes scrimShift{0%,49%{opacity:.9}50%,100%{opacity:.55}}
+.blink-stage .txt{position:absolute;left:0;right:0;top:48%;text-align:center;color:#b22222;font-size:42px;letter-spacing:0.6em;font-weight:900;font-family:"Songti SC",serif;text-shadow:0 0 18px rgba(178,34,34,.7);animation:txtShake 0.12s steps(2,end) infinite}
+@keyframes txtShake{0%,49%{opacity:1;letter-spacing:0.6em}50%,100%{opacity:.55;letter-spacing:0.7em}}
+.blink-stage .blood{position:absolute;left:0;right:0;bottom:0;height:30vh;background:url('assets/desktop/blood-drip.png') center bottom/cover no-repeat;opacity:.7;mix-blend-mode:multiply}
+/* 整体页面抖动 */
+body.crash-shake{animation:pageShake 0.08s steps(2,end) infinite}
+@keyframes pageShake{0%,100%{transform:translate(0,0)}25%{transform:translate(0.6px,-0.4px)}50%{transform:translate(-0.5px,0.5px)}75%{transform:translate(0.4px,0.3px)}}
+
+/* 整张眼睛图（崩坏结束后定格展示 1.6 秒） */
+.eyes-still{margin:24px auto;text-align:center}
+.eyes-still img{
+  max-width:100%;display:block;margin:0 auto;
+  border:1px solid #3a0c0c;
+  box-shadow:0 4px 22px rgba(0,0,0,0.7),0 0 36px rgba(178,34,34,0.3);
+  animation:stillIn 1.2s ease-out;
+}
+.eyes-still .cap{font-size:11.5px;color:#8a6a5a;margin-top:8px;letter-spacing:0.2em}
+@keyframes stillIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+
+/* 红笑脸（5 秒后自动消失） */
+.grin-flash{
+  position:relative;margin:24px auto;text-align:center;
+  animation:grinIn 0.6s ease-out, grinOut 0.8s ease-in 4.6s forwards;
+}
+.grin-flash img{
+  max-width:64%;display:block;margin:0 auto;
+  border:1px solid #5a0e0e;
+  box-shadow:0 0 30px rgba(178,34,34,0.6);
+}
+.grin-flash .cap{font-size:11.5px;color:#a08070;margin-top:8px;letter-spacing:0.2em}
+@keyframes grinIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+@keyframes grinOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.15) translateY(-10px);visibility:hidden}}
+
+.figure{margin:22px 0;text-align:center}
+.figure img{
+  max-width:100%;
+  display:block;
+  margin:0 auto;
+  border:1px solid #3a0c0c;
+  box-shadow:0 4px 14px rgba(0,0,0,0.55),0 0 24px rgba(178,34,34,0.18);
+}
+.figure .cap{
+  font-size:11.5px;
+  color:#8a6a5a;
+  margin-top:8px;
+  letter-spacing:0.2em;
+}
+.figure.f-bleed img{
+  border-color:#5a0e0e;
+  box-shadow:0 0 32px rgba(178,34,34,0.45),0 6px 20px rgba(0,0,0,0.7);
+}
+
+/* 切换图：before → after */
+.fig-swap{cursor:pointer;position:relative;user-select:none}
+.fig-swap .alt{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#0a0202;
+  color:#d8c8a8;
+  font-size:12px;
+  letter-spacing:0.3em;
+  opacity:0;
+  transition:opacity 0.4s;
+  border:1px solid #3a0c0c;
+}
+.fig-swap.swapped .alt{opacity:1}
+.fig-swap .default{display:block}
+
+/* 雪禾视频容器 */
+.xuehe-container{
+  margin:34px 0 8px;
+  padding:18px;
+  background:#080202;
+  color:#d8c8a8;
+  border:1px solid #3a0c0c;
+  border-radius:2px;
+  box-shadow:0 0 30px rgba(178,34,34,0.25) inset;
+}
+.xuehe-container h3{
+  color:#d8c8a8;
+  font-family:"Songti SC",serif;
+  letter-spacing:0.4em;
+  font-size:14px;
+  margin:0 0 10px;
+  text-align:center;
+}
+.xuehe-container video{
+  width:100%;
+  display:block;
+  border:1px solid #3a0c0c;
+  background:#000;
+}
+.xuehe-container .vcap{
+  margin-top:10px;
+  font-size:12px;
+  color:#a89078;
+  text-align:center;
+  line-height:1.9;
+  letter-spacing:0.15em;
+}
+.xuehe-container .vcap .sign{color:#c04040;letter-spacing:0.3em}
+
+/* 雪禾救醒纯 CSS 动效场景（替代 hvc1 视频） */
+.xuehe-stage{
+  position:relative;
+  width:100%;
+  height:340px;
+  background:radial-gradient(ellipse at 50% 70%, #2a0808 0%, #0a0202 70%);
+  border:1px solid #3a0c0c;
+  overflow:hidden;
+  box-shadow:inset 0 0 60px rgba(0,0,0,.7), 0 0 24px rgba(178,34,34,.18);
+  font-family:"Songti SC",serif;
+}
+.lotus-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 30% 90%, rgba(178,34,34,.4) 0%, transparent 35%),
+    radial-gradient(ellipse at 70% 90%, rgba(178,34,34,.35) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.7) 0%, transparent 70%);
+}
+.xuehe-petal{
+  position:absolute;left:50%;bottom:-30px;width:36px;height:46px;
+  background:radial-gradient(ellipse, #ffd0d8 0%, #e8a8b8 60%, rgba(232,168,184,0) 100%);
+  border-radius:80% 0 80% 0;transform:translateX(-50%) rotate(0deg);
+  animation:petalFloat 6.5s ease-in-out infinite;
+  opacity:0;filter:drop-shadow(0 0 8px rgba(255,200,210,.4));
+}
+@keyframes petalFloat{
+  0%{bottom:-30px;opacity:0;transform:translateX(-50%) rotate(0deg)}
+  10%{opacity:1}
+  70%{bottom:80%;opacity:1;transform:translateX(-30%) rotate(220deg)}
+  100%{bottom:100%;opacity:0;transform:translateX(-60%) rotate(360deg)}
+}
+.xuehe-line{
+  position:absolute;left:8%;right:8%;text-align:center;
+  color:#e8d8b8;font-size:18px;letter-spacing:0.2em;
+  text-shadow:0 0 14px rgba(178,34,34,.7);
+  opacity:0;animation:lineFade 1.4s ease-out forwards;
+  animation-delay:var(--d,0s);
+}
+.xuehe-line.l1{top:18%;color:#d8c8a8;font-size:22px}
+.xuehe-line.l2{top:32%}
+.xuehe-line.l3{top:46%;font-size:15px;color:#c0a890}
+.xuehe-line.l4{top:60%;color:#d8c8a8;font-size:18px}
+.xuehe-line.l5{top:74%;font-size:14px;color:#a89078}
+.xuehe-line.l6{top:18%;font-size:13px;color:#a88080;letter-spacing:0.32em}
+@keyframes lineFade{
+  0%{opacity:0;transform:translateY(8px);filter:blur(3px)}
+  20%{opacity:1;transform:translateY(0);filter:blur(0)}
+  85%{opacity:1}
+  100%{opacity:0;transform:translateY(-6px);filter:blur(1px)}
+}
+.xuehe-bar{
+  position:absolute;left:14px;right:14px;bottom:10px;height:3px;
+  background:rgba(60,8,8,.6);border:1px solid #3a0c0c;
+}
+.xuehe-bar span{
+  display:block;height:100%;width:0%;
+  background:linear-gradient(90deg, #b22222, #d8a8a8);
+  box-shadow:0 0 6px rgba(178,34,34,.6);
+  animation:xueheBar 6.5s linear forwards;
+}
+@keyframes xueheBar{
+  0%{width:0%}
+  100%{width:100%}
+}
+.xuehe-stage::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .3 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity:.18;mix-blend-mode:multiply;
+}
+
+/* 存根条 */
+.br-redacted{
+  color:#c04040;
+  font-weight:700;
+  letter-spacing:0.1em;
+}
+.stash-note{
+  display:inline-block;
+  padding:6px 12px;
+  border:1px solid #5a0e0e;
+  color:#c08080;
+  background:rgba(90,14,14,0.18);
+  font-family:"Songti SC",serif;
+}
+
+/* 归档跳转 */
+.ritual-reopen{
+  margin:38px 0 0;
+  padding:24px 26px;
+  background:#160606;
+  border:1px solid #3a0c0c;
+  text-align:center;
+  font-family:inherit;
+}
+.ritual-reopen h3{
+  font-size:16px;
+  letter-spacing:0.25em;
+  color:#d8c8a8;
+  margin:0 0 8px;
+}
+.ritual-reopen p{
+  font-size:13px;
+  color:#a89078;
+  margin:0 0 14px;
+  text-indent:0;
+  line-height:2;
+}
+.ritual-reopen a.btn{
+  display:inline-block;
+  padding:9px 22px;
+  border:1px solid #c04040;
+  color:#c04040;
+  text-decoration:none;
+  font-size:13px;
+  letter-spacing:0.3em;
+  cursor:pointer;
+  background:transparent;
+  transition:background 0.25s, color 0.25s;
+}
+.ritual-reopen a.btn:hover{background:#c04040;color:#fbf6e8}
+
+.fold{
+  position:relative;
+  margin:34px 0;
+  height:30px;
+}
+.fold::before{
+  content:"";
+  position:absolute;
+  left:0;right:0;
+  top:14px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,#3a0c0c,transparent);
+}
+
+.end-mark{
+  margin-top:30px;
+  text-align:center;
+  font-size:11px;
+  color:#6a4a4a;
+  letter-spacing:0.3em;
+}
+
+.note{
+  font-size:12px;
+  color:#a89078;
+  text-indent:0;
+  padding:14px 18px;
+  background:rgba(60,8,8,0.4);
+  border:1px dashed #3a0c0c;
+  margin:18px 0;
+}
+
+/* 旧 .admin-terminal / .key-archive / .admin-form 样式已移除 · 归位改在 forum 帖子里输入 */
+.admin-done{
+  display:none;
+  text-align:center;
+  margin-top:18px;
+}
+.admin-done a.btn{
+  display:inline-block;
+  padding:11px 26px;
+  border:1px solid #c04040;
+  color:#c04040;
+  text-decoration:none;
+  font-size:13px;
+  letter-spacing:0.3em;
+  cursor:pointer;
+  background:transparent;
+  transition:background .25s, color .25s;
+}
+.admin-done a.btn:hover{background:#c04040;color:#fbf6e8}
+.admin-secondary{
+  text-align:center;
+  margin-top:16px;
+}
+.admin-secondary a{
+  color:#a89078;
+  text-decoration:none;
+  font-size:12px;
+  letter-spacing:0.2em;
+  cursor:pointer;
+}
+.admin-secondary a:hover{color:#d8a8a8}
+
+/* === 视频播完后引导去水阁论坛归位（不再在本页输入） === */
+.forum-guide{
+  border:1px dashed #5a0e0e;
+  background:rgba(90,14,14,0.12);
+  padding:20px 24px 22px;
+  margin:0 0 18px;
+  color:#c8b898;
+  font-size:13.5px;
+  line-height:2.0;
+  letter-spacing:0.05em;
+}
+.forum-guide h3{
+  color:#c08080;
+  font-family:"Songti SC",serif;
+  font-size:14.5px;
+  text-align:center;
+  letter-spacing:0.2em;
+  margin:0 0 12px;
+  font-weight:400;
+}
+.forum-guide .lead{
+  text-align:center;
+  color:#c8b898;
+  font-size:13px;
+  line-height:2.1;
+  margin:0 0 16px;
+}
+.guide-box{
+  background:rgba(10,2,2,0.45);
+  border:1px solid #4a0e0e;
+  padding:14px 18px;
+  margin:0 0 16px;
+}
+.guide-box .gline{
+  font-size:12.5px;
+  color:#c8b898;
+  line-height:2;
+  letter-spacing:0.05em;
+  margin:2px 0;
+}
+.guide-box .gline b{color:#e8c4a0}
+.guide-box .gk{
+  display:inline-block;
+  width:18px;height:18px;
+  border:1px solid #c04040;
+  color:#c04040;
+  text-align:center;line-height:18px;
+  font-size:11px;
+  margin-right:8px;
+  letter-spacing:0;
+}
+.guide-cta{
+  text-align:center;
+  margin:18px 0 12px;
+}
+.guide-cta a.btn{
+  display:inline-block;
+  padding:11px 28px;
+  border:1px solid #c04040;
+  color:#c04040;
+  text-decoration:none;
+  font-size:13px;
+  letter-spacing:0.3em;
+  transition:background .25s, color .25s;
+}
+.guide-cta a.btn:hover{background:#c04040;color:#fbf6e8}
+.guide-note{
+  text-align:center;
+  color:#7a5a5a;
+  font-size:11.5px;
+  letter-spacing:0.3em;
+  margin:8px 0 0;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <a onclick="goBack()">← 返回回川市公众信息网</a>
+    <span class="marker">档 案 · 22:03 献 祭</span>
+  </div>
+
+  <div class="cover">
+    <div class="cover-text">
+      <div class="big">献 祭</div>
+      <div class="sub">第 二 节 · 林 茂 才 · 你 背 上 了 一 笔</div>
+      <div class="stroke">镇 心 源 · 门 半 开 · 里 面 有 灯</div>
+      <div class="num">[ 1 ]</div>
+    </div>
+    <div class="cover-foot">§ 5 · 林 茂 才 · 献 祭</div>
+  </div>
+
+  <div class="article-wrap">
+
+    <div class="chap">第 二 节 · 湖 心 · 黑 色 之 后</div>
+
+    <!-- ========== Section 5 · 林茂才·献祭 ========== -->
+    <h2 data-num="§ 5">§5 林茂才 · 献祭</h2>
+    <p>你绕到街后。回川的街后没有街，只有一条河灯幽暗的小弄，潮湿得发黏。你想透一口气。没透成。再一抬眼，远处湖面上，有一团<b>白光</b>。白光不动，水面却绕着它，一圈一圈。</p>
+    <p>你顺着田埂，踩着稀泥，爬上了一处枯芦苇台。</p>
+    <p>湖心是一座<b>小岛</b>。岛上一座老庙。庙门半开，里面有人。</p>
+
+    <!-- 切换图：点击 before → after（含 LinMaocai77 / family 红字） -->
+    <div class="figure fig-swap" id="sacrificeSwap" onclick="swapSacrifice()">
+      <img id="sacImg" class="default" src="assets/desktop/lin-sacrifice-before.jpg" alt="林茂才献祭·前">
+      <div class="alt" id="sacAlt" style="font-family:'Songti SC',serif">此刻你看见ta回头了<br>，签字、念珠与名字</div>
+      <div class="cap" id="sacCap">点 击 图 片 · 继 续</div>
+    </div>
+
+    <div id="sac-detail" style="display:none">
+      <p>你看见了。</p>
+      <p>林茂才，一个人，跪在莲花座前。手里举着一沓ta自己签字的纸，水质公报、检测报告、台账、那一届的报告、那一天的报告，<b>ta在烧</b>。ta在将<b>自己</b>写过的字，烧在佛前，给那个</p>
+      <p>庙后头的<b>东西</b>看。</p>
+      <p>庙后头，是一片莲池。莲池里，<b>站着</b>一具具人形的枯荷。<span class="valley">枯荷的面孔，五官清楚。</span>枯荷的眼睛，看着烟，看着火，看得眼睛里也在<b>烧</b>。</p>
+      <p>那东西不在池里。在池下。在更深。
+      <br>它在<b>笑</b>。你没听见它笑的声音，你只是听见了水里、空气里、芦苇里，<b>一齐在笑</b>。</p>
+      <p class="quote" style="font-family:'Songti SC',serif">那笑，轻轻浅浅，没有声音。<br>
+      一片一片红色的莲瓣，被<b>风</b>一拨。<br>
+      那笑，不是笑。<br>
+      是，嗯，<span class="valley" style="display:inline">「好嘛。又一个。」</span></p>
+    </div>
+
+    <h3>ta们看见你了</h3>
+
+    <div class="figure f-eyes-look" style="margin:18px auto 26px;text-align:center">
+      <img src="assets/desktop/eyes-bloody.jpg" alt="ta们在看你" style="max-width:min(520px,90%);border:1px solid #5a0e0e;box-shadow:0 0 32px rgba(178,34,34,.35),0 4px 14px rgba(0,0,0,.7);filter:contrast(1.15) saturate(1.2)">
+      <div class="cap" style="color:#8a6a5a;font-size:11px;letter-spacing:0.32em;margin-top:8px">ta 们 · 在 看 你</div>
+    </div>
+
+    <!-- 崩坏入口：进入视口自动触发全屏眼睛疯狂眨动 -->
+    <div class="crash-block" id="crashBlock" data-armed="1"></div>
+    <div class="blink-stage" id="blinkStage" aria-hidden="true">
+      <div class="scrim"></div>
+      <div class="txt" id="blinkTxt" style="display:none">ta 们 在 眨 动</div>
+      <div class="blood"></div>
+    </div>
+
+    <p>你手脚冰冷，<b>正想缩进芦苇堆里</b>，</p>
+    <p>一抬头，<b>对面正对着你</b>。</p>
+    <p>一丛枯荷，转过身来。两个小孔的眼窝，对着你，<b>笑</b>。<br>
+    又一丛。<br>
+    又一丛。<br>
+    又一丛。<br>
+    <span class="blink-warn">ta们全在笑。</span></p>
+    <p>你的眼睛看着ta们，ta们看着你，笑着；笑着，<b>嘴里没有舌头</b>。枯荷的嘴裂开，里面是一丝又一丝<b>青白的丝</b>，一丝一丝，丝丝缕缕。</p>
+    <p>你<b>听</b>到了那声音。</p>
+    <p class="valley" id="vShake">看看你自己。</p>
+
+    <!-- 闪回血肉世界 -->
+    <div class="figure f-bleed">
+      <img src="assets/desktop/flesh-world.jpg" alt="被看见的世界">
+      <div class="cap">你 眼 里 的 世 界 · 一 瞬 钟</div>
+    </div>
+
+    <!-- 红笑脸：5 秒后自动消失（扭曲闪回） -->
+    <div class="grin-flash" id="grinFlash">
+      <img src="assets/desktop/faces-grin.jpg" alt="红笑脸">
+      <div class="cap">它 们 在 笑</div>
+    </div>
+
+    <p>你的眼睛里，这边的芦苇、那座小庙、那一池枯荷，<b>全变了</b>。
+    <br>墙上、地里、人身上、庙的瓦上、湖水里，<b>全是肉</b>。</p>
+    <p>会抖。会动。会呼吸。
+    <br>那团气，腥甜，让人想笑，让人想哭，让人恨不能把头埋进自己的胸腔里去，</p>
+    <p class="valley" id="vShake2">你不去想那是什么。你<b>只想逃</b>。</p>
+
+    <!-- ========== Section 6 · 逃 ========== -->
+    <h2 data-num="§ 6">§6 逃</h2>
+    <p>你跑。脚踩在泥里，<b>泥是温的</b>。软。
+    <br>你跑。脚踩在<b>田梗</b>上，<b>梗是活的</b>。
+    <br>你跑。脚踩在<b>干草</b>上，干草里有一双眼睛，你不看，你只看前面，前面有路灯，路灯在亮，路灯边上站着一个人，那是，不，那是一根，你<b>不认得</b>了。</p>
+    <p>你在路边坐下。再也跑不动。</p>
+    <p>你眼睛里的世界没有停。它在变。
+    <br>青莲、莲瓣、莲芯、莲蓬，一层一层，<b>全是肉</b>。
+    <br>那根在笑。
+    <br>那条鱼在笑。
+    <br>那个朋友在笑。
+    <br><span class="blink-warn">你也在笑。</span></p>
+    <p>你摇了一下头。血漫上来。</p>
+
+    <!-- ========== Section 7 · 雪禾 ========== -->
+    <div class="fold"></div>
+
+    <h2 data-num="§ 7">§7 雪 禾</h2>
+    <p>你醒来的时候，是一片<b>藕塘</b>。</p>
+    <p>有个人蹲在你身边。个子矮小，脸庞是孩子的模样。<span class="valley" style="display:inline">冷调瓷白的脸，眼角猩红血色莲花纹路，唇色浅淡，头上冒着一朵还没开全的荷花</span>。</p>
+    <p>ta看了你一眼。</p>
+    <p>「嗯。」</p>
+    <p>「醒了？就你这点胆子，也配被莲之庭那群人吓得半死啊？」</p>
+    <p>你<b>不知道</b>ta是谁。</p>
+    <p>你只知道，你闻到了<b>甜味</b>。甜腻得要命的青莲幽香。从ta身上，从ta的头发，从ta嘴角抿着的那口<b>莲汁</b>，你一吸，吸进半口，整个人就要<b>晕</b>。你摇了摇。</p>
+    <p>ta伸出一根手指，<b>轻飘飘</b>把你下巴一挑。</p>
+    <p>「我呢，刚刚顺手救了一下你，戏还没演完呢，这么早死，不许。」</p>
+    <p>你张口想说谢谢。ta笑了。你，那笑，<span class="br-redacted" style="display:inline">那笑不是笑，是看蚂蚁的看法。</span></p>
+
+    <div class="xuehe-container">
+      <h3>， 雪 禾 救 醒 录 音 ，</h3>
+      <video id="xueheVid" controls playsinline preload="metadata">
+        <source src="assets/desktop/xuehe-save.mp4" type="video/mp4">
+        <p style="color:#a89978">视频加载失败 · 请确认 assets/desktop/xuehe-save.mp4 存在</p>
+      </video>
+      <div class="xuehe-stage" id="xueheStage" style="display:none">
+        <div class="lotus-bg"></div>
+        <div class="xuehe-line l1" style="--d:0.3s">「嗯。」</div>
+        <div class="xuehe-line l2" style="--d:1.2s">「醒了？」</div>
+        <div class="xuehe-line l3" style="--d:2.1s">「就你这点胆子，也配被莲之庭那群人吓得半死啊？」</div>
+        <div class="xuehe-line l4" style="--d:3.4s">「我呢，刚刚顺手救了一下你。」</div>
+        <div class="xuehe-line l5" style="--d:4.4s">「戏还没演完呢，这么早死，不许。」</div>
+        <div class="xuehe-line l6" style="--d:5.5s">「还你一瓣。」</div>
+        <div class="xuehe-petal"></div>
+        <div class="xuehe-bar"><span id="xueheBar"></span></div>
+      </div>
+      <div class="vcap">
+        ， 那一晚，ta在藕塘边，把你弄醒。<br>
+        <span style="color:#a89978">（戏还没演完，ta说，还不许你下场。）</span><br>
+        <span class="sign">， 救 者 ： 雪 禾</span>
+      </div>
+    </div>
+
+    <p>视频结束的时候，那个少年不见了。藕塘上，只剩一片<b>粉白色</b>的莲瓣，<b>半透明</b>，<b>在风里抖</b>。</p>
+
+    <p>你的眼睛里，世界又回到了原本的样子。正常的路、正常的草、正常的<b>冷</b>。
+    <br>你口袋里，有一张纸质存根。<br>
+    <span class="stash-note">莲之庭·湖心岛侧门·存根·林</span></p>
+
+    <!-- 视频播完后引导去水阁论坛归位（不再在本页输入） -->
+    <div id="ritualReopen" class="forum-guide" style="display:none">
+      <h3>， 雪 禾 走 后 · 存 根 背 面 浮 出 几 行 字 ，</h3>
+      <p class="lead">你把存根翻过来。墨是新墨，字是四把。<br>归位不在此处。莲之庭的诸位管理者，散落在水阁论坛某几帖里。<br>去那里。找到那四个角落。逐一填入。</p>
+
+      <div class="guide-box">
+        <div class="gline"><span class="gk">1</span>打开 <b>回川水阁</b> 论坛。</div>
+        <div class="gline"><span class="gk">2</span>在四名管理者的主题帖里，找标着「██ 内部凭据校验 ██」的楼层。</div>
+        <div class="gline"><span class="gk">3</span>逐帖填入帐号 + 密钥。每填对一把，就地展开 ta 的隐藏记录。</div>
+        <div class="gline"><span class="gk">4</span>四把全归位，水阁底部自会亮起「开启终局」的入口。</div>
+      </div>
+
+      <div class="guide-cta">
+        <a class="btn" href="forum.html">▸ 进 入 回 川 水 阁 论 坛</a>
+      </div>
+
+      <p class="guide-note">， 在 那 里 输 · 不 要 在 这 里 跳 · 终 局 归 那 里 管 ，</p>
+    </div>
+
+    <div class="note">
+      ， 第二节 完 ，<br>
+      雪禾救醒的录看完，存根背面浮出字。<br>
+      归位不在此处。<b>去水阁论坛</b>。
+    </div>
+
+    <p class="end-mark">· · · 第 二 节 · 完 · · ·</p>
+
+  </div>
+</div>
+
+<script>
+/* ========== 返回 ========== */
+function goBack(){
+  try{
+    if(document.referrer && document.referrer.indexOf('chapter1-departure.html')>=0){
+      history.back();
+    }else if(document.referrer && document.referrer.indexOf('gov-portal.html')>=0){
+      history.back();
+    }else{
+      window.location.href = 'gov-portal.html#home';
+    }
+  }catch(e){
+    window.location.href = 'gov-portal.html#home';
+  }
+}
+try{ window.scrollTo(0,0); }catch(e){}
+
+/* ========== 林茂才献祭图：点击切换 ========== */
+var swapDone = false;
+function swapSacrifice(){
+  if(swapDone) return;
+  swapDone = true;
+  var img = document.getElementById('sacImg');
+  if(img){ img.src = 'assets/desktop/lin-sacrifice-after.jpg'; }
+  var cap = document.getElementById('sacCap');
+  if(cap){ cap.textContent ='点 击 切 换 后 · 帐 号 已 显 现'; }
+  var det = document.getElementById('sac-detail');
+  if(det){ det.style.display = 'block'; det.scrollIntoView({behavior:'smooth', block:'start'}); }
+}
+
+/* ========== 终局由水阁论坛归位 4 把解锁 · 此处不再校验管理员凭据 ========== */
+
+/* ========== 雪禾救醒视频（已转 H.264，全浏览器可播） ========== */
+(function(){
+  var stage  = document.getElementById('xueheStage');
+  var vid    = document.getElementById('xueheVid');
+  var reopen = document.getElementById('ritualReopen');
+  if(!reopen) return;
+
+  function showTerminal(){
+    try{ localStorage.setItem('hc_chapter1_done','1'); }catch(e){}
+    // 终局不在此处管 · 须在水阁论坛归位 4 把后方解锁 ending
+    reopen.style.display = 'block';
+    setTimeout(function(){
+      reopen.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 200);
+  }
+
+  // 真视频为主：播完 / 拖到 92% 以上 → 解锁终局
+  if(vid){
+    vid.addEventListener('ended', showTerminal);
+    vid.addEventListener('pause', function(){
+      try{
+        if(vid.duration && vid.currentTime >= vid.duration * 0.92){ showTerminal(); }
+      }catch(e){}
+    });
+    // 万一视频仍加载失败 → 退回 CSS 动效场景兜底
+    vid.addEventListener('error', function(){
+      vid.style.display = 'none';
+      if(stage) stage.style.display = 'block';
+      fallback();
+    });
+  }
+
+  // CSS 动效兜底（仅在视频出错时启用）
+  function fallback(){
+    if(!stage){ showTerminal(); return; }
+    var armed = true;
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting && armed){
+            armed = false;
+            setTimeout(showTerminal, 6500);
+            io.unobserve(stage);
+          }
+        });
+      }, {threshold:0.35});
+      io.observe(stage);
+    } else {
+      setTimeout(showTerminal, 6500);
+    }
+    stage.addEventListener('click', function(){
+      if(!armed){ showTerminal(); }
+      else { armed = false; setTimeout(showTerminal, 1200); }
+    });
+  }
+})();
+
+/* ========== 恐怖谷：文字渐渐变血色 + 抖动 ========== */
+(function(){
+  var v = document.getElementById('valley-text');
+  if(v){
+    setTimeout(function(){ v.classList.add('fade'); }, 4200);
+  }
+  var s = document.getElementById('vShake');
+  if(s){
+    setTimeout(function(){ s.classList.add('shake'); }, 5600);
+  }
+  var s2 = document.getElementById('vShake2');
+  if(s2){
+    setTimeout(function(){ s2.classList.add('shake'); }, 7000);
+  }
+
+  /* === 全屏眼睛疯狂眨动 · 滚动到「ta们看见你了」时触发 === */
+  var cb = document.getElementById('crashBlock');
+  var stage = document.getElementById('blinkStage');
+  if(cb && stage && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting && cb.dataset.armed === '1'){
+          cb.dataset.armed = '0';
+          runBlinkStorm(stage);
+          io.unobserve(cb);
+        }
+      });
+    }, {threshold:0.25});
+    io.observe(cb);
+  }
+})();
+
+function runBlinkStorm(stage){
+  // 注入 14 个眼睛，random 位置 / 大小 / 频率
+  var N = 14;
+  for(var i=0;i<N;i++){
+    var eb = document.createElement('div');
+    eb.className = 'eb' + (i%3===1 ? ' c' : '');
+    var w = 70 + Math.random()*180;
+    var h = w * 0.55;
+    eb.style.width = w + 'px';
+    eb.style.height = h + 'px';
+    eb.style.left = (Math.random()*100) + '%';
+    eb.style.top  = (Math.random()*100) + '%';
+    eb.style.setProperty('--d', (0.32 + Math.random()*0.55).toFixed(2) + 's');
+    eb.style.setProperty('--s', (0.7 + Math.random()*0.7).toFixed(2));
+    eb.style.setProperty('--o', (0.75 + Math.random()*0.25).toFixed(2));
+    eb.style.transform = 'translate(-50%,-50%)';
+    stage.appendChild(eb);
+  }
+  // 1.4s 后露出中央「ta 们 在 眨 动」红字
+  var txt = document.getElementById('blinkTxt');
+  if(txt) txt.style.display = 'block';
+  // 整页轻微抖动
+  document.body.classList.add('crash-shake');
+  // 启动全屏 overlay
+  stage.classList.add('run');
+  // 4.0s 后收尾：停止眨动 + 渐隐 overlay
+  setTimeout(function(){
+    document.body.classList.remove('crash-shake');
+    if(txt) txt.style.display = 'none';
+    stage.classList.remove('run');
+    setTimeout(function(){
+      while(stage.firstChild && !stage.firstChild.classList.contains('scrim') && !stage.firstChild.classList.contains('txt') && !stage.firstChild.classList.contains('blood')){
+        stage.removeChild(stage.firstChild);
+      }
+    }, 400);
+  }, 4000);
+}
+</script>
+</body>
+</html>

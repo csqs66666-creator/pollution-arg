@@ -1,0 +1,1419 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>回川水阁 · 回川市诡异民间论坛</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --ink:#cfc6b4;
+  --ink2:#9a8e7a;
+  --line:#2a2a2a;
+  --line2:#1a1a1a;
+  --red:#8b1a1a;
+  --red2:#c0392b;
+  --night:#0a0a0a;
+  --night2:#141414;
+  --bg:#0d0d0d;
+  --paper:#181818;
+  --blue:#3b6f9f;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;padding:0;
+  background:var(--night);
+  color:var(--ink);
+  font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+  letter-spacing:0.04em;
+  font-size:13px;
+}
+body{
+  background:
+    radial-gradient(ellipse at top, rgba(139,26,26,0.10), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px),
+    var(--night);
+  min-height:100vh;
+}
+
+/* ========== 顶栏 ========== */
+.topbar{
+  display:flex;align-items:center;
+  background:linear-gradient(180deg, #1a1a1a, #0a0a0a);
+  border-bottom:1px solid #2a2a2a;
+  padding:0 24px;
+  height:54px;
+  position:sticky;top:0;z-index:50;
+}
+.brand{font-size:17px;font-weight:700;color:#c8b8a0;letter-spacing:0.3em;margin-right:8px}
+.brand .dot{color:#8b1a1a}
+.brand .sub{font-size:11px;color:#777;letter-spacing:0.4em;margin-left:10px;font-weight:400}
+.navlinks{display:flex;gap:0;flex:1;margin-left:30px}
+.navlinks a{color:var(--ink2);text-decoration:none;padding:0 18px;height:54px;display:flex;align-items:center;font-size:13px;letter-spacing:0.12em}
+.navlinks a:hover{color:#c8b8a0;background:rgba(255,255,255,0.04)}
+.navlinks a.cur{color:#c8b8a0;background:rgba(139,26,26,0.18);border-bottom:2px solid #8b1a1a}
+.search{margin-left:auto;display:flex;gap:6px;align-items:center}
+.search input{background:#000;border:1px solid #2a2a2a;color:var(--ink);padding:5px 10px;font-size:12px;width:200px;letter-spacing:0.06em}
+.search input:focus{outline:none;border-color:#8b1a1a}
+.search button{background:transparent;border:1px solid #3a3a3a;color:var(--ink2);padding:5px 12px;cursor:pointer;font-size:12px;letter-spacing:0.1em}
+.search button:hover{color:#c8b8a0;border-color:#8b1a1a}
+
+/* ========== 主体 ========== */
+.wrap{max-width:1180px;margin:0 auto;padding:24px 24px 80px;display:grid;grid-template-columns:1fr 280px;gap:24px}
+.main{min-width:0}
+
+/* 旧 .admin-box / .admin-msg 集中入口样式已移除 · 四把钥匙分散藏在四帖里 */
+
+/* ========== 主题列表 ========== */
+.thread-list{background:var(--paper);border:1px solid var(--line)}
+.thread{
+  display:grid;grid-template-columns:48px 1fr 110px 90px 70px;
+  gap:12px;align-items:center;
+  padding:13px 16px;
+  border-bottom:1px solid var(--line2);
+  cursor:pointer;transition:background 0.15s;
+  text-decoration:none;color:inherit;
+}
+.thread:hover{background:rgba(139,26,26,0.06)}
+.thread:last-child{border-bottom:none}
+.avatar{width:36px;height:36px;border-radius:2px;background:linear-gradient(135deg,#3a3a3a,#1a1a1a);display:flex;align-items:center;justify-content:center;font-size:12px;color:#888;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar.red{background:linear-gradient(135deg,#5a0e0e,#2a0606);color:#c8a8a8}
+.avatar.admin{background:linear-gradient(135deg,#3a2a1a,#1a0e0a);color:#a89078}
+.thread .title{font-size:14px;color:#cfc6b4;font-weight:500}
+.thread .title .tag{display:inline-block;font-size:10px;padding:1px 6px;margin-right:6px;border:1px solid #6a2020;color:#c8a8a8;letter-spacing:0.1em;vertical-align:1px}
+.thread .title .tag.hot{border-color:#8b1a1a;background:rgba(139,26,26,0.18);color:#e0a8a8}
+.thread .title .tag.danger{border-color:#c04040;background:rgba(178,34,34,0.25);color:#f0c0c0;animation:tagPulse 1.4s ease-in-out infinite}
+@keyframes tagPulse{0%,100%{opacity:1}50%{opacity:0.6}}
+.thread .meta{font-size:11px;color:#666;line-height:1.4;margin-top:2px}
+.thread .author{font-size:12px;color:#888;text-align:center}
+.thread .author.red{color:#c8a8a8}
+.thread .author.admin{color:#a89078}
+.thread .last{font-size:11px;color:#666;text-align:center;line-height:1.4}
+.thread .count{font-size:11px;color:#888;text-align:center}
+.thread .count b{color:#c8a8a8;font-weight:600}
+
+/* ========== 主题详情 ========== */
+.post{
+  background:var(--paper);
+  border:1px solid var(--line);
+  margin-bottom:14px;
+}
+.post .ph{
+  padding:18px 22px;
+  border-bottom:1px solid var(--line2);
+  display:flex;align-items:center;gap:10px;
+}
+.post .ph .info{flex:1;min-width:0}
+.post .ph .info .t{font-size:15px;color:#cfc6b4;font-weight:600}
+.post .ph .info .m{font-size:11px;color:#666;margin-top:3px;letter-spacing:0.05em}
+.post .ph .floor{font-size:11px;color:#888;border:1px solid #3a3a3a;padding:1px 6px;letter-spacing:0.1em}
+.post .pb{padding:20px 22px;font-size:14px;line-height:2;color:#cfc6b4;letter-spacing:0.04em}
+.post .pb p{margin:0 0 12px}
+.post .pb .small{font-size:12px;color:#888}
+.post .pb .quote{
+  border-left:3px solid #3a3a3a;padding:6px 12px;margin:10px 0;color:#888;background:rgba(255,255,255,0.02);
+  font-size:13px;
+}
+.post .pb .quote b{color:#a89078}
+.post .pf{
+  padding:10px 22px;border-top:1px solid var(--line2);
+  display:flex;gap:16px;align-items:center;font-size:11.5px;color:#666;
+}
+.post .pf .ops{margin-left:auto;display:flex;gap:14px}
+.post .pf .ops span{cursor:pointer}
+.post .pf .ops span:hover{color:#c8a8a8}
+
+/* 楼层内回复（含密码块） */
+.reply-list{padding:8px 22px 18px;background:rgba(0,0,0,0.25)}
+.reply{
+  padding:14px 0;border-bottom:1px dashed var(--line2);
+  display:grid;grid-template-columns:36px 1fr;gap:12px;
+}
+.reply:last-child{border-bottom:none}
+.reply .av{width:30px;height:30px;border-radius:2px;background:linear-gradient(135deg,#3a3a3a,#1a1a1a);display:flex;align-items:center;justify-content:center;font-size:11px;color:#888;overflow:hidden}
+.reply .av.red{background:linear-gradient(135deg,#5a0e0e,#2a0606);color:#c8a8a8}
+.reply .av.admin{background:linear-gradient(135deg,#3a2a1a,#1a0e0a);color:#a89078}
+.reply .who{font-size:12px;color:#a89078;font-weight:500}
+.reply .who.red{color:#c8a8a8}
+.reply .who.admin{color:#a89078}
+.reply .who small{color:#666;font-weight:400;margin-left:6px}
+.reply .body{font-size:13px;color:#cfc6b4;line-height:1.85;margin-top:4px}
+.reply .body .admin-cred{
+  display:block;margin-top:8px;padding:6px 10px;
+  border:1px dashed #6a2020;background:rgba(139,26,26,0.08);
+  color:#c04040;font-family:monospace;letter-spacing:0.05em;font-size:12px;
+}
+.reply .body .bared{color:#a02020;font-weight:600}
+.reply .body .bared::after{content:" · 此用户已被永久禁言"}
+.reply .body .floornum{font-size:10.5px;color:#666;margin-right:6px}
+
+/* ========== 侧栏 ========== */
+.side{display:flex;flex-direction:column;gap:14px}
+.sidebox{background:var(--paper);border:1px solid var(--line);padding:14px 16px}
+.sidebox h3{margin:0 0 10px;font-size:13px;color:#a89078;letter-spacing:0.2em;border-bottom:1px solid var(--line2);padding-bottom:6px}
+.sidebox ol{margin:0;padding-left:18px;font-size:12px;color:var(--ink2);line-height:1.85}
+.sidebox ol li{margin:2px 0;cursor:pointer}
+.sidebox ol li:hover{color:#c8a8a8}
+.sidebox .admin-hint{
+  font-size:11.5px;color:#666;line-height:1.7;background:rgba(139,26,26,0.06);
+  border:1px solid #3a0c0c;padding:10px 12px;letter-spacing:0.06em;
+}
+.sidebox .admin-hint b{color:#c8a8a8}
+
+/* ========== 底部 ========== */
+.foot{
+  text-align:center;padding:30px 0;
+  color:#444;font-size:11px;letter-spacing:0.4em;
+  border-top:1px solid var(--line2);margin-top:40px;
+}
+
+/* ========== 主题切换：列表 / 详情 ========== */
+.view{display:none}
+.view.cur{display:block}
+
+/* ========== 分散输入：四把钥匙藏在四帖里 ========== */
+.cred-box{
+  margin:14px 0 8px;
+  padding:14px 16px 12px;
+  border:1px dashed #6a2020;
+  background:rgba(139,26,26,0.06);
+}
+.cred-title{
+  font-size:11.5px;
+  color:#a02020;
+  letter-spacing:0.3em;
+  text-align:center;
+  margin:0 0 10px;
+  font-family:monospace;
+}
+.cred-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:6px 0;
+}
+.cred-row label{
+  width:54px;
+  color:#a89078;
+  font-size:11.5px;
+  letter-spacing:0.2em;
+  text-align:right;
+}
+.cred-row input{
+  flex:1;
+  background:#000;
+  border:1px solid #2a2a2a;
+  color:#e8d8b8;
+  font-family:monospace;
+  font-size:12px;
+  padding:6px 10px;
+  letter-spacing:0.05em;
+  outline:none;
+}
+.cred-row input:focus{border-color:#8b1a1a}
+.cred-row input:disabled{opacity:0.5;cursor:not-allowed}
+.cred-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+.cred-actions button{
+  background:transparent;
+  border:1px solid #8b1a1a;
+  color:#c8a8a8;
+  padding:5px 16px;
+  cursor:pointer;
+  font-size:11.5px;
+  letter-spacing:0.2em;
+}
+.cred-actions button:hover{background:#8b1a1a;color:#fff}
+.cred-box .admin-hint{font-size:11.5px;color:#666;min-height:14px;letter-spacing:0.06em}
+.cred-box .admin-hint.ok{color:#80c080}
+.cred-box .admin-hint.err{color:#c04040}
+
+/* 归位后展开的隐藏记录 */
+.cred-record{
+  margin-top:12px;
+  padding:12px 16px 14px;
+  border-top:1px dashed #4a0e0e;
+  background:rgba(10,2,2,0.45);
+}
+.cred-record .rec-title{
+  font-size:11.5px;
+  color:#a02020;
+  letter-spacing:0.3em;
+  text-align:center;
+  margin:0 0 8px;
+}
+.cred-record p{
+  font-size:12.5px;
+  color:#c8b898;
+  line-height:1.95;
+  margin:6px 0;
+  letter-spacing:0.04em;
+}
+.cred-record p.rec-sign{
+  margin-top:10px;
+  text-align:right;
+  color:#7a5a5a;
+  font-size:11px;
+  letter-spacing:0.3em;
+}
+
+/* 终局入口（4 把全归位才亮） */
+.ending-cta{
+  display:none;
+  text-align:center;
+  margin:28px 0 8px;
+  padding:20px 24px;
+  border:1px solid #8b1a1a;
+  background:rgba(139,26,26,0.10);
+}
+.ending-cta .a{
+  display:inline-block;
+  padding:11px 28px;
+  border:1px solid #8b1a1a;
+  color:#c8a8a8;
+  text-decoration:none;
+  font-size:13px;
+  letter-spacing:0.3em;
+  transition:background .25s, color .25s;
+}
+.ending-cta .a:hover{background:#8b1a1a;color:#fff}
+.ending-cta .note{
+  margin-top:12px;
+  font-size:11.5px;
+  color:#7a5a5a;
+  letter-spacing:0.2em;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">回 川 水 阁<span class="dot">·</span><span class="sub">民 间 论 坛</span></div>
+  <nav class="navlinks">
+    <a class="cur" data-go="list">全部主题</a>
+    <a data-go="t-xuqing">许清</a>
+    <a data-go="t-lin">林茂才</a>
+    <a data-go="t-shen">沈清川</a>
+    <a data-go="t-zhou">周秉坤</a>
+  </nav>
+  <div class="search">
+    <input type="text" placeholder="搜索关键词，如「红纹」「档案室」" id="searchIn">
+    <button onclick="alert('功能已屏蔽 · 请按主题列表查找')">搜索</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="main">
+
+    <!-- 集中入口已删除 · 四把钥匙分散藏在四帖里 · 归位在论坛里 -->
+
+    <!-- ====== 主题列表视图 ====== -->
+    <div class="view cur" id="v-list">
+      <div class="thread-list">
+        <a class="thread" data-go="t-xuqing">
+          <div class="avatar"></div>
+          <div>
+            <div class="title"><span class="tag danger">置顶</span>许清最后那条工作群消息，已经过去 11 天</div>
+            <div class="meta">原水务局科员 · 失联第 11 天 · 微信不回 · 同事已被要求封口</div>
+          </div>
+          <div class="author">西湾阿婆</div>
+          <div class="last">15 分钟前</div>
+          <div class="count">回复 <b>47</b></div>
+        </a>
+        <a class="thread" data-go="t-shen">
+          <div class="avatar"></div>
+          <div>
+            <div class="title"><span class="tag hot">热议</span>市档案馆那个沈清川，三十年来真的一张脸没换过？</div>
+            <div class="meta">工牌照片 vs 1995 年合影像素比对 · 99.6% 相似</div>
+          </div>
+          <div class="author">档案室小王</div>
+          <div class="last">42 分钟前</div>
+          <div class="count">回复 <b>118</b></div>
+        </a>
+        <a class="thread" data-go="t-lin">
+          <div class="avatar red"></div>
+          <div>
+            <div class="title"><span class="tag hot">热议</span>我孩子那年的事，许愿之后真的好了，可接下来这一年……</div>
+            <div class="meta">原生态环境局 · 已签字 · 已辞职 · 已签字</div>
+          </div>
+          <div class="author">老干部-49</div>
+          <div class="last">1 小时前</div>
+          <div class="count">回复 <b>31</b></div>
+        </a>
+        <a class="thread" data-go="t-zhou">
+          <div class="avatar admin"></div>
+          <div>
+            <div class="title"><span class="tag">官方</span>关于月荷水库湖心岛管理问题的统一回复</div>
+            <div class="meta">办公室 · 周 · 内部口径 · 严禁外传</div>
+          </div>
+          <div class="author admin">z_h_72</div>
+          <div class="last">3 小时前</div>
+          <div class="count">回复 <b>9</b></div>
+        </a>
+        <a class="thread">
+          <div class="avatar"></div>
+          <div>
+            <div class="title">西湾露营区 3 号营位，今年春天关的，没解释</div>
+            <div class="meta">西湾郊野公园管理处至今未发公告</div>
+          </div>
+          <div class="author">城南小胖</div>
+          <div class="last">昨晚 22:14</div>
+          <div class="count">回复 <b>23</b></div>
+        </a>
+        <a class="thread">
+          <div class="avatar"></div>
+          <div>
+            <div class="title">网传月荷水库「红纹鱼」吃了会失眠，我妈昨晚开始念叨了</div>
+            <div class="meta">市政府官网回复：不实信息 · 但我妈念叨的声气，跟那条鱼当时一模一样</div>
+          </div>
+          <div class="author">湖心岛渔民</div>
+          <div class="last">昨夜 03:02</div>
+          <div class="count">回复 <b>66</b></div>
+        </a>
+        <a class="thread">
+          <div class="avatar"></div>
+          <div>
+            <div class="title">南岸步道 K2+300 那段山体滑坡，夜里有人去修过</div>
+            <div class="meta">白天去看过 · 草是湿的 · 脚印朝湖心方向</div>
+          </div>
+          <div class="author">夜钓人</div>
+          <div class="last">前天</div>
+          <div class="count">回复 <b>14</b></div>
+        </a>
+        <a class="thread">
+          <div class="avatar"></div>
+          <div>
+            <div class="title">河西档案室那个姐姐，好漂亮啊……气质冷冷的</div>
+            <div class="meta">注：此帖已被下沉 · 楼中含管理员口令，请勿截图</div>
+          </div>
+          <div class="author">吃瓜</div>
+          <div class="last">上周</div>
+          <div class="count">回复 <b>47</b></div>
+        </a>
+        <a class="thread" data-go="t-hongwen">
+          <div class="avatar red"></div>
+          <div>
+            <div class="title">我家孩子去年吃了一节藕，第二天开始念叨「湖心岛底」</div>
+            <div class="meta">已签字 · 已就诊 · 已停药 · 仍念叨</div>
+          </div>
+          <div class="author">匿名网友·2017</div>
+          <div class="last">昨天 23:51</div>
+          <div class="count">回复 <b>22</b></div>
+        </a>
+        <a class="thread" data-go="t-laochen">
+          <div class="avatar"></div>
+          <div>
+            <div class="title">我是湖心岛祠堂巡逻员，3 年里换了 4 批人，没人信我</div>
+            <div class="meta">第七次申请换岗 · 第三次申请离职 · 均未批</div>
+          </div>
+          <div class="author">老陈-63</div>
+          <div class="last">2 天前</div>
+          <div class="count">回复 <b>19</b></div>
+        </a>
+        <a class="thread" data-go="t-xuehe">
+          <div class="avatar red"></div>
+          <div>
+            <div class="title">你们说的那位「正太小仙」，我外婆小时候就见过</div>
+            <div class="meta">从藕塘边接你回家那一节藕，今夜还吃吗</div>
+          </div>
+          <div class="author">藕塘的娃</div>
+          <div class="last">3 天前</div>
+          <div class="count">回复 <b>11</b></div>
+        </a>
+        <a class="thread" data-go="t-neigui">
+          <div class="avatar admin"></div>
+          <div>
+            <div class="title">内鬼自首：1996 年那份底稿是我埋的，但我不是内鬼</div>
+            <div class="meta">封存前最后一刻，我把一句话撕下来贴在了档案室 B3</div>
+          </div>
+          <div class="author">内鬼·1996</div>
+          <div class="last">7 天前</div>
+          <div class="count">回复 <b>5</b></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ====== 主题：许清 ====== -->
+    <div class="view" id="v-t-xuqing">
+      <div class="post">
+        <div class="ph">
+          <div class="avatar"></div>
+          <div class="info">
+            <div class="t">许清最后那条工作群消息，已经过去 11 天</div>
+            <div class="m">楼主：西湾阿婆 · 发帖于 11 天前 · 西湾 · 失联第 11 天</div>
+          </div>
+          <div class="floor">1 楼</div>
+        </div>
+        <div class="pb">
+          <p>事情是这样的，许清，市水务局科员，去年 6 月起负责月荷水库异常水情复核，工作群昵称「清」。11 天前凌晨 03:11 在群里发了一条消息：</p>
+          <div class="quote">
+            「材料齐了。湖心岛、底泥、库底红膜、库周取样、那份未公开的 4 月例检数据，一并打包。明天上午递上去。<br>
+            各位同事，<b>如果我没回来</b>把这条消息截给沈清川。」<br>
+            <span style="color:#888">03:11 许清</span>
+          </div>
+          <p>第二天上午 9 点，他没来上班。人事科 11 点发的内部口径是「个人原因请假」。再过三天改口「已调往外地同系统兄弟单位」。再过一周变成「按本人意愿办理离职，相关档案已转出」。</p>
+          <p>他工位上的电脑，至今还亮着。我远远拍了一张，屏幕停在那个「已发送」上，没人关过。</p>
+          <p class="small">我是一名退水的同事，这件事我憋了 11 天。</p>
+        </div>
+        <div class="reply-list">
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">城南小胖 <small>2 楼 · 11 天前</small></div>
+              <div class="body">这个号我见过，他 7 月在档案室调过档，要了 1956 年建市那批老底稿。调档单没签字，后来档案室沈清川自己给他补的。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">回川老饕 <small>3 楼 · 11 天前</small></div>
+              <div class="body">我二姨在西湾住，她上个月说许清半夜还在镇上走，去小卖部买过两次红蜡烛。她当年胆子没这么大。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">夜钓人 <small>4 楼 · 10 天前</small></div>
+              <div class="body">他那条消息我也截过。人事科找我谈过话，让我「别再提」。我先不说了。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">档案室小王 <small>5 楼 · 10 天前</small></div>
+              <div class="body">沈清川这两天没来档案室，但工位上留了一本《莲池水域志·1960》，封面夹着一张字条：<b>「接住。」</b>不知道是给谁的。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">匿名网友 <small>6 楼 · 9 天前</small></div>
+              <div class="body">他发那条消息前一周，跟我喝过一次酒。他说他知道了一些事，但是，「说出来，会有人跟他一起走」。他没走，他先让 ta 走了。
+              <div class="quote" style="margin-top:8px">
+                [工 作 群 截 图 · 2024-09-22 02:58]<br>
+                <b>清</b>（<span style="opacity:0.18;color:#888">XuQing_0221</span>）：<br>
+                「材料齐了。湖心岛、底泥、库底红膜、库周取样、那份未公开的 4 月例检数据，一并打包。明天上午递上去。<br>
+                各位同事，<b>如果我没回来</b>把这条消息截给沈清川。」<br>
+                <span style="color:#666">状态栏：<span style="opacity:0.18;color:#888">jiuHuLaiYe27</span> · 个 人 签 名 档 ：就 呼 来 业 已 满 27 岁</span>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">西湾阿婆 <small>7 楼 · 楼主 · 9 天前</small></div>
+              <div class="body">对，他走之前那段时间脸色特别差，背也弓了。他老婆那阵子天天哭。单位不发工资，他老婆去问，回一句「按离职流程走」。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">湖心岛渔民 <small>8 楼 · 8 天前</small></div>
+              <div class="body">
+                <p>我跟他认识。当年他在水务局，我下湖，他查数据。我跟他讲过湖心岛的事。他当时不信，半夜偷偷跟我去了一次。</p>
+                <p>那天晚上他再没说「不信」。</p>
+                <p>回来之后他整个人变了，头发白了一片，眼神像被什么东西按住。他老婆说他回家整夜整夜坐在客厅，盯着墙上一张老照片，那张照片是他爸留下的，1956 年第一批下湖的渔民合影。</p>
+                <p>他爸是那批人里第二个下湖的。下湖之后没回来过。</p>
+                <p>他说，他爸那时常说一句：「<b>湖心岛底下，<span class="bared">是个人</span>。</b>」</p>
+                <p>他说他那天晚上，终于在湖心岛上看清了。</p>
+                <p>他说他接下来要做两件事：<br>
+                第一，把手里所有证据交出去。<br>
+                第二，<b>如果没回来，</b>让人去档案室找沈清川。</p>
+                <p>他没回来。</p>
+                <div class="cred-box" data-key="xu">
+                  <div class="cred-title">██ 内 部 凭 据 校 验 ██</div>
+                  <div class="cred-row"><label>帐 号</label><input type="text" id="u-xu" autocomplete="off" spellcheck="false"></div>
+                  <div class="cred-row"><label>密 钥</label><input type="password" id="p-xu" autocomplete="off" spellcheck="false"></div>
+                  <div class="cred-actions"><button onclick="tryVerify('xu')" type="button">▸ 归 位</button><span class="admin-hint" id="h-xu"></span></div>
+                  <div class="cred-record" id="rec-xu" style="display:none">
+                    <div class="rec-title">， 水 务 员 · 许 清 · 归 位 后 自 述 ，</div>
+                    <p>我是许清。凌晨 03:11，那条消息，我发了。我把它打出来的时候，手是抖的。不是冷。是终于打出来了。</p>
+                    <p>那一晚采样回来的鱼，尾鳍有一道红纹。我拍下来了。命名「2024-09-XX-03-11-红纹鱼」。我以为我把证据交出去了。我不知道，<b>「已发送」三个字，ta 也看得见。</b></p>
+                    <p>我走到湖边那会儿，电脑还亮着。我盯了一眼「已发送」。</p>
+                    <p>我猜 ta 也盯着。ta 看到的时候，会不会也按一下「已读」。</p>
+                    <p>ta 按没按，我不知道。我手机相册里那张照片，是最后一张。我没删。ta 也没让我删。ta 让我留着。留着好让 ta 数。</p>
+                    <p class="rec-sign">， 水 务 员 · 许 清 ，</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">吃瓜 <small>9 楼 · 6 天前</small></div>
+              <div class="body">许清失联后，ta 老婆也搬走了。邻居说走的那天，她把家里一张发黄的合影烧了。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">城南小胖 <small>10 楼 · 5 天前</small></div>
+              <div class="body">我刚翻了一下。人事那边其实有一份调令，编号 2026-07-人字第 91 号。日期填的是 8 月 12 日，但是「<b>许清本人签字</b>」那栏是空白的。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>11 楼 · 4 天前</small></div>
+              <div class="body">我看过。档案室 B3 层，旧档末页。1956 年那一批下湖的渔民里，没回来的人，比回来的多。这件事，我写在《莲之庭观察日志》里了。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">匿名网友 <small>12 楼 · 2 天前</small></div>
+              <div class="body">西湾阿婆，我劝你这条楼别更了。许清那条工作群消息截图，你也删了。他们真能找到你。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">西湾阿婆 <small>13 楼 · 楼主 · 1 天前</small></div>
+              <div class="body">已经来不及了。今早我出门买菜，对面那栋的二楼，那个窗子挂了一条新窗帘。颜色我见过，红。</div>
+            </div>
+          </div>
+        </div>
+        <div class="pf">
+          <span>⚠ 此帖已被相关单位要求下沉 · 备份在站外</span>
+          <div class="ops"><span>👍 312</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 主题：沈清川 ====== -->
+    <div class="view" id="v-t-shen">
+      <div class="post">
+        <div class="ph">
+          <div class="avatar"></div>
+          <div class="info">
+            <div class="t">市档案馆那个沈清川，三十年来真的一张脸没换过？</div>
+            <div class="m">楼主：档案室小王 · 1985 年建市以来工牌照片像素比对 · 99.6% 相似</div>
+          </div>
+          <div class="floor">1 楼</div>
+        </div>
+        <div class="pb">
+          <p>我是市档案室小王，今年调来不到半年。前两天整理旧柜子，翻到 1995 年档案馆合影，里面有 ta。</p>
+          <p>我把 ta 现在的工牌照和 1995 年那张合影放在一起比对，相似度 99.6%。我以为是看错了，又去翻 1978 年那批入职登记表，上面贴的二寸照跟 ta 现在的样子，几乎一样。</p>
+          <p>ta 见到我翻那些东西时，没生气，只说了一句：「<b>你看够了没。</b>」</p>
+          <p>我说：沈姐，你到底多大？</p>
+          <p>ta 笑了一下，没答。走的时候，桌上留了一本手抄本，封面写着《莲之庭观察日志》。</p>
+        </div>
+        <div class="reply-list">
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">城南小胖 <small>2 楼 · 1 周前</small></div>
+              <div class="body"><span class="floornum">[2 楼]</span>我爸是 1985 年第一批建市干部，他 1986 年的工作笔记里写过一句：「沈清川来市档案馆报到，工龄表填 23 岁，长得跟 1978 年那张一样。」<br>他当时以为写错了，没改。
+              <div class="quote" style="margin-top:8px">
+                [档 案 室 内 部 工 单 · 1985-12-14 · 永 久]<br>
+                编　号 ：<span style="opacity:0.18;color:#888">ShenQingchuan_25</span><br>
+                类　别 ：人 事 · 长 期 · 不 调 离<br>
+                工 龄 表 ：23 岁　·　<b>初 予 ！</b><br>
+                初 始 密 钥 ：<span style="opacity:0.18;color:#888">chu-yu-2014</span>
+              </div>
+              <div class="cred-box" data-key="shen" style="margin-top:8px">
+                <div class="cred-title">██ 内 部 凭 据 校 验 ██</div>
+                <div class="cred-row"><label>帐 号</label><input type="text" id="u-shen" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" id="p-shen" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-actions"><button onclick="tryVerify('shen')" type="button">▸ 归 位</button><span class="admin-hint" id="h-shen"></span></div>
+                <div class="cred-record" id="rec-shen" style="display:none">
+                  <div class="rec-title">， 不 老 者 · 沈 清 川 · 归 位 后 自 述 ，</div>
+                  <p>我叫沈清川。我在这座城里活了很久。久到我已经不算自己的年岁。</p>
+                  <p>1956 年那一晚，库区出水，我在岸边。哭了很久。后来我再没哭过。我记的事太多，多到写不完。我用三十年写一本《莲之庭观察日志》，记下的事比这座城的人都多。</p>
+                  <p>我不阻止。我不加入。我只记。</p>
+                  <p>我不拦你们去湖心岛。我不拦林茂才去。我不拦许清去。我也不拦你。我只在你走到头的时候，站在对岸，替你把灯点亮。</p>
+                  <p>桌上有张照片。1956 年下湖那批人。ta 们笑着。我盯着那张照片。ta 们走的时候，没回头。我替 ta 们回头看过一次。一次就够。</p>
+                  <p>你把我这条钥匙归了位。我替你多记一行。</p>
+                  <p class="rec-sign">， 不 老 者 · 档 案 室 员 · 沈 清 川 ，</p>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">西湾阿婆 <small>3 楼 · 1 周前</small></div>
+              <div class="body">我妈 1962 年生，她说小时候跟着外婆去城里，见过 ta 一次，外婆回来病了好几天。后来外婆过世前，念叨 ta 的名字。我一直记着「沈清川」这三个字。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">湖心岛渔民 <small>4 楼 · 1 周前</small></div>
+              <div class="body">我下湖四十年，见过 ta 两次。一次是 1996 年，ta 在湖心岛祠堂门口，没说话。第二次是 2014 年，ta 站在库底采样船的船头。两次 ta 都没变。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">夜钓人 <small>5 楼 · 6 天前</small></div>
+              <div class="body">ta 写过的那本《莲之庭观察日志》我见过一次，ta 借给县志办抄的，抄完还了回去。我记得上面有一句：「<b>我旁观，是因为我不能让 ta 知道我在看。</b>」</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>6 楼 · 4 天前</small></div>
+              <div class="body">ta 在这座城里活得太久了。久到 ta 自己都不再算自己的年岁。我见过 ta 哭的那一次，1956 年，库区出水那一晚，ta 在岸边，哭了很久。后来 ta 再没哭过。我把这件事记在日志第 7 页。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">吃瓜 <small>7 楼 · 3 天前</small></div>
+              <div class="body">所以 ta 到底是人是……？</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>8 楼 · 2 天前</small></div>
+              <div class="body"><b>这个问题，ta 自己也不答。</b>我猜，ta 是「不老者」。莲之庭在每一座城，都会有一个这样的人。ta 旁观，不阻止，也不加入。ta 只记。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">档案室小王 <small>9 楼 · 楼主 · 1 天前</small></div>
+              <div class="body">今天 ta 又来了。ta 进来时，我看见 ta 桌上有一样新东西，一张旧照片。照片里是 1956 年下湖那批人，站在岸上，笑着。ta 盯着那张照片看了很久。我没敢打扰。ta 走的时候，照片没带走，留在桌上。照片背面，有一行字：「<b>这是那一夜之前的最后一张。</b>」</div>
+            </div>
+          </div>
+        </div>
+        <div class="pf">
+          <span>此帖已被相关单位要求下沉 · 楼中含管理员口令，请勿截图</span>
+          <div class="ops"><span>👍 480</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 主题：林茂才 ====== -->
+    <div class="view" id="v-t-lin">
+      <div class="post">
+        <div class="ph">
+          <div class="avatar red"></div>
+          <div class="info">
+            <div class="t">我孩子那年的事，许愿之后真的好了，可接下来这一年……</div>
+            <div class="m">楼主：老干部-49 · 已签字 · 已辞职 · 已签字</div>
+          </div>
+          <div class="floor">1 楼</div>
+        </div>
+        <div class="pb">
+          <p>我本名林，1981 年生。当年孩子得的那场病，市医院下了三次病危。我和我爱人跪在病床边哭。</p>
+          <p>第三天夜里，病房窗户自己开了。我听见湖心岛方向有声音，很轻，像莲瓣在风里拨开。</p>
+          <p>我出去看，藕塘边站着一个正太模样的小孩，十二三岁。ta 头上顶着一朵半开半合的粉荷花。</p>
+          <p>ta 看了我一眼，问我：<b>「你想要什么？」</b></p>
+          <p>我说：孩子活着。</p>
+          <p>ta 笑了一下，伸手把手里一节藕掰下来，递给我：让孩子吃这个。</p>
+          <p>我拿回来，孩子吃了，第二天烧退了，第三天能坐起来，一周后出院。</p>
+          <p>我以为事情过去了。</p>
+          <p>没想到，<b>接下来这一年，我许了无数次愿。</b></p>
+          <p>愿孩子上好小学。上了。愿爱人升职。升了。愿老人健康。健康了。愿自己升官。升了。</p>
+          <p>每一次许愿，每一次都成。</p>
+          <p>直到我坐到生态环境局那个位子。直到我签了第一份月荷水库的水质报告。直到我改掉那个数字。</p>
+          <p>我这才知道，<b>孩子那场病，从来不是病的。</b></p>
+          <p>我以为我在跟 ta 交换条件。其实 ta 从一开始，就只要我这一点。</p>
+          <p>我把这条发上来，是想告诉所有人：</p>
+          <p><b>你一旦开始许愿，ta 就一直在听。ta 不拒绝。ta 一次一次地答应你。答应到你以为 ta 是老天爷。</b></p>
+          <p>其实 ta 是在等你走进去。</p>
+          <p>我走进去过。我看见了 ta 真正长什么样。我不想再描述。</p>
+          <p>我只想说，<b>别再许愿。</b></p>
+          <p>我今晚会去湖心岛。这一次，不是 ta 让我去的，是我自己要去的。</p>
+          <p>我要把自己写过的字烧给 ta。我要把那一届、那一天、那份签过名字的报告烧给 ta。</p>
+          <p>然后我就在那里，陪着那个被 ta 吃掉的人。</p>
+          <p>这帖子如果沉了，就让它沉了。这一行字，留给还没走到这一步的人看。</p>
+        </div>
+        <div class="reply-list">
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">西湾阿婆 <small>2 楼 · 11 小时前</small></div>
+              <div class="body">楼主，老身看了十几年水阁，没见过这样说话的。你这条是真话还是发疯？</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">老干部-49 <small>3 楼 · 楼主 · 11 小时前</small></div>
+              <div class="body">是疯。疯完就好。我把家里的事都交代了。爱人带着孩子回了娘家。家里那张合影，1985 年第一批下湖的渔民合影里，没有我父亲，我父亲是第二批，我留给孩子了。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">夜钓人 <small>4 楼 · 9 小时前</small></div>
+              <div class="body">林局。您上次签那份 5 月的水质报告，我复印了一份。您说库区红纹鱼是「自然变异」，可我看到 4 月那份底稿里写的是「<b>疑似污染源指向湖心岛西北侧 800 米水下</b>」。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">老干部-49 <small>5 楼 · 楼主 · 9 小时前</small></div>
+              <div class="body">那份底稿我签过销毁。我签的时候手抖。我手抖不是因为不会写字，是因为我那阵子已经明白，<b>下一份报告上，要写的字会变成我自己的名字。</b>
+              <div class="quote" style="margin-top:8px">
+                [生 态 环 境 局 内 部 邮 件 · 抄 送 留 存 · 2024-05-11]<br>
+                发 件 人 ：<span style="opacity:0.18;color:#888">LinMaocai77</span> @ 局 内 网<br>
+                收 件 人 ：办 公 室 副 主 任 · 档 案 室 · 市 政 府 办<br>
+                主　　题 ：5 月 水 质 报 告 修 订（密）<br>
+                备　　注 ：<b>家 属 名</b>　·　登 录 口 令 ：<span style="opacity:0.18;color:#888">family</span>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>6 楼 · 6 小时前</small></div>
+              <div class="body">林。你知道我会看着。我不拦你。你去吧。我今晚会在岸上。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">档案室小王 <small>7 楼 · 4 小时前</small></div>
+              <div class="body">楼主。您要真去湖心岛，<b>您得先看那张「<span class="bared">林茂才同志归位通告</span>」</b>。那张通告上的字，签的人换成您自己。您看见了，才会明白您真正要烧的是哪份文件。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">老干部-49 <small>8 楼 · 楼主 · 3 小时前</small></div>
+              <div class="body">我看了。我懂。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">吃瓜 <small>9 楼 · 1 小时前</small></div>
+              <div class="body">等等，楼主说的「<b>许愿</b>」那段， ta 是谁？</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">老干部-49 <small>10 楼 · 楼主 · 1 小时前</small></div>
+              <div class="body">湖心岛祠堂里坐着的那位。ta 没名字。ta 也不需要名字。ta 只认字，<b>凡是你主动写下来的、主动开口说的，ta 都认。</b></div>
+              <p style="margin-top:8px">我这条楼里所有许愿的细节、签过的字、烧过的报告，<b>都是为了让你看清 ta 是怎么一步步把人引过去的。</b></p>
+              <p>我劝你 <b>打开这一页</b>看完那张图，再决定要不要去湖心岛。</p>
+              <p style="text-align:center;margin-top:14px"><a href="chapter2-ritual.html" style="display:inline-block;padding:8px 18px;border:1px solid #6a2020;color:#c8a8a8;text-decoration:none;letter-spacing:0.2em;font-size:12px">▸ 打 开 那 张 献 祭 图</a></p>
+              <p style="margin-top:8px;font-size:11.5px;color:#888;text-align:center">点开后，<b>点一下那张图</b>。那一栏里，会显出两个红字。<br>那两个红字，<span style="color:#a02020">就是</span>。</p>
+              <div class="admin-cred" style="margin-top:8px">林 局 留 了 一 句 话：</div>
+              <div class="cred-box" data-key="lin" style="margin-top:8px">
+                <div class="cred-title">██ 内 部 凭 据 校 验 ██</div>
+                <div class="cred-row"><label>帐 号</label><input type="text" id="u-lin" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" id="p-lin" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-actions"><button onclick="tryVerify('lin')" type="button">▸ 归 位</button><span class="admin-hint" id="h-lin"></span></div>
+                <div class="cred-record" id="rec-lin" style="display:none">
+                  <div class="rec-title">， 献 祭 者 · 林 茂 才 · 归 位 后 自 述 ，</div>
+                  <p>那天晚上我到了湖心岛。ta 已经坐在那里了。ta 没动。ta 让我坐下。我坐下。</p>
+                  <p>ta 把一碗凉粥端到我面前。我没动。ta 也没催。过了很久，ta 说：「你改过的字，我都替你记着。」</p>
+                  <p>我说：「我知道。」</p>
+                  <p>ta 说：「那你来做什么？」</p>
+                  <p>我说：「把字还给你。」</p>
+                  <p>ta 说：「你写的字，还不回来。」</p>
+                  <p>我说：「我知道。」</p>
+                  <p>ta 没再说话。ta 把粥端走了。走之前，ta 让我把那张合影烧了。1985 年那一批。我烧了。</p>
+                  <p>烧的时候，烟是紫色的。跟我那年孩子吃的那节藕，一样。</p>
+                  <p class="rec-sign">， 献 祭 者 · 林 茂 才 ，</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pf">
+          <span>⚠ 此帖发布 11 小时 · 楼主尚未登录 · 已被相关单位要求下沉</span>
+          <div class="ops"><span>👍 286</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 主题：周秉坤 ====== -->
+    <div class="view" id="v-t-zhou">
+      <div class="post">
+        <div class="ph">
+          <div class="avatar admin"></div>
+          <div class="info">
+            <div class="t">关于月荷水库湖心岛管理问题的统一回复</div>
+            <div class="m">楼主：z_h_72 · 内部口径 · 严禁外传</div>
+          </div>
+          <div class="floor">1 楼</div>
+        </div>
+        <div class="pb">
+          <p>我是市政府办公室，周。湖心岛管理问题近期引发网民关切，现统一回复如下：</p>
+          <p>一、湖心岛系国家饮用水水源一级保护区核心区域，按《水污染防治法》及本市相关规定不对外开放。</p>
+          <p>二、关于「湖心岛夜间维护作业」系保障库区安全的常规水库管理工作。请市民不要过度联想。</p>
+          <p>三、近期网传「湖心岛有异常光斑」「红纹鱼」「水面红雾」等说法，市生态环境局已多次公开说明，均系自然现象，不存在污染，请勿信谣传谣。</p>
+          <p>四、对在水阁等平台发布不实信息、散步恐慌情绪的网民，相关部门将依法依规处理。</p>
+          <p class="small" style="color:#888">市政府办公室</p>
+        </div>
+        <div class="reply-list">
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">档案室小王 <small>2 楼 · 3 小时前</small></div>
+              <div class="body">周主任您好。请问湖心岛每月周三 00:00 那次「维护作业」，您亲自参加过几次？档案室 B3 层里有一份您 2024 年的签到表，十二次签到，签字笔迹与您日常办公笔迹比对相似度 78%，剩下的 22% 集中在字尾。我不是想问别的，我只是想问：<b>那一夜您是用哪支笔签的？</b>
+              <div class="quote" style="margin-top:8px">
+                [签 到 表 · 2024 全 年 · B3-签-0072 · 翻 拍 留 底]<br>
+                姓　名 ：<span style="opacity:0.18;color:#888">ZhouBinkun_72</span>　·　岗 位 ：办 公 室 副 主 任<br>
+                笔　具 ：0.38 蓝 黑 · 2018 停 产　·　纸 ：库 区 维 护 记 录 本<br>
+                备　注 ：<b>影</b>　·　登 录 口 令 ：<span style="opacity:0.18;color:#888">ying_snow_2024</span>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">夜钓人 <small>3 楼 · 2 小时前</small></div>
+              <div class="body">周主任，我去年 10 月在湖心岛外围被巡逻队拦下来过一次。带队的人跟我说，岛上有「领导」。我想确认：<b>是不是您？</b></div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>4 楼 · 1 小时前</small></div>
+              <div class="body">周。你在这座城里待了快二十年了。我旁观你从科长、副市长、到今天这个位子。你今晚在岛上的那一节会议室里，开的那一盏灯，我从对岸看得很清楚。<br>你不用再来发帖了。我替你记。<br>第 3 页 第 11 行。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">城南小胖 <small>5 楼 · 47 分钟前</small></div>
+              <div class="body">楼上那位「旁观者·1956」，能不能问一下，您到底是谁？</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>6 楼 · 31 分钟前</small></div>
+              <div class="body">档案室。我姓沈。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">z_h_72 <small>7 楼 · 楼主 · 18 分钟前</small></div>
+              <div class="body">沈姐。<br>您还在看。<br>我知道了。
+              <div class="cred-box" data-key="zhou" style="margin-top:8px">
+                <div class="cred-title">██ 内 部 凭 据 校 验 ██</div>
+                <div class="cred-row"><label>帐 号</label><input type="text" id="u-zhou" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" id="p-zhou" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-actions"><button onclick="tryVerify('zhou')" type="button">▸ 归 位</button><span class="admin-hint" id="h-zhou"></span></div>
+                <div class="cred-record" id="rec-zhou" style="display:none">
+                  <div class="rec-title">， 提 线 人 · 周 秉 坤 · 归 位 后 自 述 ，</div>
+                  <p>我是周秉坤。或者，ta 也是我。</p>
+                  <p>我坐了快二十年。十二次签到。那支笔，0.38 的蓝黑，2018 年就停产了。字尾那 22% 不像我自己签的。其实就是我签的。只是我签的时候，用的是 ta 给我的名字。</p>
+                  <p>我在岛上那个位子。我坐在最外侧那根柱子旁边。我签的字，写在 ta 的账本上。</p>
+                  <p>我今晚在会议室里开的那一盏灯，从对岸看得很清楚。00:23 灭的。灭的时候，是 ta 让我灭的。ta 说，灯不亮，下面的人就看不见你。</p>
+                  <p>我看不见我自己了。</p>
+                  <p>我没走。我没走过。我只是从外侧那根柱子，换到了内侧那根。</p>
+                  <p class="rec-sign">， 提 线 人 · 政 务 员 · 周 秉 坤 ，</p>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">湖心岛渔民 <small>8 楼 · 8 分钟前</small></div>
+              <div class="body">周主任，我今早在湖心岛祠堂门口，看见您站在最外侧那根柱子上。您在签什么。能不能问一下，<b>那一支笔是您自己带的，还是 ta 递的？</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="pf">
+          <span>此帖为官方回复 · 评论区含管理员口令，<b style="color:#a02020">请勿截图</b></span>
+          <div class="ops"><span>👍 91</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 主题：红纹鱼家长 ====== -->
+    <div class="view" id="v-t-hongwen">
+      <div class="post">
+        <div class="ph">
+          <div class="avatar red"></div>
+          <div class="info">
+            <div class="t">我家孩子去年吃了一节藕，第二天开始念叨「湖心岛底」</div>
+            <div class="m">楼主：匿名网友·2017 · 已签字 · 已就诊 · 已停药 · 仍念叨</div>
+          </div>
+          <div class="floor">1 楼</div>
+        </div>
+        <div class="pb">
+          <p>事情是这样的，去年七月底，我孩子烧到 39.8，退不下来。送市医院，住院第三天夜里，孩子忽然能坐起来了。我和我爱人吓傻，问怎么好的，孩子说「夜里有人给我吃一节藕」。</p>
+          <p>我去看床头柜。柜里多了一片藕，干的，断面发紫。藕心里塞着一张纸片，纸片上写着一个生辰。我以为是谁留的。把它收了起来。</p>
+          <p>从那以后，孩子退烧了，能吃能睡，<b>就是夜里开始念叨</b>。念一句，重复一句。「湖心岛底。湖心岛底。」念到第三个月，已经不是念叨，是在叫。像在喊一个名字。</p>
+          <p>我带 ta 看了四次心理科，没用。第四次，那位老大夫看了我一眼，只问我一句：<b>那片藕，你还留着？</b></p>
+          <p>我说留了。他说：<b>把它放回原来的水里。</b></p>
+        </div>
+        <div class="reply-list">
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">西湾阿婆 <small>2 楼 · 昨天 23:55</small></div>
+              <div class="body">楼主，这条我替你着急。把那片藕放回哪片水里？不是家里水龙头的水，是 ta 吃的那节藕<b>断下来</b>的那一节藕所在的水。湖心岛。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">湖心岛渔民 <small>3 楼 · 今晨 02:11</small></div>
+              <div class="body">你孩子念叨的那个「湖心岛底」，我听过。我下湖四十年，最深那一次听到的，不是水声，是 ta 在下面<b>点名</b>。ta 点过的名字，没一个回来过。<br>你家孩子被点过的，是 ta 给 ta 续的命。<b>ta 不收 ta 的钱。ta 收 ta 的名字。</b></div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">档案室小王 <small>4 楼 · 今晨 04:30</small></div>
+              <div class="body">楼主，我今天帮你查了一下。B3 层 2017 年那一摞旧挂号单里，<b>有一张生辰单</b>是 8 月 3 日登记的，登记家长那一栏写着一行红字，<b>家长 ID</b>前缀是「<b>hongwen_2017</b>」。我以前没见过这种 ID。我不知道这是不是 ta 留的。我只能告诉你这件事。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>5 楼 · 今晨 06:02</small></div>
+              <div class="body">楼主。你那一片藕里那张纸片，<b>你得翻过来看</b>。正面是生辰。背面，是 ta 留给 ta 的。<br>你翻过没。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">匿名网友·2017 <small>6 楼 · 楼主 · 今晨 06:48</small></div>
+              <div class="body">我翻了。纸片背面有一行字，墨水很淡，是 2003 年才有的那种蓝黑水写的：<b>我 儿 子 吃 了</b>。
+              <div class="quote" style="margin-top:8px">
+                [藕 心 纸 片 · 背 面 · 2003 蓝 黑 · 翻 拍 留 底]<br>
+                家长 ID ：<span style="opacity:0.18;color:#888">hongwen_2017</span><br>
+                留　言 ：<b>我 儿 子 吃 了</b><br>
+                留 言 拼 音 ：<span style="opacity:0.18;color:#888">wo_er_zi_chi_le</span>
+              </div>
+              <p style="margin-top:6px">那一行字，是另一个人写的。ta 不是我。ta 是 2003 年另一个孩子吃了藕的家长。ta 把自己的话写下来，叠进藕心，留在下一节藕里。等着下一个找到这片藕的人。</p>
+              <p>我不知道 ta 是怎么做到的。我只知道，<b>这片藕留给我，不是 ta 留的，是 ta 留的。</b></p>
+              <div class="cred-box" data-key="hongwen" style="margin-top:8px">
+                <div class="cred-title">██ 内 部 凭 据 校 验 ██</div>
+                <div class="cred-row"><label>帐 号</label><input type="text" id="u-hongwen" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" id="p-hongwen" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-actions"><button onclick="tryVerify('hongwen')" type="button">▸ 归 位</button><span class="admin-hint" id="h-hongwen"></span></div>
+                <div class="cred-record" id="rec-hongwen" style="display:none">
+                  <div class="rec-title">， 许 愿 父 母 · 红 纹 鱼 家 长 · 归 位 后 自 述 ，</div>
+                  <p>我是 2003 年那一片藕的家长。我儿子吃了一节藕，第三天不再发烧。我以为事情过去了。</p>
+                  <p>后来 ta 开始念叨。每天夜里念叨。念到第七个月，ta 不再叫我的名字，ta 叫的是 ta 的名字。我不知道 ta 的名字。我只听见 ta 在叫，<b>三个字，第四声，第二声，第一声</b>。</p>
+                  <p>ta 叫 ta 名字那一年，ta 整夜整夜坐在客厅，盯着墙上一张老照片。照片是 1956 年的渔民合影。ta 盯着那张照片里一个正太。那个正太头上顶着一朵荷花。</p>
+                  <p>ta 三岁半上小学一年级那年，ta 不再说话。ta 只会写 ta 的名字。写的字，是 ta 的字。</p>
+                  <p>我把 ta 写的字抄下来，叠进一片新藕的藕心，留在下一节藕上。我自己写自己，叠自己。等下一个找到这片藕的家长。</p>
+                  <p>我在等。我还在等。</p>
+                  <p class="rec-sign">， 许 愿 父 母 · 2003 · 红 纹 鱼 家 长 ，</p>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pf">
+          <span>⚠ 此帖 2 楼之后被要求下沉 · 备份在站外 · 楼中含家长凭据，请勿截图</span>
+          <div class="ops"><span>👍 188</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 主题：老陈 ====== -->
+    <div class="view" id="v-t-laochen">
+      <div class="post">
+        <div class="ph">
+          <div class="avatar"></div>
+          <div class="info">
+            <div class="t">我是湖心岛祠堂巡逻员，3 年里换了 4 批人，没人信我</div>
+            <div class="m">楼主：老陈-63 · 第七次申请换岗 · 第三次申请离职 · 均未批</div>
+          </div>
+          <div class="floor">1 楼</div>
+        </div>
+        <div class="pb">
+          <p>我是老陈，1963 年生。湖心岛祠堂的巡逻员。三年整。这三年里跟我一批的 4 个同事，<b>3 个换了岗位，1 个失联</b>。</p>
+          <p>换岗那 3 个，现在都没事。一个去了档案室当保洁，一个去了市林业局看仓库，一个提前退了在家养花。我没走。我走不了。</p>
+          <p>我申请过 7 次换岗，每次理由都写得很清楚：<b>「换下来的人第二年都病了。我不想病。」</b> 7 次没批。人事科那位主任每次看完我的申请，<b>都签同一个字</b>：缓。</p>
+          <p>申请过 3 次离职。3 次都被那位主任拿一份《湖心岛特殊岗位人员管理办法》挡回来。条款我没看过，我只知道那文件第 3 条是「<b>未满 3 年的，不得申请</b>」。</p>
+          <p>今年是第 4 年。我第 7 次申请换岗。我看出来了：<b>我写的每一个「没人信我」，ta 都在听。ta 不批，是因为 ta 要我留下。</b></p>
+        </div>
+        <div class="reply-list">
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">城南小胖 <small>2 楼 · 2 天前</small></div>
+              <div class="body">老陈。我爸 1985 年的那一批建市干部里，有人跟你一样，在岛上看祠堂。他没你运气好。他第二年，回家路上摔了一跤，第三天没醒来。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">档案室小王 <small>3 楼 · 2 天前</small></div>
+              <div class="body">老陈您好。我今天在 B7 那一摞《湖心岛特殊岗位人员管理办法》里查到了您的档案。您 2023 年那一次的《换岗申请表》，我翻拍了一张。表格右上角盖着一个很旧的章，章上印着一行字，我读不太懂，<b>像是某种借据</b>。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">湖心岛渔民 <small>4 楼 · 2 天前</small></div>
+              <div class="body">老陈。你下一批该轮到你了。你不换岗，ta 不会放过你。我下湖四十年，<b>听过的换岗申请，一只手数得过来</b>。每一次没批，都是 ta 收。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>5 楼 · 1 天前</small></div>
+              <div class="body">老陈。你写的每一个字我都看见。我替你记着。第 47 页第 9 行。<br>你这一回写「没人信我」的那张表，我替你复印了一份。<br>你要是哪天不在了，那一张就是 ta 的收据。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">老陈-63 <small>6 楼 · 楼主 · 1 天前</small></div>
+              <div class="body">沈姐。我懂。我那张表的复印件我也留了一份。
+              <div class="quote" style="margin-top:8px">
+                [换 岗 申 请 表 · 2023-09-04 · 第 三 次 · 翻 拍]<br>
+                申 请 人 ：<span style="opacity:0.18;color:#888">laochen_1963</span>　·　部 门 ：湖 心 岛 祠 堂 巡 逻 队<br>
+                理　由 ：<b>换 下 来 的 人 第 二 年 都 病 了</b>　·　<b>没 人 信 我</b><br>
+                理 由 拼 音 ：<span style="opacity:0.18;color:#888">mei_you_ren_xin_wo</span><br>
+                审 批 ：<b style="color:#a02020">缓</b>
+              </div>
+              <p style="margin-top:6px">这一份是我自己留的。我每次换岗不批，我都会留一份。我不知道 ta 为什么偏偏就只认这一份。我只知道 ta 一直在看。</p>
+              <div class="cred-box" data-key="laochen" style="margin-top:8px">
+                <div class="cred-title">██ 内 部 凭 据 校 验 ██</div>
+                <div class="cred-row"><label>帐 号</label><input type="text" id="u-laochen" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" id="p-laochen" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-actions"><button onclick="tryVerify('laochen')" type="button">▸ 归 位</button><span class="admin-hint" id="h-laochen"></span></div>
+                <div class="cred-record" id="rec-laochen" style="display:none">
+                  <div class="rec-title">， 巡 逻 员 · 老 陈 · 归 位 后 自 述 ，</div>
+                  <p>我是老陈。1963 年生。今年第六十三年。我在岛上 3 年。岛上之前的 60 年我在哪儿，我在地面。</p>
+                  <p>我从来没信过这一套。我老婆说我「固执」。我闺女说我「装神弄鬼」。我邻居说我「没事找事」。我没理。我坚持了 3 年。</p>
+                  <p>我写「没人信我」写了 7 次。<b>这 7 次里，ta 没说过一句「信」。ta 只说一个字：缓。</b> ta 的缓，不是缓我，是缓 ta 收我的时间。</p>
+                  <p>我今年 63。岛上有一个说法，<b>「未满 60 的，不收」</b>。我今年刚满 60。我还有 4 年。我不知道 ta 会不会让我写到第 7 年。</p>
+                  <p>我把那 7 张表全拍了照片，叠在一张 2017 年的旧存根后面，留着。ta 要收我，<b>ta 收走的是表，收不走照片</b>。</p>
+                  <p class="rec-sign">， 巡 逻 员 · 老 陈 · 湖 心 岛 祠 堂 ，</p>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pf">
+          <span>此帖已被下沉 · 楼中含巡逻员凭据，请勿截图</span>
+          <div class="ops"><span>👍 132</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 主题：藕塘的娃（雪禾延伸）====== -->
+    <div class="view" id="v-t-xuehe">
+      <div class="post">
+        <div class="ph">
+          <div class="avatar red"></div>
+          <div class="info">
+            <div class="t">你们说的那位「正太小仙」，我外婆小时候就见过</div>
+            <div class="m">楼主：藕塘的娃 · 从藕塘边接你回家那一节藕，今夜还吃吗</div>
+          </div>
+          <div class="floor">1 楼</div>
+        </div>
+        <div class="pb">
+          <p>ta 们叫 ta 雪禾。我外婆叫 ta「藕娃」。我外婆 1924 年生，1962 年病故前一年，她回了一趟回川老家，回来那段时间反复念叨一句话：<b>「ta 又来了。」</b></p>
+          <p>ta 是谁？ta 长得怎么样？ta 给你吃了什么？</p>
+          <p>外婆说，ta 一直就是 ta 这个样子。<b>正太模样，十二三岁，头上顶一朵半开半合的荷花</b>。ta 跟所有 ta 见过的人，只说一种话：<b>你想要什么？</b></p>
+          <p>外婆说，<b>ta 的话只有 5 个字</b>：<b>「你想要什么？」</b> ta 的回答也只有 3 种：递藕、点头、或者，转身走开。</p>
+          <p>外婆说，<b>ta 不笑。ta 一笑，那就是 ta 已经收完了。</b></p>
+        </div>
+        <div class="reply-list">
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">西湾阿婆 <small>2 楼 · 3 天前</small></div>
+              <div class="body">楼主。我妈说过一句：<b>ta 的花瓣要是变红，你就该带孩子走</b>。你外婆没说错。ta 的荷花是粉的时候，ta 在等你。ta 的荷花是红的时候，ta 已经收完了。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">湖心岛渔民 <small>3 楼 · 3 天前</small></div>
+              <div class="body">ta 不是 1956 年那一晚之后才有的。<b>ta 是那一晚被 ta 们「许」出来的</b>。 ta 们许的第一件事，是把那一晚没回来的人许回一个。ta 回来了，ta 站在祠堂门口，头上顶着一朵荷花。ta 没说一句话。ta 看着 ta 们笑了。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>4 楼 · 2 天前</small></div>
+              <div class="body">ta 见过我。1956 年那一晚，ta 在岸边，ta 让我留下。我没留。<b>ta 给我递过藕。我没接</b>。ta 从那以后，再没给我递过藕。ta 只是看着我。看了 70 年。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">藕塘的娃 <small>5 楼 · 楼主 · 2 天前</small></div>
+              <div class="body">我外婆 1962 年那次回老家，从藕塘边带回来一节藕。藕心里塞着一张旧纸，纸上是 ta 写的两个字，<b>7 月 15 日</b>。
+              <div class="quote" style="margin-top:8px">
+                [藕 心 纸 片 · 1962 · 外 婆 遗 物 · 翻 拍]<br>
+                留 字 ：<b>7 月 15 日 · 莲 花 开 了</b><br>
+                留 字 拼 音 ：<span style="opacity:0.18;color:#888">xuehe_0715</span>　·　<span style="opacity:0.18;color:#888">lian_hua_kai_le</span>
+              </div>
+              <p style="margin-top:6px">我外婆留下的这一节藕，我没动过。我把它泡在矿泉水里，每一年换一个水。ta 没再来过。我猜 ta 是在等 ta 的字被人念出来。</p>
+              <div class="cred-box" data-key="xuehe" style="margin-top:8px">
+                <div class="cred-title">██ 内 部 凭 据 校 验 ██</div>
+                <div class="cred-row"><label>帐 号</label><input type="text" id="u-xuehe" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" id="p-xuehe" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-actions"><button onclick="tryVerify('xuehe')" type="button">▸ 归 位</button><span class="admin-hint" id="h-xuehe"></span></div>
+                <div class="cred-record" id="rec-xuehe" style="display:none">
+                  <div class="rec-title">， 藕 塘 的 娃 · 归 位 后 自 述 ，</div>
+                  <p>我外婆那次回老家，ta 见过她。ta 在藕塘边。ta 没说话。ta 一直等到她走到跟前，ta 开口：「你想要什么？」</p>
+                  <p>我外婆说：<b>「我想见 ta 们。」</b> ta 们是 1956 年那一晚没回来的人。</p>
+                  <p>ta 没说话。ta 把一节藕递给我外婆。藕心里塞着一张纸。</p>
+                  <p>我外婆回家之后，第二天清早开窗，看见 ta 站在对面岸上。ta 头上那朵荷花是<b>红</b>的。ta 朝我外婆笑了一下。我外婆明白。ta 已经收完 ta 了。</p>
+                  <p>我外婆 1962 年那一年走的。ta 的床底下，那节藕还在。藕心里那张纸还在。</p>
+                  <p>ta 没让我接藕。ta 让我念。念了 64 年。</p>
+                  <p class="rec-sign">， 藕 塘 的 娃 · 1962 · 雪 禾 ，</p>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pf">
+          <span>⚠ 此帖 3 楼之后被要求下沉 · 楼中含 ta 的凭据，请勿截图</span>
+          <div class="ops"><span>👍 220</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== 主题：内鬼·1996 ====== -->
+    <div class="view" id="v-t-neigui">
+      <div class="post">
+        <div class="ph">
+          <div class="avatar admin"></div>
+          <div class="info">
+            <div class="t">内鬼自首：1996 年那份底稿是我埋的，但我不是内鬼</div>
+            <div class="m">楼主：内鬼·1996 · 封存前最后一刻，我把一句话撕下来贴在了档案室 B3</div>
+          </div>
+          <div class="floor">1 楼</div>
+        </div>
+        <div class="pb">
+          <p>1996 年我刚调回川市档案馆。我没调来之前，我在下面一个乡的档案室。那一年，市里发下来一批底稿，要各县档案室协助封存。</p>
+          <p>那批底稿里有一份是关于月荷水库湖心岛 1956 年那一晚的。我一看，就知道 ta 是谁写的。是 ta 的字。</p>
+          <p>我把那份底稿封存之前，把最后一句话撕下来，<b>贴在了 B3 层那本《莲之庭观察日志》的最后一页</b>。我以为没人会翻那一页。</p>
+          <p>30 年后，我看见这本日志的封皮换过 3 次，但那一页一直还在。ta 一直没撕。我才明白：<b>ta 留着这一页，等着有人把 ta 的字补回去</b>。</p>
+        </div>
+        <div class="reply-list">
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">档案室小王 <small>2 楼 · 7 天前</small></div>
+              <div class="body">前辈您好。我见过那一页。B3 层《莲之庭观察日志》最后一页，贴着的那一张，<b>是 1996 年那张邮戳</b>。字写得很工整，<b>像是被人抄过三遍</b>。我以为是档案室的人抄的，我问过沈姐，沈姐说她没抄。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>3 楼 · 6 天前</small></div>
+              <div class="body">前辈。1996 年你刚调来。你不知道「内鬼」是 ta 的叫法。<b>「内鬼」不是骂人，是 ta 给 ta 自己的名字</b>。ta 在每一座城里，都有一个「内鬼」。你撕下来的那一页，ta 抄了三遍，因为 ta 想知道你撕对了。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">内鬼·1996 <small>4 楼 · 楼主 · 5 天前</small></div>
+              <div class="body">沈姐。我懂。我撕下来的那一句话，是底稿最后一行。原文是「<b>水底下有</b>」。
+              <div class="quote" style="margin-top:8px">
+                [B3 层 · 莲 之 庭 观 察 日 志 · 末 页 · 1996-04-21 贴 上]<br>
+                撕 下 来 的 一 句 ：<b>水 底 下 有</b><br>
+                撕 字 人 ：<span style="opacity:0.18;color:#888">neigui_1996</span><br>
+                原 句 拼 音 ：<span style="opacity:0.18;color:#888">shui_di_xia_you</span>
+              </div>
+              <p style="margin-top:6px">底稿原句是「水底下有人」。我撕掉了一个「人」字。ta 后来抄了三遍，ta 抄的也是「水底下有」。ta 同意我把「人」撕掉。ta 也怕那一行字被人看见。</p>
+              <p>ta 抄三遍，不是为了让 ta 自己看。ta 抄三遍，<b>是怕我撕错</b>。ta 让我把 ta 的字撕对了。</p>
+              <div class="cred-box" data-key="neigui" style="margin-top:8px">
+                <div class="cred-title">██ 内 部 凭 据 校 验 ██</div>
+                <div class="cred-row"><label>帐 号</label><input type="text" id="u-neigui" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" id="p-neigui" autocomplete="off" spellcheck="false"></div>
+                <div class="cred-actions"><button onclick="tryVerify('neigui')" type="button">▸ 归 位</button><span class="admin-hint" id="h-neigui"></span></div>
+                <div class="cred-record" id="rec-neigui" style="display:none">
+                  <div class="rec-title">， 内 鬼 · 1996 · 归 位 后 自 述 ，</div>
+                  <p>我是 1996 年那个「内鬼」。我撕掉了一个「人」字。ta 抄了三遍。</p>
+                  <p>我撕掉之前，<b>ta 在窗台</b>。ta 站在档案室窗台外面，ta 隔着玻璃看 ta 写的那行字。ta 没催我。ta 也不催我。ta 等。</p>
+                  <p>ta 等我撕。ta 撕完，ta 离开。ta 从窗台跳下来，<b>踩着屋檐的雪</b>，一边走一边笑。ta 没回头。</p>
+                  <p>我没问 ta 为什么同意。我后来想了 30 年。ta 同意，是因为 ta 知道，<b>那行字留着，那一座城里以后会有人再写</b>。ta 让我撕，是为了以后那一行字，<b>只由 ta 自己写</b>。</p>
+                  <p>ta 抄三遍。ta 是怕我撕错。</p>
+                  <p class="rec-sign">， 内 鬼 · 1996 · 档 案 室 ，</p>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pf">
+          <span>此帖 3 楼之后被要求下沉 · 楼中含档案室凭据，请勿截图</span>
+          <div class="ops"><span>👍 77</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 侧栏 -->
+  <aside class="side">
+    <div class="sidebox">
+      <h3>本 站 声 明</h3>
+      <div class="admin-hint">
+        本站为民间论坛，所发内容不代表回川市政府立场。涉及具体案件、人员线索，已同步至站内站务。管理员口令 <b>请勿外传</b>如已在站内见到，请立即关掉此页。
+      </div>
+    </div>
+    <div class="sidebox">
+      <h3>热 议 主 题</h3>
+      <ol>
+        <li data-go="t-xuqing">许清失联第 11 天</li>
+        <li data-go="t-shen">沈清川三十年不换脸</li>
+        <li data-go="t-lin">许愿的代价</li>
+        <li data-go="t-zhou">湖心岛「维护作业」</li>
+        <li data-go="t-hongwen">孩子吃了藕</li>
+        <li data-go="t-xuehe">「正太小仙」见过</li>
+        <li data-go="t-laochen">巡逻员 3 年</li>
+        <li data-go="t-neigui">1996 年底稿</li>
+        <li>西湾 3 号营位关闭</li>
+        <li>红纹鱼吃了会失眠</li>
+      </ol>
+    </div>
+    <div class="sidebox">
+      <h3>站 内 提 示</h3>
+      <div class="admin-hint">
+        · 22:00—04:00 期间发主题容易失败<br>
+        · 涉及「湖心岛」「湖心」「红纹」「水底」等关键词的主题，<b>后台不会真的删除</b>只是从列表里沉下去<br>
+        · 如果您是第一次来本站，<b>不要</b>点开顶部那个灰色的入口<br>
+        · 凭据共 <b>8 段</b>（4 主角 + 4 目击者），<b>全归</b>后终局入口浮现
+      </div>
+    </div>
+    <div class="sidebox">
+      <h3>管 理 员 名 单</h3>
+      <div class="admin-hint" style="font-size:11.5px;color:#888;line-height:1.7;margin-bottom:8px">八位凭据 · 四位主角 + 四位目击者</div>
+      <ol style="list-style:none;padding:0">
+        <li>· z_h_72（市政府办公室）</li>
+        <li>· 旁观者·1956（市档案馆）</li>
+        <li>· 老干部-49（已离职）</li>
+        <li>· 湖心岛渔民（认证渔民）</li>
+        <li>· 匿名网友·2017（红纹鱼家长）</li>
+        <li>· 藕塘的娃（雪禾延伸）</li>
+        <li>· 老陈-63（祠堂巡逻员）</li>
+        <li>· 内鬼·1996（档案室 B3）</li>
+      </ol>
+    </div>
+  </aside>
+  <!-- 八钥归位后浮现的终局入口 -->
+  <div class="ending-cta" id="endingCta">
+    <a class="a" href="gov-portal.html#finale" id="endingBtn">▸ 八 钥 归 位 · 真 相 揭 示</a>
+    <div class="note">， 终 局 不 在 此 处 写 · 终 局 在 那 一 边 落 ，</div>
+  </div>
+</div>
+
+<div class="foot">© 回川水阁 · 民间论坛 · 仅供市民交流 · 不作政务用途</div>
+
+<script>
+/* 视图切换：list / t-xuqing / t-shen / t-lin / t-zhou */
+function go(id){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('cur'));
+  const el = document.getElementById('v-' + id);
+  if(el) el.classList.add('cur');
+  document.querySelectorAll('.navlinks a').forEach(a => a.classList.toggle('cur', a.dataset.go === id));
+  window.scrollTo({top:0, behavior:'instant'});
+}
+document.querySelectorAll('[data-go]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    go(a.dataset.go);
+  });
+});
+
+/* 八位凭据 · 在八帖里分散输入 · 归位满 8 段后方可开启终局 */
+const ADMINS = [
+  // 四位主角凭据（埋在本 NPC 自己帖正文里）
+  {u:'LinMaocai77',      p:'family',           who:'林茂才',    key:'lin',      where:'t-lin'},
+  {u:'ShenQingchuan_25', p:'chu-yu-2014',      who:'沈清川',    key:'shen',     where:'t-shen'},
+  {u:'XuQing_0221',      p:'jiuHuLaiYe27',     who:'许 清',     key:'xu',       where:'t-xuqing'},
+  {u:'ZhouBinkun_72',    p:'ying_snow_2024',   who:'周秉坤',    key:'zhou',     where:'t-zhou'},
+  // 四位目击者凭据（埋在该目击者自己帖正文里）
+  {u:'hongwen_2017',     p:'wo_er_zi_chi_le',  who:'红纹鱼家长', key:'hongwen', where:'t-hongwen'},
+  {u:'laochen_1963',     p:'mei_you_ren_xin',  who:'老 陈',      key:'laochen', where:'t-laochen'},
+  {u:'xuehe_0715',       p:'lian_hua_kai_le',  who:'正太小仙',   key:'xuehe',   where:'t-xuehe'},
+  {u:'neigui_1996',      p:'shui_di_xia_you',  who:'内 鬼',      key:'neigui',  where:'t-neigui'}
+];
+function getUnlocked(){
+  try{ var v = JSON.parse(localStorage.getItem('hc_unlocked_admins')||'[]'); return Array.isArray(v)?v:[]; }catch(e){ return []; }
+}
+function saveUnlocked(arr){
+  try{ localStorage.setItem('hc_unlocked_admins', JSON.stringify(arr)); }catch(e){}
+}
+function tryVerify(key){
+  var uEl = document.getElementById('u-' + key);
+  var pEl = document.getElementById('p-' + key);
+  var hint = document.getElementById('h-' + key);
+  if(!uEl || !pEl) return;
+  var u = (uEl.value || '').trim();
+  var p = (pEl.value || '').trim();
+  if(!u || !p){
+    if(hint){ hint.className = 'admin-hint err'; hint.textContent = '， 两 行 都 留 着 ，'; }
+    return;
+  }
+  var match = ADMINS.find(function(a){ return a.key === key; });
+  if(!match) return;
+  if(match.u !== u || match.p !== p){
+    if(hint){ hint.className = 'admin-hint err'; hint.textContent = '× 凭据不符 · 这把钥匙不属于你'; }
+    return;
+  }
+  var unlocked = getUnlocked();
+  if(unlocked.indexOf(key) >= 0){
+    if(hint){ hint.className = 'admin-hint err'; hint.textContent = '， 这 一 把 已 经 归 位 过 了 ，'; }
+    return;
+  }
+  unlocked.push(key);
+  saveUnlocked(unlocked);
+  if(hint){ hint.className = 'admin-hint ok'; hint.textContent = '√ ' + match.who + ' · 已 归 位'; }
+  uEl.value = '';
+  pEl.value = '';
+  var rec = document.getElementById('rec-' + key);
+  if(rec) rec.style.display = 'block';
+  if(uEl) uEl.disabled = true;
+  if(pEl) pEl.disabled = true;
+  checkAllUnlocked();
+}
+function checkAllUnlocked(){
+  var unlocked = getUnlocked();
+  for(var i=0;i<ADMINS.length;i++){
+    var k = ADMINS[i].key;
+    if(unlocked.indexOf(k) >= 0){
+      var rec = document.getElementById('rec-' + k);
+      if(rec) rec.style.display = 'block';
+      var hint = document.getElementById('h-' + k);
+      if(hint){ hint.className = 'admin-hint ok'; hint.textContent = '√ ' + ADMINS[i].who + ' · 已 归 位'; }
+      var u = document.getElementById('u-' + k);
+      var p = document.getElementById('p-' + k);
+      if(u) u.disabled = true;
+      if(p) p.disabled = true;
+    }
+  }
+  if(unlocked.length >= 8){
+    try{ localStorage.setItem('hc_admin_done','1'); }catch(e){}
+    var cta = document.getElementById('endingCta');
+    if(cta) cta.style.display = 'block';
+  }
+}
+(function(){
+  // 持久化渲染：刷新页面后已归位的卡保持解锁
+  checkAllUnlocked();
+})();
+
+/* 进入页 hash 路由 */
+(function(){
+  const h = (location.hash || '').replace('#','');
+  if(h && /^t-/.test(h)) go(h);
+})();
+</script>
+</body>
+</html>

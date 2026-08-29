@@ -1,0 +1,115 @@
+/* 钓渊 · 动效（四档强度，可被 prefers-reduced-motion 关闭，见 a11y.css） */
+
+@keyframes screenShake {
+  0%,100% { transform: translate(0,0); }
+  25%     { transform: translate(-1px, 0.5px); }
+  50%     { transform: translate(0.5px,-1px); }
+  75%     { transform: translate(1px, 0.5px); }
+}
+@keyframes eyePulse {
+  0%,100% { transform: scale(1); }
+  50%     { transform: scale(1.18); }
+}
+@keyframes bleedDrip {
+  0%   { transform: translateY(-10%); opacity: 0; }
+  20%  { opacity: .9; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+@keyframes glitchA {
+  0%,90%,100% { transform: translate(-1px,0); }
+  92%         { transform: translate(-4px, 1px); }
+  95%         { transform: translate(2px,-1px); }
+}
+@keyframes glitchB {
+  0%,88%,100% { transform: translate(1px,0); }
+  93%         { transform: translate(3px,-1px); }
+}
+@keyframes zalgoCrawl {
+  0%,100% { transform: translate(0,0); }
+  50%     { transform: translate(0.4px,-0.6px); }
+}
+@keyframes scanlineScroll {
+  from { background-position: 0 0; }
+  to   { background-position: 0 6px; }
+}
+
+/* 触发档位 —— ③ 氛围呼吸：暗角/光晕脉动，绝不位移正文（避免看不清/眼酸）。全页抖动已移除。 */
+@keyframes corruptBreath { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+.corrupt-veil { position: fixed; inset: 0; pointer-events: none; z-index: 5; opacity: 0; transition: opacity 1.2s ease; }
+body.corrupt-1 .corrupt-veil {
+  background: radial-gradient(120% 100% at 50% 42%, transparent 58%, rgba(8,0,0,.26) 100%); opacity: 1;
+}
+body.corrupt-2 .corrupt-veil {
+  background: radial-gradient(120% 100% at 50% 42%, transparent 52%, rgba(18,0,0,.44) 100%); opacity: 1;
+  animation: corruptBreath 6s ease-in-out infinite;
+}
+body.corrupt-3 .corrupt-veil {
+  background: radial-gradient(120% 100% at 50% 42%, transparent 44%, rgba(28,0,0,.70) 100%); opacity: 1;
+  animation: corruptBreath 3.6s ease-in-out infinite;
+}
+/* 【可改】高潮屏真实眼：居中展示为"中央眼珠"；已去掉 mix-blend-mode:screen（避免与暗角糊成红饼）。
+   想换切片改 src（corruption.js 里的 ./assets/pin/crops/...），这里只管展示样式。 */
+.abyss-climax .climax-eye-img {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(45vmin, 340px); height: min(45vmin, 340px);
+  border-radius: 50%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.2) brightness(0.95);
+  opacity: .95;
+  box-shadow: 0 0 60px 8px rgba(139,0,0,.45), inset 0 0 40px rgba(139,0,0,.35);
+  pointer-events: none;
+}
+body.corrupt-2 .blood-overlay { animation: scanlineScroll 1s linear infinite; }
+
+/* ===== 排印特效（怪谈真实感的关键密度提升） ===== */
+/* 字距收紧 */
+@keyframes typoKern {
+  0%, 100% { letter-spacing: 0; }
+  50%      { letter-spacing: -0.08em; }
+}
+/* 血色呼吸（color + text-shadow 漂移） */
+@keyframes typoBleed {
+  0%, 100% { color: inherit; text-shadow: none; }
+  50%      { color: var(--blood-bright); text-shadow: 0.5px 0 0 var(--blood), -0.5px 0 0 var(--blood); }
+}
+/* 重影（双通道错位） */
+@keyframes typoGhost {
+  0%, 100% { text-shadow: none; }
+  50%      { text-shadow: 2px 0 0 var(--blood-bright), -2px 0 0 var(--blood); }
+}
+/* 抖动 / 缺字（steps 制造突发涂黑） */
+@keyframes typoScramble {
+  0%, 86%, 100% { transform: translate(0,0); filter: none; }
+  88% { transform: translate(-1px,0); filter: blur(0.3px); }
+  92% { transform: translate(1px,0); filter: blur(0.5px); }
+  96% { transform: translate(0,1px); filter: none; }
+}
+/* 血色污渍背景位移 */
+@keyframes typoStain {
+  0%, 100% { background-position: 100% 0; }
+  50%      { background-position: 0 0; }
+}
+
+.typo-kern     { animation: typoKern 2.4s ease-in-out infinite; }
+.typo-bleed    { animation: typoBleed 3s ease-in-out infinite; }
+.typo-ghost    { animation: typoGhost 2.8s ease-in-out infinite; }
+.typo-scramble { animation: typoScramble 4s steps(1) infinite; }
+.typo-stain {
+  background-image: linear-gradient(90deg, transparent 0%, rgba(139,0,0,0.22) 30%, rgba(139,0,0,0.12) 70%, transparent 100%);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: typoStain 5s ease-in-out infinite;
+}
+
+/* 已移除：corrupt-2/3 下对 场景标题/主题/帖子标题/正文 自动施加排印特效的规则
+   （用户要求停止"呼吸字体"自动应用）。排印 keyframes 与 .typo-* 工具类见上，
+   如需手动使用，直接给对应元素加 .typo-kern / .typo-bleed / .typo-ghost /
+   .typo-scramble / .typo-stain 类即可。 */
+
+/* reduced-motion 兜底（仅覆盖仍在用的 .typo-* 工具类；corrupt-2/3 自动排印特效已移除） */
+@media (prefers-reduced-motion: reduce) {
+  .typo-kern, .typo-bleed, .typo-ghost, .typo-scramble, .typo-stain {
+    animation: none !important;
+  }
+}

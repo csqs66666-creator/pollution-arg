@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>月荷水库 · 22:03 那一晚</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --ink:#231f18;
+  --ink2:#5b554c;
+  --line:#d6c8a3;
+  --blue:#2b4a6f;
+  --red:#a02020;
+  --bleed:#7a1a1a;
+  --paper:#fbf6e8;
+  --paper2:#f4ecd9;
+  --night:#0a0606;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#171310;color:var(--ink);font-family:"Noto Serif SC","Source Han Serif","Songti SC","STSong",serif;letter-spacing:0.04em}
+.page{max-width:780px;margin:0 auto;padding:48px 32px 96px;background:var(--paper);box-shadow:0 0 0 1px rgba(0,0,0,0.04),0 30px 80px rgba(0,0,0,0.55);min-height:100vh}
+.cover{position:relative;margin:0 0 24px;padding:28px 28px 30px;background:var(--night);color:#d8c8a8;letter-spacing:0.3em;font-size:11px;text-align:center;border-radius:2px;overflow:hidden}
+.cover::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 120% at 50% 80%, rgba(178,34,34,0.18), transparent 60%)}
+.cover .ck{font-size:14px;color:#fff;letter-spacing:0.45em;margin-bottom:6px;text-shadow:0 0 18px rgba(178,34,34,0.45)}
+.cover .ln{line-height:1.9;font-size:12px;color:#a89978}
+h1{font-size:22px;margin:8px 0 6px;color:#1a1714;letter-spacing:0.15em;text-align:center}
+.sub-title{text-align:center;color:var(--ink2);font-size:12px;margin-bottom:30px;letter-spacing:0.3em}
+h2{font-size:17px;color:var(--ink);margin:30px 0 10px;border-bottom:1px solid var(--line);padding-bottom:6px;letter-spacing:0.15em}
+h3{font-size:14px;color:var(--ink);margin:18px 0 6px;letter-spacing:0.1em}
+p{line-height:2;font-size:14.5px;color:#2a261f;margin:0 0 14px;text-align:justify;text-indent:2em}
+p.flat{text-indent:0}
+p.quote{margin:18px 32px;padding:10px 16px;border-left:3px solid var(--red);background:rgba(178,34,34,0.05);color:var(--ink);font-style:italic;text-indent:0;font-size:13.5px;line-height:1.95}
+.brood{color:#222;text-indent:2em;line-height:2.1;font-size:13.5px}
+.crackle{color:#8a5a3a}
+.note{font-size:11.5px;color:var(--ink2);text-indent:0;padding:14px 18px;background:var(--paper2);border:1px dashed #c8b78d;margin:16px 0}
+.figure{margin:22px 0;text-align:center}
+.figure img{max-width:100%;display:block;margin:0 auto;border:1px solid #c8b78d;box-shadow:0 4px 14px rgba(0,0,0,0.18)}
+.figure .cap{font-size:11.5px;color:var(--ink2);margin-top:8px;letter-spacing:0.2em}
+.figure.f-bleed img{border-color:#7a1a1a;box-shadow:0 0 24px rgba(178,34,34,0.3),0 6px 18px rgba(0,0,0,0.35)}
+
+.br-redacted{color:#7a1a1a;font-weight:700;letter-spacing:0.1em}
+.br-mutilated{color:var(--ink2);text-decoration:line-through;text-decoration-color:#8a3a3a}
+
+/* 恐怖谷：文字渐渐变血色 + 抖动 */
+.valley{transition:color 1.4s linear, text-shadow 1.4s linear, transform 0.18s ease, letter-spacing 0.6s ease;font-family:"Songti SC","STSong",serif}
+.valley.fade{color:#a02020;text-shadow:0 0 6px rgba(178,34,34,0.55);letter-spacing:0.05em}
+.valley.shake{animation:shudder 0.14s linear infinite alternate;color:#7a1a1a;text-shadow:0 0 12px rgba(178,34,34,0.7)}
+@keyframes shudder{
+  0%{transform:translate(0,0) rotate(0)}
+  100%{transform:translate(0.4px,-0.4px) rotate(-0.18deg)}
+}
+.blink-warn{display:inline-block;animation:blip 0.9s steps(2,end) infinite;color:#a02020;letter-spacing:0.15em}
+@keyframes blip{50%{opacity:0.25}}
+
+/* 切换图片：点击 lin-sacrifice-before.jpg → 切换为 lin-sacrifice-after.jpg */
+.fig-swap{cursor:pointer;position:relative;user-select:none}
+.fig-swap .alt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#0a0606;color:#d8c8a8;font-size:12px;letter-spacing:0.3em;opacity:0;transition:opacity 0.4s;border:1px solid #7a1a1a}
+.fig-swap.swapped .alt{opacity:1}
+.fig-swap .default{display:block}
+
+/* 雪禾视频容器 */
+.xuehe-container{margin:34px 0 8px;padding:18px;background:#0a0606;color:#d8c8a8;border:1px solid #2a1414;border-radius:2px;box-shadow:0 0 30px rgba(178,34,34,0.18) inset}
+.xuehe-container h3{color:#d8c8a8;font-family:"Songti SC",serif;letter-spacing:0.4em;font-size:14px;margin:0 0 10px;text-align:center}
+.xuehe-container video{width:100%;display:block;border:1px solid #2a1414;background:#000}
+.xuehe-container .vcap{margin-top:10px;font-size:12px;color:#a89978;text-align:center;line-height:1.9;letter-spacing:0.15em}
+.xuehe-container .vcap .sign{color:#a02020;letter-spacing:0.3em}
+
+/* 末段：林茂才档案归位 */
+.ritual-reopen{margin:38px 0 0;padding:24px 26px;background:var(--paper2);border:1px solid #c8b78d;text-align:center;font-family:inherit}
+.ritual-reopen h3{font-size:16px;letter-spacing:0.25em;color:var(--ink);margin:0 0 8px}
+.ritual-reopen p{font-size:13px;color:var(--ink2);margin:0 0 14px;text-indent:0;line-height:1.95}
+.ritual-reopen a.btn{display:inline-block;padding:9px 22px;border:1px solid #7a1a1a;color:#7a1a1a;text-decoration:none;font-size:13px;letter-spacing:0.3em;cursor:pointer;background:transparent}
+.ritual-reopen a.btn:hover{background:#7a1a1a;color:#fbf6e8}
+.ritual-reopen.done{background:#1f1a14;color:#a89978;border-color:#3a2418}
+.ritual-reopen.done h3{color:#a89978}
+.ritual-reopen.done p{color:#7a6d5b}
+
+/* 整体纸面翻折 */
+.fold{position:relative;margin:34px 0;height:30px}
+.fold::before{content:"";position:absolute;left:0;right:0;top:14px;height:1px;background:linear-gradient(90deg,transparent, #c8b78d, transparent)}
+
+/* 顶部返回条 */
+.topbar{position:sticky;top:0;background:rgba(251,246,232,0.94);backdrop-filter:blur(3px);border-bottom:1px solid #d8c8a0;margin:0 -32px 24px;padding:10px 32px;display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:0.15em;z-index:5}
+.topbar a{color:var(--ink2);text-decoration:none;cursor:pointer}
+.topbar a:hover{color:var(--red)}
+.topbar .marker{color:#a02020;font-weight:700;letter-spacing:0.3em}
+
+/* 总章 */
+.chap{font-size:10px;color:var(--ink2);letter-spacing:0.4em;text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 0;margin:0 auto 24px;width:60%}
+</style>
+</head>
+<body>
+<div class="page" id="page">
+
+  <div class="topbar">
+    <a onclick="goBack()">← 返回回川市公众信息网</a>
+    <span class="marker">档 案 · 22:03 回 放</span>
+  </div>
+
+  <!-- ========== Section 1 · 重新记起 ========== -->
+  <div class="chap">第 一 章 · 腐 鱼 之 后</div>
+
+  <h2>§1 重新记起那天</h2>
+  <p>你已经很久没有想起那条鱼。</p>
+  <p>直到凌晨三点，<span class="valley">想起那天起，朋友的眼神就已经不对</span>。先是约你再去。后是日里念叨。再后是夜里念叨。等ta念叨的声气，一日比一日轻，你发觉不念叨的时候，ta的眼睛，反而更怕人。</p>
+  <p>你翻了翻当时的钓点。月荷水库，<b>西湾露营区再往南三公里</b>，一处没挂号的野口。你们那天没吃多少。ta吃得比你少，你反而替ta糟了，ta后来说，<span class="crackle">那口鱼，胜过人间一切。</span></p>
+  <p>你越想越坐不住。</p>
+  <p class="quote">那鱼，那口鱼。
+  从肚子里烂出来。
+  从朋友嘴里咽下去。
+  从今往后，剩下的，只是接着咽。</p>
+
+  <h2>§2 去「回川」</h2>
+  <p>你跟朋友没有回自己家。你上网搜了一个小时，<span class="valley valley-soft">源头，水库，回川</span>，一条网上短文里出现了一个地名，「回川」。作者把自己写的都删了，只留了一个时间戳：<span class="br-redacted">2024-06-23 · 04:00 · 湖心岛。</span></p>
+  <p>朋友眼睛亮了一亮。那是ta一星期以来，第一次亮。</p>
+  <p>「去。」ta说。声音像是憋了七天。</p>
+  <p>你叫了一辆车，去湖南。回川是个你从没听过的小地方，但它就在水库的下游。一路上，ta把车窗摇下了一指，探出半张脸去闻空气，回川的梅雨刚压下来，潮得能拧出汁。你的胃里也跟着潮起来，你想起那条鱼熟之前的浮囊，那层死白，那层灰青。</p>
+  <p>你没再想。</p>
+
+  <div class="figure">
+    <img src="assets/desktop/fish-rotten.jpg" alt="那条鱼，起锅前的样子">
+    <div class="cap">起锅前 · 看上去一切如常</div>
+  </div>
+
+  <!-- ========== Section 2 · 吃鱼之席 ========== -->
+  <h2>§3 三天后·晚饭</h2>
+  <p>你在回川待了三天。东道主是个叫「老沈」的女人，不大爱笑，杀鱼的手极快，炖得了鱼汤。第三天晚上，ta说给你接风，做一桌鱼。你立刻说，<b>别。</b></p>
+  <p>朋友却先笑了：「吃吧吃吧。人家盛情。」</p>
+  <p>你的脊背一凉。</p>
+  <p>你瞪ta。ta没看你。</p>
+
+  <h3>席间</h3>
+  <p>摆了一桌十二道。<b>全是鱼。</b>清蒸的，红烧的，生拌的，腌的，糟的，鱼片捞的，鱼子做的，鱼汤吊的。你一低头就能看见，每一条鱼，皮下都隐隐憋着一层气。那气，颜色不对，不像白天打的，像是憋了一夜，被强行从冷水里提到了滚锅。</p>
+  <p>朋友夹起筷子就吃，「好吃。真好吃。越烂越好吃。」</p>
+  <p>你手抖了一下。</p>
+  <p class="valley" id="valley-text">你抬头看那一桌。灯光下，每一盘里，鱼嘴都张着，每一张嘴里都含着一个没咽下去的、像棉花一样的，</p>
+
+  <div class="figure f-bleed">
+    <img id="rotImg" src="assets/desktop/fish-rotten.jpg" alt="一桌鱼">
+    <div class="cap">那桌子的全貌</div>
+  </div>
+
+  <!-- ========== Section 3 · 借口跑出 ========== -->
+  <h2>§4 借口</h2>
+  <p>你咽下那口气，像吞一口刚出锅的、泛着腐败甜味的<b>，</b></p>
+  <p>你也说不清为什么。吐了。你跑去卫生间吐了。出来时嘴角还挂着腥。</p>
+  <p>主人们没问。老沈只抬头看了你一眼，又去看朋友。<span class="br-mutilated">ta嘴角上挑，像在</span></p>
+  <p>「我出去透透气。」你说。声音在自己耳朵里听不真切。</p>
+  <p>「别走远。」ta说。「夜里，<b>莫往湖心那个方向</b>。」</p>
+
+  <!-- ========== Section 4 · 撞见献祭 ========== -->
+  <h2>§5 林茂才·献祭</h2>
+  <p>你绕到街后。回川的街后没有街，只有一条河灯幽暗的小弄，潮湿得发黏。你本想深吸一口气，没吸成。再一抬眼，远处湖面上，有一团<b>白光</b>。白光不动，水面却绕着它，一圈一圈，波纹。</p>
+  <p>你顺着田埂，踩着稀泥，爬上了一处枯芦苇台。</p>
+  <p>湖心是一座<b>小岛</b>。岛上一座老庙。庙门半开，里面有人。</p>
+
+  <!-- 图片切换：before → after（after 上含 LinMaocai77/family 红字） -->
+  <div class="figure fig-swap" id="sacrificeSwap" onclick="swapSacrifice()">
+    <img id="sacImg" class="default" src="assets/desktop/lin-sacrifice-before.jpg" alt="林茂才献祭·前">
+    <div class="alt" id="sacAlt" style="font-family:'Songti SC',serif">此刻你看见ta回头了<br>，签字、念珠与名字</div>
+    <div class="cap" id="sacCap">点 击 图 片 · 继 续</div>
+  </div>
+
+  <div id="sac-detail" style="display:none">
+    <p>你看见了。</p>
+    <p>林茂才，一个人，跪在莲花座前。手里举着一沓ta自己签字的纸，水质公报、检测报告、台账、那一届的报告、那一天的报告，<b>ta在烧</b>。ta在将<b>自己</b>写过的字，烧在佛前，给那个</p>
+    <p>庙后头的<b>东西</b>看。</p>
+    <p>庙后头，是一片莲池。莲池里，<b>站着</b>一具具人形的枯荷。<span class="valley">枯荷的面孔，五官像人。</span>枯荷的眼睛，看着烟，看着火，看得眼睛里也在<b>烧</b>。</p>
+    <p>那东西不在池里。在池下。在更深。
+    <br>它在<b>笑</b>。你没听见它笑的声音，你只是听见了水里、空气里、芦苇里，<b>一齐在笑</b>。</p>
+    <p class="quote" style="font-family:'Songti SC',serif">那笑，轻轻浅浅，没有声音。<br>像一片一片红色的莲瓣，被<b>风</b>一拨。<br>那笑，不是笑。<br>是，嗯，<span class="valley" style="display:inline">「好嘛。又一个。」</span></p>
+  </div>
+
+  <h3>ta们看见你了</h3>
+  <p>你手脚冰冷，<b>正想缩进芦苇堆里</b>，</p>
+  <p>一抬头，<b>对面正对着你</b>。</p>
+  <p>一丛枯荷，转过身来。两个小孔的眼窝，对着你，<b>笑</b>。<br>第二个转过身。<br>第三个。<br>第十个。<br><span class="blink-warn">ta们全在笑。</span></p>
+  <p>你的眼睛看着ta们，ta们看着你，笑着；笑着，<b>嘴里没有舌头</b>。枯荷的嘴裂开，里面是一丝又一丝<b>青白的丝</b>，像吸管，像触手，丝丝缕缕。</p>
+  <p>你<b>听</b>到了那声音。</p>
+  <p class="valley" id="vShake">看看你自己。</p>
+
+  <!-- 闪回血肉世界 -->
+  <div class="figure">
+    <img src="assets/desktop/flesh-world.jpg" alt="被看见的世界">
+    <div class="cap">你 眼 里 的 世 界 · 一 秒 钟</div>
+  </div>
+
+  <p>你的眼睛里，这边的芦苇、那座小庙、那一池枯荷，<b>全变了</b>。
+  <br>墙上、地里、人身上、庙的瓦上、湖水里，<b>全是肉</b>。</p>
+  <p>会抖。会动。会呼吸。
+  <br>那团气，腥甜，让人想笑，让人想哭，让人恨不能把头埋进自己的胸腔里去，</p>
+  <p class="valley" id="vShake2">你不去想那是什么。你<b>只想逃</b>。</p>
+
+  <!-- ========== Section 5 · 逃 + 晕倒 ========== -->
+  <h2>§6 逃</h2>
+  <p>你跑。脚踩在泥里，<b>泥是温的</b>。软。
+  <br>你跑。脚踩在<b>田梗</b>上，<b>梗是活的</b>。
+  <br>你跑。脚踩在<b>干草</b>上，干草里有一双眼睛，你不看，你只看前面，前面有路灯，路灯在亮，路灯边上站着一个人，那是，不，那是一根，你<b>不认得</b>了。</p>
+  <p>你在路边坐下。再也跑不动。</p>
+  <p>你眼睛里的世界没有停。它在变。
+  <br>青莲、莲瓣、莲芯、莲蓬，一层一层，<b>全是肉</b>。
+  <br>那根在笑。
+  <br>那条鱼在笑。
+  <br>那朋友在笑。
+  <br><span class="blink-warn">你也在笑。</span></p>
+  <p>你摇了一下头。血漫上来。</p>
+
+  <!-- ========== Section 6 · 雪禾 ========== -->
+  <div class="fold"></div>
+
+  <h2>§7 雪 禾</h2>
+  <p>你醒来的时候，是一片<b>藕塘</b>。</p>
+  <p>有个人蹲在你身边。<b>十二岁上下</b>，<span class="valley" style="display:inline">冷调瓷白的脸，眼角猩红血色莲花纹路，唇色浅淡，头上冒着一朵还没开全的荷花</span>。</p>
+  <p>ta看了你一眼。</p>
+  <p>「嗯。」</p>
+  <p>「醒了？就你这点胆子，也配被莲之庭那群人吓得半死啊？」</p>
+  <p>你<b>不知道</b>ta是谁。</p>
+  <p>你只知道，你闻到了<b>甜味</b>。甜腻得要命的青莲幽香。从ta身上，从ta的头发，从ta嘴角抿着的那口<b>莲汁</b>，你一吸，吸进半口，整个人就要<b>晕</b>。你摇了摇。</p>
+  <p>ta伸出一根手指，<b>轻飘飘</b>把你下巴一挑。</p>
+  <p>「我呢，刚刚顺手救了一下你，戏还没演完呢，这么早死，不许。」</p>
+  <p>你张口想说谢谢。ta笑了。你，那笑，那笑不是笑，是<b>看蚂蚁</b>。</p>
+
+  <div class="xuehe-container">
+    <h3>， 雪 禾 救 醒 录 音 ，</h3>
+    <video id="xueheVid" controls playsinline preload="metadata" src="assets/desktop/xuehe-save.mp4">
+      <p style="color:#a89978">视频加载失败 · 请确认 assets/desktop/xuehe-save.mp4 存在</p>
+    </video>
+    <div class="vcap">
+      ， 那天夜里，ta在藕塘边，把你弄醒。<br>
+      <span style="color:#a89978">（戏还没演完，ta说，还不许你下场。）</span><br>
+      <span class="sign">， 救 者 ： 雪 禾</span>
+    </div>
+  </div>
+
+  <p>视频结束的时候，那个少年不见了。藕塘上，只剩一片<b>粉白色</b>的莲瓣，<b>半透明</b>，<b>在风里抖</b>。</p>
+
+  <p>你的眼睛里，世界又回到了原本的样子。正常的路、正常的草、正常的<b>冷</b>。
+  <br>你口袋里，有一张纸质存根。<br>
+  <span class="br-redacted" style="display:inline-block;padding:4px 10px;border:1px solid #7a1a1a">莲之庭·湖心岛侧门·存根·林</span></p>
+
+  <!-- ========== Section 7 · 档案归位 ========== -->
+  <div id="ritualReopen" class="ritual-reopen" style="display:none">
+    <h3>， 林 茂 才 同 志 · 归 位 通 告 · 重 新 归 档 ，</h3>
+    <p>你左手边口袋里的那几页纸，此刻应当已不在你手里。<br>这是莲之庭的规矩：<b>看过这一晚，下一位便是你了。</b></p>
+    <p>但你·<b>不打算</b>。<br>你跑出来了。你回到了这座城里。你重新坐到了这台电脑前。回川市公众信息网的首页，那个通告栏里，原本被撕下的「归位公告」，此刻又回来了，<b>时间，是那年七月八号</b>。</p>
+    <p>下一步：你需要回去，归位名单里，按图索骥。</p>
+    <a class="btn" href="gov-portal.html#ritual" id="ritualBtn">▸ 查看归位公告 · 进入台账</a>
+  </div>
+
+  <p style="margin-top:32px;text-align:center;font-size:11px;color:#888;letter-spacing:0.3em">· · · 第 一 章 · 完 · · ·</p>
+
+</div>
+
+<script>
+/* ========== 滚动到顶 / 返回 ========== */
+function goBack(){
+  try{
+    if(document.referrer && document.referrer.indexOf('gov-portal.html')>=0){
+      history.back();
+    }else{
+      window.location.href = 'gov-portal.html#home';
+    }
+  }catch(e){
+    window.location.href = 'gov-portal.html#home';
+  }
+}
+try{ window.scrollTo(0,0); }catch(e){}
+
+/* ========== 腐鱼桌画面板：闪烁（开启 0.6 秒后开始; 闻字渐变血色） ========== */
+(function(){
+  var img = document.getElementById('rotImg');
+  if(img){
+    // 让图片本身暗下来一些，颜色饱和度提升
+    img.style.transition = 'filter 1.6s ease';
+    setTimeout(function(){ try{ img.style.filter = 'brightness(0.6) saturate(1.6)'; }catch(e){} }, 800);
+    // 桌面整体慢慢变血色
+    var page = document.getElementById('page');
+    if(page){
+      setTimeout(function(){ page.style.transition = 'background 6s ease'; }, 1200);
+    }
+  }
+  var v = document.getElementById('valley-text');
+  if(v){
+    // 4 秒后字慢慢变红
+    setTimeout(function(){
+      v.classList.add('fade');
+    }, 4200);
+  }
+  var s = document.getElementById('vShake');
+  if(s){
+    setTimeout(function(){ s.classList.add('shake'); }, 5600);
+  }
+  var s2 = document.getElementById('vShake2');
+  if(s2){
+    setTimeout(function(){ s2.classList.add('shake'); }, 7000);
+  }
+})();
+
+/* ========== 林茂才献祭图片：点击切换 ========== */
+var swapDone = false;
+function swapSacrifice(){
+  if(swapDone) return;
+  swapDone = true;
+  var img = document.getElementById('sacImg');
+  if(img){ img.src = 'assets/desktop/lin-sacrifice-after.jpg'; }
+  var cap = document.getElementById('sacCap');
+  if(cap){ cap.textContent ='点 击 切 换 后 · 帐 号 已 显 现'; }
+  var det = document.getElementById('sac-detail');
+  if(det){ det.style.display = 'block'; det.scrollIntoView({behavior:'smooth', block:'start'}); }
+}
+
+/* ========== 雪禾视频：播放完后才解锁档案归位 ========== */
+(function(){
+  var v = document.getElementById('xueheVid');
+  var reopen = document.getElementById('ritualReopen');
+  var btn = document.getElementById('ritualBtn');
+  if(!v || !reopen) return;
+
+  // 防视频自动结束（万一）
+  v.addEventListener('ended', function(){
+    try{ localStorage.setItem('hc_chapter1_done','1'); }catch(e){}
+    reopen.style.display = 'block';
+    btn && btn.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  // 兜底：用户手动关闭（pause 且 currentTime >= duration*0.95 视为看完）
+  v.addEventListener('pause', function(){
+    try{
+      if(v.duration && v.currentTime >= v.duration * 0.92){
+        try{ localStorage.setItem('hc_chapter1_done','1'); }catch(e){}
+        reopen.style.display = 'block';
+      }
+    }catch(e){}
+  });
+
+  // 兼容：如果用户先前已经看过，刷新进来仍然显示
+  try{
+    if(localStorage.getItem('hc_chapter1_done')==='1'){
+      // 但仍要求视频再播一次，不直接放 — 让归位面板只在视频结束后显现
+    }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

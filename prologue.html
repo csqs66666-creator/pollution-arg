@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>回川水库 · 序幕</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+/* === 全局 === */
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{
+  font-family:"Songti SC","STSong","宋体",SimSun,"Source Han Serif SC","Noto Serif CJK SC",serif;
+  background:#050709;
+  color:#cfd2d6;
+  letter-spacing:0.02em;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+/* 整页阴森滤镜：微微降饱和、轻微青灰偏色 */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9000;
+  background:
+    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%),
+    linear-gradient(0deg, rgba(5,10,16,0.35), rgba(5,10,16,0.15));
+  mix-blend-mode:multiply;
+}
+/* 全屏缓慢呼吸动画 */
+@keyframes breathe{
+  0%,100%{filter:brightness(0.92) contrast(1.05)}
+  50%   {filter:brightness(1.05) contrast(1.02)}
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9001;
+  background:radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.45) 100%);
+  animation:breathe 7s ease-in-out infinite;
+}
+
+/* === 顶部标题 === */
+.titlebar{
+  position:relative;z-index:10;
+  padding:60px 0 24px;
+  text-align:center;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.titlebar h1{
+  margin:0;
+  font-family:"STKaiti","KaiTi","楷体","Songti SC",serif;
+  font-weight:500;
+  font-size:64px;
+  letter-spacing:0.6em;
+  text-indent:0.6em;
+  color:#e9ecef;
+  text-shadow:
+    0 0 18px rgba(120,160,200,0.18),
+    0 0 2px rgba(0,0,0,0.9);
+  opacity:0;transform:translateY(-12px);
+  animation:fadeDown 2.4s 0.2s ease-out forwards;
+}
+.titlebar .sub{
+  margin-top:18px;
+  font-size:13px;
+  letter-spacing:0.5em;
+  text-indent:0.5em;
+  color:#5b6470;
+  opacity:0;animation:fadeDown 2.4s 0.9s ease-out forwards;
+}
+@keyframes fadeDown{
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* === 段落容器 === */
+.wrap{
+  position:relative;z-index:5;
+  max-width:780px;
+  margin:0 auto;
+  padding:0 28px 80px;
+}
+.p{
+  margin:36px 0;
+  font-size:18px;
+  line-height:2.1;
+  text-align:justify;
+  text-justify:inter-ideograph;
+  color:#b6bcc4;
+  text-indent:2em;
+  opacity:0;transform:translateY(14px);
+  animation:fadeUp 1.4s ease-out forwards;
+}
+.p:nth-of-type(1){animation-delay:1.4s}
+.p:nth-of-type(2){animation-delay:1.7s}
+.p:nth-of-type(3){animation-delay:2.0s}
+.p.dim{color:#7e848d}
+.p.lead{color:#d0d5dc}
+.p strong{
+  color:#e6e9ee;
+  font-weight:600;
+  text-shadow:0 0 6px rgba(255,255,255,0.05);
+}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+/* === 大图 === */
+.figure{
+  position:relative;
+  margin:48px auto;
+  max-width:100%;
+  border-radius:2px;
+  overflow:hidden;
+  box-shadow:
+    0 14px 50px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(255,255,255,0.04) inset;
+  opacity:0;transform:translateY(18px);
+  animation:fadeUp 2s ease-out forwards;
+}
+.figure.f1{animation-delay:2.2s}
+.figure.f2{animation-delay:5.5s}
+.figure img{
+  display:block;width:100%;height:auto;
+  filter:grayscale(0.18) contrast(1.05) brightness(0.78);
+}
+.figure.f1 img{filter:grayscale(0.35) contrast(1.08) brightness(0.65)}
+.figure.f2 img{
+  filter:grayscale(0.05) contrast(1.12) brightness(0.78) hue-rotate(-6deg);
+  animation:huePulse 9s ease-in-out infinite;
+}
+@keyframes huePulse{
+  0%,100%{filter:grayscale(0.05) contrast(1.12) brightness(0.78) hue-rotate(-6deg)}
+  50%   {filter:grayscale(0.0)  contrast(1.18) brightness(0.74) hue-rotate(-10deg)}
+}
+.figure .grad{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.7) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.0) 60%, rgba(5,8,12,0.6) 100%);
+  pointer-events:none;
+}
+.figure .cap{
+  position:absolute;left:0;right:0;bottom:14px;
+  text-align:center;
+  font-size:12px;
+  letter-spacing:0.4em;
+  text-indent:0.4em;
+  color:rgba(255,255,255,0.35);
+  pointer-events:none;
+}
+
+/* === 章节小标题 === */
+.sec{
+  margin:64px 0 8px;
+  font-size:13px;
+  letter-spacing:0.6em;
+  text-indent:0.6em;
+  color:#5d6671;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  padding-bottom:8px;
+  opacity:0;animation:fadeUp 1s ease-out forwards;
+}
+.sec.s1{animation-delay:1.0s}
+.sec.s2{animation-delay:4.6s}
+.sec.s3{animation-delay:6.6s}
+
+/* === 末尾按钮区 === */
+.end{
+  margin:96px 0 24px;
+  text-align:center;
+  opacity:0;animation:fadeUp 1.6s 7.6s ease-out forwards;
+}
+.end .hint{
+  margin-bottom:24px;
+  font-size:13px;
+  letter-spacing:0.4em;
+  text-indent:0.4em;
+  color:#5d6671;
+}
+.cta{
+  display:inline-block;
+  padding:18px 56px;
+  font-family:"Songti SC","STSong","宋体",serif;
+  font-size:20px;
+  letter-spacing:0.5em;
+  text-indent:0.5em;
+  color:#d8dde3;
+  background:rgba(20,26,33,0.85);
+  border:1px solid rgba(180,200,220,0.22);
+  border-radius:2px;
+  cursor:pointer;
+  text-decoration:none;
+  position:relative;
+  transition:all 0.5s ease;
+  box-shadow:
+    inset 0 0 24px rgba(255,255,255,0.02),
+    0 6px 24px rgba(0,0,0,0.5);
+}
+.cta:hover{
+  color:#fff;
+  border-color:rgba(180,200,220,0.5);
+  background:rgba(28,38,48,0.92);
+  box-shadow:
+    inset 0 0 32px rgba(180,200,220,0.08),
+    0 6px 36px rgba(80,140,200,0.18);
+  letter-spacing:0.7em;
+}
+.cta:hover::after{
+  content:"";
+  position:absolute;inset:0;
+  border-radius:2px;
+  box-shadow:0 0 24px rgba(140,180,220,0.25) inset;
+  animation:glow 2.4s ease-in-out infinite;
+}
+@keyframes glow{
+  0%,100%{opacity:0.4}
+  50%   {opacity:1}
+}
+.cta::before{
+  content:"›";
+  margin-right:18px;
+  color:#7090a8;
+  letter-spacing:0;
+  text-indent:0;
+}
+
+/* 顶部细横线装饰 */
+.bar{
+  position:relative;
+  width:120px;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(180,200,220,0.3), transparent);
+  margin:18px auto;
+}
+.bar.r{animation-delay:1.6s !important}
+
+/* 角落杂音 — 模拟一些仿官网资料收集风的小细节 */
+.meta{
+  position:fixed;left:14px;bottom:10px;
+  font-size:11px;
+  color:#3a4148;
+  letter-spacing:0.1em;
+  font-family:monospace;
+  z-index:9999;
+  pointer-events:none;
+}
+.meta2{
+  position:fixed;right:14px;bottom:10px;
+  font-size:11px;
+  color:#3a4148;
+  letter-spacing:0.1em;
+  font-family:monospace;
+  z-index:9999;
+  pointer-events:none;
+}
+
+/* 整体稍抖动（轻微，几乎不可察觉的"在呼吸") */
+.wrap, .titlebar{
+  animation:shudder 6s ease-in-out infinite;
+}
+@keyframes shudder{
+  0%,100%{transform:translate(0,0)}
+  25%   {transform:translate(0.3px, -0.2px)}
+  50%   {transform:translate(-0.2px, 0.3px)}
+  75%   {transform:translate(0.2px, 0.1px)}
+}
+
+/* 滚动条适配 */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#0a0e12}
+::-webkit-scrollbar-thumb{background:#1f2730;border-radius:3px}
+
+</style>
+</head>
+<body>
+
+<div class="meta" id="metaL">REC ● 00:00:14 / FILE / 2026-08</div>
+<div class="meta2" id="metaR">回川 · 月荷 · 录到异常</div>
+
+<div class="titlebar">
+  <h1>回川水库</h1>
+  <div class="sub">— 序幕 —</div>
+  <div class="bar r" style="opacity:0;animation:fadeUp 1.5s 1.4s ease-out forwards"></div>
+</div>
+
+<div class="wrap">
+
+  <div class="sec s1">§ 夏 日 · 出 行</div>
+
+  <p class="p lead"><strong>那年夏天多雨，你与挚友结伴，去回川市的水库钓鱼散心。</strong></p>
+
+  <p class="p">库水是灰绿色的，黏在岸边石头上，一层一层，干了又湿。你们在坝下蹲了整个下午，鱼漂一动不动，水汽闷得人皮肤发黏。快收竿的时候，才钓上来一条。鱼出水时活蹦乱跳，鳞光雪亮，新鲜得不像话。你们没多想，就在岸边简单收拾了，生火，做熟，准备吃。</p>
+
+  <div class="figure f1" style="animation-delay:2.0s">
+    <img src="assets/desktop/prologue-lake.jpg" alt="回川水库 · 黄昏前">
+    <div class="grad"></div>
+    <div class="cap">水库 · 鱼竿 · 静默</div>
+  </div>
+
+  <p class="p dim">可吃着吃着，不对劲了。<strong>那条鱼外表完好，内里却从腹腔烂了个透</strong>。你夹开第二筷，看见里面的肉已经烂成一团，灰白的，黏的，混着说不清的东西。朋友脸色一下子白了，你也是。你们蹲在岸边，把吃进去的全吐了出来，吐得嗓子眼里都是酸水，越吐越觉得，浑身发凉。</p>
+
+  <p class="p">缓过神来，你们谁都没说话，只把东西胡乱塞进背包，逃也似的下了山。回去的路上，你一直觉得嘴里有股甜腥味，怎么漱都漱不掉。你跟自己说，是鱼不新鲜，是自己想多了。</p>
+
+  <div class="sec s2">§ 怪 事 · 才 刚 开 始</div>
+
+  <div class="figure f2" style="animation-delay:4.8s">
+    <img src="assets/desktop/prologue-fish.jpg" alt="白色餐盘 · 吃了一半的鱼 · 腹腔溃烂">
+    <div class="grad"></div>
+    <div class="cap">未 完 · 只 吃 了 一 半</div>
+  </div>
+
+  <p class="p lead"><strong>可谁也没想到，真正的怪事，才刚开始。</strong></p>
+
+  <p class="p">那之后几天，朋友越来越不对。先是话少，后来是整夜不睡，再后来，ta开始一遍一遍给你发消息，措辞一模一样：<em>「再去回川水库钓鱼吧。那里的鱼，真的太美味了。」</em>你在电话里听出ta的声音有点飘，像隔着水在说话。</p>
+
+  <p class="p">ta从前不是这样的。ta从前会笑，会骂人，会为了鸡毛蒜皮跟你吵。现在ta只会说这一句，说的时候眼睛亮晶晶的，亮得发毛。你劝ta，ta不听；你骂ta，ta笑。你没办法，只能收拾了渔具，<strong>再陪ta回一次水库</strong>，你说不清自己是想弄清楚，还是怕ta一个人去。</p>
+
+  <div class="sec s3">§ 案 卷 · 回 川 市 政 府 门 户</div>
+
+  <p class="p dim">出发前夜，你鬼使神差点开了回川市公众信息网，想查查水库最近的公告。<strong>想给这场说不清的怪事，找出哪怕一丝头绪。</strong></p>
+
+  <div class="end">
+    <div class="hint">— 是否打开你常用的那台电脑 —</div>
+    <a class="cta" href="desktop-portal.html">进入你的电脑</a>
+  </div>
+
+</div>
+
+<script>
+/* 顶角时间随加载跳秒，营造"被记录"感 */
+(function(){
+  const ml = document.getElementById('metaL');
+  if(!ml) return;
+  let s = 14;
+  setInterval(()=>{
+    s += 1;
+    if(s > 99) s = 14;
+    const hh = String(Math.floor(s/3600)).padStart(2,'0');
+    const mm = String(Math.floor(s/60)%60).padStart(2,'0');
+    const ss = String(s%60).padStart(2,'0');
+    ml.textContent = 'REC ● ' + hh + ':' + mm + ':' + ss + ' / FILE / 2026-08';
+  }, 1000);
+})();
+/* 阻止硬刷新之外的副作用：键盘 Enter 也触发 */
+document.addEventListener('keydown', e => {
+  if(e.key === 'Enter'){
+    const a = document.querySelector('.cta');
+    if(a) location.href = a.getAttribute('href');
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>回川往事 · 终局 · 归位完成</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --ink:#d8c8a8;
+  --ink2:#a89978;
+  --line:#3a1c1c;
+  --red:#a02020;
+  --bleed:#5a0e0e;
+  --night:#080202;
+  --night2:#160808;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;padding:0;
+  background:var(--night);
+  color:var(--ink);
+  font-family:"Noto Serif SC","Source Han Serif","Songti SC","STSong",serif;
+  letter-spacing:0.04em;
+}
+.page{
+  width:100%;
+  min-height:100vh;
+  background:linear-gradient(180deg, #080202 0%, #160606 55%, #080202 100%);
+}
+.article-wrap{
+  max-width:760px;
+  margin:0 auto;
+  padding:0 32px 120px;
+}
+@media (max-width:820px){
+  .article-wrap{padding:0 22px 80px}
+}
+
+/* 版头 */
+.cover{
+  position:relative;
+  width:100%;
+  height:58vh;
+  min-height:380px;
+  max-height:600px;
+  background:url('assets/desktop/chapter2-cover.jpg') center/cover no-repeat;
+  background-color:#0a0202;
+  border-bottom:2px solid #3a0c0c;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+.cover::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(8,2,2,0.5) 0%, rgba(8,2,2,0.92) 100%);
+  pointer-events:none;
+}
+.cover-inner{
+  position:relative;
+  z-index:2;
+  text-align:center;
+}
+.cover .big{
+  font-size:30px;
+  color:#fff;
+  letter-spacing:0.6em;
+  text-shadow:0 0 22px rgba(178,34,34,0.7);
+  font-family:"Songti SC",serif;
+}
+.cover .sub{
+  font-size:12px;
+  color:#a89078;
+  letter-spacing:0.3em;
+  margin-top:14px;
+}
+.cover .stroke{
+  display:inline-block;
+  border:1px solid #6a2020;
+  padding:4px 14px;
+  font-size:11px;
+  color:#c08080;
+  letter-spacing:0.4em;
+  margin-top:18px;
+}
+
+.chap{
+  font-size:10px;
+  color:#8a6a5a;
+  letter-spacing:0.4em;
+  text-align:center;
+  border-top:1px solid #3a1c1c;
+  border-bottom:1px solid #3a1c1c;
+  padding:6px 0;
+  margin:36px auto 30px;
+  width:60%;
+}
+h2{
+  font-size:18px;
+  color:#e8d8b8;
+  margin:36px 0 12px;
+  border-bottom:1px solid #3a1c1c;
+  padding-bottom:6px;
+  letter-spacing:0.15em;
+}
+p{
+  line-height:2.1;
+  font-size:14.5px;
+  color:#c8b898;
+  margin:0 0 14px;
+  text-align:justify;
+  text-indent:2em;
+}
+p.flat{text-indent:0}
+p.quote{
+  margin:18px 28px;
+  padding:12px 16px;
+  border-left:3px solid var(--red);
+  background:rgba(178,34,34,0.07);
+  color:#d8b8a8;
+  font-style:italic;
+  text-indent:0;
+  font-size:13.5px;
+  line-height:2;
+  font-family:"Songti SC",serif;
+}
+.names{
+  margin:26px 0;
+  padding:18px 20px;
+  border:1px solid #5a0e0e;
+  background:rgba(90,14,14,0.12);
+}
+.names .nrow{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:6px 0;
+  border-bottom:1px dotted #3a1c1c;
+  font-size:13px;
+}
+.names .nrow:last-child{border-bottom:none}
+.names .nm{
+  color:#d8c8a8;
+  font-family:"Songti SC",serif;
+  letter-spacing:0.1em;
+  white-space:nowrap;
+}
+.names .nd{
+  color:#7a5a5a;
+  font-size:11.5px;
+  text-align:right;
+}
+.locked{
+  padding:60px 24px;
+  text-align:center;
+  color:#a89078;
+  font-size:14px;
+  line-height:2;
+}
+.locked a{
+  color:#c04040;
+  text-decoration:none;
+  border:1px solid #c04040;
+  padding:9px 22px;
+  display:inline-block;
+  margin-top:18px;
+  letter-spacing:0.3em;
+}
+.end-mark{
+  margin-top:30px;
+  text-align:center;
+  font-size:11px;
+  color:#6a4a4a;
+  letter-spacing:0.3em;
+}
+.foot-nav{
+  text-align:center;
+  margin-top:30px;
+}
+.foot-nav a{
+  color:#a89078;
+  text-decoration:none;
+  font-size:12px;
+  letter-spacing:0.2em;
+  margin:0 12px;
+  cursor:pointer;
+}
+.foot-nav a:hover{color:#d8a8a8}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="cover-inner">
+      <div class="big">归 位 完 成</div>
+      <div class="sub">回 川 市 公 众 信 息 网 · 管 理 员 终 端 · 校 验 通 过</div>
+      <div class="stroke">你 已 握 住 四 把 钥 匙</div>
+    </div>
+  </div>
+
+  <div class="article-wrap" id="endBody">
+    <div class="chap">终 局 · 归 位 之 完 成</div>
+
+    <p>屏幕亮了。回川市公众信息网的首页，那个被撕下的通告栏，自己合上了。</p>
+    <p>四把钥匙插进去的瞬间，后台亮起四盏灯。你看见ta们的名字，一个一个浮上来，</p>
+
+    <div class="names">
+      <div class="nrow"><span class="nm">林茂才</span><span class="nd">把自己写过的字，烧在佛前。ta献的，是ta自己。</span></div>
+      <div class="nrow"><span class="nm">沈清川</span><span class="nd">三十年容貌未变。ta记下了每一次异动，从不阻止，也不加入。</span></div>
+      <div class="nrow"><span class="nm">许清</span><span class="nd">独自收集证据的人。失联前最后一句：去找沈清川。</span></div>
+      <div class="nrow"><span class="nm">周秉坤</span><span class="nd">体制内的那双手。以「稳定」为名，压下了一桩又一桩。</span></div>
+    </div>
+
+    <p>灯全亮了。四把钥匙合上，回川市公众信息网的首页，一切如常。</p>
+    <p>你忽然想起雪禾。ta 蹲在藕塘边，把你弄醒，说戏还没演完，不许你早死。</p>
+    <p class="quote">「我救你，是让你把这一幕看完。」<br>「戏的最后一幕，是你坐在这台电脑前，亲手把四把钥匙插进去。」</p>
+    <p>屏幕右下角：</p>
+    <p class="quote">下一份归位通告 · 署名：＿＿＿＿</p>
+    <p>你没动。窗外有人在叫卖什么，叫了许久，你听了一会儿。站起身，又坐下了。</p>
+
+    <h2>你 与 你 那 位 朋 友 · 真 相</h2>
+    <p>朋友回川之后，吃下的那条鱼，本来是莲之庭的信物。</p>
+    <p>不是钓上来的。是湖心岛水里，那个不该被打捞起来的活物，<b>自己游上来</b>跳到朋友的桶里。</p>
+    <p>莲之庭不会主动找人。但 ta 会把信物递给 ta 看得上的人。ta 一眼相中的是朋友。朋友夹起鱼腹那一口，汁液是暗的。</p>
+    <p>朋友吃了，朋友认了 ta，ta 认了朋友。从此朋友是 ta 的人。</p>
+    <p>可你，</p>
+    <p>你只是坐在那一桌，<b>陪朋友吃了一顿。</b></p>
+    <p>你没动筷子。但你看见朋友的嘴角一直挂着笑，你没拦。你笑了一下。</p>
+    <p>就那一下，<b>被湖心岛祠堂里的白袍看见了。</b></p>
+    <p>ta们以为，你也是入伙的。</p>
+    <p>那晚湖心岛的笑、枯荷的转身、满世界的肉、你的手脚冰冷、你的血漫上来，那一整出，<b>不是给朋友的，</b>是给你的。</p>
+    <p>朋友还在 ta 那一侧，安安静静地笑。</p>
+    <p>你被错误地，推到了 ta 这一侧。</p>
+
+    <h2>雪 禾 醒 来 那 一 句</h2>
+    <p>你在藕塘边醒来，看见 ta 蹲在你面前，半开半合的荷花顶在 ta 头上。ta 把藕节丢给你，让你把戏看完。</p>
+    <p>你抖着问，<b>为什么要救我。</b></p>
+    <p>ta 没回答 ta 救的是不是你，也没回答 ta 要你做什么。ta 只是看着你那副哭不出来的样子，看了半天，<b>笑了一声。</b></p>
+    <p>ta 笑的时候，眼底没有光。ta 看着你，像看着一尾从网里漏出去的鱼。</p>
+    <p>ta 走之前回头看了你一眼，说了一句：</p>
+    <p class="quote">「你倒有几分，算了，<b>还算有趣</b>。留你看完这一幕。」</p>
+    <p>ta 没提你的样子。没提你像不像 ta 的同乡，没提你像不像 ta 的人。</p>
+    <p>ta 只用了「<b>还算</b>」两个字。</p>
+    <p>ta 救你，不是因为 ta 在乎你。是因为 ta 想看 ta 这次，是不是真的认错了一个。</p>
+
+    <p class="flat" style="color:#a89078;font-size:12.5px;margin-top:24px">回川市公众信息网 · 管理员终端 · 会话已归档 ，</p>
+
+    <div class="foot-nav">
+      <a href="gov-portal.html#home">▸ 回到回川市公众信息网</a>
+      <a href="forum.html">▸ 民间论坛</a>
+      <a href="chapter2-ritual.html" onclick="try{localStorage.removeItem('hc_admin_done')}catch(e){}">▸ 重新归位</a>
+    </div>
+
+    <p class="end-mark">· · · 终 局 · 完 · · ·</p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  if(localStorage.getItem('hc_admin_done') !== '1'){
+    var body = document.getElementById('endBody');
+    if(body){
+      body.innerHTML = '<div class="locked">归位密钥尚未校验。<br>终局之锁，只向握有密钥的人敞开。<br><a href="chapter2-ritual.html">▸ 回到第二节 · 核验密钥</a><br><br><a href="forum.html" style="border-color:#8a6a4a;color:#a89078">▸ 先去民间论坛找密钥</a></div>';
+      return;
+    }
+  }
+  // 已校验：从 forum 来的话回写 hc_admin_done（重复登录也认）
+  try{
+    var r = document.referrer || '';
+    if(r.indexOf('forum.html') >= 0){
+      localStorage.setItem('hc_admin_done', '1');
+    }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

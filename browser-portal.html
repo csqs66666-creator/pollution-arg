@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>回川市公众信息网</title>
+<style>
+  /* ============================================================
+   * 浏览器外壳样式（Win11 仿真 · 毛玻璃 / 圆角，保持不变）
+   * 仅外壳用毛玻璃圆角；窗口【内部网页】用朴素政务风（无圆角无阴影）
+   * ============================================================ */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: linear-gradient(135deg, #1b2a4a, #2c3e63 40%, #3a5a8c);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 24px;
+  }
+
+  .browser-window {
+    width: min(1100px, 96vw);
+    height: min(760px, 92vh);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 12px;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .browser-titlebar {
+    height: 38px; flex: 0 0 38px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 12px;
+    background: rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    cursor: grab; user-select: none;
+  }
+  .browser-titlebar:active { cursor: grabbing; }
+  .browser-titlebar .bt-icon {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: linear-gradient(135deg, #2cb178, #1d8f5f);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 10px; font-weight: 700;
+  }
+  .browser-titlebar .bt-title { font-size: 12.5px; color: #333; flex: 1; }
+  .browser-winbtns { display: flex; gap: 8px; }
+  .browser-winbtns button {
+    width: 14px; height: 14px; border: none; border-radius: 50%;
+    cursor: pointer; font-size: 9px; line-height: 14px; color: rgba(0,0,0,0.55);
+  }
+  .browser-winbtns .min { background: #febc2e; }
+  .browser-winbtns .max { background: #28c840; }
+  .browser-winbtns .close { background: #ff5f57; color: #fff; }
+
+  .browser-toolbar {
+    height: 44px; flex: 0 0 44px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 10px;
+    background: rgba(245, 247, 250, 0.55);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .browser-nav {
+    width: 30px; height: 30px; border: none; border-radius: 6px;
+    background: transparent; color: #444; font-size: 16px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .browser-nav:hover { background: rgba(0,0,0,0.06); }
+  .browser-nav:disabled { color: #bbb; cursor: default; }
+  .urlbar {
+    flex: 1; height: 30px; border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 16px; padding: 0 14px; font-size: 12.5px; color: #222;
+    background: rgba(255,255,255,0.85); outline: none;
+  }
+  .urlbar:focus { border-color: #4a90e2; }
+  .searchbox {
+    width: 180px; height: 30px; border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 16px; padding: 0 14px; font-size: 12.5px; color: #222;
+    background: rgba(255,255,255,0.85); outline: none;
+  }
+  .searchbox:focus { border-color: #4a90e2; }
+
+  .browser-view {
+    flex: 1 1 auto; overflow-y: auto; background: #fff;
+  }
+
+  /* ============================================================
+   * 浏览器内部网页 · 回川市公众信息网（政务朴素风）
+   * 主色藏蓝 #00479D / 白底 / 浅灰分割线 / 直角 / 无圆角无渐变无阴影
+   * 标题黑体，正文宋体，字号偏小，信息密度高
+   * ============================================================ */
+  .gov { font-family: "SimSun", "宋体", serif; color: #222; font-size: 13px; line-height: 1.7; }
+  .gov h1, .gov h2, .gov h3, .gov h4 { font-family: "SimHei", "黑体", "Microsoft YaHei", sans-serif; color: #00479D; }
+
+  .gov-top {
+    border-top: 3px solid #00479D;
+    background: #fff;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 22px;
+    border-bottom: 1px solid #d9d9d9;
+  }
+  .gov-site-name { font-family: "SimHei","黑体",sans-serif; font-size: 22px; font-weight: 700; color: #00479D; letter-spacing: 1px; }
+  .gov-top-links { font-size: 12px; color: #555; }
+  .gov-top-links a { color: #555; text-decoration: none; }
+  .gov-top-links a:hover { color: #00479D; text-decoration: underline; }
+  .gov-top-links .sep { color: #ccc; margin: 0 6px; }
+
+  .gov-nav {
+    background: #00479D; display: flex; flex-wrap: wrap;
+    border-bottom: 2px solid #003a7e;
+  }
+  .gov-nav a {
+    flex: 0 0 auto; padding: 9px 22px; color: #fff; text-decoration: none;
+    font-family: "SimHei","黑体",sans-serif; font-size: 14px;
+    border-right: 1px solid rgba(255,255,255,0.18); cursor: pointer;
+  }
+  .gov-nav a:hover { background: #5a9bd8; }
+  .gov-nav a.active { background: #fff; color: #00479D; }
+
+  .gov-banner {
+    background: #00479D; color: #fff; padding: 18px 24px;
+    text-align: center; position: relative;
+  }
+  .gov-banner .gov-banner-text {
+    font-family: "SimHei","黑体",sans-serif; font-size: 20px; letter-spacing: 1px;
+  }
+  .gov-banner .gov-banner-sign {
+    position: absolute; right: 16px; bottom: 8px; font-size: 12px; opacity: 0.85;
+  }
+
+  .gov-main { display: flex; padding: 16px 22px; gap: 20px; align-items: flex-start; }
+  .gov-col-left { flex: 0 0 68%; max-width: 68%; }
+  .gov-col-right { flex: 1 1 32%; border-left: 1px solid #e2e2e2; padding-left: 18px; }
+
+  .gov-block-title {
+    font-family: "SimHei","黑体",sans-serif; font-size: 15px; color: #00479D;
+    border-bottom: 2px solid #00479D; padding-bottom: 5px; margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .gov-block-title .more { font-size: 12px; color: #888; font-weight: normal; }
+
+  .gov-news-list { list-style: none; }
+  .gov-news-list li {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 7px 0; border-bottom: 1px dashed #e0e0e0; cursor: pointer;
+  }
+  .gov-news-list li:hover .gov-news-title { color: #c0392b; text-decoration: underline; }
+  .gov-news-title { font-size: 13.5px; color: #222; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gov-news-title::before { content: "·"; color: #00479D; margin-right: 6px; font-weight: 700; }
+  .gov-news-date { font-size: 12px; color: #999; margin-left: 12px; flex: 0 0 auto; }
+
+  .gov-sub-block { margin-bottom: 18px; }
+  .gov-notice-list { list-style: none; }
+  .gov-notice-list li {
+    padding: 6px 0; border-bottom: 1px dashed #e0e0e0; cursor: pointer; font-size: 13px;
+  }
+  .gov-notice-list li:hover { color: #c0392b; text-decoration: underline; }
+  .gov-notice-list li::before { content: "【公告】"; color: #00479D; font-size: 12px; }
+
+  .gov-msg-list { list-style: none; }
+  .gov-msg-list li {
+    padding: 6px 0; border-bottom: 1px dashed #e0e0e0; cursor: pointer; font-size: 13px;
+  }
+  .gov-msg-list li:hover { color: #c0392b; text-decoration: underline; }
+  .gov-msg-status { font-size: 12px; color: #28a745; margin-left: 4px; }
+  .gov-msg-status.doing { color: #e67e22; }
+
+  .gov-footer {
+    background: #f2f2f2; border-top: 1px solid #dcdcdc;
+    text-align: center; font-size: 12px; color: #666; line-height: 1.9;
+    padding: 16px 22px; margin-top: 10px;
+  }
+  .gov-footer a { color: #666; text-decoration: none; }
+  .gov-footer a:hover { color: #00479D; }
+
+  /* 详情页 */
+  .gov-detail { padding: 22px 28px; max-width: 860px; margin: 0 auto; }
+  .gov-detail h1 { font-size: 20px; text-align: center; margin-bottom: 10px; line-height: 1.5; }
+  .gov-detail .gov-detail-meta {
+    text-align: center; color: #999; font-size: 12px; border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 10px; margin-bottom: 16px;
+  }
+  .gov-detail p { text-indent: 2em; margin-bottom: 12px; }
+  .gov-detail .back-link {
+    display: inline-block; margin-top: 18px; color: #00479D; cursor: pointer;
+    border: 1px solid #00479D; padding: 4px 14px; font-size: 12px;
+  }
+  .gov-detail .back-link:hover { background: #00479D; color: #fff; }
+
+  /* 404 */
+  .gov-404 { padding: 60px 24px; text-align: center; color: #555; }
+  .gov-404 .code { font-family: "SimHei","黑体",sans-serif; font-size: 60px; color: #00479D; }
+  .gov-404 .msg { font-size: 15px; margin: 12px 0; }
+  .gov-404 .back { color: #00479D; cursor: pointer; text-decoration: underline; }
+
+  /* 占位板块 */
+  .gov-placeholder { padding: 50px 24px; text-align: center; color: #999; font-size: 14px; }
+
+  /* 搜索结果页 */
+  .gov-search { padding: 22px 28px; }
+  .gov-search h2 { font-size: 16px; margin-bottom: 12px; }
+  .gov-search .hint { color: #888; font-size: 13px; margin-bottom: 14px; }
+
+  /* secretPages 隐藏页（示例占位，用户自行补充） */
+  .gov-secret { padding: 40px 28px; text-align: center; }
+  .gov-secret h1 { font-size: 22px; }
+  .gov-secret .body { color: #444; margin-top: 14px; font-size: 14px; }
+</style>
+</head>
+<body>
+  <div class="browser-window" id="browserWin">
+    <div class="browser-titlebar" id="titlebar">
+      <span class="bt-icon">e</span>
+      <span class="bt-title">回川市公众信息网 - Edge</span>
+      <div class="browser-winbtns">
+        <button class="min" data-win="min" title="最小化">–</button>
+        <button class="max" data-win="max" title="最大化">▢</button>
+        <button class="close" data-win="close" title="关闭">✕</button>
+      </div>
+    </div>
+    <div class="browser-toolbar">
+      <button class="browser-nav" id="btnBack" title="后退">‹</button>
+      <button class="browser-nav" id="btnFwd" title="前进">›</button>
+      <button class="browser-nav" id="btnReload" title="刷新">↻</button>
+      <input class="urlbar" id="urlbar" spellcheck="false" autocomplete="off">
+      <input class="searchbox" id="searchbox" placeholder="搜索" spellcheck="false" autocomplete="off">
+    </div>
+    <div class="browser-view" id="view"></div>
+  </div>
+
+<script>
+/* ============================================================
+ * 浏览器外壳逻辑：拖拽 / 前进后退刷新 / 地址栏 / 搜索 / 404 / secretPages
+ * 以下外壳逻辑保持不变，仅【默认首页】改为回川市公众信息网
+ * ============================================================ */
+
+/* ---------- 窗口拖拽（外壳功能，保持不变） ---------- */
+(function () {
+  const win = document.getElementById('browserWin');
+  const bar = document.getElementById('titlebar');
+  let dragging = false, sx = 0, sy = 0, ox = 0, oy = 0;
+  bar.addEventListener('mousedown', (e) => {
+    if (e.target.closest('.browser-winbtns')) return;
+    dragging = true;
+    sx = e.clientX; sy = e.clientY;
+    const rect = win.getBoundingClientRect();
+    ox = rect.left; oy = rect.top;
+    document.body.style.userSelect = 'none';
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    let nx = ox + (e.clientX - sx);
+    let ny = oy + (e.clientY - sy);
+    nx = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, nx));
+    ny = Math.max(0, Math.min(window.innerHeight - win.offsetHeight, ny));
+    win.style.position = 'fixed';
+    win.style.left = nx + 'px';
+    win.style.top = ny + 'px';
+    win.style.margin = '0';
+  });
+  window.addEventListener('mouseup', () => { dragging = false; document.body.style.userSelect = ''; });
+
+  // 窗口按钮（演示用：最小化/最大化/关闭仅做视觉反馈，不真正关闭页面）
+  document.querySelectorAll('.browser-winbtns button').forEach(b => {
+    b.addEventListener('click', () => {
+      const act = b.dataset.win;
+      if (act === 'min') win.style.transform = 'scale(0.96)';
+      else if (act === 'max') {
+        const full = win.style.width === '96vw';
+        win.style.width = full ? 'min(1100px,96vw)' : '96vw';
+        win.style.height = full ? 'min(760px,92vh)' : '96vh';
+      } else if (act === 'close') win.style.opacity = '0.35';
+    });
+  });
+})();
+
+/* ---------- secretPages 对象（隐藏页面，保留结构，用户自行添加） ---------- */
+/*
+ * 隐藏页面通过【搜索框】输入对应关键词解锁，或通过地址栏输入 huichuan://secret/<key> 进入。
+ * 当前仅放置示例占位，隐藏页面内容由你后续自行补充。
+ */
+const secretPages = {
+  // 示例占位（删除或替换为你自己的隐藏页）：
+  '垂渊': {
+    title: '垂渊档案',
+    render: () => `<div class="gov gov-secret"><h1>垂渊档案</h1><div class="body">（隐藏页占位内容，待你补充。）</div></div>`
+  },
+  '雪禾': {
+    title: '雪禾',
+    render: () => `<div class="gov gov-secret"><h1>雪禾</h1><div class="body">（隐藏页占位内容，待你补充。）</div></div>`
+  }
+  // 自行添加更多，例如：
+  // '钥匙词': { title:'页面标题', render: () => `...html...` }
+};
+
+/* ---------- 新闻 / 公告数据（详情内容先写通用官样占位，你后续自行修改） ---------- */
+const NEWS = [
+  { id: 1, title: '我市召开上半年生态环境保护工作会议', date: '2026-06-28',
+    body: ['近日，我市召开上半年生态环境保护工作会议。会议深入学习贯彻生态文明思想，总结上半年工作成效，分析当前形势，部署下一阶段重点任务。',
+           '会议指出，今年以来，全市上下扎实推进污染防治攻坚战，生态环境质量持续改善，各项工作取得阶段性成效。',
+           '下一步，我市将持续深入打好蓝天、碧水、净土保卫战，健全生态环境治理体系，推动经济社会发展全面绿色转型，建设生态宜居新回川。'] },
+  { id: 2, title: '河西工业园区环保整改工作通过省级验收', date: '2026-06-15',
+    body: ['日前，河西工业园区环保督察反馈问题整改工作通过省级验收。',
+           '据介绍，园区对照整改清单逐项落实，完善污水处理、废气收集等环保设施，建立长效监管机制。',
+           '下一步，园区将巩固整改成效，持续提升绿色发展水平。'] },
+  { id: 3, title: '市水务局开展夏季饮用水源安全专项检查', date: '2026-06-10',
+    body: ['为保障夏季供水安全，市水务局组织开展了饮用水源安全专项检查。',
+           '检查组对重点水源地、供水厂进行了全面排查，督促落实值班值守和水质监测制度。',
+           '市水务局表示，将持续加强水源保护，确保群众饮水安全。'] },
+  { id: 4, title: '关于部分城区自来水出现异味的情况说明', date: '2026-06-05',
+    body: ['近期，有市民反映部分城区自来水出现异味。对此，相关部门高度重视，立即组织排查。',
+           '经初步核查，异味系供水管道检修及水体扰动所致，水质检测指标均在安全范围内。',
+           '相关部门已采取冲洗管网、加强监测等措施，异味情况已明显缓解，请广大市民放心。'] },
+  { id: 5, title: '我市召开2026年防汛抗旱指挥部第一次全体会议', date: '2026-05-22',
+    body: ['我市召开2026年防汛抗旱指挥部第一次全体会议，分析研判今年防汛抗旱形势，部署重点工作。',
+           '会议强调，要立足防大汛、抗大旱、抢大险，压实各方责任，完善应急预案，确保安全度汛。',
+           '各级各部门要严格落实24小时值班制度，强化监测预警和巡查防守。'] },
+  { id: 6, title: '我市推进生活垃圾分类全覆盖工作', date: '2026-05-08',
+    body: ['我市召开生活垃圾分类工作推进会，部署垃圾分类全覆盖攻坚行动。',
+           '近年来，我市建成分类投放点，完善收运体系，居民参与度稳步提升。',
+           '下一步将加强宣传引导和执法监督，推动垃圾分类成为社会新风尚。'] }
+];
+
+const NOTICES = [
+  { id: 'n1', title: '关于城东片区临时停水的通知', date: '2026-06-20',
+    body: ['因城东片区供水管网改造施工，定于2026年6月20日22:00至6月21日6:00临时停水。',
+           '请相关区域用户提前做好储水准备，由此带来不便敬请谅解。',
+           '恢复供水后可能出现短暂浑浊，排放片刻即可正常使用。'] },
+  { id: 'n2', title: '回川大道部分路段夜间施工停电公告', date: '2026-06-18',
+    body: ['因回川大道路灯线路检修，部分路段将于夜间23:00至次日5:00实施停电作业。',
+           '请沿线单位及居民提前安排，注意出行安全。',
+           '具体范围以现场公告为准。'] },
+  { id: 'n3', title: '回川市生态环境局监测设备采购项目招标公告', date: '2026-06-12',
+    body: ['回川市生态环境局拟采购环境监测设备一批，现面向社会公开招标。',
+           '欢迎具备资质的供应商按要求提交投标文件。',
+           '招标详情及报名方式请在相关平台查询（本项目为公开信息占位）。'] }
+];
+
+const MESSAGES = [
+  { id: 'm1', title: '河里经常看到死鱼是怎么回事？', status: '已回复',
+    body: ['网友反映：近期在部分河段经常看到死鱼漂浮，担心水质问题。',
+           '【官方回复】经核查，死鱼主要因近期水体缺氧及气候因素所致，监测断面水质总体达标。',
+           '相关部门已加强巡查和水体监测，请市民关注官方发布的信息，不信谣不传谣。'] },
+  { id: 'm2', title: '建议增加老旧小区充电桩数量', status: '办理中',
+    body: ['网友建议：部分老旧小区电动车充电不便，建议增设公共充电桩。',
+           '【办理情况】该建议已转交属地及相关部门研究，将结合老旧小区改造统筹考虑。'] },
+  { id: 'm3', title: '关于XX路路灯不亮的反映', status: '已回复',
+    body: ['网友反映：XX路部分路灯长期不亮，影响夜间出行安全。',
+           '【官方回复】已安排运维单位检修，故障路灯已恢复正常照明，感谢市民监督。'] }
+];
+
+/* ---------- 路由 / 历史栈 ---------- */
+const HOME = 'huichuan://home';
+const history = [HOME];
+let histIdx = 0;
+
+const view = document.getElementById('view');
+const urlbar = document.getElementById('urlbar');
+const searchbox = document.getElementById('searchbox');
+const btnBack = document.getElementById('btnBack');
+const btnFwd = document.getElementById('btnFwd');
+const btnReload = document.getElementById('btnReload');
+
+const NAV_ITEMS = [
+  { key: 'home',   label: '首页' },
+  { key: 'zhengwu', label: '政务公开' },
+  { key: 'minsheng', label: '民生资讯' },
+  { key: 'fuwu', label: '政务服务' },
+  { key: 'hudong', label: '互动交流' },
+  { key: 'shuju', label: '数据开放' },
+  { key: 'ditu', label: '网站地图' }
+];
+
+/* 把 path 写进地址栏 + 更新前进后退按钮状态 */
+function syncNav() {
+  urlbar.value = history[histIdx];
+  btnBack.disabled = histIdx <= 0;
+  btnFwd.disabled = histIdx >= history.length - 1;
+}
+
+/* 跳转到某个 path（入栈） */
+function navigate(path) {
+  // 截断"当前位置之后"的历史（标准浏览器行为）
+  if (histIdx < history.length - 1) history.length = histIdx + 1;
+  history.push(path);
+  histIdx = history.length - 1;
+  render(path);
+  syncNav();
+}
+
+function back() { if (histIdx > 0) { histIdx--; render(history[histIdx]); syncNav(); } }
+function fwd()  { if (histIdx < history.length - 1) { histIdx++; render(history[histIdx]); syncNav(); } }
+function reload() { render(history[histIdx]); }
+
+/* 地址栏回车 */
+urlbar.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    let v = urlbar.value.trim();
+    if (!v) return;
+    if (!/^huichuan:\/\//.test(v)) v = 'huichuan://' + v.replace(/^\/+/, '');
+    navigate(v);
+  }
+});
+
+/* 搜索框回车：先查 secretPages，否则进入搜索结果页 */
+searchbox.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const q = searchbox.value.trim();
+    if (!q) return;
+    if (secretPages[q]) {
+      navigate('huichuan://secret/' + q);
+    } else {
+      navigate('huichuan://search?q=' + encodeURIComponent(q));
+    }
+  }
+});
+
+btnBack.addEventListener('click', back);
+btnFwd.addEventListener('click', fwd);
+btnReload.addEventListener('click', reload);
+
+/* ============================================================
+ * 渲染分发
+ * ============================================================ */
+function render(path) {
+  if (path === HOME || path === 'huichuan://' || path === '') return renderHome();
+  if (path === 'huichuan://zhengwu') return renderSection('zhengwu');
+  if (path === 'huichuan://minsheng') return renderSection('minsheng');
+  if (path === 'huichuan://fuwu') return renderSection('fuwu');
+  if (path === 'huichuan://hudong') return renderSection('hudong');
+  if (path === 'huichuan://shuju') return renderSection('shuju');
+  if (path === 'huichuan://ditu') return renderSection('ditu');
+  if (path.startsWith('huichuan://news/')) {
+    const id = parseInt(path.replace('huichuan://news/', ''), 10);
+    return renderNews(id);
+  }
+  if (path.startsWith('huichuan://notice/')) {
+    const id = path.replace('huichuan://notice/', '');
+    return renderNotice(id);
+  }
+  if (path.startsWith('huichuan://message/')) {
+    const id = path.replace('huichuan://message/', '');
+    return renderMessage(id);
+  }
+  if (path.startsWith('huichuan://secret/')) {
+    const key = path.replace('huichuan://secret/', '');
+    if (secretPages[key]) return renderSecret(key);
+    return render404();
+  }
+  if (path.startsWith('huichuan://search')) return renderSearch();
+  return render404();
+}
+
+/* ============================================================
+ * 默认首页 · 回川市公众信息网
+ * ============================================================ */
+function govNav(active) {
+  return `<nav class="gov-nav">` + NAV_ITEMS.map(n =>
+    `<a data-sec="${n.key}" class="${n.key === active ? 'active' : ''}">${n.label}</a>`
+  ).join('') + `</nav>`;
+}
+
+function renderHome() {
+  const newsHtml = NEWS.map(n =>
+    `<li data-news="${n.id}"><span class="gov-news-title">${n.title}</span><span class="gov-news-date">${n.date}</span></li>`
+  ).join('');
+  const noticeHtml = NOTICES.map(n =>
+    `<li data-notice="${n.id}">${n.title}</li>`
+  ).join('');
+  const msgHtml = MESSAGES.map(m =>
+    `<li data-message="${m.id}">${m.title}<span class="gov-msg-status ${m.status === '办理中' ? 'doing' : ''}">【${m.status}】</span></li>`
+  ).join('');
+
+  view.innerHTML = `
+    <div class="gov">
+      <div class="gov-top">
+        <div class="gov-site-name">回川市公众信息网</div>
+        <div class="gov-top-links">
+          <a>设为首页</a><span class="sep">|</span>
+          <a>加入收藏</a><span class="sep">|</span>
+          <a>无障碍浏览</a>
+        </div>
+      </div>
+      ${govNav('home')}
+      <div class="gov-banner">
+        <div class="gov-banner-text">深入推进环境污染防治 建设生态宜居新回川</div>
+        <div class="gov-banner-sign">回川市生态环境局 宣</div>
+      </div>
+      <div class="gov-main">
+        <div class="gov-col-left">
+          <div class="gov-block-title">政务要闻 <span class="more">更多 &gt;&gt;</span></div>
+          <ul class="gov-news-list">${newsHtml}</ul>
+        </div>
+        <div class="gov-col-right">
+          <div class="gov-sub-block">
+            <div class="gov-block-title">通知公告</div>
+            <ul class="gov-notice-list">${noticeHtml}</ul>
+          </div>
+          <div class="gov-sub-block">
+            <div class="gov-block-title">互动留言</div>
+            <ul class="gov-msg-list">${msgHtml}</ul>
+          </div>
+        </div>
+      </div>
+      <div class="gov-footer">
+        主办单位：回川市人民政府办公室　地址：回川市 · 政府办公区　邮政编码：000000<br>
+        网站标识码：0000000000　ICP备案号：回ICP备00000000号　公安机关备案号：00000000000000<br>
+        <a>联系我们</a>　|　<a>隐私声明</a>　|　<a>网站地图</a>　|　© 回川市公众信息网
+      </div>
+    </div>`;
+  bindHomeEvents();
+}
+
+function bindHomeEvents() {
+  view.querySelectorAll('[data-news]').forEach(el =>
+    el.addEventListener('click', () => navigate('huichuan://news/' + el.dataset.news)));
+  view.querySelectorAll('[data-notice]').forEach(el =>
+    el.addEventListener('click', () => navigate('huichuan://notice/' + el.dataset.notice)));
+  view.querySelectorAll('[data-message]').forEach(el =>
+    el.addEventListener('click', () => navigate('huichuan://message/' + el.dataset.message)));
+  bindNavEvents();
+}
+
+function bindNavEvents() {
+  view.querySelectorAll('[data-sec]').forEach(el =>
+    el.addEventListener('click', () => navigate('huichuan://' + el.dataset.sec)));
+}
+
+/* 其ta板块：先留空占位（除首页、政务公开外） */
+function renderSection(key) {
+  const map = {
+    zhengwu: '政务公开', minsheng: '民生资讯', fuwu: '政务服务',
+    hudong: '互动交流', shuju: '数据开放', ditu: '网站地图'
+  };
+  const name = map[key] || '板块';
+  view.innerHTML = `
+    <div class="gov">
+      <div class="gov-top">
+        <div class="gov-site-name">回川市公众信息网</div>
+        <div class="gov-top-links">
+          <a>设为首页</a><span class="sep">|</span>
+          <a>加入收藏</a><span class="sep">|</span>
+          <a>无障碍浏览</a>
+        </div>
+      </div>
+      ${govNav(key)}
+      <div class="gov-main">
+        <div class="gov-col-left" style="max-width:100%;flex-basis:100%">
+          <div class="gov-block-title">${name}</div>
+          <div class="gov-placeholder">「${name}」栏目内容建设中，敬请期待。（占位页，你后续自行补充内容）</div>
+        </div>
+      </div>
+      <div class="gov-footer">
+        主办单位：回川市人民政府办公室　地址：回川市 · 政府办公区　邮政编码：000000<br>
+        网站标识码：0000000000　ICP备案号：回ICP备00000000号<br>
+        <a>联系我们</a>　|　<a>网站地图</a>　|　© 回川市公众信息网
+      </div>
+    </div>`;
+  bindNavEvents();
+}
+
+/* 新闻详情页（通用官样文字占位） */
+function renderNews(id) {
+  const n = NEWS.find(x => x.id === id);
+  if (!n) return render404();
+  view.innerHTML = `
+    <div class="gov">
+      <div class="gov-top">
+        <div class="gov-site-name">回川市公众信息网</div>
+        <div class="gov-top-links"><a>设为首页</a><span class="sep">|</span><a>加入收藏</a><span class="sep">|</span><a>无障碍浏览</a></div>
+      </div>
+      ${govNav('home')}
+      <div class="gov-detail">
+        <h1>${n.title}</h1>
+        <div class="gov-detail-meta">回川市公众信息网　${n.date}　来源：回川市公众信息网</div>
+        ${n.body.map(p => `<p>${p}</p>`).join('')}
+        <span class="back-link" data-back>返回首页</span>
+      </div>
+      <div class="gov-footer">
+        主办单位：回川市人民政府办公室　地址：回川市 · 政府办公区　邮政编码：000000<br>
+        网站标识码：0000000000　ICP备案号：回ICP备00000000号<br>© 回川市公众信息网
+      </div>
+    </div>`;
+  view.querySelector('[data-back]').addEventListener('click', () => navigate(HOME));
+  bindNavEvents();
+}
+
+function renderNotice(id) {
+  const n = NOTICES.find(x => x.id === id);
+  if (!n) return render404();
+  view.innerHTML = `
+    <div class="gov">
+      <div class="gov-top">
+        <div class="gov-site-name">回川市公众信息网</div>
+        <div class="gov-top-links"><a>设为首页</a><span class="sep">|</span><a>加入收藏</a><span class="sep">|</span><a>无障碍浏览</a></div>
+      </div>
+      ${govNav('home')}
+      <div class="gov-detail">
+        <h1>${n.title}</h1>
+        <div class="gov-detail-meta">回川市公众信息网　${n.date}　来源：回川市公众信息网</div>
+        ${n.body.map(p => `<p>${p}</p>`).join('')}
+        <span class="back-link" data-back>返回首页</span>
+      </div>
+      <div class="gov-footer">
+        主办单位：回川市人民政府办公室　地址：回川市 · 政府办公区　邮政编码：000000<br>
+        网站标识码：0000000000　ICP备案号：回ICP备00000000号<br>© 回川市公众信息网
+      </div>
+    </div>`;
+  view.querySelector('[data-back]').addEventListener('click', () => navigate(HOME));
+  bindNavEvents();
+}
+
+function renderMessage(id) {
+  const m = MESSAGES.find(x => x.id === id);
+  if (!m) return render404();
+  view.innerHTML = `
+    <div class="gov">
+      <div class="gov-top">
+        <div class="gov-site-name">回川市公众信息网</div>
+        <div class="gov-top-links"><a>设为首页</a><span class="sep">|</span><a>加入收藏</a><span class="sep">|</span><a>无障碍浏览</a></div>
+      </div>
+      ${govNav('home')}
+      <div class="gov-detail">
+        <h1>${m.title}</h1>
+        <div class="gov-detail-meta">回川市公众信息网　互动交流栏目　状态：【${m.status}】</div>
+        ${m.body.map(p => `<p>${p}</p>`).join('')}
+        <span class="back-link" data-back>返回首页</span>
+      </div>
+      <div class="gov-footer">
+        主办单位：回川市人民政府办公室　地址：回川市 · 政府办公区　邮政编码：000000<br>
+        网站标识码：0000000000　ICP备案号：回ICP备00000000号<br>© 回川市公众信息网
+      </div>
+    </div>`;
+  view.querySelector('[data-back]').addEventListener('click', () => navigate(HOME));
+  bindNavEvents();
+}
+
+/* 搜索结果页（表层公开内容占位） */
+function renderSearch() {
+  view.innerHTML = `
+    <div class="gov">
+      <div class="gov-top">
+        <div class="gov-site-name">回川市公众信息网</div>
+        <div class="gov-top-links"><a>设为首页</a><span class="sep">|</span><a>加入收藏</a><span class="sep">|</span><a>无障碍浏览</a></div>
+      </div>
+      ${govNav('home')}
+      <div class="gov-search">
+        <h2>站内搜索</h2>
+        <div class="hint">（搜索结果页占位，你后续自行接入检索逻辑或替换公开内容。）</div>
+        <ul class="gov-news-list">
+          <li data-news="1"><span class="gov-news-title">我市召开上半年生态环境保护工作会议</span><span class="gov-news-date">2026-06-28</span></li>
+          <li data-news="4"><span class="gov-news-title">关于部分城区自来水出现异味的情况说明</span><span class="gov-news-date">2026-06-05</span></li>
+          <li data-message="m1"><span class="gov-news-title">河里经常看到死鱼是怎么回事？【已回复】</span></li>
+        </ul>
+        <span class="back-link" data-back>返回首页</span>
+      </div>
+      <div class="gov-footer">
+        主办单位：回川市人民政府办公室　地址：回川市 · 政府办公区　邮政编码：000000<br>
+        网站标识码：0000000000　ICP备案号：回ICP备00000000号<br>© 回川市公众信息网
+      </div>
+    </div>`;
+  view.querySelectorAll('[data-news]').forEach(el =>
+    el.addEventListener('click', () => navigate('huichuan://news/' + el.dataset.news)));
+  view.querySelector('[data-back]').addEventListener('click', () => navigate(HOME));
+  bindNavEvents();
+}
+
+/* 隐藏页（secretPages） */
+function renderSecret(key) {
+  view.innerHTML = secretPages[key].render();
+}
+
+/* 404 机制 */
+function render404() {
+  view.innerHTML = `
+    <div class="gov">
+      <div class="gov-top">
+        <div class="gov-site-name">回川市公众信息网</div>
+        <div class="gov-top-links"><a>设为首页</a><span class="sep">|</span><a>加入收藏</a><span class="sep">|</span><a>无障碍浏览</a></div>
+      </div>
+      ${govNav('home')}
+      <div class="gov-404">
+        <div class="code">404</div>
+        <div class="msg">抱歉，您访问的页面不存在或已移动。</div>
+        <div class="back" data-back>返回首页</div>
+      </div>
+      <div class="gov-footer">
+        主办单位：回川市人民政府办公室　地址：回川市 · 政府办公区　邮政编码：000000<br>
+        网站标识码：0000000000　ICP备案号：回ICP备00000000号<br>© 回川市公众信息网
+      </div>
+    </div>`;
+  view.querySelector('[data-back]').addEventListener('click', () => navigate(HOME));
+  bindNavEvents();
+}
+
+/* ---------- 启动 ---------- */
+render(HOME);
+syncNav();
+</script>
+</body>
+</html>

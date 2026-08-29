@@ -1,0 +1,2706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>桌面总览 (Win11)</title>
+<style>
+  /* ===========================================================
+   * 全局重置 + 色彩变量
+   * =========================================================== */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+    font-family: "Segoe UI Variable", "Segoe UI", "Microsoft YaHei UI",
+                 "PingFang SC", system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: #1f2024;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    user-select: none;
+  }
+  :root {
+    --ink:        #1a1a1f;
+    --ink-2:      #5a5a66;
+    --ink-3:      #8a8a96;
+    --accent:     #0078d4;
+    --accent-hov: #106ebe;
+    --bg-glass:   rgba(243, 243, 243, 0.72);
+    --bg-window:  rgba(252, 252, 252, 0.94);
+    --bg-taskbar: rgba(28, 28, 32, 0.62);
+    --bg-start:   rgba(40, 40, 46, 0.80);
+    --bg-dark:    rgba(20, 20, 24, 0.92);
+    --border:     rgba(0, 0, 0, 0.08);
+    --border-2:   rgba(255, 255, 255, 0.08);
+    --shadow-sm:  0 2px 6px rgba(0, 0, 0, 0.10);
+    --shadow-md:  0 8px 20px rgba(0, 0, 0, 0.18);
+    --shadow-lg:  0 16px 40px rgba(0, 0, 0, 0.28),
+                  0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    --radius-sm:  6px;
+    --radius-md:  10px;
+    --radius-lg:  14px;
+    --taskbar-h:  48px;
+  }
+
+  /* ===========================================================
+   * 桌面 + 壁纸（经典 XP Bliss 风格：蓝天 / 白云 / 绿草地）
+   * =========================================================== */
+  .desktop {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: #3a72c5;        /* 兜底蓝 */
+  }
+  .wallpaper {
+    position: absolute;
+    inset: 0;
+    background: url('assets/desktop/wallpaper-bf.jpg') center/cover no-repeat;
+    z-index: 0;
+  }
+  .wallpaper::after {
+    /* 顶部柔光 + 底部暗角 ， 让前景元素更清楚 */
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.20) 100%);
+    pointer-events: none;
+  }
+
+  /* ===========================================================
+   * 桌面图标（左列排列）
+   * =========================================================== */
+  .desktop-icons {
+    position: absolute;
+    left: 22px; top: 22px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .desktop-icon {
+    width: 88px;
+    padding: 6px 4px 4px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-align: center;
+    transition: background .12s ease, transform .10s ease;
+    border: 1px solid transparent;
+  }
+  .desktop-icon:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .desktop-icon.is-selected {
+    background: rgba(0, 120, 212, 0.30);
+    border-color: rgba(0, 120, 212, 0.55);
+  }
+  .desktop-icon:active { transform: scale(0.96); }
+  .di-img {
+    width: 48px; height: 48px;
+    margin: 0 auto 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+  }
+  .di-img img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .di-label {
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.3;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.85),
+      0 0 4px rgba(0, 0, 0, 0.4);
+    word-break: break-all;
+  }
+
+  /* ===========================================================
+   * 任务栏（Win11：开始 + 已开窗口 + 系统托盘）
+   * 说明：搜索框不再常驻任务栏，默认隐藏，
+   *       仅点击「开始」按钮或按下 Win 键时随开始菜单一起出现。
+   * =========================================================== */
+  .taskbar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: var(--taskbar-h);
+    background: var(--bg-taskbar);
+    backdrop-filter: blur(28px) saturate(140%);
+    -webkit-backdrop-filter: blur(28px) saturate(140%);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 8000;                 /* 始终高于窗口，保证任务栏不被遮挡 */
+    display: flex; align-items: center;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .tb-start {
+    width: 40px; height: 40px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .12s ease;
+  }
+  .tb-start:hover { background: rgba(255, 255, 255, 0.10); }
+  .tb-start.is-active { background: rgba(255, 255, 255, 0.14); }
+  .tb-start svg { width: 22px; height: 22px; }
+
+  /* 已打开窗口图标（任务栏中部居中） */
+  .tb-windows {
+    flex: 0 0 auto;
+    display: flex; align-items: center; gap: 4px;
+    margin: 0 auto;
+  }
+  .tb-app {
+    width: 40px; height: 40px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    transition: background .12s ease;
+  }
+  .tb-app:hover { background: rgba(255, 255, 255, 0.14); }
+  .tb-app.is-active {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .tb-app.is-active::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 12px; right: 12px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .tb-app.is-minimized::after {
+    background: rgba(255, 255, 255, 0.45);
+  }
+  .tb-app img { width: 24px; height: 24px; }
+
+  /* 系统托盘 + 时钟 */
+  .tb-tray {
+    flex: 0 0 auto;
+    display: flex; align-items: center; gap: 4px;
+    margin-left: auto;
+    padding: 0 6px;
+    height: 36px;
+    color: #fff;
+  }
+  .tb-icon {
+    width: 30px; height: 30px;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    border: none;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background .12s ease;
+  }
+  .tb-icon:hover { background: rgba(255, 255, 255, 0.10); }
+  .tb-clock {
+    font-size: 12px;
+    text-align: right;
+    line-height: 1.2;
+    margin-left: 8px;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background .12s ease;
+    white-space: pre-line;
+  }
+  .tb-clock:hover { background: rgba(255, 255, 255, 0.10); }
+
+  /* ===========================================================
+   * 开始菜单（居中弹出；搜索框内嵌于顶部，默认随菜单隐藏）
+   * =========================================================== */
+  .start-menu {
+    position: fixed;
+    bottom: calc(var(--taskbar-h) + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 620px;
+    height: 600px;
+    background: var(--bg-start);
+    backdrop-filter: blur(36px) saturate(150%);
+    -webkit-backdrop-filter: blur(36px) saturate(150%);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: 9000;                 /* 高于一切窗口 */
+    color: #fff;
+    padding: 22px 26px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    animation: smIn .18s ease-out;
+  }
+  /* 关键：[hidden] 优先于 .start-menu { display:flex }，否则菜单默认会浮出来 */
+  .start-menu[hidden] { display: none !important; }
+  .ctx-menu[hidden]   { display: none !important; }
+  @keyframes smIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  .sm-search {
+    height: 36px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    display: flex; align-items: center;
+    padding: 0 14px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .sm-search input {
+    flex: 1;
+    background: transparent; border: none; outline: none;
+    color: #fff; font-size: 13px;
+    margin-left: 8px;
+  }
+  .sm-search input::placeholder { color: rgba(255, 255, 255, 0.55); }
+
+  .sm-section h3 {
+    margin: 0 0 10px;
+    font-size: 13px; font-weight: 500;
+    color: rgba(255, 255, 255, 0.65);
+  }
+  .sm-section + .sm-section { margin-top: 4px; }
+  .sm-apps {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+  .sm-app {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    padding: 6px;
+    gap: 4px;
+    transition: background .12s ease, transform .10s ease;
+  }
+  .sm-app:hover { background: rgba(255, 255, 255, 0.14); }
+  .sm-app:active { transform: scale(0.96); }
+  .sm-app-icon { font-size: 26px; line-height: 1; }
+  .sm-app-icon img { width: 30px; height: 30px; }
+  .sm-app-name {
+    font-size: 11px; color: rgba(255, 255, 255, 0.85);
+    text-align: center;
+    line-height: 1.2;
+  }
+  .sm-recommends {
+    margin: 0; padding: 0; list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .sm-rec {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .sm-rec:hover { background: rgba(255, 255, 255, 0.08); }
+  .sm-rec-icon {
+    width: 28px; height: 28px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .sm-rec-name {
+    font-size: 12px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .sm-footer {
+    margin-top: auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 4px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .sm-user {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .sm-user:hover { background: rgba(255, 255, 255, 0.10); }
+  .sm-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6ea8ff, #0078d4);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 13px;
+    color: #fff;
+  }
+  .sm-power {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sm-power:hover { background: rgba(255, 255, 255, 0.12); }
+
+  /* ===========================================================
+   * 窗口（可拖拽 / 多层级 / 最大化 / 最小化）
+   * =========================================================== */
+  .window {
+    position: absolute;
+    background: var(--bg-window);
+    backdrop-filter: blur(28px) saturate(140%);
+    -webkit-backdrop-filter: blur(28px) saturate(140%);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    border: 1px solid var(--border-2);
+    min-width: 360px; min-height: 240px;
+    transition: opacity .14s ease, transform .18s ease;
+  }
+  .window.is-minimized {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(40px) scale(0.85);
+  }
+  .window.is-maximized {
+    border-radius: 0;
+    border-left: none; border-right: none;
+  }
+  .win-titlebar {
+    flex: 0 0 36px;
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 0 0 12px;
+    cursor: grab;
+    user-select: none;
+  }
+  .win-titlebar:active { cursor: grabbing; }
+  .win-icon {
+    margin-right: 8px;
+    font-size: 16px;
+    display: flex; align-items: center;
+  }
+  .win-icon img { width: 18px; height: 18px; display: block; }
+  .win-title {
+    font-size: 13px; font-weight: 500;
+    color: var(--ink);
+    flex: 1;
+    line-height: 36px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .win-controls {
+    flex: 0 0 auto;
+    display: flex; align-items: stretch;
+    height: 36px;
+  }
+  .win-btn {
+    width: 46px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink);
+    font-size: 13px;
+    transition: background .12s ease, color .12s ease;
+  }
+  .win-btn:hover { background: rgba(0, 0, 0, 0.05); }
+  .win-btn.win-close:hover { background: #e81123; color: #fff; }
+  .win-btn.win-close svg { width: 10px; height: 10px; }
+  .win-body {
+    flex: 1 1 auto;
+    overflow: auto;
+    color: var(--ink);
+    background: transparent;
+  }
+
+  /* ===========================================================
+   * 外链卡片（白底 + 毛玻璃 + hover 上浮）
+   * 规则：只有点击卡片本身，才在新标签页打开对应链接。
+   * =========================================================== */
+  .link-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06),
+                0 0 0 1px rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+    transition: transform .14s ease, box-shadow .14s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  .link-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.14),
+                0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+  .link-card:active { transform: translateY(-2px); }
+  .link-card-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; line-height: 1;
+    flex: 0 0 44px;
+    color: #fff;
+  }
+  .link-card-icon.kind-bili { background: linear-gradient(135deg, #fb7299, #ff5b8d); }
+  .link-card-icon.kind-xhs  { background: linear-gradient(135deg, #ff4458, #d72047); }
+  .link-card-icon.kind-jd   { background: linear-gradient(135deg, #e1251b, #b51a12); }
+  .link-card-icon.kind-doc  { background: linear-gradient(135deg, #1cb178, #0f8b5a); }
+  .link-card-icon.kind-git  { background: linear-gradient(135deg, #4a4a4a, #1a1a1a); }
+  .link-card-icon.kind-wiki { background: linear-gradient(135deg, #8b75c9, #5e4a9c); }
+  .link-card-icon.kind-tao  { background: linear-gradient(135deg, #ff5000, #c43d00); }
+  .link-card-body { flex: 1; min-width: 0; }
+  .link-card-title {
+    font-size: 14px; font-weight: 500;
+    margin-bottom: 4px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: #1a1a1f;
+  }
+  .link-card-desc {
+    font-size: 12px;
+    color: var(--ink-2);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .link-card-arrow {
+    flex: 0 0 auto;
+    color: var(--ink-3);
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .links-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 14px;
+  }
+  .links-grid.cols-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* ===========================================================
+   * Edge 浏览器
+   * =========================================================== */
+  .edge-app {
+    display: flex; flex-direction: column;
+    height: 100%;
+    background: #f6f7f9;
+  }
+  .edge-tabs {
+    flex: 0 0 36px;
+    display: flex; align-items: flex-end;
+    background: #ececec;
+    padding: 6px 8px 0;
+    gap: 2px;
+    border-bottom: 1px solid var(--border);
+  }
+  .edge-tab {
+    padding: 6px 14px 8px;
+    border-radius: 6px 6px 0 0;
+    background: #ececec;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--ink-2);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    margin-bottom: -1px;
+    transition: background .10s ease;
+  }
+  .edge-tab.is-active {
+    background: #fff;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .edge-tab:hover:not(.is-active) { background: #e0e0e0; }
+  .edge-urlbar {
+    flex: 0 0 40px;
+    background: #fff;
+    display: flex; align-items: center;
+    padding: 6px 12px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .edge-nav {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink);
+    transition: background .10s ease;
+  }
+  .edge-nav:hover { background: rgba(0, 0, 0, 0.06); }
+  .edge-url {
+    flex: 1;
+    background: #f3f3f3;
+    border-radius: 14px;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: var(--ink-2);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .edge-content {
+    flex: 1; overflow: auto;
+    background: #fafbfc;
+  }
+  .edge-hero {
+    padding: 28px 24px 22px;
+    background: linear-gradient(180deg, #e7f1fb, #fff);
+    border-bottom: 1px solid var(--border);
+  }
+  .edge-hero h2 {
+    margin: 0 0 6px;
+    font-size: 20px;
+    color: var(--ink);
+  }
+  .edge-hero p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .edge-section-title {
+    padding: 16px 24px 8px;
+    font-size: 14px; font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ===========================================================
+   * 回收站
+   * =========================================================== */
+  .recycle {
+    background: #fff; height: 100%; overflow: auto;
+  }
+  .recycle-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: #f6f7f9;
+    font-size: 12px; color: var(--ink-2);
+  }
+  .recycle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+    padding: 14px;
+  }
+  .recycle-item {
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(0, 0, 0, 0.025);
+    transition: background .10s ease;
+    cursor: pointer;
+  }
+  .recycle-item:hover { background: rgba(0, 120, 212, 0.10); }
+  .recycle-item-icon {
+    font-size: 22px;
+    flex: 0 0 auto;
+  }
+  .recycle-item-name {
+    font-size: 13px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    flex: 1; min-width: 0;
+  }
+
+  /* ===========================================================
+   * 我的文件夹
+   * =========================================================== */
+  .folder {
+    background: #fff; height: 100%;
+    display: flex; flex-direction: column;
+  }
+  .folder-toolbar {
+    flex: 0 0 36px;
+    background: #f6f7f9;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 14px;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+  .folder-list {
+    flex: 0 0 auto;
+    max-height: 240px;
+    overflow: auto;
+  }
+  .folder-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 14px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    transition: background .10s ease;
+    cursor: default;
+  }
+  .folder-row:hover { background: rgba(0, 120, 212, 0.06); }
+  .folder-row-icon { font-size: 18px; flex: 0 0 22px; text-align: center; }
+  .folder-row-name { flex: 1; font-size: 13px; color: var(--ink); }
+  .folder-row-size,
+  .folder-row-time {
+    flex: 0 0 110px;
+    font-size: 12px; color: var(--ink-2);
+    text-align: right;
+  }
+
+  /* ===========================================================
+   * 微信
+   * =========================================================== */
+  .wechat {
+    background: #ededed; height: 100%;
+    display: flex; flex-direction: column;
+  }
+  .wc-header {
+    flex: 0 0 44px;
+    background: #ededed;
+    border-bottom: 1px solid #d6d6d6;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500;
+    color: #111;
+  }
+  .wc-search {
+    flex: 0 0 40px;
+    padding: 8px 12px;
+    background: #ededed;
+  }
+  .wc-search input {
+    width: 100%; height: 28px;
+    border: none;
+    border-radius: 4px;
+    padding: 0 10px;
+    background: #fff;
+    outline: none;
+    font-size: 12px;
+    color: #111;
+  }
+  .wc-list {
+    flex: 1; overflow: auto;
+    background: #fff;
+  }
+  .wc-contact {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+    transition: background .10s ease;
+  }
+  .wc-contact:hover { background: #ededed; }
+  .wc-contact-avatar {
+    width: 40px; height: 40px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #6ea8ff, #0078d4);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 500;
+    flex: 0 0 auto;
+    overflow: hidden;
+  }
+  .wc-contact-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* 群聊 / 陌生人 / 文件助手：统一灰块占位（无头像） */
+  .wc-contact-avatar.no-photo { background: linear-gradient(135deg, #cdd1d6, #8a9099); }
+  .wc-contact-body { flex: 1; min-width: 0; }
+  .wc-contact-name { font-size: 13px; font-weight: 500; color: #111; }
+  .wc-contact-preview {
+    font-size: 12px; color: var(--ink-2);
+    margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  /* 微信 · 阶段标签页（带解锁锁） */
+  .wc-tabs {
+    flex: 0 0 38px;
+    display: flex;
+    background: #f7f7f7;
+    border-bottom: 1px solid #d6d6d6;
+  }
+  .wc-tab {
+    flex: 1; text-align: center;
+    font-size: 12px; color: #666;
+    cursor: pointer; line-height: 38px;
+    position: relative;
+  }
+  .wc-tab.active { color: #07c160; font-weight: 600; background: #fff; }
+  .wc-tab.active::after { content: ""; position: absolute; left: 25%; right: 25%; bottom: 0; height: 2px; background: #07c160; }
+  .wc-tab.locked { color: #bbb; cursor: not-allowed; background: #f1f1f1; }
+  .wc-tab.locked::before { content: "🔒"; position: absolute; right: 4px; top: -2px; font-size: 9px; opacity: .85; }
+  /* 微信 · 聊天面板 */
+  .wc-chat {
+    flex: 1; overflow-y: auto; background: #ededed;
+    padding: 12px 12px 20px;
+    display: flex; flex-direction: column;
+  }
+  .wc-chat .time-hint { text-align: center; color: #999; font-size: 11px; margin: 12px 0 8px; flex-shrink: 0; }
+  .wc-msg { display: flex; align-items: flex-start; margin-bottom: 14px; flex-shrink: 0; }
+  .wc-msg.me { flex-direction: row-reverse; }
+  .wc-msg .av { width: 36px; height: 36px; border-radius: 5px; flex: 0 0 36px; background: #ccc; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; overflow: hidden; }
+  .wc-msg .av img { width: 100%; height: 100%; object-fit: cover; }
+  .wc-msg .av.anon { background: #9aa1ab; }
+  .wc-bubble { max-width: 220px; margin: 0 9px; padding: 8px 11px; border-radius: 4px; line-height: 1.5; font-size: 13px; word-break: break-word; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+  .wc-msg.me .wc-bubble { background: #95ec69; }
+  .wc-bubble .nm { font-size: 11px; color: #576b95; margin-bottom: 2px; }
+  .wc-bubble .nm.anon { color: #999; font-size: 10px; }
+  .wc-bubble.sys { border: 1px dashed #ccc; color: #666; background: #fff; }
+  /* 微信 · 卡片（论坛帖/朋友圈/新闻） */
+  .wc-card { margin: 10px 2px; background: #fff; border-radius: 6px; padding: 11px; box-shadow: 0 1px 3px rgba(0,0,0,.07); }
+  .wc-card .hd { display: flex; align-items: center; margin-bottom: 6px; }
+  .wc-card .hd .av { width: 30px; height: 30px; border-radius: 4px; background: #ddd; margin-right: 8px; overflow: hidden; }
+  .wc-card .hd .av img { width: 100%; height: 100%; object-fit: cover; }
+  .wc-card .hd .n { font-size: 13px; color: #576b95; font-weight: 600; }
+  .wc-card .hd .t { font-size: 11px; color: #999; margin-left: auto; }
+  .wc-card .txt { font-size: 13px; line-height: 1.6; }
+  .wc-card .reply { margin-top: 8px; padding: 7px 9px; background: #f7f7f7; border-radius: 4px; font-size: 12.5px; color: #444; line-height: 1.5; }
+  .wc-card .foot { display: flex; justify-content: space-between; margin-top: 7px; font-size: 11px; color: #999; }
+  .wc-locktip { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; color: #999; font-size: 13px; line-height: 1.9; padding: 24px; }
+  .wc-back { flex: 0 0 34px; background: #ededed; border-bottom: 1px solid #d6d6d6; font-size: 13px; color: #333; cursor: pointer; line-height: 34px; padding: 0 12px; }
+  .wc-back:hover { background: #e2e2e2; }
+
+  /* ===========================================================
+   * 设置
+   * =========================================================== */
+  .settings {
+    background: #fff; height: 100%;
+    display: flex;
+  }
+  .settings-nav {
+    flex: 0 0 200px;
+    background: #f6f7f9;
+    border-right: 1px solid var(--border);
+    padding: 8px 0;
+  }
+  .settings-nav-item {
+    padding: 9px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background .10s ease;
+  }
+  .settings-nav-item:hover { background: rgba(0, 120, 212, 0.06); }
+  .settings-nav-item.is-active {
+    background: rgba(0, 120, 212, 0.12);
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .settings-body {
+    flex: 1; overflow: auto;
+    padding: 18px 26px;
+  }
+  .settings-body h2 {
+    margin: 0 0 16px;
+    font-size: 16px;
+  }
+  .settings-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  }
+  .settings-row label { font-size: 13px; color: var(--ink); }
+  .settings-row .val { color: var(--ink-2); font-size: 13px; }
+
+  /* ===========================================================
+   * 桌面右键菜单
+   * =========================================================== */
+  .ctx-menu {
+    position: fixed;
+    background: var(--bg-dark);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 5px 0;
+    min-width: 220px;
+    z-index: 9500;                 /* 高于开始菜单，确保右键菜单在最上层 */
+    color: #fff;
+    font-size: 13px;
+  }
+  .ctx-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    transition: background .10s ease;
+  }
+  .ctx-item:hover { background: rgba(255, 255, 255, 0.10); }
+  .ctx-item .key {
+    margin-left: auto;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 11px;
+  }
+  .ctx-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin: 4px 0;
+  }
+  .ctx-item.has-sub::after {
+    content: '›';
+    margin-left: auto;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* ===========================================================
+   * Toast 提示
+   * =========================================================== */
+  .toast {
+    position: fixed;
+    bottom: calc(var(--taskbar-h) + 16px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(28, 28, 32, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #fff;
+    padding: 9px 18px;
+    border-radius: 18px;
+    font-size: 12px;
+    z-index: 9800;                 /* 最高层提示 */
+    box-shadow: var(--shadow-md);
+    animation: toastIn .20s ease-out;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /* ===========================================================
+   * 滚动条（Win11 风格）
+   * =========================================================== */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.20);
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.36);
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  /* ===========================================================
+   * Edge 内嵌网页 · 回川市公众信息网（政务朴素风）
+   * 主色藏蓝 #00479D / 宋体正文黑体标题 / 直角无圆角无阴影
+   * =========================================================== */
+  .edge-url { border: none; outline: none; cursor: text; }
+  .edge-search-input {
+    width: 168px; height: 28px; border: 1px solid var(--border);
+    border-radius: 14px; background: #fff; padding: 0 14px;
+    font-size: 12px; color: var(--ink); outline: none; font-family: inherit;
+  }
+  .edge-search-input:focus, .edge-url:focus { border-color: var(--accent); }
+
+  .gov { font-family: "SimSun", "宋体", serif; color: #222; font-size: 13px; line-height: 1.7; }
+  .gov h1, .gov h2, .gov h3, .gov h4 { font-family: "SimHei", "黑体", "Microsoft YaHei", sans-serif; color: #00479D; }
+  .gov-top {
+    border-top: 3px solid #00479D; background: #fff;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 22px; border-bottom: 1px solid #d9d9d9;
+  }
+  .gov-site-name { font-family: "SimHei","黑体",sans-serif; font-size: 22px; font-weight: 700; color: #00479D; letter-spacing: 1px; }
+  .gov-top-links { font-size: 12px; color: #555; }
+  .gov-top-links a { color: #555; text-decoration: none; cursor: pointer; }
+  .gov-top-links a:hover { color: #00479D; text-decoration: underline; }
+  .gov-top-links .sep { color: #ccc; margin: 0 6px; }
+  .gov-nav { background: #00479D; display: flex; flex-wrap: wrap; border-bottom: 2px solid #003a7e; }
+  .gov-nav a {
+    flex: 0 0 auto; padding: 9px 22px; color: #fff; text-decoration: none;
+    font-family: "SimHei","黑体",sans-serif; font-size: 14px;
+    border-right: 1px solid rgba(255,255,255,0.18); cursor: pointer;
+  }
+  .gov-nav a:hover { background: #5a9bd8; }
+  .gov-nav a.active { background: #fff; color: #00479D; }
+  .gov-banner { background: #00479D; color: #fff; padding: 18px 24px; text-align: center; position: relative; }
+  .gov-banner-text { font-family: "SimHei","黑体",sans-serif; font-size: 20px; letter-spacing: 1px; }
+  .gov-banner-sign { position: absolute; right: 16px; bottom: 8px; font-size: 12px; opacity: 0.85; }
+  .gov-main { display: flex; padding: 16px 22px; gap: 20px; align-items: flex-start; }
+  .gov-col-left { flex: 0 0 68%; max-width: 68%; }
+  .gov-col-right { flex: 1 1 32%; border-left: 1px solid #e2e2e2; padding-left: 18px; }
+  .gov-block-title { font-family: "SimHei","黑体",sans-serif; font-size: 15px; color: #00479D; border-bottom: 2px solid #00479D; padding-bottom: 5px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+  .gov-block-title .more { font-size: 12px; color: #888; font-weight: normal; }
+  .gov-news-list { list-style: none; }
+  .gov-news-list li { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px dashed #e0e0e0; cursor: pointer; }
+  .gov-news-list li:hover .gov-news-title { color: #c0392b; text-decoration: underline; }
+  .gov-news-title { font-size: 13.5px; color: #222; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gov-news-title::before { content: "·"; color: #00479D; margin-right: 6px; font-weight: 700; }
+  .gov-news-date { font-size: 12px; color: #999; margin-left: 12px; flex: 0 0 auto; }
+  .gov-sub-block { margin-bottom: 18px; }
+  .gov-notice-list { list-style: none; }
+  .gov-notice-list li { padding: 6px 0; border-bottom: 1px dashed #e0e0e0; cursor: pointer; font-size: 13px; }
+  .gov-notice-list li:hover { color: #c0392b; text-decoration: underline; }
+  .gov-notice-list li::before { content: "【公告】"; color: #00479D; font-size: 12px; }
+  .gov-msg-list { list-style: none; }
+  .gov-msg-list li { padding: 6px 0; border-bottom: 1px dashed #e0e0e0; cursor: pointer; font-size: 13px; }
+  .gov-msg-list li:hover { color: #c0392b; text-decoration: underline; }
+  .gov-msg-status { font-size: 12px; color: #28a745; margin-left: 4px; }
+  .gov-msg-status.doing { color: #e67e22; }
+  .gov-footer { background: #f2f2f2; border-top: 1px solid #dcdcdc; text-align: center; font-size: 12px; color: #666; line-height: 1.9; padding: 16px 22px; margin-top: 10px; }
+  .gov-footer a { color: #666; text-decoration: none; cursor: pointer; }
+  .gov-footer a:hover { color: #00479D; }
+  .gov-detail { padding: 22px 28px; max-width: 860px; margin: 0 auto; }
+  .gov-detail h1 { font-size: 20px; text-align: center; margin-bottom: 10px; line-height: 1.5; }
+  .gov-detail .gov-detail-meta { text-align: center; color: #999; font-size: 12px; border-bottom: 1px solid #e2e2e2; padding-bottom: 10px; margin-bottom: 16px; }
+  .gov-detail p { text-indent: 2em; margin-bottom: 12px; }
+  .back-link { display: inline-block; margin-top: 18px; color: #00479D; cursor: pointer; border: 1px solid #00479D; padding: 4px 14px; font-size: 12px; }
+  .back-link:hover { background: #00479D; color: #fff; }
+  .gov-404 { padding: 60px 24px; text-align: center; color: #555; }
+  .gov-404 .code { font-family: "SimHei","黑体",sans-serif; font-size: 60px; color: #00479D; }
+  .gov-404 .msg { font-size: 15px; margin: 12px 0; }
+  .gov-404 .back { color: #00479D; cursor: pointer; text-decoration: underline; }
+  .gov-placeholder { padding: 50px 24px; text-align: center; color: #999; font-size: 14px; }
+  .gov-search { padding: 22px 28px; }
+  .gov-search h2 { font-size: 16px; margin-bottom: 12px; }
+  .gov-search .hint { color: #888; font-size: 13px; margin-bottom: 14px; }
+
+  /* 隐藏档案（secretPages 深层内容） */
+  .gov-archive { padding: 30px 28px; max-width: 820px; margin: 0 auto; }
+  .gov-archive h1 { font-family: "SimHei","黑体",sans-serif; font-size: 20px; color: #00479D; margin-bottom: 8px; }
+  .gov-archive p { text-indent: 2em; margin-bottom: 10px; line-height: 1.8; }
+  .gov-archive .tag { display: inline-block; font-size: 12px; padding: 2px 10px; border-radius: 2px; color: #fff; margin-bottom: 14px; }
+  .gov-archive .tag.lz { background: #7a1f1f; }   /* 莲之庭 */
+  .gov-archive .tag.zl { background: #1f5a7a; }   /* 中立 */
+  .gov-archive .tag.zp { background: #1f6a3a; }   /* 正派 */
+  .gov-archive .stamp { font-size: 12px; color: #999; border-top: 1px dashed #ccc; margin-top: 16px; padding-top: 10px; }
+  .gov-archive .clue { background: #fbf3e0; border-left: 3px solid #c79a3a; padding: 10px 14px; font-size: 13px; margin-top: 12px; line-height: 1.8; }
+
+  /* ===== 首页 v2：山水 banner + 三栏 + 全域地图（视觉升级，外壳/解密体系保留） ===== */
+  .edge-tabbar { display: flex; align-items: flex-end; background: #d7dadf; padding: 5px 8px 0; gap: 6px; }
+  .edge-tab { display: flex; align-items: center; gap: 7px; background: #fff; border: 1px solid #bfc4cc; border-bottom: none; border-radius: 7px 7px 0 0; padding: 7px 14px; font-size: 12px; color: #333; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .edge-tab .fav { width: 13px; height: 13px; border-radius: 3px; background: linear-gradient(135deg,#00479D,#3a7bd5); flex: 0 0 auto; }
+  .edge-search-btn { margin-left: auto; cursor: pointer; color: #444; font-size: 14px; padding: 4px 8px; border-radius: 6px; }
+  .edge-search-btn:hover { background: rgba(0,0,0,.08); }
+  .edge-url-wrap { display: flex; align-items: center; background: #fff; border: 1px solid #c2c7cf; border-radius: 16px; padding: 1px 12px; flex: 1; height: 30px; }
+  .edge-url-wrap .lock { color: #2e7d32; font-size: 11px; margin-right: 6px; }
+  .edge-url { border: none; outline: none; cursor: text; flex: 1; font-size: 12px; background: transparent; }
+
+  .gov-top-search { width: 150px; height: 24px; border: 1px solid #cfcfcf; border-radius: 12px; padding: 0 12px; font-size: 12px; outline: none; font-family: inherit; }
+  .gov-top-search:focus { border-color: #00479D; }
+
+  .gov-banner-v2 { position: relative; display: flex; height: 210px; overflow: hidden; background: #e9eef2; border-bottom: 3px solid #00479D; }
+  .gov-banner-v2 .ban-img { flex: 0 0 60%; height: 100%; object-fit: cover; filter: brightness(1.03) saturate(1.04); }
+  .gov-banner-v2 .ban-paper { flex: 1; position: relative; display: flex; flex-direction: column; justify-content: center; padding: 0 34px;
+    background: repeating-linear-gradient(0deg, rgba(120,90,40,0.02) 0 3px, transparent 3px 6px), #f7f4ea; }
+  .gov-banner-v2 .ban-title { font-family: "SimHei","黑体",sans-serif; font-size: 28px; font-weight: 700; color: #1f5c3a; letter-spacing: 4px; line-height: 1.32; }
+  .gov-banner-v2 .ban-sub { margin-top: 14px; font-size: 14px; color: #4a6b55; letter-spacing: 2px; }
+  .gov-banner-v2 .ban-badge { position: absolute; left: 34px; bottom: 16px; font-size: 11px; color: #8a7a55; border: 1px solid #c9b98a; padding: 2px 9px; letter-spacing: 1px; }
+
+  .gov-main-v2 { display: flex; gap: 18px; padding: 16px 22px 4px; align-items: stretch; }
+  .gov-col-l { flex: 0 0 60%; max-width: 60%; }
+  .gov-col-m { flex: 0 0 20%; max-width: 20%; }
+  .gov-col-r { flex: 0 0 20%; max-width: 20%; border-left: 1px solid #e6e6e6; padding-left: 16px; }
+
+  .gov-travel { margin-top: 18px; }
+  .gov-travel-imgwrap { position: relative; border: 1px solid #e0e0e0; line-height: 0; }
+  .gov-travel-imgwrap > img { display: block; width: 100%; height: auto; }
+  .gov-pin { position: absolute; width: 13px; height: 13px; border-radius: 50%; background: #c0392b; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); transform: translate(-50%,-50%); }
+  .gov-pin::after { content: attr(data-label); position: absolute; left: 16px; top: -6px; white-space: nowrap; font-size: 11px; font-weight: 700; color: #c0392b; background: rgba(255,255,255,.9); padding: 0 4px; border-radius: 2px; }
+  .gov-travel-cap { margin-top: 8px; font-size: 13px; color: #444; }
+  .gov-btn-ghost { float: right; margin-top: 2px; font-size: 12px; color: #555; background: #ededed; border: 1px solid #cfcfcf; border-radius: 12px; padding: 3px 14px; cursor: pointer; }
+  .gov-btn-ghost:hover { background: #00479D; color: #fff; border-color: #00479D; }
+
+  .gov-service-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+  .gov-service-card { background: #f6f7f9; border: 1px solid #e6e6e6; border-radius: 8px; padding: 13px 4px; text-align: center; cursor: pointer; transition: .15s; }
+  .gov-service-card:hover { background: #eaf2fb; border-color: #00479D; }
+  .gov-service-card .ic { font-size: 19px; line-height: 1; }
+  .gov-service-card .nm { display: block; margin-top: 6px; font-size: 12px; color: #333; }
+
+  .gov-map-mini { position: relative; border: 1px solid #e0e0e0; line-height: 0; cursor: pointer; }
+  .gov-map-mini > img { display: block; width: 100%; height: auto; }
+
+  .gov-gemap { background: #f4f5f7; border-top: 1px solid #dcdcdc; padding: 22px 22px 26px; margin-top: 10px; }
+  .gov-gemap h2 { text-align: center; font-size: 18px; color: #00479D; font-family: "SimHei","黑体",sans-serif; margin-bottom: 16px; letter-spacing: 2px; }
+  .gov-gemap-stage { position: relative; max-width: 900px; margin: 0 auto; border: 1px solid #d8d8d8; line-height: 0; }
+  .gov-gemap-stage > img { display: block; width: 100%; height: auto; }
+  .gov-gemap .gov-pin::after { font-size: 12px; color: #fff; background: rgba(192,57,43,.92); }
+  .gov-gemap-toolbar { max-width: 900px; margin: 10px auto 0; display: flex; gap: 6px; align-items: center; font-size: 12px; color: #555; }
+  .gov-gemap-toolbar button { border: 1px solid #c4c4c4; background: #fff; border-radius: 4px; padding: 2px 10px; cursor: pointer; font-size: 12px; }
+  .gov-gemap-toolbar button:hover { background: #00479D; color: #fff; border-color: #00479D; }
+  .gov-gemap-toolbar .scale { margin-left: auto; border: 1px solid #999; padding: 1px 6px; }
+  .gov-gemap-watermark { position: absolute; width: 130px; height: 130px; opacity: .05; pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, rgba(140,18,28,.85) 0 16%, transparent 58%); }
+  .gov-gemap-watermark.tl { top: 0; left: 0; }
+  .gov-gemap-watermark.tr { top: 0; right: 0; }
+  .gov-gemap-watermark.bl { bottom: 0; left: 0; }
+  .gov-gemap-watermark.br { bottom: 0; right: 0; }
+
+  .gov-top-links { display: flex; align-items: center; gap: 10px; }
+  .gov-block-title.red { color: #c0392b; border-bottom-color: #c0392b; }
+  .gov-travel-route { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .gov-col-r .gov-sub-block + .gov-sub-block { margin-top: 16px; }
+
+  /* 隐藏系统默认右键菜单样式已被覆盖 */
+  .window, .taskbar, .start-menu, .desktop-icons, .ctx-menu, .link-card { user-select: none; }
+</style>
+</head>
+<body>
+
+  <!-- ============= 桌面 ============= -->
+  <main class="desktop" id="desktop">
+    <div class="wallpaper"></div>
+    <div class="desktop-icons" id="desktop-icons"></div>
+    <div class="windows-layer" id="windows-layer"></div>
+    <div class="ctx-menu" id="ctx-menu" hidden></div>
+    <div class="toast" id="toast" hidden></div>
+  </main>
+
+  <!-- ============= 任务栏 ============= -->
+  <nav class="taskbar" id="taskbar">
+    <button class="tb-start" id="tb-start" title="开始">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <rect x="2"  y="2"  width="9" height="9" rx="1"/>
+        <rect x="13" y="2"  width="9" height="9" rx="1"/>
+        <rect x="2"  y="13" width="9" height="9" rx="1"/>
+        <rect x="13" y="13" width="9" height="9" rx="1"/>
+      </svg>
+    </button>
+    <!-- 注意：搜索框不再常驻任务栏，仅随「开始菜单」出现（见 .start-menu 内 .sm-search） -->
+    <div class="tb-windows" id="tb-windows"></div>
+    <div class="tb-tray">
+      <button class="tb-icon" title="网络">📶</button>
+      <button class="tb-icon" title="音量">🔊</button>
+      <button class="tb-icon" title="电池">🔋</button>
+      <span class="tb-clock" id="tb-clock" title="日期">--:--:--</span>
+    </div>
+  </nav>
+
+  <!-- ============= 开始菜单（含搜索框；默认隐藏） ============= -->
+  <aside class="start-menu" id="start-menu" hidden>
+    <div class="sm-search">
+      <span style="font-size:14px">⌕</span>
+      <input type="text" placeholder="搜索应用和文件" aria-label="搜索应用和文件">
+    </div>
+    <section class="sm-section">
+      <h3>已固定</h3>
+      <div class="sm-apps" id="sm-apps"></div>
+    </section>
+    <section class="sm-section">
+      <h3>推荐</h3>
+      <ul class="sm-recommends" id="sm-recommends"></ul>
+    </section>
+    <footer class="sm-footer">
+      <div class="sm-user">
+        <div class="sm-avatar">用</div>
+        <span>用户</span>
+      </div>
+      <button class="sm-power" title="电源">⏻</button>
+    </footer>
+  </aside>
+
+<script>
+'use strict';
+
+/* =================================================================
+ * 工具：HTML 转义 ， 防止标题、卡片文案注入
+ * ================================================================= */
+function escapeHTML(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+/* =================================================================
+ * 占位链接集合
+ * 重要：以下均为占位地址，正式发布前替换为真实链接即可。
+ *       禁止直接填写各平台首页地址。
+ * ================================================================= */
+const PLACEHOLDER = {
+  bili: 'https://example.com/bilibili',
+  xhs:  'https://example.com/xiaohongshu',
+  jd:   'https://example.com/jd',
+  doc:  'https://example.com/docs',
+  git:  'https://example.com/github',
+  wiki: 'https://example.com/wiki',
+  tao:  'https://example.com/taobao'
+};
+
+/* =================================================================
+ * 应用定义
+ *  - 桌面图标点击先弹出标准窗口（可拖拽 / 最小化 / 关闭）
+ *  - 外链也走同样的标准窗口，
+ *    窗口内部仅卡片可点击，卡片点击才在新标签页打开链接。
+ * ================================================================= */
+const APPS = {
+  recycle: {
+    key: 'recycle',
+    title: '回收站',
+    icon: null,
+    iconImg: 'assets/desktop/trash-idle.png',
+    iconHoverImg: 'assets/desktop/trash-hover.png',
+    singleton: true,
+    size: { w: 640, h: 520 },
+    build: buildRecycleWindow
+  },
+  edge: {
+    key: 'edge',
+    title: 'Edge 浏览器',
+    icon: '🌐',
+    iconImg: null,
+    singleton: false,
+    size: { w: 760, h: 520 },
+    build: buildEdgeWindow
+  },
+  wechat: {
+    key: 'wechat',
+    title: '微信',
+    icon: '💬',
+    iconImg: null,
+    singleton: true,
+    size: { w: 460, h: 640 },
+    build: buildWechatWindow
+  },
+  folder: {
+    key: 'folder',
+    title: '我的文件夹',
+    icon: '📁',
+    iconImg: null,
+    singleton: false,
+    size: { w: 660, h: 520 },
+    build: buildFolderWindow
+  },
+  external: {
+    key: 'external',
+    title: '链接中心',
+    icon: '🔗',
+    iconImg: null,
+    singleton: false,
+    size: { w: 740, h: 560 },
+    build: (root) => buildLinksWindow(root, LINKS.external)
+  },
+  settings: {
+    key: 'settings',
+    title: '设置',
+    icon: '⚙️',
+    iconImg: null,
+    singleton: true,
+    size: { w: 620, h: 500 },
+    build: buildSettingsWindow
+  },
+  prologue: {
+    key: 'prologue',
+    title: '序章',
+    icon: '📜',
+    iconImg: null,
+    singleton: false,
+    size: { w: 900, h: 720 },
+    build: (root) => {
+      root.style.cssText = 'padding:0;overflow:hidden;background:#050709';
+      const frame = document.createElement('iframe');
+      frame.src = 'prologue.html';
+      frame.style.cssText = 'width:100%;height:100%;border:0;background:#050709';
+      root.appendChild(frame);
+    }
+  }
+};
+
+/* =================================================================
+ * 外链卡片数据
+ *  - kind : 决定卡片左侧图标与配色（bili/xhs/jd/doc/git/wiki/tao）
+ *  - url  : 占位链接（见 PLACEHOLDER），后续替换
+ *  - 所有卡片统一行为：点击卡片本身 → 新标签页打开 url
+ * ================================================================= */
+const LINKS = {
+  edge: [
+    { kind: 'bili', title: '视频教程合集',   desc: '软件操作与剪辑技巧',     url: PLACEHOLDER.bili },
+    { kind: 'xhs',  title: '生活灵感笔记',   desc: '好物与日常分享',         url: PLACEHOLDER.xhs  },
+    { kind: 'doc',  title: '在线文档示例',   desc: '可协作的公开文档',       url: PLACEHOLDER.doc  },
+    { kind: 'jd',   title: '数码好物推荐',   desc: '限时优惠专区',           url: PLACEHOLDER.jd   },
+    { kind: 'git',  title: '代码仓库主页',   desc: '项目与作品集',           url: PLACEHOLDER.git  },
+    { kind: 'wiki', title: '百科词条速查',   desc: '知识检索入口',           url: PLACEHOLDER.wiki }
+  ],
+  recycle: [
+    { kind: 'bili', title: '收藏的视频',   desc: '5 分钟前删除 · 可恢复',  url: PLACEHOLDER.bili },
+    { kind: 'doc',  title: '旧版草稿文档', desc: '上周清理的稿件',        url: PLACEHOLDER.doc  }
+  ],
+  folder: [
+    { kind: 'bili', title: '教程视频笔记', desc: '学习记录与摘录',       url: PLACEHOLDER.bili },
+    { kind: 'xhs',  title: '好物清单',     desc: '整理与收藏',           url: PLACEHOLDER.xhs  }
+  ],
+  xhs: [
+    { kind: 'xhs', title: '旅行攻略合集', desc: '国内外目的地推荐',     url: PLACEHOLDER.xhs },
+    { kind: 'xhs', title: '美食探店笔记', desc: '本地人气餐厅',         url: PLACEHOLDER.xhs },
+    { kind: 'xhs', title: '穿搭灵感',     desc: '四季穿搭参考',         url: PLACEHOLDER.xhs },
+    { kind: 'xhs', title: '家居好物',     desc: '提升幸福感的小物',     url: PLACEHOLDER.xhs }
+  ],
+  bili: [
+    { kind: 'bili', title: '纪录片推荐',   desc: '自然与人文',         url: PLACEHOLDER.bili },
+    { kind: 'bili', title: '软件教程',     desc: '从入门到精通',       url: PLACEHOLDER.bili },
+    { kind: 'bili', title: 'Vlog 日常',    desc: '平凡生活记录',       url: PLACEHOLDER.bili },
+    { kind: 'bili', title: '音乐现场',     desc: 'Live 演出合集',      url: PLACEHOLDER.bili }
+  ],
+  external: [
+    { kind: 'bili', title: '视频站入口',     desc: '教程与纪录片',         url: PLACEHOLDER.bili },
+    { kind: 'xhs',  title: '社区入口',       desc: '笔记与分享',           url: PLACEHOLDER.xhs  },
+    { kind: 'jd',   title: '电商入口',       desc: '数码与好物',           url: PLACEHOLDER.jd   },
+    { kind: 'tao',  title: '购物入口',       desc: '生活百货',             url: PLACEHOLDER.tao  },
+    { kind: 'doc',  title: '文档入口',       desc: '在线协作',             url: PLACEHOLDER.doc  },
+    { kind: 'git',  title: '代码入口',       desc: '开源与项目',           url: PLACEHOLDER.git  },
+    { kind: 'wiki', title: '百科入口',       desc: '知识检索',             url: PLACEHOLDER.wiki },
+    { kind: 'bili', title: '影单入口',       desc: '悬疑与纪录片',         url: PLACEHOLDER.bili }
+  ]
+};
+
+/* =================================================================
+ * 窗口状态：zCounter + winState(singletonIds)
+ * 注意：窗口 z-index 从 100 起，远低于任务栏(8000)/开始菜单(9000)，
+ *      保证弹层永远在最上方，不会出现错位 / 穿透。
+ * ================================================================= */
+let zCounter = 100;
+const winState    = new Map();   // winId -> { app, el, minimized, maximized, prevRect, isActive }
+let singletonIds  = {};          // appKey -> winId（单例 app 强制 reuse）
+
+function nextId() {
+  return 'win_' + Math.random().toString(36).slice(2, 9);
+}
+
+/* =================================================================
+ * 核心：打开 / 关闭 / 最小化 / 最大化 / 聚焦
+ * ================================================================= */
+function openApp(appKey, payload) {
+  const app = APPS[appKey];
+  if (!app) return null;
+
+  // 单例：已开就聚焦或恢复
+  if (app.singleton && singletonIds[appKey]) {
+    const id = singletonIds[appKey];
+    const w = winState.get(id);
+    if (w) {
+      if (w.minimized) restoreWindow(id);
+      focusWindow(id);
+      return id;
+    }
+  }
+
+  const id = nextId();
+  const el = document.createElement('div');
+  el.className = 'window';
+  el.dataset.winId    = id;
+  el.dataset.appKey   = appKey;
+
+  const iconHTML = app.icon
+    ? escapeHTML(app.icon)
+    : (app.iconImg
+        ? `<img src="${escapeHTML(app.iconImg)}" alt="">`
+        : '▢');
+
+  el.innerHTML = `
+    <header class="win-titlebar">
+      <span class="win-icon">${iconHTML}</span>
+      <span class="win-title">${escapeHTML(app.title)}</span>
+      <div class="win-controls">
+        <button class="win-btn win-min"   title="最小化" aria-label="最小化">─</button>
+        <button class="win-btn win-max"   title="最大化" aria-label="最大化">▢</button>
+        <button class="win-btn win-close" title="关闭"   aria-label="关闭">✕</button>
+      </div>
+    </header>
+    <div class="win-body" data-body></div>
+  `;
+
+  document.getElementById('windows-layer').appendChild(el);
+
+  // 调用 app.build 把内容挂到 .win-body
+  const body = el.querySelector('.win-body');
+  app.build(body, { id, appKey, payload });
+
+  // 初始位置 + 尺寸（屏幕中央，窗口间有微小错位避免完全重叠）
+  const cw = app.size.w, ch = app.size.h;
+  const cx = (window.innerWidth  - cw) / 2 + (Math.random() * 60 - 30);
+  const cy = (window.innerHeight - ch - 80) / 2 + (Math.random() * 60 - 30);
+  el.style.width  = cw + 'px';
+  el.style.height = ch + 'px';
+  el.style.left   = Math.max(20, cx) + 'px';
+  el.style.top    = Math.max(20, cy) + 'px';
+
+  const state = {
+    app, el,
+    minimized: false, maximized: false,
+    prevRect: null, isActive: false
+  };
+  winState.set(id, state);
+  if (app.singleton) singletonIds[appKey] = id;
+
+  // 标题栏 + 三个按钮
+  const titlebar = el.querySelector('.win-titlebar');
+  const closeBtn = el.querySelector('.win-close');
+  const minBtn   = el.querySelector('.win-min');
+  const maxBtn   = el.querySelector('.win-max');
+
+  closeBtn.addEventListener('click', e => { e.stopPropagation(); closeWindow(id); });
+  minBtn  .addEventListener('click', e => { e.stopPropagation(); minimizeWindow(id); });
+  maxBtn  .addEventListener('click', e => { e.stopPropagation(); toggleMaximize(id); });
+
+  // 标题栏拖拽
+  makeDraggable(el, titlebar);
+  // 双击标题栏 = 最大化切换
+  titlebar.addEventListener('dblclick', () => toggleMaximize(id));
+  // 整窗点击 → 置顶
+  el.addEventListener('mousedown', () => focusWindow(id), true);
+
+  focusWindow(id);
+  renderTaskbar();
+  return id;
+}
+
+function closeWindow(id) {
+  const w = winState.get(id);
+  if (!w) return;
+  // 清理 hook
+  if (w.app && APPS[w.app.key] && singletonIds[w.app.key] === id) {
+    delete singletonIds[w.app.key];
+  }
+  if (winState.get(id) && winState.get(id)._cleanup) {
+    try { winState.get(id)._cleanup(); } catch (e) {}
+  }
+  w.el.remove();
+  winState.delete(id);
+  renderTaskbar();
+}
+
+function minimizeWindow(id) {
+  const w = winState.get(id);
+  if (!w) return;
+  w.minimized = true;
+  w.isActive  = false;
+  w.el.classList.add('is-minimized');
+  renderTaskbar();
+}
+
+function restoreWindow(id) {
+  const w = winState.get(id);
+  if (!w) return;
+  w.minimized = false;
+  w.el.classList.remove('is-minimized');
+  focusWindow(id);
+  renderTaskbar();
+}
+
+function toggleMaximize(id) {
+  const w = winState.get(id);
+  if (!w) return;
+  if (w.maximized) {
+    w.maximized = false;
+    w.el.classList.remove('is-maximized');
+    if (w.prevRect) {
+      w.el.style.left   = w.prevRect.l + 'px';
+      w.el.style.top    = w.prevRect.t + 'px';
+      w.el.style.width  = w.prevRect.w + 'px';
+      w.el.style.height = w.prevRect.h + 'px';
+    }
+  } else {
+    w.prevRect = {
+      l: parseFloat(w.el.style.left)   || 0,
+      t: parseFloat(w.el.style.top)    || 0,
+      w: parseFloat(w.el.style.width)  || 0,
+      h: parseFloat(w.el.style.height) || 0
+    };
+    w.maximized = true;
+    w.el.classList.add('is-maximized');
+    w.el.style.left   = '0';
+    w.el.style.top    = '0';
+    w.el.style.width  = window.innerWidth + 'px';
+    w.el.style.height = (window.innerHeight - 48) + 'px';   // 减任务栏
+  }
+  renderTaskbar();
+}
+
+function focusWindow(id) {
+  zCounter++;
+  winState.forEach(w => { w.isActive = false; });
+  const w = winState.get(id);
+  if (!w) return;
+  w.isActive = true;
+  w.el.style.zIndex = zCounter;
+  renderTaskbar();
+}
+
+/* =================================================================
+ * 拖拽：titlebar 为 handle，自动避开三个按钮
+ * ================================================================= */
+function makeDraggable(el, handle) {
+  let ds = null;
+  handle.addEventListener('mousedown', e => {
+    if (e.target.closest('.win-btn')) return;     // 三个按钮不拖
+    if (e.button !== 0) return;
+    const w = winState.get(el.dataset.winId);
+    if (!w || w.maximized) return;                // 最大化不拖
+    ds = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startL: parseFloat(el.style.left) || 0,
+      startT: parseFloat(el.style.top)  || 0
+    };
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!ds) return;
+    const dx = e.clientX - ds.startX;
+    const dy = e.clientY - ds.startY;
+    let nl = ds.startL + dx;
+    let nt = ds.startT + dy;
+    const maxL = window.innerWidth  - 60;
+    const maxT = window.innerHeight - 60;
+    if (nl < -el.offsetWidth + 100) nl = -el.offsetWidth + 100;   // 留半拉屏
+    if (nl > maxL) nl = maxL;
+    if (nt < 0)    nt = 0;
+    if (nt > maxT) nt = maxT;
+    el.style.left = nl + 'px';
+    el.style.top  = nt + 'px';
+  });
+  document.addEventListener('mouseup', () => { ds = null; });
+}
+
+/* =================================================================
+ * 任务栏同步：已开窗 / 最小化 / 当前聚焦
+ * ================================================================= */
+function renderTaskbar() {
+  const list = document.getElementById('tb-windows');
+  list.innerHTML = '';
+  winState.forEach((w, id) => {
+    const btn = document.createElement('button');
+    btn.className = 'tb-app';
+    if (w.isActive && !w.minimized) btn.classList.add('is-active');
+    if (w.minimized) btn.classList.add('is-minimized');
+    btn.title = w.app.title;
+    const iconHTML = w.app.icon
+      ? escapeHTML(w.app.icon)
+      : (w.app.iconImg ? `<img src="${escapeHTML(w.app.iconImg)}" alt="">` : '▢');
+    btn.innerHTML = iconHTML;
+    btn.addEventListener('click', () => {
+      if (w.minimized)          restoreWindow(id);
+      else if (w.isActive)      minimizeWindow(id);
+      else                      focusWindow(id);
+    });
+    list.appendChild(btn);
+  });
+}
+
+/* =================================================================
+ * 开始菜单
+ * 说明：搜索框内嵌于开始菜单顶部，开始菜单默认隐藏 →
+ *       搜索框随之隐藏；点击「开始」按钮或按下 Win 键才出现。
+ * ================================================================= */
+function renderStartMenu() {
+  // 应用网格
+  const grid = document.getElementById('sm-apps');
+  grid.innerHTML = '';
+  Object.values(APPS).forEach(app => {
+    const div = document.createElement('div');
+    div.className = 'sm-app';
+    div.dataset.name = app.title;
+    const iconHTML = app.icon
+      ? escapeHTML(app.icon)
+      : (app.iconImg ? `<img src="${escapeHTML(app.iconImg)}" alt="">` : '?');
+    div.innerHTML = `
+      <div class="sm-app-icon">${iconHTML}</div>
+      <div class="sm-app-name">${escapeHTML(app.title)}</div>
+    `;
+    div.addEventListener('click', () => {
+      openApp(app.key);
+      toggleStartMenu(false);
+    });
+    grid.appendChild(div);
+  });
+
+  // 搜索框：输入时实时过滤应用网格（纯前端演示）
+  const searchInput = document.querySelector('.start-menu .sm-search input');
+  if (searchInput) {
+    searchInput.oninput = () => {
+      const q = (searchInput.value || '').trim().toLowerCase();
+      grid.querySelectorAll('.sm-app').forEach(el => {
+        const name = (el.dataset.name || '').toLowerCase();
+        el.style.display = (!q || name.includes(q)) ? '' : 'none';
+      });
+    };
+  }
+
+  // 推荐列表（中性占位，不含任何个人化内容）
+  const rec = document.getElementById('sm-recommends');
+  const recommends = [
+    { name: '项目文档.docx',   icon: '📄' },
+    { name: '示例图片.png',    icon: '🖼️' },
+    { name: '演示视频.mp4',    icon: '🎬' },
+    { name: '工作表.xlsx',     icon: '📊' }
+  ];
+  rec.innerHTML = '';
+  recommends.forEach(r => {
+    const li = document.createElement('li');
+    li.className = 'sm-rec';
+    li.innerHTML = `
+      <div class="sm-rec-icon">${escapeHTML(r.icon)}</div>
+      <div class="sm-rec-name">${escapeHTML(r.name)}</div>
+    `;
+    li.addEventListener('click', () => {
+      toggleStartMenu(false);
+      showToast('已打开：' + r.name);
+    });
+    rec.appendChild(li);
+  });
+}
+
+let startMenuOpen = false;
+function toggleStartMenu(force) {
+  const el = document.getElementById('start-menu');
+  startMenuOpen = (force !== undefined) ? !!force : !startMenuOpen;
+  if (startMenuOpen) {
+    renderStartMenu();
+    el.hidden = false;
+    // 重置搜索框
+    const si = el.querySelector('.sm-search input');
+    if (si) { si.value = ''; }
+  } else {
+    el.hidden = true;
+  }
+  document.getElementById('tb-start').classList.toggle('is-active', startMenuOpen);
+}
+
+/* =================================================================
+ * 桌面右键菜单
+ * ================================================================= */
+function showContextMenu(x, y) {
+  const m = document.getElementById('ctx-menu');
+  m.innerHTML = `
+    <div class="ctx-item has-sub" data-act="view">查看 <span class="key">▶</span></div>
+    <div class="ctx-item has-sub" data-act="sort">排序方式 <span class="key">▶</span></div>
+    <div class="ctx-item" data-act="refresh">刷新 <span class="key">F5</span></div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item" data-act="new-folder">新建文件夹</div>
+    <div class="ctx-item" data-act="new-txt">新建文本文档</div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item" data-act="open-edge">打开 Edge 浏览器</div>
+    <div class="ctx-item" data-act="open-settings">显示设置</div>
+  `;
+  m.hidden = false;
+
+  // 先放默认位置，再避越界
+  m.style.left = x + 'px';
+  m.style.top  = y + 'px';
+  requestAnimationFrame(() => {
+    const r = m.getBoundingClientRect();
+    if (r.right  > window.innerWidth)  m.style.left = (window.innerWidth  - r.width  - 8) + 'px';
+    if (r.bottom > window.innerHeight) m.style.top  = (window.innerHeight - r.height - 8) + 'px';
+  });
+
+  m.querySelectorAll('[data-act]').forEach(item => {
+    item.addEventListener('click', () => {
+      const act = item.dataset.act;
+      m.hidden = true;
+      switch (act) {
+        case 'refresh':       showToast('已刷新桌面'); break;
+        case 'new-folder':    showToast('（演示）已创建"新建文件夹"'); break;
+        case 'new-txt':       showToast('（演示）已创建"新建文本文档.txt"'); break;
+        case 'open-edge':     openApp('edge'); break;
+        case 'open-settings': openApp('settings'); break;
+        case 'view':          showToast('查看：已切换为大图标'); break;
+        case 'sort':          showToast('排序：按名称升序'); break;
+      }
+    });
+  });
+}
+function hideContextMenu() {
+  document.getElementById('ctx-menu').hidden = true;
+}
+
+/* =================================================================
+ * Toast
+ * ================================================================= */
+let toastTimer = null;
+function showToast(text, ttl) {
+  const el = document.getElementById('toast');
+  el.textContent = text;
+  el.hidden = false;
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.hidden = true; }, ttl || 1800);
+}
+
+/* =================================================================
+ * 时钟
+ * ================================================================= */
+function updateClock() {
+  const el = document.getElementById('tb-clock');
+  if (!el) return;
+  const now  = new Date();
+  const hh   = String(now.getHours())  .padStart(2, '0');
+  const mm   = String(now.getMinutes()).padStart(2, '0');
+  const ss   = String(now.getSeconds()) .padStart(2, '0');
+  const date = `${now.getMonth() + 1}月${now.getDate()}日`;
+  el.textContent = `${hh}:${mm}:${ss}\n${date}`;
+}
+
+/* =================================================================
+ * 外链卡片渲染
+ * 规则：只有点击卡片本身，才在浏览器新标签页打开对应链接。
+ * ================================================================= */
+function renderLinkCard(parent, link) {
+  const card = document.createElement('div');
+  card.className = 'link-card';
+  const iconMap = { bili: '📺', xhs: '📕', jd: '🛒', doc: '📄', git: '🐙', wiki: '📚', tao: '🛍️' };
+  card.innerHTML = `
+    <div class="link-card-icon kind-${link.kind}">${iconMap[link.kind] || '🔗'}</div>
+    <div class="link-card-body">
+      <div class="link-card-title">${escapeHTML(link.title)}</div>
+      <div class="link-card-desc">${escapeHTML(link.desc)}</div>
+    </div>
+    <div class="link-card-arrow">›</div>
+  `;
+  card.addEventListener('click', () => {
+    // 仅此处跳转外部：新标签页打开，不覆盖当前游戏页面
+    window.open(link.url, '_blank', 'noopener,noreferrer');
+  });
+  parent.appendChild(card);
+  return card;
+}
+function renderLinksGrid(parent, links, opts) {
+  const grid = document.createElement('div');
+  grid.className = 'links-grid' + (opts && opts.cols === 2 ? ' cols-2' : '');
+  links.forEach(l => renderLinkCard(grid, l));
+  parent.appendChild(grid);
+}
+
+/* 通用：渲染一组链接卡片（外链窗口 / 小红书 / B站 复用） */
+function buildLinksWindow(root, links) {
+  root.innerHTML = `<div class="links-grid" data-grid></div>`;
+  const grid = root.querySelector('[data-grid]');
+  links.forEach(l => renderLinkCard(grid, l));
+}
+
+/* =================================================================
+ * App Builders ， 内容构建
+ * ================================================================= */
+
+/* ---------- Edge 浏览器：回川市公众信息网（完整外壳 + 4 NPC 解密） ----------
+ * 保留全部外壳功能：窗口拖拽 / 地址栏 / 搜索框 / 前进后退刷新 / 404 / secretPages
+ * 默认首页 = 回川市公众信息网（政务朴素风）
+ * 4 名核心 NPC 的表层伏笔自然散落各栏目；深层隐藏档案封装进 secretPages
+ * 解锁方式：浏览器搜索框输入 『姓名 + 空格 + 关键词』
+ *           （或直接访问 huichuan://secret/<关键词>）
+ * ------------------------------------------------------------------------ */
+function buildEdgeWindow(root) {
+  root.innerHTML = `
+    <div class="edge-app">
+      <div class="edge-tabbar">
+      <div class="edge-tab active"><span class="fav"></span>回川市公众信息网</div>
+      <span class="edge-search-btn" title="搜索">🔍</span>
+    </div>
+    <div class="edge-urlbar">
+      <button class="edge-nav" data-act="back" title="后退">‹</button>
+      <button class="edge-nav" data-act="fwd"  title="前进">›</button>
+      <button class="edge-nav" data-act="reload" title="刷新">↻</button>
+      <div class="edge-url-wrap">
+        <span class="lock">🔒</span>
+        <input class="edge-url" data-url spellcheck="false" autocomplete="off">
+      </div>
+      <input class="edge-search-input" data-search placeholder="搜索回川市公众信息网" spellcheck="false" autocomplete="off">
+    </div>
+      <div class="edge-content" data-ec></div>
+    </div>
+  `;
+
+  const ec        = root.querySelector('[data-ec]');
+  /* ---- 嵌入独立政务门户 gov-portal.html（含全部 ARG 解密）---- */
+  (function embedGovPortal(){
+    ec.style.position = 'relative';
+    const frame = document.createElement('iframe');
+    frame.src = 'gov-portal.html';
+    frame.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff';
+    ec.appendChild(frame);
+    const urlbar = root.querySelector('[data-url]');
+    const searchbox = root.querySelector('[data-search]');
+    if (urlbar) urlbar.value = 'www.huichuan.gov.cn';
+    if (root.querySelector('[data-act="back"]'))
+      root.querySelector('[data-act="back"]').addEventListener('click', () => { try{ frame.contentWindow.history.back(); }catch(e){} });
+    if (root.querySelector('[data-act="fwd"]'))
+      root.querySelector('[data-act="fwd"]').addEventListener('click', () => { try{ frame.contentWindow.history.forward(); }catch(e){} });
+    if (root.querySelector('[data-act="reload"]'))
+      root.querySelector('[data-act="reload"]').addEventListener('click', () => { try{ frame.contentWindow.location.reload(); }catch(e){ frame.src = frame.src; } });
+    if (urlbar) urlbar.addEventListener('keydown', e => { if (e.key === 'Enter') frame.src = 'gov-portal.html'; });
+    if (searchbox) searchbox.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      const q = searchbox.value.trim();
+      if (q) frame.src = 'gov-portal.html#search/' + encodeURIComponent(q);
+    });
+  })();
+  return; /* 以下旧版内联门户逻辑不再执行 */
+  const urlbar    = root.querySelector('[data-url]');
+  const searchbox = root.querySelector('[data-search]');
+
+  /* 便民服务卡片图标（纯字符，避免外链图片） */
+  const SERVICE_ICONS = ['🗂️','🏦','📋','🪪','💡','🏢','🧭','📣'];
+
+  /* ====================== 表层数据：4 名 NPC 的公开伏笔自然散落 ====================== */
+  // 政务要闻（含许清公开表彰，详情末句暗示解密口令「许清 邮件」）
+  const NEWS = [
+    { id: 1, title: '我市召开上半年生态环境保护工作会议', date: '2026-06-28',
+      body: ['近日，我市召开上半年生态环境保护工作会议。会议深入学习贯彻生态文明思想，总结上半年工作成效，部署下一阶段重点任务。',
+             '会议指出，今年以来，全市上下扎实推进污染防治攻坚战，生态环境质量持续改善。',
+             '下一步，我市将持续深入打好蓝天、碧水、净土保卫战，建设生态宜居新回川。'] },
+    { id: 2, title: '河西工业园区环保整改工作通过省级验收', date: '2026-06-15',
+      body: ['日前，河西工业园区环保督察反馈问题整改工作通过省级验收。',
+             '园区对照整改清单逐项落实，完善污水处理、废气收集等环保设施。',
+             '下一步将巩固整改成效，持续提升绿色发展水平。'] },
+    { id: 3, title: '市水务局开展夏季饮用水源安全专项检查', date: '2026-06-10',
+      body: ['为保障夏季供水安全，市水务局组织开展了饮用水源安全专项检查。',
+             '检查组对重点水源地、供水厂进行全面排查，督促落实水质监测制度。',
+             '市水务局表示，将持续加强水源保护，确保群众饮水安全。'] },
+    { id: 4, title: '关于部分城区自来水出现异味的情况说明', date: '2026-06-05',
+      body: ['近期，有市民反映部分城区自来水出现异味。相关部门高度重视，立即组织排查。',
+             '经初步核查，异味系供水管道检修及水体扰动所致，水质检测指标均在安全范围内。',
+             '相关部门已采取冲洗管网、加强监测等措施，请广大市民放心。'] },
+    { id: 5, title: '许清同志获市环保先进个人表彰', date: '2026-04-18',
+      body: ['许清同志在日常环境监测工作中表现突出，近日获评市级环保先进个人。',
+             '表彰通报称，该同志业务扎实、作风严谨，多次在例行检测中发现并上报异常数据。',
+             '许清同志近期已完成工作交接，相关原始邮件往来已按规归档备查。站内如需调阅，口令示例：姓名 + 空格 + 邮件。'] },
+    { id: 6, title: '我市召开2026年防汛抗旱指挥部第一次全体会议', date: '2026-05-22',
+      body: ['我市召开2026年防汛抗旱指挥部第一次全体会议，分析研判防汛抗旱形势，部署重点工作。',
+             '会议强调，要立足防大汛、抗大旱、抢大险，压实各方责任，完善应急预案。',
+             '各级各部门要严格落实24小时值班制度，强化监测预警和巡查防守。'] }
+  ];
+
+  // 通知公告（含林茂才审批签字的水质通报，详情末句暗示「林茂才 签字」）
+  const NOTICES = [
+    { id: 'n1', title: '关于我市主要河流水质月度监测情况的通报', date: '2026-06-22',
+      body: ['本月对我市主要河流断面开展例行监测，总体水质保持稳定。',
+             '监测数据显示，部分支流溶解氧指标略有波动，已在例行记录中注明。',
+             '审批：林茂才。关于该审批签字对应的过程记录，内部留有不同的留存版本，详见相关归档。站内如需调阅，口令示例：姓名 + 空格 + 签字。'] },
+    { id: 'n2', title: '关于城东片区临时停水的通知', date: '2026-06-20',
+      body: ['因城东片区供水管网改造施工，定于6月20日22:00至6月21日6:00临时停水。',
+             '请相关区域用户提前做好储水准备，由此带来不便敬请谅解。',
+             '恢复供水后可能出现短暂浑浊，排放片刻即可正常使用。'] },
+    { id: 'n3', title: '回川市生态环境局监测设备采购项目招标公告', date: '2026-06-12',
+      body: ['回川市生态环境局拟采购环境监测设备一批，现面向社会公开招标。',
+             '欢迎具备资质的供应商按要求提交投标文件。',
+             '招标详情及报名方式请在相关平台查询（本项目为公开信息占位）。'] }
+  ];
+
+  // 互动留言（含死鱼帖【已回复】+ 沈清川匿名论坛帖，后者暗示「沈清川 旧档」）
+  const MESSAGES = [
+    { id: 'm1', title: '河里经常看到死鱼是怎么回事？', status: '已回复',
+      body: ['网友反映：近期在部分河段经常看到死鱼漂浮，担心水质问题。',
+             '【官方回复】经核查，死鱼主要因近期水体缺氧及气候因素所致，监测断面水质总体达标。',
+             '相关部门已加强巡查和水体监测，请市民关注官方发布的信息，不信谣不传谣。'] },
+    { id: 'm2', title: '档案室的沈清川谁见过？我爸说ta年轻时ta就长这样', status: '已回复',
+      body: ['匿名网友：我爸在河西工业园区干了快三十年，ta说刚进厂那会儿档案室就有个叫沈清川的，现在都这模样。可人事系统里根本查无此人。到底谁真正见过ta本人？',
+             '【官方回复】您反映的情况已记录。园区档案管理处相关负责人信息以公开公示为准。',
+             '若想了解与该负责人有关的早期档案，站内调阅口令示例：姓名 + 空格 + 旧档。'] },
+    { id: 'm3', title: '建议增加老旧小区充电桩数量', status: '办理中',
+      body: ['网友建议：部分老旧小区电动车充电不便，建议增设公共充电桩。',
+             '【办理情况】该建议已转交属地及相关部门研究，将结合老旧小区改造统筹考虑。'] }
+  ];
+
+  // 政务公开（含周秉坤履历公示 + 沈清川负责的园区档案数字化）
+  const ZHENGWU = [
+    { id: 'z1', title: '周秉坤同志干部履历公示', date: '2026-04-12',
+      body: ['周秉坤，男，现任回川市副市长，分管环保与工业。现将主要任职经历公示如下：',
+             '历任市环保局科员、副处长、处长，2021年起任现职。公示期内接受监督。',
+             '如需进一步了解其相关背景情况，可登录干部背景信息查阅系统（限内网）。站内调阅口令示例：姓名 + 空格 + 背景。'] },
+    { id: 'z2', title: '河西工业园区档案数字化工作启动', date: '2026-03-30',
+      body: ['为提升档案管理效能，河西工业园区正式启动档案数字化工作。',
+             '本次工作由园区档案管理处牵头，负责人：沈清川。',
+             '相关历史档案调阅需凭旧档调阅权限。站内调阅口令示例：姓名 + 空格 + 旧档。'] }
+  ];
+
+  /* ====================== secretPages：4 名 NPC 的深层隐藏档案 ======================
+   * 关键词（搜索框精确匹配，或直接 huichuan://secret/<关键词>）：
+   *   周秉坤 背景 / 林茂才 签字 / 沈清川 旧档 / 许清 邮件
+   * 后续新增隐藏页：直接往本对象里加 '关键词': { render: () => `...html...` } 即可。
+   * ================================================================================ */
+  const secretPages = {
+    '周秉坤 背景': { render: () => `
+      <div class="gov-archive">
+        <h1>周秉坤 · 内部人事背景调查（密）</h1>
+        <span class="tag lz">莲之庭 · 主导</span>
+        <p>周秉坤，现任回川市副市长，分管环保与工业。公开档案显示其主政期间环保指标"稳居前列"，然内部记录与其公开履历存在多处无法对应之处。</p>
+        <p>据可靠线报，周秉坤与"莲之庭"存在深层关联。近三年，凡涉及垂渊水域污染的风险评估，均由其直接叫停或压回，对外统一口径为"数据存疑、不宜公开"。</p>
+        <p>2025年冬，一次跨区域联合监测曾检出水体异常生物指标，报告在呈报48小时内被撤销，牵头科室负责人被调离。该决策记录落款人为周秉坤。</p>
+        <p>结论：周秉坤并非被动知情，而是区域污染事件的系统性掩盖者。其与莲之庭的"合作"已超出个人渎职范畴，建议列为最高关注对象。</p>
+        <div class="stamp">— 内部留存 · 阅后焚 —</div>
+        <span class="back-link" data-back>返回首页</span>
+      </div>` },
+    '林茂才 签字': { render: () => `
+      <div class="gov-archive">
+        <h1>林茂才 · 内部邮件截屏（密）</h1>
+        <span class="tag lz">莲之庭 · 执行</span>
+        <p>发件人：林茂才（市生态环境局局长）<br>收件人：监测中心、宣教中心、各科室负责人</p>
+        <p>【指令一】本月水质月报中的溶解氧、重金属两项数据，按既定"安全值"口径回填，不得出现超标字样。原始检测数据另行归档，不对外。</p>
+        <p>【指令二】"部分城区自来水异味"舆情，统一回复口径为"管网检修扰动，水质达标"，严禁提及任何源头排查进展。</p>
+        <p>【指令三】凡署名需本人审批的公文，签字即视为对上述口径的确认。所有公开公报的"林茂才"审批签字，均为上述指令的执行凭证。</p>
+        <div class="stamp">— 截屏来源不明 · 仅供解密 —</div>
+        <span class="back-link" data-back>返回首页</span>
+      </div>` },
+    '沈清川 旧档': { render: () => `
+      <div class="gov-archive">
+        <h1>沈清川 · 私人笔记碎片（残）</h1>
+        <span class="tag zl">中立 · 不老不死</span>
+        <p>笔记横跨三十年，笔迹完全一致，纸页泛黄却无脆化。记录者旁观回川每一次污染：1989年化工厂泄漏、2003年河水变绿、2017年死鱼成片……每次都有人"处理干净"，每次都没人记得。</p>
+        <p>提及"莲之庭"：它不救人，也不杀人，只是让该忘的被忘掉。提及"许清"：那个敢把超标数据写进邮件的年轻人，下落不明，最后一次出现是在河西园区档案室。</p>
+        <p>语气始终平静，不站队，不点明，只留碎片。页边小字批注："非生非死 无去无来"。</p>
+        <div class="clue">…莲之庭的入口，或许在河西园区地下三层那间从不上锁的档案室，（此处字迹被水浸模糊，难以辨认）…</div>
+        <div class="stamp">— 残页 · 第11片 / 共 ? —</div>
+        <span class="back-link" data-back>返回首页</span>
+      </div>` },
+    '许清 邮件': { render: () => `
+      <div class="gov-archive">
+        <h1>许清 · 未发出的举报邮件草稿</h1>
+        <span class="tag zp">正派 · 调查者</span>
+        <p>收件人：（未填）<br>主题：关于我市主要河流水质检测数据异常的情况反映</p>
+        <p>正文：本月例行检测中，垂渊下游三处断面检出溶解氧骤降、重金属指标超出限值3.2倍，与对外通报的"达标"结论严重不符。原始记录已留存。</p>
+        <p>我已将异常数据上报科室，但报告被退回，要求"按惯例处理"。我拒绝修改原始数据。</p>
+        <p>我可能被盯上了。如果这封邮件没能发出去，请后来的人记住：水里不只有鱼。</p>
+        <div class="stamp">— 草稿 · 未发送 · 最后编辑时间停在 03:14 —</div>
+        <span class="back-link" data-back>返回首页</span>
+      </div>` }
+  };
+
+  /* ====================== 路由 / 历史栈 / 外壳交互 ====================== */
+  const HOME = 'huichuan://home';
+  const hist = [HOME];
+  let histIdx = 0;
+
+  const NAV_ITEMS = [
+    { key: 'home',     label: '首页' },
+    { key: 'zhengwu',  label: '政务公开' },
+    { key: 'minsheng', label: '民生资讯' },
+    { key: 'fuwu',     label: '政务服务' },
+    { key: 'hudong',   label: '互动交流' },
+    { key: 'shuju',    label: '数据开放' },
+    { key: 'ditu',     label: '网站地图' },
+    { key: 'zoujin',   label: '走进回川' }
+  ];
+
+  function syncNav() {
+    const cur = hist[histIdx];
+    urlbar.value = (cur === HOME || cur === 'huichuan://' || cur === '') ? 'www.huichuan.gov.cn' : cur;
+    root.querySelector('[data-act="back"]').disabled   = histIdx <= 0;
+    root.querySelector('[data-act="fwd"]').disabled    = histIdx >= hist.length - 1;
+  }
+  function navigate(path) {
+    if (histIdx < hist.length - 1) hist.length = histIdx + 1;   // 截断前进历史
+    hist.push(path);
+    histIdx = hist.length - 1;
+    render(path);
+    syncNav();
+  }
+  function back()   { if (histIdx > 0) { histIdx--; render(hist[histIdx]); syncNav(); } }
+  function fwd()    { if (histIdx < hist.length - 1) { histIdx++; render(hist[histIdx]); syncNav(); } }
+  function reload() { render(hist[histIdx]); }
+
+  root.querySelector('[data-act="back"]').addEventListener('click', back);
+  root.querySelector('[data-act="fwd"]').addEventListener('click', fwd);
+  root.querySelector('[data-act="reload"]').addEventListener('click', reload);
+
+  // 地址栏回车
+  urlbar.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    let v = urlbar.value.trim();
+    if (!v) return;
+    if (/huichuan\.gov\.cn/i.test(v)) { navigate(HOME); return; }
+    if (!/^huichuan:\/\//.test(v)) v = 'huichuan://' + v.replace(/^\/+/, '');
+    navigate(v);
+  });
+  // 搜索框回车：先查 secretPages，否则进入搜索结果页
+  searchbox.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const q = searchbox.value.trim();
+    if (!q) return;
+    if (secretPages[q]) navigate('huichuan://secret/' + q);
+    else                 navigate('huichuan://search?q=' + encodeURIComponent(q));
+  });
+
+  /* ====================== 渲染分发 ====================== */
+  function render(path) {
+    if (path === HOME || path === 'huichuan://' || path === '') return renderHome();
+    if (path === 'huichuan://zhengwu')            return renderZhengwuList();
+    if (path === 'huichuan://minsheng' ||
+        path === 'huichuan://fuwu'    ||
+        path === 'huichuan://hudong'  ||
+        path === 'huichuan://shuju')                 return renderPlaceholder(path);
+    if (path === 'huichuan://zoujin' ||
+        path === 'huichuan://ditu')                  return renderGeoMap(path.replace('huichuan://', ''));
+    if (path.startsWith('huichuan://news/'))       return renderNews(parseInt(path.replace('huichuan://news/', ''), 10));
+    if (path.startsWith('huichuan://notice/'))     return renderNotice(path.replace('huichuan://notice/', ''));
+    if (path.startsWith('huichuan://message/'))   return renderMessage(path.replace('huichuan://message/', ''));
+    if (path.startsWith('huichuan://zhengwu/'))   return renderZhengwu(path.replace('huichuan://zhengwu/', ''));
+    if (path.startsWith('huichuan://secret/')) {
+      const key = path.replace('huichuan://secret/', '');
+      return secretPages[key] ? renderSecret(key) : render404();
+    }
+    if (path.startsWith('huichuan://search'))      return renderSearch();
+    return render404();
+  }
+
+  /* ====================== 通用框架 ====================== */
+  function govNav(active) {
+    return `<nav class="gov-nav">` + NAV_ITEMS.map(n =>
+      `<a data-sec="${n.key}" class="${n.key === active ? 'active' : ''}">${n.label}</a>`
+    ).join('') + `</nav>`;
+  }
+  function govFrame(active, bodyHtml) {
+    return `
+      <div class="gov">
+        <div class="gov-top">
+          <div class="gov-site-name">回川市公众信息网</div>
+          <div class="gov-top-links">
+            <a>设为首页</a><span class="sep">|</span>
+            <a>加入收藏</a><span class="sep">|</span>
+            <a>无障碍浏览</a>
+            <input class="gov-top-search" placeholder="站内搜索">
+          </div>
+        </div>
+        ${govNav(active)}
+        ${bodyHtml}
+        <div class="gov-footer">
+          主办单位：回川市人民政府办公室　地址：回川市 · 政府办公区　邮政编码：000000<br>
+          网站标识码：0000000000　ICP备案号：回ICP备00000000号　公安机关备案号：00000000000000<br>
+          <a>联系我们</a>　|　<a>网站地图</a>　|　© 回川市公众信息网
+        </div>
+      </div>`;
+  }
+  // 统一事件绑定（每次渲染后调用）
+  function bindContent() {
+    ec.querySelectorAll('[data-news]').forEach(el   => el.addEventListener('click', () => navigate('huichuan://news/'    + el.dataset.news)));
+    ec.querySelectorAll('[data-notice]').forEach(el => el.addEventListener('click', () => navigate('huichuan://notice/'  + el.dataset.notice)));
+    ec.querySelectorAll('[data-message]').forEach(el=> el.addEventListener('click', () => navigate('huichuan://message/' + el.dataset.message)));
+    ec.querySelectorAll('[data-zheng]').forEach(el  => el.addEventListener('click', () => navigate('huichuan://zhengwu/'  + el.dataset.zheng)));
+    ec.querySelectorAll('[data-sec]').forEach(el     => el.addEventListener('click', () => navigate('huichuan://' + el.dataset.sec)));
+    ec.querySelectorAll('[data-back]').forEach(el    => el.addEventListener('click', () => navigate(HOME)));
+    // 网站头部"站内搜索"框：与浏览器搜索框同源（先查 secretPages，否则进搜索结果页）
+    const ts = ec.querySelector('.gov-top-search');
+    if (ts) ts.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      const q = ts.value.trim();
+      if (!q) return;
+      if (secretPages[q]) navigate('huichuan://secret/' + q);
+      else                 navigate('huichuan://search?q=' + encodeURIComponent(q));
+    });
+  }
+  function govDetail(active, title, meta, paras) {
+    ec.innerHTML = govFrame(active, `
+      <div class="gov-detail">
+        <h1>${title}</h1>
+        <div class="gov-detail-meta">${meta}</div>
+        ${paras.map(p => `<p>${p}</p>`).join('')}
+        <span class="back-link" data-back>返回首页</span>
+      </div>`);
+    bindContent();
+  }
+
+  /* ====================== 默认首页（v2：山水 banner + 三栏 + 文旅 + 全域地图） ====================== */
+  // 便民服务 8 项（纯字符图标，避免外链图片）
+  const SERVICE_LIST = [
+    { ic: '🗂️', nm: '社保查询',   sec: 'fuwu'     },
+    { ic: '🏦', nm: '公积金办理', sec: 'fuwu'     },
+    { ic: '📋', nm: '办事指南',   sec: 'fuwu'     },
+    { ic: '🪪', nm: '证件办理',   sec: 'fuwu'     },
+    { ic: '💡', nm: '民生缴费',   sec: 'fuwu'     },
+    { ic: '🏢', nm: '企业服务',   sec: 'fuwu'     },
+    { ic: '🧭', nm: '旅游咨询',   sec: 'minsheng' },
+    { ic: '📣', nm: '投诉建议',   sec: 'hudong'   }
+  ];
+
+  // 全域地理信息图（首页底部 + 「走进回川 / 网站地图」共用）
+  function geoMapSectionHtml() {
+    const dots = [
+      { l: '50%', t: '52%', label: '城央老城区（钟楼广场）' },
+      { l: '78%', t: '44%', label: '月荷文创区（月荷水库）' },
+      { l: '21%', t: '49%', label: '西湾郊野区（旧物市集）' },
+      { l: '47%', t: '79%', label: '南荡山地区（溪头古村）' },
+      { l: '53%', t: '17%', label: '青柏古迹区（古城墙遗址）' }
+    ].map(d => `<span class="gov-pin" style="left:${d.l};top:${d.t}" data-label="${d.label}"></span>`).join('');
+    return `
+      <div class="gov-gemap">
+        <h2>走进回川 · 全域地理信息图</h2>
+        <div class="gov-gemap-stage" data-stage>
+          <img src="assets/desktop/gov-map.jpg" alt="回川市全域地理信息图">
+          ${dots}
+          <span class="gov-gemap-watermark tl"></span>
+          <span class="gov-gemap-watermark tr"></span>
+          <span class="gov-gemap-watermark bl"></span>
+          <span class="gov-gemap-watermark br"></span>
+        </div>
+        <div class="gov-gemap-toolbar">
+          <button data-zoom="in">放大</button>
+          <button data-zoom="out">缩小</button>
+          <button data-layer="1">图层</button>
+          <button data-measure="1">测距</button>
+          <span class="scale">比例尺 1:50000</span>
+        </div>
+      </div>`;
+  }
+
+  function renderHome() {
+    const newsHtml    = NEWS.map(n    => `<li data-news="${n.id}"><span class="gov-news-title">${n.title}</span><span class="gov-news-date">${n.date}</span></li>`).join('');
+    const noticeHtml  = NOTICES.map(n => `<li data-notice="${n.id}">${n.title}</li>`).join('');
+    const msgHtml     = MESSAGES.map(m => `<li data-message="${m.id}">${m.title}<span class="gov-msg-status ${m.status === '办理中' ? 'doing' : ''}">【${m.status}】</span></li>`).join('');
+    const serviceHtml = SERVICE_LIST.map(s => `<div class="gov-service-card" data-sec="${s.sec}"><div class="ic">${s.ic}</div><span class="nm">${s.nm}</span></div>`).join('');
+    ec.innerHTML = govFrame('home', `
+      <div class="gov-banner-v2">
+        <img class="ban-img" src="assets/desktop/gov-banner.jpg" alt="回川市生态宣传">
+        <div class="ban-paper">
+          <div class="ban-title">山水回川<br>生态宜居</div>
+          <div class="ban-sub">游青山·听溪水·寻古镇烟火</div>
+          <div class="ban-badge">国家生态文明建设示范市</div>
+        </div>
+      </div>
+      <div class="gov-main-v2">
+        <div class="gov-col-l">
+          <div class="gov-block-title red">政务要闻 <span class="more">更多 &gt;&gt;</span></div>
+          <ul class="gov-news-list">${newsHtml}</ul>
+
+          <div class="gov-travel">
+            <div class="gov-block-title">城市名片 · 文旅回川</div>
+            <div class="gov-travel-imgwrap">
+              <img src="assets/desktop/gov-travel.jpg" alt="回川文旅手绘长图">
+              <svg class="gov-travel-route" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <polyline points="30,25 18,62 70,70" fill="none" stroke="#c0392b" stroke-width="0.6" stroke-dasharray="2 2"/>
+              </svg>
+              <span class="gov-pin" style="left:30%;top:25%" data-label="北库观日"></span>
+              <span class="gov-pin" style="left:18%;top:62%" data-label="西湾露营"></span>
+              <span class="gov-pin" style="left:70%;top:70%" data-label="南岸步道"></span>
+            </div>
+            <div class="gov-travel-cap">回川是个好地方 · 一湖一库皆有清风
+              <button class="gov-btn-ghost" data-sec="minsheng">查看游玩攻略</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="gov-col-m">
+          <div class="gov-block-title">便民服务</div>
+          <div class="gov-service-grid">${serviceHtml}</div>
+        </div>
+
+        <div class="gov-col-r">
+          <div class="gov-sub-block">
+            <div class="gov-block-title">通知公告 <span class="more">更多 &gt;&gt;</span></div>
+            <ul class="gov-notice-list">${noticeHtml}</ul>
+          </div>
+          <div class="gov-sub-block">
+            <div class="gov-block-title">民意征集</div>
+            <ul class="gov-msg-list">${msgHtml}</ul>
+            <button class="gov-btn-ghost" data-sec="hudong" style="float:none;margin-top:8px">参与留言</button>
+          </div>
+          <div class="gov-sub-block">
+            <div class="gov-block-title">市域地图</div>
+            <div class="gov-map-mini" data-sec="ditu">
+              <img src="assets/desktop/gov-map.jpg" alt="回川市域地图缩略">
+              <span class="gov-pin" style="left:50%;top:52%" data-label="城央老城区"></span>
+              <span class="gov-pin" style="left:78%;top:44%" data-label="月荷文创区"></span>
+              <span class="gov-pin" style="left:21%;top:49%" data-label="西湾郊野区"></span>
+              <span class="gov-pin" style="left:47%;top:79%" data-label="南荡山区"></span>
+              <span class="gov-pin" style="left:53%;top:17%" data-label="青柏古迹区"></span>
+            </div>
+            <div class="gov-travel-cap" style="text-align:center"><a data-sec="ditu">点击查看完整地图</a></div>
+          </div>
+        </div>
+      </div>
+      ${geoMapSectionHtml()}
+    `);
+    bindContent();
+    bindGeoMap();
+  }
+
+  function renderGeoMap(active) {
+    ec.innerHTML = govFrame(active, geoMapSectionHtml());
+    bindContent();
+    bindGeoMap();
+  }
+
+  // 全域地图工具栏：放大 / 缩小（图层、测距为占位按钮，暂仅做视觉）
+  function bindGeoMap() {
+    const stage = ec.querySelector('[data-stage]');
+    if (!stage) return;
+    const img = stage.querySelector('img');
+    let scale = 1;
+    ec.querySelectorAll('[data-zoom]').forEach(btn => btn.addEventListener('click', () => {
+      scale = btn.dataset.zoom === 'in' ? Math.min(scale + 0.2, 2.4) : Math.max(scale - 0.2, 0.6);
+      img.style.transform = 'scale(' + scale + ')';
+      img.style.transformOrigin = 'center';
+      img.style.transition = 'transform .15s ease';
+    }));
+  }
+
+  /* ====================== 政务公开栏目 ====================== */
+  function renderZhengwuList() {
+    const zhengHtml = ZHENGWU.map(z => `<li data-zheng="${z.id}"><span class="gov-news-title">${z.title}</span><span class="gov-news-date">${z.date}</span></li>`).join('');
+    ec.innerHTML = govFrame('zhengwu', `
+      <div class="gov-main">
+        <div class="gov-col-left" style="max-width:100%;flex-basis:100%">
+          <div class="gov-block-title">政务公开</div>
+          <ul class="gov-news-list">${zhengHtml}</ul>
+          <div class="gov-placeholder" style="text-align:left;padding:14px 0">本栏目集中公开干部信息、重点工作进展。如需查阅背景材料，请使用浏览器搜索框。</div>
+        </div>
+      </div>`);
+    bindContent();
+  }
+
+  function renderPlaceholder(path) {
+    const map = { minsheng: '民生资讯', fuwu: '政务服务', hudong: '互动交流', shuju: '数据开放', ditu: '网站地图' };
+    const name = map[path.replace('huichuan://', '')] || '板块';
+    ec.innerHTML = govFrame(path.replace('huichuan://', ''), `
+      <div class="gov-main">
+        <div class="gov-col-left" style="max-width:100%;flex-basis:100%">
+          <div class="gov-block-title">${name}</div>
+          <div class="gov-placeholder">「${name}」栏目内容建设中，敬请期待。（占位页，你后续自行补充内容）</div>
+        </div>
+      </div>`);
+    bindContent();
+  }
+
+  /* ====================== 详情页（通用官样占位 + 解密口令暗示） ====================== */
+  function renderNews(id) {
+    const n = NEWS.find(x => x.id === id);
+    if (!n) return render404();
+    govDetail('home', n.title, `回川市公众信息网　${n.date}　来源：回川市公众信息网`, n.body);
+  }
+  function renderNotice(id) {
+    const n = NOTICES.find(x => x.id === id);
+    if (!n) return render404();
+    govDetail('home', n.title, `回川市公众信息网　${n.date}　来源：回川市公众信息网`, n.body);
+  }
+  function renderMessage(id) {
+    const m = MESSAGES.find(x => x.id === id);
+    if (!m) return render404();
+    govDetail('home', m.title, `回川市公众信息网　互动交流栏目　状态：【${m.status}】`, m.body);
+  }
+  function renderZhengwu(id) {
+    const z = ZHENGWU.find(x => x.id === id);
+    if (!z) return render404();
+    govDetail('zhengwu', z.title, `回川市公众信息网　政务公开　${z.date}`, z.body);
+  }
+
+  /* ====================== 搜索结果 / 隐藏档案 / 404 ====================== */
+  function renderSearch() {
+    const listHtml = [
+      { news: 1, title: '我市召开上半年生态环境保护工作会议', date: '2026-06-28' },
+      { news: 4, title: '关于部分城区自来水出现异味的情况说明', date: '2026-06-05' },
+      { msg: 'm1', title: '河里经常看到死鱼是怎么回事？【已回复】' }
+    ].map(o => `<li ${o.news ? `data-news="${o.news}"` : `data-message="${o.msg}"`}><span class="gov-news-title">${o.title}</span>${o.date ? `<span class="gov-news-date">${o.date}</span>` : ''}</li>`).join('');
+    ec.innerHTML = govFrame('home', `
+      <div class="gov-search">
+        <h2>站内搜索</h2>
+        <div class="hint">（搜索结果页占位，你后续自行接入检索逻辑或替换公开内容。）</div>
+        <ul class="gov-news-list">${listHtml}</ul>
+        <span class="back-link" data-back>返回首页</span>
+      </div>`);
+    bindContent();
+  }
+  function renderSecret(key) {
+    ec.innerHTML = secretPages[key].render();
+    bindContent();
+  }
+  function render404() {
+    ec.innerHTML = govFrame('home', `
+      <div class="gov-404">
+        <div class="code">404</div>
+        <div class="msg">抱歉，您访问的页面不存在或已移动。</div>
+        <div class="back" data-back>返回首页</div>
+      </div>`);
+    bindContent();
+  }
+
+  /* 启动：默认显示首页（回川市公众信息网） */
+  render(HOME);
+  syncNav();
+}
+
+/* ---------- 回收站 ---------- */
+function buildRecycleWindow(root) {
+  root.innerHTML = `
+    <div class="recycle">
+      <div class="recycle-bar">
+        <span>回收站中有 4 个项目</span>
+        <span>${new Date().toLocaleString('zh-CN')}</span>
+      </div>
+      <div class="recycle-grid" data-items></div>
+      <div class="edge-section-title" style="padding-left:16px;padding-right:16px">可恢复链接</div>
+      <div class="links-grid" data-links></div>
+    </div>
+  `;
+  const items = root.querySelector('[data-items]');
+  const mockItems = [
+    { name: '工作笔记.md',     icon: '📄' },
+    { name: '视频素材.zip',     icon: '🎬' },
+    { name: '背景图.png',       icon: '🖼️' },
+    { name: '草稿.pdf',         icon: '📕' }
+  ];
+  mockItems.forEach(it => {
+    const row = document.createElement('div');
+    row.className = 'recycle-item';
+    row.innerHTML = `
+      <div class="recycle-item-icon">${it.icon}</div>
+      <div class="recycle-item-name">${escapeHTML(it.name)}</div>
+    `;
+    row.addEventListener('click', () => showToast('已选中：' + it.name));
+    items.appendChild(row);
+  });
+  const links = root.querySelector('[data-links]');
+  LINKS.recycle.forEach(l => renderLinkCard(links, l));
+}
+
+/* ---------- 我的文件夹 ---------- */
+function buildFolderWindow(root) {
+  root.innerHTML = `
+    <div class="folder">
+      <div class="folder-toolbar">
+        <span>📁 我的文件夹</span>
+        <span style="margin-left:auto">4 项 · 排序：名称</span>
+      </div>
+      <div class="folder-list" data-list></div>
+      <div class="edge-section-title" style="padding-left:14px;padding-right:14px">外链资源</div>
+      <div class="links-grid" data-links></div>
+    </div>
+  `;
+  const list = root.querySelector('[data-list]');
+  const files = [
+    { name: '项目计划.docx',            size: '128 KB', time: '08-25 18:30', icon: '🧩' },
+    { name: '风景照片.png',             size: '4.6 MB', time: '08-25 17:14', icon: '🖼️' },
+    { name: '会议纪要.docx',            size: '32 KB',  time: '08-25 14:08', icon: '📄' },
+    { name: '快捷方式.lnk',             size: '—',      time: '今天',         icon: '⭐' }
+  ];
+  files.forEach(f => {
+    const row = document.createElement('div');
+    row.className = 'folder-row';
+    row.innerHTML = `
+      <div class="folder-row-icon">${f.icon}</div>
+      <div class="folder-row-name">${escapeHTML(f.name)}</div>
+      <div class="folder-row-size">${f.size}</div>
+      <div class="folder-row-time">${f.time}</div>
+    `;
+    row.addEventListener('dblclick', () => showToast('（演示）打开 ' + f.name));
+    list.appendChild(row);
+  });
+  const links = root.querySelector('[data-links]');
+  LINKS.folder.forEach(l => renderLinkCard(links, l));
+  LINKS.folder.forEach(l => renderLinkCard(links, l));
+}
+
+/* ---------- 微信（完整剧情：5 会话 + 4 标签页，全程页内运行，不加载外部 html） ---------- */
+function wxLS(k, d){ try{ const v = localStorage.getItem(k); return v==null?d:v; }catch(e){ return d; } }
+function wxLSJ(k, d){ try{ const v = wxLS(k,''); return v? JSON.parse(v) : d; }catch(e){ return d; } }
+function wxFmt(ts){ const d=new Date(ts); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes()); }
+
+/* 微信剧情状态：与 gov-portal 共用 localStorage */
+function wxReadState(){
+  return {
+    seen: wxLSJ('hc_wx_seen', {}),              // {1:ts,2:ts,3:ts,4:ts}
+    npcTimes: wxLSJ('hc_npc_times', {}),        // {zhoubinkun:ts,...}
+    linSeen: wxLS('hc_lin_seen','')==='1',
+    ritualSeen: wxLS('hc_ritual_seen','')==='1',
+    unlockTime: parseInt(wxLS('hc_unlockTime','0'),10) || Date.now()
+  };
+}
+function wxUnlocked(st, n){
+  if(n===1) return true;
+  if(n===2) return !!(st.seen[1] || st.npcTimes.zhoubinkun || st.npcTimes.linmaocai || st.npcTimes.shenqingchuan || st.npcTimes.xuqing);
+  if(n===3) return !!(st.seen[2] || st.linSeen);
+  if(n===4) return !!(st.seen[3] || st.ritualSeen);
+  return false;
+}
+
+function buildWechatWindow(root) {
+  const state = () => wxReadState();
+  const npcT = (key) => { const ts = wxReadState().npcTimes[key]; return ts ? wxFmt(ts) : wxFmt(Date.now()-3*3600000); };
+  const U = wxReadState().unlockTime;
+
+  const AVA = { me:'assets/desktop/me-avatar.png', shen:'assets/desktop/npc-shen.jpg', zhou:'assets/desktop/npc-zhou.jpg', lin:'assets/desktop/npc-lin-sign.jpg' };
+  const av = (src, cls) => src ? `<div class="av ${cls||''}"><img src="${escapeHTML(src)}"></div>` : `<div class="av ${cls||''}"></div>`;
+  const bubble = (who, cls, body) => `<div class="wc-msg ${cls==='me'?'me':''}">${av(cls==='me'?AVA.me:cls==='anon'?null:(cls==='shen'?AVA.shen:cls==='zhou'?AVA.zhou:cls==='lin'?AVA.lin:null), cls==='anon'?'anon':(cls==='me'?'':'sys'))}<div class="wc-bubble ${cls==='sys'?'sys':''}">${who?`<div class="nm ${cls==='anon'?'anon':''}">${escapeHTML(who)}</div>`:''}${body}</div></div>`;
+
+  /* ---- 会话内容（自动填充，非空壳） ---- */
+  const CONVOS = {
+    zhouyu: { name:'周屿', html:`<div class="wc-back" data-back>‹ 返回</div><div class="wc-chat">
+      <div class="time-hint">${wxFmt(U-4*86400000)}</div>
+      ${bubble('周屿','','周末有空不？月荷水库走起，我请。')}
+      ${bubble('me','me','又去啊，行，几点？')}
+      ${bubble('周屿','','下午，老地方。这次我非得钓上那条红纹的不可。')}
+      <div class="time-hint">${wxFmt(U-4*86400000+4*3600000)} · 水库边</div>
+      ${bubble('周屿','','卧槽真上来了，红纹的，邪门。给你一条，尝尝。')}
+      ${bubble('me','me','这能吃？')}
+      ${bubble('周屿','','我先吃给你看——（嚼）……操，好恶心。一股土腥味直往脑子里钻。')}
+      ${bubble('me','me','吐了吐了，别硬撑。')}
+      ${bubble('周屿','','不对……说不上来。先回去吧。')}
+      <div class="time-hint">${wxFmt(U-2*86400000)}</div>
+      ${bubble('周屿','','喂，你睡了没。')}
+      ${bubble('周屿','','我这两天满脑子都是那个味儿。')}
+      ${bubble('周屿','','不是恶心的那种了……是，好想再去试一次啊。')}
+      ${bubble('me','me','？你前两天不是说恶心吗')}
+      ${bubble('周屿','','变了。真的变了。我们赶紧再去一次吧，求你了，带我，我们再去一次吧。')}
+      ${bubble('me','me','老周你冷静点')}
+      ${bubble('周屿','','带我去。求你。我快受不了了。')}
+      <div class="time-hint">对方未回复</div>
+    </div>` },
+    mama: { name:'妈妈', html:`<div class="wc-back" data-back>‹ 返回</div><div class="wc-chat">
+      <div class="time-hint">${wxFmt(U-5*86400000)}</div>
+      ${bubble('妈妈','','娃，这几天下雨，出门带伞。')}
+      ${bubble('me','me','知道了妈。')}
+      ${bubble('妈妈','','别去水库那边。水位涨了。')}
+      <div class="time-hint">${wxFmt(U-3*86400000)} 晚上</div>
+      ${bubble('妈妈','','夜里别往湖心那个方向去。听见没有。')}
+      ${bubble('me','me','妈你怎么突然说这个。')}
+      ${bubble('妈妈','','……没什么。老人讲的。你听话。')}
+      <div class="time-hint">${wxFmt(U-1*86400000)}</div>
+      ${bubble('妈妈','','娃，妈妈梦到水了。一大片。你别去。')}
+    </div>` },
+    qun: { name:'洄川钓友群', html:`<div class="wc-back" data-back>‹ 返回</div><div class="wc-chat">
+      <div class="time-hint">${wxFmt(U-3*86400000)} 午后</div>
+      ${bubble('老张头','','昨天去月荷水库，钓上来一条红纹鱼。纹路怪得很，像有人拿血画的。')}
+      ${bubble('西湾-小李','','别提了。我老婆吃完水库鱼当晚起红疹，现在还挂水。')}
+      ${bubble('回川土著','','那鱼不能吃。吃了会"看见东西"。')}
+      ${bubble('管理员-市文旅局','sys','<span style="color:#ff3b30">【群公告】</span>请各位市民不要传播未经证实的信息。')}
+      <div class="time-hint">${wxFmt(U-1*86400000)} 深夜</div>
+      ${bubble('夜游神','','最近水库晚上好像有灯。你们有人看见吗？')}
+      ${bubble('市民A','','水面是不是泛红光？还有股甜味，跟莲花糖似的。')}
+      ${bubble('管理员-市文旅局','sys','"夜游神" 已被管理员禁言 30 天')}
+    </div>` },
+    stranger: { name:'陌生人', html:`<div class="wc-back" data-back>‹ 返回</div><div class="wc-chat">
+      <div class="time-hint">${wxFmt(U+2*86400000)}</div>
+      ${bubble('未知发信人 · IP记录已抹除','anon','名单你看了。看完了，就别回头。')}
+      <div class="time-hint">${wxFmt(U+2*86400000+3600000)}</div>
+      ${bubble('沈清川','shen','周三零点 湖心岛')}
+      <div class="time-hint">${wxFmt(U+2*86400000+3601000)}</div>
+      ${bubble('me','me','你到底是谁？许清是不是你，')}
+      <div class="time-hint">${wxFmt(U+2*86400000+3602000)}</div>
+      ${bubble('未知发信人 · IP记录已抹除','anon','许清·管理员凭据<br><span style="color:#b22222;font-family:monospace;letter-spacing:0.05em">XuQing_0221 / jiuHuLaiYe27</span><br><span style="color:#888;font-size:11px">， 回川，已经不是回川。我只能说这些。</span>')}
+      ${bubble('','sys','消息已发出，但被对方拒收了。')}
+    </div>` },
+    filehelper: { name:'文件传输助手', html:`<div class="wc-back" data-back>‹ 返回</div><div class="wc-chat">
+      <div class="time-hint">${wxFmt(U-6*86400000)}</div>
+      ${bubble('me','me','[图片：水库卫星地图局部]')}
+      ${bubble('me','me','[文件：水质检测报告.pdf] 已过期')}
+      <div class="time-hint">${wxFmt(U-1*86400000)}</div>
+      ${bubble('me','me','湖心岛。22:00。')}
+      <div class="time-hint">（存档碎片 · 仅自己可见）</div>
+    </div>` }
+  };
+
+  /* ---- 标签页内容 ---- */
+  const TABS = {
+    1: { name:'初探', html:`<div class="wc-list">${['zhouyu','mama','qun','stranger','filehelper'].map(k=>{
+        const c = CONVOS[k];
+        // 仅保留妈妈 / 周屿 真实头像；其余三个显示统一灰块占位（无头像）
+        let avatarHtml;
+        if(k==='zhouyu'){
+          avatarHtml = `<div class="wc-contact-avatar"><img src="assets/desktop/wechat-zhouyu.jpg" alt="" onerror="this.parentNode.textContent='周';this.remove();"></div>`;
+        }else if(k==='mama'){
+          avatarHtml = `<div class="wc-contact-avatar"><img src="assets/desktop/wechat-mama.jpg" alt="" onerror="this.parentNode.textContent='妈';this.remove();"></div>`;
+        }else{
+          avatarHtml = `<div class="wc-contact-avatar no-photo"></div>`;
+        }
+        return `<div class="wc-contact" data-convo="${k}">${avatarHtml}<div class="wc-contact-body"><div class="wc-contact-name">${c.name}</div><div class="wc-contact-preview">${k==='stranger'?'[未知发信人]':k==='qun'?'[群聊] 最近水库晚上有灯':k==='zhouyu'?'鱼别吃啊':k==='mama'?'夜里别去湖心':'(存档)'}</div></div></div>`;
+      }).join('')}</div>` },
+    2: { name:'四人之秘', html:`<div class="wc-chat">
+      <div class="time-hint">本地论坛 · ${wxFmt(U-86400000)}</div>
+      <div class="wc-card"><div class="hd">${av(AVA.shen)}<span class="n">匿名网友</span><span class="t">楼主</span></div><div class="txt">河西档案室那个姐姐，好漂亮啊……气质冷冷的。想追，有人认识吗？</div><div class="reply"><b>高赞回复：</b>我爸九十年代去查档ta就长这样。工牌照片和二十年前一模一样。</div><div class="reply"><b>2楼：</b>这姐姐姓沈。市档案馆的。<br><span style="color:#b22222;font-family:monospace;letter-spacing:0.05em;font-size:11.5px">— — 沈管理员口令 · ShenQingchuan_25 / chu-yu-2014 — —</span></div><div class="foot"><span>该帖已下沉</span><span>回复 47</span></div></div>
+      <div class="wc-card"><div class="hd">${av(AVA.lin)}<span class="n">回川老铁</span><span class="t">楼主</span></div><div class="txt">有没有人扒一扒生态环境局那个林局长？听说上个月签水质报告，手抖得厉害。</div><div class="reply"><b>高赞回复：</b>ta原来用黑笔，现在用红笔签，红得吓人。</div><div class="reply"><b>3楼：</b>别乱说。我上回发个水质帖，半夜接了个电话，吓得赶紧删了。</div><div class="foot"><span>该帖已下沉</span><span>回复 31</span></div></div>
+      <div class="wc-card"><div class="hd"><div class="av" style="background:#576b95"></div><span class="n">沉默的潜水员</span><span class="t">楼主</span></div><div class="txt">水务局那个许清，上个月突然不来了。有没有内部人知道咋回事？</div><div class="reply"><b>高赞回复：</b>调令都没见着。ta同事说，许清之前到处反映水库的事，后来人就没了。</div><div class="foot"><span>该帖已锁定</span><span>回复 22</span></div></div>
+      <div class="wc-card"><div class="hd"><div class="av" style="background:#444"></div><span class="n">夜巡的保安</span><span class="t">楼主</span></div><div class="txt">市里那辆尾号 0 的公务车，怎么每周三晚上都往湖心岛码头去？</div><div class="reply"><b>高赞回复：</b>周副市长的车。别多问，问就是"现场办公"。</div><div class="foot"><span>该帖已被删除</span><span>回复 13</span></div></div>
+    </div>` },
+    3: { name:'归位', html:`<div class="wc-chat">
+      <div class="time-hint">${wxFmt(U+86400000)}</div>
+      ${bubble('未知发信人 · IP记录已抹除','anon','去翻看那份归档的逝者名单。<br>每一份异常，都有一份签字。')}
+      <div class="wc-card"><div class="hd"><div class="av" style="background:#576b95"></div><span class="n">本地新闻</span><span class="t">${wxFmt(U+86400000)}</span></div><div class="txt">月荷水库一工作人员夜间巡查失足落水 因公殉职</div></div>
+      <div class="wc-card"><div class="hd">${av(AVA.lin)}<span class="n">林茂才</span><span class="t">${wxFmt(U+86400000)}</span></div><div class="txt">门开了，我先去了。</div><div class="foot"><span>仅周秉坤赞了</span><span>该朋友圈已删除</span></div></div>
+      ${bubble('me','me','林茂才？失足落水？')}
+    </div>` },
+    4: { name:'祭品', html:`<div class="wc-chat">
+      <div class="time-hint">${wxFmt(U+2*86400000)}</div>
+      ${bubble('未知发信人 · IP记录已抹除','anon','名单你看了。看完了，就别回头。')}
+      ${bubble('me','me','谁？说话！')}
+      <div class="time-hint">${wxFmt(U+2*86400000+3600000)}</div>
+      ${bubble('沈清川','shen','周三零点 湖心岛')}
+      ${bubble('me','me','你到底是谁？许清是不是你，')}
+      ${bubble('','sys','消息已发出，但被对方拒收了。')}
+    </div>` }
+  };
+
+  root.innerHTML = `<div class="wechat">
+    <div class="wc-header">微信</div>
+    <div class="wc-tabs">${[1,2,3,4].map(n=>`<div class="wc-tab" data-tab="${n}">${TABS[n].name}</div>`).join('')}</div>
+    <div class="wc-stage"></div>
+  </div>`;
+
+  const stage = root.querySelector('.wc-stage');
+  const CONVO_KEYS = ['zhouyu','mama','qun','stranger','filehelper'];
+
+  function readConvos(){
+    try{ return JSON.parse(localStorage.getItem('hc_wx_convo_read')||'[]'); }catch(e){ return []; }
+  }
+
+  function refreshLocks(){
+    const st = wxReadState();
+    root.querySelectorAll('.wc-tab').forEach(t=>{
+      const n = +t.dataset.tab;
+      const un = wxUnlocked(st, n);
+      t.classList.toggle('locked', !un);
+    });
+  }
+
+  function markConvoRead(k){
+    const arr = readConvos();
+    if(arr.indexOf(k)<0){ arr.push(k); try{ localStorage.setItem('hc_wx_convo_read', JSON.stringify(arr)); }catch(e){} }
+    // 读完初探全部 5 个会话 → 记 seen[1]，解锁四人之秘
+    if(CONVO_KEYS.every(c=>arr.indexOf(c)>=0)){
+      const st = wxReadState();
+      if(!st.seen[1]){ st.seen[1] = Date.now(); try{ localStorage.setItem('hc_wx_seen', JSON.stringify(st.seen)); }catch(e){} }
+    }
+    refreshLocks();
+  }
+
+  function renderTab(n){
+    const st = wxReadState();
+    root.querySelectorAll('.wc-tab').forEach(t=>t.classList.toggle('active', +t.dataset.tab===n));
+    if(!wxUnlocked(st, n)){
+      const hints = {2:'先看完「初探」里的全部会话',3:'先查阅林茂才的人事档案',4:'先看完事故台账里的归位名单'};
+      stage.innerHTML = `<div class="wc-locktip">🔒 尚未收集足够线索<br>${hints[n]||'请继续寻找信息'}</div>`;
+      return;
+    }
+    if(n!==1 && !st.seen[n]){ st.seen[n]=Date.now(); try{ localStorage.setItem('hc_wx_seen', JSON.stringify(st.seen)); }catch(e){} }
+    stage.innerHTML = TABS[n].html;
+    // 会话点击
+    stage.querySelectorAll('[data-convo]').forEach(el=>{
+      el.addEventListener('click', ()=>{ renderConvo(el.dataset.convo); });
+    });
+  }
+
+  function renderConvo(k){
+    const c = CONVOS[k];
+    if(!c) return;
+    markConvoRead(k);
+    stage.innerHTML = c.html;
+    const back = stage.querySelector('[data-back]');
+    if(back) back.addEventListener('click', ()=>{ renderTab(1); });
+  }
+
+  root.querySelectorAll('.wc-tab').forEach(t=>{
+    t.addEventListener('click', ()=>renderTab(+t.dataset.tab));
+  });
+
+  refreshLocks();
+  renderTab(1);
+}
+
+/* ---------- 设置 ---------- */
+function buildSettingsWindow(root) {
+  root.innerHTML = `
+    <div class="settings">
+      <nav class="settings-nav" data-nav>
+        <div class="settings-nav-item is-active" data-tab="sys">系统</div>
+        <div class="settings-nav-item"           data-tab="per">个性化</div>
+        <div class="settings-nav-item"           data-tab="app">应用</div>
+        <div class="settings-nav-item"           data-tab="acc">账户</div>
+        <div class="settings-nav-item"           data-tab="net">网络</div>
+        <div class="settings-nav-item"           data-tab="abt">关于</div>
+      </nav>
+      <main class="settings-body" data-body></main>
+    </div>
+  `;
+  const tabs = {
+    sys: () => `
+      <h2>系统</h2>
+      <div class="settings-row"><label>显示分辨率</label><span class="val">1920 × 1080 (推荐)</span></div>
+      <div class="settings-row"><label>缩放</label><span class="val">100%</span></div>
+      <div class="settings-row"><label>主题</label><span class="val">浅色（半透明）</span></div>
+      <div class="settings-row"><label>声音</label><span class="val">默认设备</span></div>
+      <div class="settings-row"><label>通知</label><span class="val">已启用</span></div>
+      <div class="settings-row"><label>电源</label><span class="val">节能模式</span></div>
+    `,
+    per: () => `
+      <h2>个性化</h2>
+      <div class="settings-row"><label>桌面背景</label><span class="val">Bliss 壁纸</span></div>
+      <div class="settings-row"><label>强调色</label><span class="val">Win 蓝</span></div>
+      <div class="settings-row"><label>深色模式</label><span class="val">关闭</span></div>
+      <div class="settings-row"><label>锁屏界面</label><span class="val">默认</span></div>
+    `,
+    app: () => `
+      <h2>应用</h2>
+      <div class="settings-row"><label>Edge 浏览器</label><span class="val">114.0</span></div>
+      <div class="settings-row"><label>微信</label><span class="val">3.9.10</span></div>
+      <div class="settings-row"><label>链接中心</label><span class="val">1.0</span></div>
+      <div class="settings-row"><label>设置</label><span class="val">1.0</span></div>
+    `,
+    acc: () => `
+      <h2>账户</h2>
+      <div class="settings-row"><label>当前用户</label><span class="val">本地用户</span></div>
+      <div class="settings-row"><label>登录方式</label><span class="val">本地账户</span></div>
+    `,
+    net: () => `
+      <h2>网络</h2>
+      <div class="settings-row"><label>Wi-Fi</label><span class="val">已连接</span></div>
+      <div class="settings-row"><label>IP</label><span class="val">192.168.1.2</span></div>
+      <div class="settings-row"><label>DNS</label><span class="val">223.5.5.5</span></div>
+    `,
+    abt: () => `
+      <h2>关于</h2>
+      <div class="settings-row"><label>版本</label><span class="val">Win11 仿真 · v1.0</span></div>
+      <div class="settings-row"><label>构建时间</label><span class="val">2026-08-25</span></div>
+    `
+  };
+  const body = root.querySelector('[data-body]');
+  body.innerHTML = tabs.sys();
+  root.querySelectorAll('[data-tab]').forEach(item => {
+    item.addEventListener('click', () => {
+      root.querySelectorAll('[data-tab]').forEach(i => i.classList.remove('is-active'));
+      item.classList.add('is-active');
+      body.innerHTML = (tabs[item.dataset.tab] || tabs.sys)();
+    });
+  });
+}
+
+/* =================================================================
+ * 桌面图标注入
+ * 点击图标 → 弹出对应窗口（可拖拽 / 最小化 / 关闭）
+ * 外链图标同样先弹标准窗口，不直接跳转外部。
+ * ================================================================= */
+function initDesktopIcons() {
+  const root = document.getElementById('desktop-icons');
+  root.innerHTML = `
+    <div class="desktop-icon" data-app="recycle">
+      <div class="di-img"><img id="di-trash" src="assets/desktop/trash-idle.png" alt="回收站"></div>
+      <div class="di-label">回收站</div>
+    </div>
+    <div class="desktop-icon" data-app="edge">
+      <div class="di-img"><img src="assets/desktop/icon-edge-real.png" alt="Edge 浏览器"></div>
+      <div class="di-label">Edge 浏览器</div>
+    </div>
+    <div class="desktop-icon" data-app="wechat">
+      <div class="di-img"><img src="assets/desktop/icon-wechat-real.jpg" alt="微信"></div>
+      <div class="di-label">微信</div>
+    </div>
+    <div class="desktop-icon" data-app="folder">
+      <div class="di-img">📁</div>
+      <div class="di-label">我的文件夹</div>
+    </div>
+    <div class="desktop-icon" data-app="external">
+      <div class="di-img">🔗</div>
+      <div class="di-label">链接中心</div>
+    </div>
+    <div class="desktop-icon" data-app="settings">
+      <div class="di-img">⚙️</div>
+      <div class="di-label">设置</div>
+    </div>
+  `;
+  const trashImg = root.querySelector('#di-trash');
+  root.querySelectorAll('.desktop-icon').forEach(icon => {
+    const appKey = icon.dataset.app;
+    if (appKey === 'recycle') {
+      icon.addEventListener('mouseenter', () => { if (trashImg) trashImg.src = 'assets/desktop/trash-hover.png'; });
+      icon.addEventListener('mouseleave', () => { if (trashImg) trashImg.src = 'assets/desktop/trash-idle.png';  });
+    }
+    // 单击图标 → 弹出对应窗口（外链图标同样先弹窗口，不直接跳外站）
+    icon.addEventListener('click', e => {
+      e.stopPropagation();
+      openApp(appKey);
+    });
+  });
+  // 桌面空白处单击：取消选中 + 收起开始菜单 / 右键菜单
+  document.getElementById('desktop').addEventListener('click', e => {
+    if (!e.target.closest('.desktop-icon')) {
+      root.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('is-selected'));
+    }
+  });
+}
+
+/* =================================================================
+ * 全局右键菜单 + 点击空白关菜单 / 收起开始菜单
+ * ================================================================= */
+function initContextMenu() {
+  const desktop = document.getElementById('desktop');
+  desktop.addEventListener('contextmenu', e => {
+    if (e.target.closest('.window'))         return;
+    if (e.target.closest('.desktop-icon'))   return;
+    if (e.target.closest('.taskbar'))        return;
+    if (e.target.closest('.start-menu'))     return;
+    e.preventDefault();
+    showContextMenu(e.clientX, e.clientY);
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.ctx-menu'))   hideContextMenu();
+    // 点击桌面空白处 / 窗口外部 → 收起开始菜单（搜索框随之收回）
+    if (!e.target.closest('.start-menu') && !e.target.closest('#tb-start')) {
+      toggleStartMenu(false);
+    }
+  });
+  // 键盘：ESC 关菜单；Win 键（Meta / OS）唤出 / 收起开始菜单（含搜索框）
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      hideContextMenu();
+      toggleStartMenu(false);
+    }
+    if (e.key === 'Meta' || e.key === 'OS' || e.code === 'MetaLeft' || e.code === 'MetaRight') {
+      e.preventDefault();
+      toggleStartMenu();
+    }
+  });
+}
+
+/* =================================================================
+ * 任务栏开始按钮
+ * ================================================================= */
+function initTaskbarStart() {
+  document.getElementById('tb-start').addEventListener('click', e => {
+    e.stopPropagation();
+    toggleStartMenu();
+  });
+}
+
+/* =================================================================
+ * 启动
+ * 默认桌面保持干净：不自动弹出任何窗口 / 搜索框。
+ * ================================================================= */
+window.addEventListener('DOMContentLoaded', () => {
+  initDesktopIcons();
+  initTaskbarStart();
+  initContextMenu();
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  /* 兜底：初始化结束强制确保开始菜单 / 右键菜单都是隐藏状态。
+     即便将来误调用 toggleStartMenu(true)，下一次页面启动默认仍是干净桌面。 */
+  const _sm = document.getElementById('start-menu');
+  if (_sm) _sm.hidden = true;
+  const _cm = document.getElementById('ctx-menu');
+  if (_cm) _cm.hidden = true;
+  startMenuOpen = false;
+  const _tb = document.getElementById('tb-start');
+  if (_tb) _tb.classList.remove('is-active');
+
+  // 浏览器尺寸变化 → 同步最大化窗口
+  window.addEventListener('resize', () => {
+    winState.forEach(w => {
+      if (w.maximized) {
+        w.el.style.width  = window.innerWidth + 'px';
+        w.el.style.height = (window.innerHeight - 48) + 'px';
+      }
+    });
+  });
+
+  // 供 iframe 内 gov-portal 触发：打开微信窗口（页内，不新开标签页）
+  window.addEventListener('message', e => {
+    if (e.data && e.data.type === 'hc-open-wechat') {
+      openApp('wechat');
+    }
+  });
+
+  // 注意：默认不再自动打开 Edge，保持桌面纯净。
+});
+</script>
+</body>
+</html>

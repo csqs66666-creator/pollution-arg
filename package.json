@@ -1,0 +1,16 @@
+{
+  "name": "abyss-fishing",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "钓渊 / Abyss Fishing — 渊域世界观下的多模态叙事恐怖游戏（Vite 工程化，零依赖可离线运行）",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "node serve.mjs"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}

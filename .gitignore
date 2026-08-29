@@ -1,0 +1,12 @@
+# WorkBuddy 内部记忆，勿提交
+.workbuddy/
+
+# 运行日志
+*.log
+serve.log
+
+# 本地打包/暂存产物
+_abyss_staging/
+
+# 本地 git 目录（如不需要可删此行）
+# .git/
