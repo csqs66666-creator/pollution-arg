@@ -315,7 +315,7 @@ body::after{
 
   <div class="end">
     <div class="hint">— 是否打开你常用的那台电脑 —</div>
-    <a class="cta" href="desktop-portal.html">进入你的电脑</a>
+    <a class="cta" href="desktop-portal.html" onclick="sessionStorage.setItem('hc_from_prologue','1')">进入你的电脑</a>
   </div>
 
 </div>
@@ -339,7 +339,7 @@ body::after{
 document.addEventListener('keydown', e => {
   if(e.key === 'Enter'){
     const a = document.querySelector('.cta');
-    if(a) location.href = a.getAttribute('href');
+    if(a){ sessionStorage.setItem('hc_from_prologue','1'); location.href = a.getAttribute('href'); }
   }
 });
 </script>

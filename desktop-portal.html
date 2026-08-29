@@ -1055,6 +1055,15 @@
 </head>
 <body>
 
+  <!-- 入口守门：未从序章「进入你的电脑」进入，则退回序章 -->
+  <script>
+    try {
+      if (!sessionStorage.getItem('hc_from_prologue')) {
+        window.location.replace('prologue.html');
+      }
+    } catch (e) {}
+  </script>
+
   <!-- ============= 桌面 ============= -->
   <main class="desktop" id="desktop">
     <div class="wallpaper"></div>
