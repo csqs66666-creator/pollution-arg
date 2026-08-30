@@ -14,7 +14,7 @@ body{
   font-family:"Songti SC","STSong","宋体",SimSun,"Source Han Serif SC","Noto Serif CJK SC",serif;
   background:#050b08 url('assets/desktop/prologue-cover.jpg') center top/cover no-repeat;
   background-attachment:scroll;
-  color:#9ad8b3;                              /* 主文：浅翠 */
+  color:#d6dde6;                              /* 主文：银灰白 */
   letter-spacing:0.02em;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
@@ -46,26 +46,62 @@ body::after{
 }
 .titlebar h1{
   margin:0;
+  position:relative;
   font-family:"STKaiti","KaiTi","楷体","Songti SC",serif;
   font-weight:600;
   font-size:64px;
   letter-spacing:0.6em;
   text-indent:0.6em;
-  color:#c9f2dc;                              /* 嫩翠 */
+  color:#f6faff;                              /* 荧光白 */
   text-shadow:
-    0 0 22px rgba(168,230,197,0.45),
-    0 0 6px rgba(212,165,116,0.18),            /* 呼应荷花金光 */
-    0 2px 4px rgba(0,0,0,0.7);
+    0 0 6px rgba(240,248,255,0.9),
+    0 0 20px rgba(190,225,255,0.55),
+    0 0 46px rgba(150,200,255,0.32),
+    0 2px 4px rgba(0,0,0,0.8);
   opacity:0;transform:translateY(-12px);
   animation:fadeDown 2.4s 0.2s ease-out forwards;
+}
+/* 故障文字：青/粉双色切片，偶发闪烁 */
+.titlebar h1::before,
+.titlebar h1::after{
+  content:attr(data-text);
+  position:absolute;inset:0;
+  pointer-events:none;
+  opacity:0;
+}
+.titlebar h1::before{
+  color:#7ee7ff;
+  transform:translate(-2.5px,0);
+  clip-path:inset(10% 0 52% 0);
+  animation:glA 2.2s steps(1,end) infinite;
+}
+.titlebar h1::after{
+  color:#ff8fa3;
+  transform:translate(2.5px,0);
+  clip-path:inset(56% 0 6% 0);
+  animation:glB 2.9s steps(1,end) infinite;
+}
+@keyframes glA{
+  0%,88%{opacity:0}
+  89%{opacity:0.85}
+  91%{opacity:0.1}
+  93%{opacity:0.8}
+  96%,100%{opacity:0}
+}
+@keyframes glB{
+  0%,82%{opacity:0}
+  83%{opacity:0.7}
+  85%{opacity:0.1}
+  88%{opacity:0.7}
+  92%,100%{opacity:0}
 }
 .titlebar .sub{
   margin-top:18px;
   font-size:13px;
   letter-spacing:0.5em;
   text-indent:0.5em;
-  color:#7fc4a3;                              /* 中翠 */
-  text-shadow:0 1px 2px rgba(0,0,0,0.55), 0 0 8px rgba(168,230,197,0.18);
+  color:#aab4bf;                              /* 银灰 */
+  text-shadow:0 1px 2px rgba(0,0,0,0.55), 0 0 8px rgba(220,235,250,0.18);
   opacity:0;animation:fadeDown 2.4s 0.9s ease-out forwards;
 }
 @keyframes fadeDown{
@@ -85,22 +121,22 @@ body::after{
   line-height:2.1;
   text-align:justify;
   text-justify:inter-ideograph;
-  color:#9ad8b3;                              /* 浅翠主文 */
+  color:#d6dde6;                              /* 银灰白主文 */
   text-indent:2em;
   opacity:0;transform:translateY(14px);
   animation:fadeUp 1.4s ease-out forwards;
-  text-shadow:0 1px 2px rgba(0,0,0,0.55), 0 0 4px rgba(168,230,197,0.10);
+  text-shadow:0 1px 2px rgba(0,0,0,0.55), 0 0 4px rgba(220,235,250,0.08);
 }
 .p:nth-of-type(1){animation-delay:1.4s}
 .p:nth-of-type(2){animation-delay:1.7s}
 .p:nth-of-type(3){animation-delay:2.0s}
-.p.dim{color:#5fa17d}                         /* 中翠弱化 */
-.p.lead{color:#c9f2dc}                        /* 嫩翠强调 */
+.p.dim{color:#8b949e}                         /* 灰弱化 */
+.p.lead{color:#f2f6fa}                        /* 白强调 */
 .p strong{
-  color:#d4f5e0;                              /* 亮翠 */
+  color:#ffffff;                              /* 荧光白 */
   font-weight:700;
   text-shadow:
-    0 0 8px rgba(168,230,197,0.4),
+    0 0 8px rgba(230,240,250,0.5),
     0 1px 2px rgba(0,0,0,0.6);
 }
 @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
@@ -149,8 +185,8 @@ body::after{
   font-size:12px;
   letter-spacing:0.4em;
   text-indent:0.4em;
-  color:rgba(159,216,179,0.82);               /* 浅翠半透 */
-  text-shadow:0 1px 3px rgba(0,0,0,0.7), 0 0 6px rgba(168,230,197,0.25);
+  color:rgba(214,225,235,0.85);               /* 银灰半透 */
+  text-shadow:0 1px 3px rgba(0,0,0,0.7), 0 0 6px rgba(220,235,250,0.2);
   pointer-events:none;
 }
 
@@ -160,10 +196,10 @@ body::after{
   font-size:13px;
   letter-spacing:0.6em;
   text-indent:0.6em;
-  color:#7fc4a3;                              /* 中翠 */
-  border-bottom:1px solid rgba(168,230,197,0.28);
+  color:#aab4bf;                              /* 银灰 */
+  border-bottom:1px solid rgba(210,225,240,0.25);
   padding-bottom:8px;
-  text-shadow:0 1px 2px rgba(0,0,0,0.5), 0 0 6px rgba(168,230,197,0.2);
+  text-shadow:0 1px 2px rgba(0,0,0,0.5), 0 0 6px rgba(220,235,250,0.16);
   opacity:0;animation:fadeUp 1s ease-out forwards;
 }
 .sec.s1{animation-delay:1.0s}
@@ -181,8 +217,8 @@ body::after{
   font-size:13px;
   letter-spacing:0.4em;
   text-indent:0.4em;
-  color:#7fc4a3;                              /* 中翠 */
-  text-shadow:0 1px 2px rgba(0,0,0,0.5), 0 0 6px rgba(168,230,197,0.18);
+  color:#aab4bf;                              /* 银灰 */
+  text-shadow:0 1px 2px rgba(0,0,0,0.5), 0 0 6px rgba(220,235,250,0.16);
 }
 .cta{
   display:inline-block;
@@ -191,33 +227,33 @@ body::after{
   font-size:20px;
   letter-spacing:0.5em;
   text-indent:0.5em;
-  color:#c9f2dc;                              /* 嫩翠 */
-  background:rgba(10,22,16,0.82);             /* 暗绿底 */
-  border:1px solid rgba(168,230,197,0.32);    /* 翠边框 */
+  color:#f2f6fa;                              /* 白 */
+  background:rgba(16,20,26,0.8);              /* 深灰蓝底 */
+  border:1px solid rgba(215,230,245,0.4);     /* 银边框 */
   border-radius:2px;
   cursor:pointer;
   text-decoration:none;
   position:relative;
   transition:all 0.5s ease;
-  text-shadow:0 0 8px rgba(168,230,197,0.3), 0 1px 2px rgba(0,0,0,0.6);
+  text-shadow:0 0 8px rgba(220,235,250,0.35), 0 1px 2px rgba(0,0,0,0.6);
   box-shadow:
-    inset 0 0 24px rgba(168,230,197,0.05),
+    inset 0 0 24px rgba(220,235,250,0.05),
     0 6px 24px rgba(0,0,0,0.55);
 }
 .cta:hover{
-  color:#d4f5e0;
-  border-color:rgba(168,230,197,0.6);
-  background:rgba(12,28,20,0.92);
+  color:#ffffff;
+  border-color:rgba(220,235,250,0.65);
+  background:rgba(26,32,40,0.92);
   box-shadow:
-    inset 0 0 32px rgba(168,230,197,0.10),
-    0 6px 36px rgba(80,200,140,0.20);
+    inset 0 0 32px rgba(220,235,250,0.10),
+    0 6px 36px rgba(150,200,255,0.20);
   letter-spacing:0.7em;
 }
 .cta:hover::after{
   content:"";
   position:absolute;inset:0;
   border-radius:2px;
-  box-shadow:0 0 24px rgba(140,210,180,0.32) inset;
+  box-shadow:0 0 24px rgba(190,215,240,0.32) inset;
   animation:glow 2.4s ease-in-out infinite;
 }
 @keyframes glow{
@@ -227,7 +263,7 @@ body::after{
 .cta::before{
   content:"›";
   margin-right:18px;
-  color:#7fc4a3;                              /* 翠色箭头 */
+  color:#aab4bf;                              /* 银灰箭头 */
   letter-spacing:0;
   text-indent:0;
 }
@@ -237,7 +273,7 @@ body::after{
   position:relative;
   width:120px;
   height:1px;
-  background:linear-gradient(90deg, transparent, rgba(168,230,197,0.42), transparent);
+  background:linear-gradient(90deg, transparent, rgba(215,230,245,0.42), transparent);
   margin:18px auto;
 }
 .bar.r{animation-delay:1.6s !important}
@@ -246,7 +282,7 @@ body::after{
 .meta{
   position:fixed;left:14px;bottom:10px;
   font-size:11px;
-  color:#4d8a6b;                              /* 极弱翠 */
+  color:#6b7680;                              /* 灰 */
   letter-spacing:0.1em;
   font-family:monospace;
   z-index:9999;
@@ -256,7 +292,7 @@ body::after{
 .meta2{
   position:fixed;right:14px;bottom:10px;
   font-size:11px;
-  color:#4d8a6b;                              /* 极弱翠 */
+  color:#6b7680;                              /* 灰 */
   letter-spacing:0.1em;
   font-family:monospace;
   z-index:9999;
@@ -277,9 +313,29 @@ body::after{
 
 /* 滚动条适配 */
 ::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:#060d09}
-::-webkit-scrollbar-thumb{background:#1a2d22;border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:#2a4a36}
+::-webkit-scrollbar-track{background:#0b0f13}
+::-webkit-scrollbar-thumb{background:#20262e;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#333c46}
+
+/* 点击波纹 */
+.rip{
+  position:fixed;border-radius:50%;
+  border:1px solid rgba(230,240,250,0.55);
+  width:10px;height:10px;
+  pointer-events:none;z-index:9500;
+  transform:translate(-50%,-50%);
+  animation:ripFx 0.9s ease-out forwards;
+}
+@keyframes ripFx{
+  from{transform:translate(-50%,-50%) scale(0.5);opacity:0.8}
+  to  {transform:translate(-50%,-50%) scale(14);opacity:0}
+}
+
+/* 粒子萤火画布：全屏铺底，不挡点击 */
+#fx-particles{
+  position:fixed;inset:0;width:100%;height:100%;
+  z-index:3;pointer-events:none;
+}
 
 </style>
 </head>
@@ -288,8 +344,10 @@ body::after{
 <div class="meta" id="metaL">REC ● 00:00:14 / FILE / 2026-08</div>
 <div class="meta2" id="metaR">回川 · 月荷 · 录到异常</div>
 
+<canvas id="fx-particles" aria-hidden="true"></canvas>
+
 <div class="titlebar">
-  <h1>回川水库</h1>
+  <h1 data-text="回川水库">回川水库</h1>
   <div class="sub">— 序幕 —</div>
   <div class="bar r" style="opacity:0;animation:fadeUp 1.5s 1.4s ease-out forwards"></div>
 </div>
@@ -358,6 +416,64 @@ document.addEventListener('keydown', e => {
     const a = document.querySelector('.cta');
     if(a){ sessionStorage.setItem('hc_from_prologue','1'); location.href = a.getAttribute('href'); }
   }
+});
+
+/* 粒子萤火：稀疏 14 颗，银白为主、少量淡绿点缀 */
+(function(){
+  const cv = document.getElementById('fx-particles');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  let W = 0, H = 0;
+  function resize(){
+    W = cv.clientWidth; H = cv.clientHeight;
+    const dpr = window.devicePixelRatio || 1;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  const ps = [];
+  for(let i = 0; i < 14; i++){
+    ps.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.3 + 0.5,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: -(Math.random() * 0.22 + 0.04),
+      ph: Math.random() * Math.PI * 2,
+      silver: Math.random() < 0.75
+    });
+  }
+  function tick(){
+    ctx.clearRect(0, 0, W, H);
+    for(const p of ps){
+      p.ph += 0.015;
+      p.x += p.vx;
+      p.y += p.vy + Math.sin(p.ph) * 0.08;
+      if(p.y < -8){ p.y = H + 8; p.x = Math.random() * W; }
+      if(p.x < -8) p.x = W + 8;
+      if(p.x > W + 8) p.x = -8;
+      const tw = 0.3 + 0.4 * Math.abs(Math.sin(p.ph * 1.6));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, 7);
+      ctx.fillStyle = p.silver
+        ? 'rgba(226,236,246,' + (tw * 0.8).toFixed(2) + ')'
+        : 'rgba(130,220,175,' + (tw * 0.55).toFixed(2) + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* 点击波纹：银白涟漪 */
+document.addEventListener('click', e => {
+  const s = document.createElement('span');
+  s.className = 'rip';
+  s.style.left = e.clientX + 'px';
+  s.style.top = e.clientY + 'px';
+  document.body.appendChild(s);
+  setTimeout(() => s.remove(), 950);
 });
 </script>
 
