@@ -1195,7 +1195,7 @@ const NPC_DOCS = {
   },
   linmaocai:{
     name:'林茂才', role:'市生态环境局局长 · 自愿献祭者',
-    cover:'水质公报审批签字样本', coverIcon:'🖋️', bleed:true, signImg:'assets/desktop/npc-lin-sign.jpg',
+    cover:'人事档案照片', coverIcon:'🖋️', bleed:true, signImg:'assets/desktop/npc-lin-sign.jpg', img:'assets/desktop/npc-lin.jpg',
     summary:'所有官方水质公报、管控文件的审批签字人；一丝不苟的官僚。',
     bullets:[
       '1979 年生；省内重点高校环境工程本科',
@@ -1204,12 +1204,13 @@ const NPC_DOCS = {
     ],
     admin:{user:'LinMaocai77', pw:'family', where:'回川水阁论坛 · 老干部-49 的管理后台口令'},
     body:`
-      <p>林茂才同志出生于 1979 年 6 月，省内重点高校环境工程本科毕业。2001 年进入县环境监测站任技术员，2009 年任站长；2014 年调入市环境监察支队，2018 年起任支队长；2023 年 4 月经民主推荐、组织考察，任市生态环境局局长、党组书记。</p>
-      <p>ta的同事们对ta的评价高度一致，"一丝不苟""文件机器"。任内签发各类水质公报、专项排查、督办函件年均 1700 余份，连续 3 年个人签批数量居市直机关第一。在一次内部通报表扬中，时任领导写道："林茂才同志日均处理文件 7.8 份，从未出现错漏。"</p>
-      <p>二〇二五年起，公示推迟。从十五号，拖到月底，拖到月初。<br>笔也换了。黑钢笔，换成红毛笔。红得……同事说，像刚出窑的釉。<br>每份公报右下角，一枚暗红的印。指甲盖大，不拿灯照，看不见。化验室比了，不是ta的指纹。<br><span style="color:#8a5a5a">（涂掉）</span>不对。是ta签的。是ta签的。ta签了，就不能是ta。</p>
-      <p>ta妻子提离婚，二〇二四年底。理由写了三条，每条都不像人话：长期无性；回避家庭；对孩子"称呼不像父亲"。孩子一直住省城寄宿，二〇二五年起生活费涨了，ta却从不主动联系。<br>最后一次上线：六月十八日，凌晨一点零三分。在月荷湖水位曲线那一页，停了四十七分钟。之后，再没上过线。<br>四十七分钟。够把一张图看一百遍。也够把一条命，看完。</p>
-      <p>上个月，局里清点档案。那本<b>内部事故</b>的台账，缺了近几年的几页。<br>问ta。ta说不知道。走的时候，我瞥见ta抽屉里，压着半张<b>归位名单</b>。<br><span style="color:#8a5a5a">（这段边角被撕了。）</span></p>
-      <p>，<span class="arg-mute">（签字样本同步存档，下方为原始比对图谱）</span></p>
+      <p>林茂才同志这辈子，事业和家庭，一直都平衡得很好。</p>
+      <p>孩子生病那阵子，谁看了都心疼。可他硬是一天班都没落下。上午在单位处理案子、下基层、体恤民情；下午下了班，就去医院陪女儿，一陪就是一整晚。就这么扛了半年多。</p>
+      <p>局里人都说，这也就是老林，换个人早垮了。</p>
+      <p>也许是老天爷也看不下去了。2025 年查出病的时候，医生都说命悬一线，谁也没想到，2026 年初，女儿的病情突然就转好了。最后复查，说是临床治愈。</p>
+      <p>一家人抱在一起哭了一场。林茂才没哭，就在车上坐了一会儿，第二天照样上班。</p>
+      <p>局里人说，这大概就是好人有好报吧。</p>
+      <p style="margin-top:14px">，<span class="arg-mute">（签字样本同步存档，下方为原始比对图谱）</span></p>
       <p style="margin-top:14px">本次签字：<span class="arg-mute">（签字时间：2026 年 6 月 18 日 01:03）</span></p>
       <p style="margin-top:6px"><span class="sig-bleed"><img class="sig-img" src="assets/desktop/npc-lin-sign.jpg" alt="林茂才签字样本"></span></p>
       <p style="margin-top:14px;font-size:11.5px;color:#8a5a5a">档案备注：月荷水库全部异常舆情报告，均由本人签字封存不予公示。</p>
@@ -1298,7 +1299,7 @@ const RITUAL_ROWS = [
   ['2019','沈秀芬','女','26','南岸步道失足','已火化'],
   ['2024','吴新国','男','49','湖心岛周边失足','已火化'],
   ['2026','林茂才','男','47','凌晨巡查失足落水','已火化'],
-  ['2026','__________','—','—','_________________','<span style="color:#b22222">尚未填入</span>']
+  ['2026','__________','—','—','_________________','尚未填入']
 ];
 
 /* ----- 终极隐藏页数据 ----- */
@@ -1454,7 +1455,7 @@ function renderRitualLedger(){
     +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:#888">'+esc(r[2])+'</td>'
     +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:#888">'+esc(r[3])+'</td>'
     +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:#a8a8a8">'+esc(r[4])+'</td>'
-    +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:#888">'+esc(r[5])+'</td>'
+    +'<td style="padding:6px 10px;border:1px solid #555;font-size:13px;color:'+(r[5]==='尚未填入'?'#b22222':'#888')+'">'+esc(r[5])+'</td>'
     +'</tr>'
   ).join('');
   $app.innerHTML = page('home', `

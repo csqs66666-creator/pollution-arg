@@ -14,20 +14,29 @@
   --paper2:#f4ecd9;
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:#171310;color:var(--ink);font-family:"Noto Serif SC","Source Han Serif","Songti SC","STSong",serif;letter-spacing:0.04em}
+html,body{margin:0;padding:0;background:#171310 url('assets/desktop/chapter1-bg.jpg') center top/cover no-repeat fixed;color:var(--ink);font-family:"Noto Serif SC","Source Han Serif","Songti SC","STSong",serif;letter-spacing:0.04em;overflow-x:hidden}
 .page{
   width:100%;
   min-height:100vh;
-  background:var(--paper);
+  background:transparent;
   padding:0;
 }
 .article-wrap{
   max-width:760px;
   margin:0 auto;
   padding:56px 32px 110px;
-  background:var(--paper);
-  box-shadow:0 0 60px rgba(0,0,0,0.35);
+  position:relative;
+  background:rgba(250,244,230,0.86);
+  box-shadow:
+    inset 16px 0 24px -16px rgba(0,0,0,0.3),
+    inset -16px 0 24px -16px rgba(0,0,0,0.3),
+    0 0 60px rgba(0,0,0,0.4);
 }
+::selection{background:rgba(160,32,32,0.85);color:#fbf6e8}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:#171310}
+::-webkit-scrollbar-thumb{background:#5a2020;border-radius:5px;border:2px solid #171310}
+::-webkit-scrollbar-thumb:hover{background:#a02020}
 @media (max-width:820px){
   .article-wrap{padding:36px 22px 80px;box-shadow:none}
 }
@@ -42,6 +51,8 @@ html,body{margin:0;padding:0;background:#171310;color:var(--ink);font-family:"No
   text-align:center;
   border-radius:2px;
   overflow:hidden;
+  outline:1px solid rgba(216,200,168,0.4);
+  outline-offset:-8px;
 }
 .cover::before{
   content:"";
@@ -83,12 +94,32 @@ h1{
   letter-spacing:0.3em;
 }
 h2{
+  position:relative;
   font-size:17px;
   color:var(--ink);
   margin:34px 0 12px;
   border-bottom:1px solid var(--line);
-  padding-bottom:6px;
+  padding:0 0 6px 20px;
   letter-spacing:0.15em;
+}
+h2::before{
+  content:"";
+  position:absolute;
+  left:2px;
+  top:4px;
+  width:8px;
+  height:8px;
+  background:var(--red);
+  transform:rotate(45deg);
+  opacity:0.8;
+}
+p.dropcap::first-letter{
+  float:left;
+  font-size:3em;
+  line-height:1;
+  padding:6px 10px 0 0;
+  color:var(--red);
+  font-weight:700;
 }
 p{
   line-height:2.05;
@@ -100,6 +131,7 @@ p{
 }
 p.flat{text-indent:0}
 p.quote{
+  position:relative;
   margin:18px 28px;
   padding:12px 16px;
   border-left:3px solid var(--red);
@@ -109,9 +141,25 @@ p.quote{
   text-indent:0;
   font-size:13.5px;
   line-height:2;
+  transform-style:preserve-3d;
+  transition:transform 0.18s ease-out, box-shadow 0.18s ease-out;
+  will-change:transform;
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
 }
+p.quote::before{
+  content:"「";
+  position:absolute;
+  left:-10px;
+  top:-16px;
+  font-size:32px;
+  color:rgba(160,32,32,0.4);
+  font-style:normal;
+  letter-spacing:0;
+}
+p.quote:hover{box-shadow:0 16px 34px rgba(0,0,0,0.2)}
 .crackle{color:#8a5a3a}
 .note{
+  position:relative;
   font-size:12px;
   color:var(--ink2);
   text-indent:0;
@@ -120,10 +168,21 @@ p.quote{
   border:1px dashed #c8b78d;
   margin:18px 0;
 }
+.note::before{
+  content:"";
+  position:absolute;
+  top:-10px;
+  left:50%;
+  transform:translateX(-50%) rotate(-2deg);
+  width:88px;
+  height:20px;
+  background:rgba(216,200,168,0.6);
+  box-shadow:0 1px 3px rgba(0,0,0,0.15);
+}
 .topbar{
   position:sticky;
   top:0;
-  background:rgba(251,246,232,0.94);
+  background:rgba(250,244,230,0.88);
   backdrop-filter:blur(3px);
   border-bottom:1px solid #d8c8a0;
   padding:10px 32px;
@@ -136,7 +195,20 @@ p.quote{
 }
 .topbar a{color:var(--ink2);text-decoration:none;cursor:pointer}
 .topbar a:hover{color:var(--red)}
-.topbar .marker{color:#a02020;font-weight:700;letter-spacing:0.3em}
+.topbar .marker{position:relative;color:#a02020;font-weight:700;letter-spacing:0.3em;padding-left:15px}
+.topbar .marker::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:50%;
+  transform:translateY(-50%);
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--red);
+  animation:markerPulse 2.4s ease-in-out infinite;
+}
+@keyframes markerPulse{0%,100%{opacity:1}50%{opacity:0.3}}
 .next-link{
   display:block;
   margin:42px auto 0;
@@ -153,7 +225,8 @@ p.quote{
   background:transparent;
   transition:background 0.25s, color 0.25s;
 }
-.next-link:hover{background:var(--red);color:var(--paper)}
+.next-link:hover{background:var(--red);color:var(--paper);transform:scale(0.97)}
+.next-link{transition:background 0.25s, color 0.25s, transform 0.15s ease-out}
 .next-link .small{
   display:block;
   font-size:11px;
@@ -163,11 +236,66 @@ p.quote{
 }
 .next-link:hover .small{color:#fde4e4}
 .end-mark{
+  position:relative;
   margin-top:30px;
   text-align:center;
-  font-size:11px;
-  color:#888;
-  letter-spacing:0.3em;
+  font-size:12px;
+  color:#6b6355;
+  letter-spacing:0.35em;
+}
+.end-mark::before,.end-mark::after{
+  content:"";
+  display:inline-block;
+  width:6px;
+  height:6px;
+  background:#b9a378;
+  transform:rotate(45deg);
+  vertical-align:middle;
+  margin:0 16px;
+}
+
+/* ---- 月老红线（贯穿全页的弯绕红绳） ---- */
+.red-line{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  pointer-events:none;
+}
+.red-line path{
+  fill:none;
+  stroke:#a02020;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  opacity:0.5;
+  vector-effect:non-scaling-stroke;
+  stroke-dasharray:1;
+  stroke-dashoffset:1;
+  animation:redraw 7s ease-in-out 0.4s forwards;
+}
+@keyframes redraw{to{stroke-dashoffset:0}}
+
+/* ---- 祥云金带装饰 ---- */
+.cloud{
+  position:absolute;
+  z-index:0;
+  pointer-events:none;
+  opacity:0.55;
+}
+.cloud.c1{top:52px;right:-150px;width:360px;transform:rotate(6deg)}
+.cloud.c2{top:33%;left:-170px;width:340px;transform:scaleX(-1) rotate(-4deg);opacity:0.5}
+.cloud.c3{top:55%;right:-160px;width:390px;opacity:0.5}
+.cloud.c4{bottom:170px;left:-140px;width:300px;transform:rotate(-7deg);opacity:0.42}
+.cloud.c5{bottom:36px;right:-140px;width:330px;transform:scaleX(-1) rotate(3deg);opacity:0.46}
+.content{position:relative;z-index:1}
+
+/* ---- 墨迹晕开：入场洇入 + hover 墨晕 ---- */
+.ink-in{opacity:0;filter:blur(6px);transition:opacity 1.2s ease,filter 1.2s ease}
+.ink-in.on{opacity:1;filter:blur(0)}
+.content p,.content h2,.content h3,.content .note,.content .end-mark{transition:text-shadow 0.6s ease}
+.content p:hover,.content h2:hover,.content h3:hover{
+  text-shadow:0 0 1.5px rgba(35,31,24,0.55),0 0 7px rgba(35,31,24,0.3),2px 3px 12px rgba(35,31,24,0.22);
 }
 </style>
 </head>
@@ -181,42 +309,63 @@ p.quote{
 
   <div class="article-wrap">
 
+    <svg class="red-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <path pathLength="1" d="M 6 1
+        C 40 4, 88 8, 68 14
+        C 48 20, 10 24, 34 30
+        C 58 36, 94 40, 56 47
+        C 18 54, 6 60, 46 66
+        C 86 72, 64 80, 26 85
+        C 4 89, 30 95, 58 97
+        C 76 98.5, 90 99, 96 99.5"/>
+    </svg>
+
+    <img class="cloud c1" src="assets/desktop/cloud-1.png" alt="" aria-hidden="true">
+    <img class="cloud c2" src="assets/desktop/cloud-2.png" alt="" aria-hidden="true">
+    <img class="cloud c3" src="assets/desktop/cloud-3.png" alt="" aria-hidden="true">
+    <img class="cloud c4" src="assets/desktop/cloud-1.png" alt="" aria-hidden="true">
+    <img class="cloud c5" src="assets/desktop/cloud-2.png" alt="" aria-hidden="true">
+
+    <div class="content">
+
     <div class="cover">
       <div class="ck">回 川 往 事</div>
       <div class="ln">第 一 章 · 腐 鱼 之 后</div>
     </div>
 
     <h2>§1 重新记起那天</h2>
-    <p>你已经很久没有想起那条鱼。</p>
-    <p>直到某天凌晨，朋友的眼神已经不对。先是约你再去。后是日里念叨。再后是夜里念叨。等ta念叨的声气，渐渐轻了，你发觉ta不念叨的时候，ta的眼睛，反而更怕人。</p>
-    <p>你翻了翻当时的钓点。月荷水库，西湾露营区再往南一带，一处没挂号的野口。你们那天没吃多少。ta吃得比你少，你反而替ta糟了，ta后来说，那口鱼，胜过人间一切。</p>
-    <p>你越想越坐不住。</p>
-    <p class="quote">那鱼，那口鱼。<br>从肚子里烂出来。<br>从朋友嘴里咽下去。<br>从今往后，剩下的，只是接着咽。</p>
+    <p class="dropcap">许多年以后，我仍然会想起那条鱼。想起它被提出冷水的一瞬，肚皮朝天，一层死白，像一小片迟迟不肯落地的雪。</p>
+    <p>那时我不知道，有些东西一经入腹，就再也吐不出来了。人以为自己在吃鱼。很多时候，是鱼在吃人。</p>
+    <p>我的朋友先是不适。呕过，骂过，骂完了笑。我以为这件事就此翻篇了。可是朋友开始念叨。白天念，夜里也念，念那口鱼，声气一天比一天轻。到最后，朋友不念叨的时候，眼睛反而更可怕。</p>
+    <p>我记得那个钓点。月荷水库，西湾再往南，一处没有名字的野口。水是灰青色的，静得不像活水。那天的鱼不多，我们不大说话。起竿的时候我看见线一直往下沉，沉着，沉着，像水底有什么东西，轻轻地，执意地，挽留。</p>
+    <p>朋友吃得很少。最后一筷入口的时候，朋友闭了一会儿眼睛，说，那口鱼，胜过人间一切。</p>
+    <p>我笑朋友痴。许多年以后我才明白，朋友说的是实话。人间确实没有那样的东西。那不是鱼。</p>
+    <p class="quote">那鱼，那口鱼。<br>从肚子里烂出来。<br>从喉咙里咽下去。<br>咽下去的东西成了血肉，血肉里的东西，再也剜不出来。</p>
 
     <h2>§2 去「回川」</h2>
-    <p>你跟朋友没有回自己家。你上网搜了很久，源头，水库，回川，一条网上短文里出现了一个地名，「回川」。作者把自己写的都删了，只留了一个时间戳：<span style="color:#7a1a1a;font-weight:700;letter-spacing:0.1em">2024-06-23 · 湖心岛。</span></p>
-    <p>朋友眼睛亮了一亮。那是很久以来，第一次亮。</p>
-    <p>「去。」ta说。声音像是憋了很久。</p>
-    <p>你叫了一辆车，去湖南。回川是个你从没听过的小地方，但它就在水库的下游。一路上，ta把车窗摇下了一指，探出半张脸去闻空气，回川的梅雨刚压下来，潮得能拧出汁。你的胃里也跟着潮起来，你想起那条鱼熟之前的浮囊，那层死白，那层灰青。</p>
-    <p>你没再想。</p>
+    <p class="dropcap">网上搜不到回川。或者说，回川把自己从纸上删去了。只剩一篇短文，作者把自己的字都删了，只留一个日子，像一块碑：<span style="color:#7a1a1a;font-weight:700;letter-spacing:0.1em">2024-06-23 · 湖心岛。</span></p>
+    <p>朋友的眼睛亮了一亮。那是很久以来，第一次亮。我知道拦不住了。有些路不是人走进去的，是被牵进去的。</p>
+    <p>「去。」朋友说。声音像从很深的地方浮上来，憋了太久。</p>
+    <p>车是一早叫的，一路向南。回川是个我从没听过的小地方，藏在水库下游的雨雾里。回川的梅雨正压在地面上，潮得能拧出汁来。朋友把车窗摇下一指宽，探出半张脸去闻。我问闻什么。朋友说，水汽。水里有一种熟透了的味道。</p>
+    <p>我的胃也跟着潮起来。我想起那条鱼熟之前的浮囊，那层死白，那层灰青。我想把它忘掉。我忘不掉。</p>
 
     <h2>§3 过了些天 · 晚饭</h2>
-    <p>你在回川住下了。东道主是个叫「老沈」的女人，不大爱笑，杀鱼的手极快，炖得了鱼汤。某天晚上，ta说给你接风，做一桌鱼。你立刻说，<b>别</b>。</p>
+    <p class="dropcap">在回川，我们借住在老沈家。老沈是个不爱笑的女人，杀鱼的手极快，快得像在完成一种仪式，安静，干净，不容分说。她会炖鱼汤，汤色奶白，香得人心里发空。</p>
+    <p>那天晚上她做了一桌鱼，说是给我接风。我立刻说，<b>别</b>。</p>
     <p>朋友却先笑了：「吃吧吃吧。人家盛情。」</p>
-    <p>你的脊背一凉。</p>
-    <p>你瞪ta。ta没看你。</p>
+    <p>我的脊背一凉。我看朋友，朋友不看我，只看一桌的鱼，眼神像在看久别重逢的亲人。</p>
     <h3>席间</h3>
-    <p>摆了一桌。满桌是鱼。清蒸的，红烧的，生拌的，腌的，糟的，鱼片捞的，鱼子做的，鱼汤吊的。你一低头就能看见，每一条鱼，皮下都隐隐憋着一层气。那气，颜色不对，像是憋了一夜，被强行从冷水里提到了滚锅。</p>
+    <p>满桌都是鱼。清蒸的，红烧的，生拌的，腌的，糟的，鱼片捞的，鱼子做的，鱼汤吊的。灯下我看得分明：每一条鱼的皮下都憋着一层气，颜色不对，像憋了一夜，被强行从冷水里提到滚锅上来。</p>
     <p>朋友夹起筷子就吃，「好吃。真好吃。越烂越好吃。」</p>
-    <p>你手抖了一下。</p>
-    <p>你抬头看那一桌。灯光下，每一盘里，鱼嘴都张着，每一张嘴里，都含着一口没咽下的，蓬松绵软的一口。</p>
+    <p>我的手抖了一下。</p>
+    <p>我抬头看那一桌。每一只盘子里，鱼嘴都张着。每一张嘴里，都含着一口没有咽下去的、蓬松绵软的东西。</p>
 
     <h2>§4 借口</h2>
-    <p>你咽下那口气。吞下的，是一口刚出锅的、泛着腐败甜味的，</p>
-    <p>你也说不清为什么。吐了。你跑去卫生间吐了。出来时嘴角还挂着腥。</p>
-    <p>主人们没问。老沈只抬头看了你一眼，又去看朋友。ta嘴角上挑。</p>
-    <p>「我出去透透气。」你说。声音在自己耳朵里听不真切。</p>
-    <p>「别走远。」ta说。「夜里，<b>莫往湖心那个方向</b>。」</p>
+    <p class="dropcap">我咽下一口鱼肉。滚过喉咙的，是一股刚出锅的、泛着腐败甜味的东西，</p>
+    <p>我不知道自己为什么吐了。我跑去卫生间吐了。出来的时候，嘴角还挂着腥。</p>
+    <p>没有人问。老沈只抬头看了我一眼，又去看朋友。朋友的嘴角上挑。那不是笑。</p>
+    <p>「我出去透透气。」我说。声音在自己耳朵里听不真切，像隔着一层水。</p>
+    <p>「别走远。」老沈说。「夜里，<b>莫往湖心那个方向</b>。」</p>
 
     <div class="note">
       ， 第一节 完 ，<br>
@@ -229,7 +378,9 @@ p.quote{
       <span class="small">， 湖 心 庙 · 你 踩 上 了 枯 芦 苇 台</span>
     </a>
 
-    <p class="end-mark">· · · 第 一 节 · 完 · · ·</p>
+    <p class="end-mark">第 一 节 · 完</p>
+
+    </div>
 
   </div>
 </div>
@@ -247,6 +398,36 @@ function goBack(){
   }
 }
 try{ window.scrollTo(0,0); }catch(e){}
+
+/* 引文块 3D 倾斜卡（鼠标跟随） */
+(function(){
+  var q=document.querySelector('p.quote');
+  if(!q) return;
+  var MAX=7;
+  q.addEventListener('mousemove',function(e){
+    var r=q.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width-0.5;
+    var y=(e.clientY-r.top)/r.height-0.5;
+    q.style.transform='perspective(700px) rotateX('+(-y*MAX).toFixed(2)+'deg) rotateY('+(x*MAX).toFixed(2)+'deg) translateZ(6px)';
+  });
+  q.addEventListener('mouseleave',function(){ q.style.transform=''; });
+})();
+
+/* 墨迹晕开：正文元素进入视口时从墨团洇清 */
+(function(){
+  var els=document.querySelectorAll('.content p,.content h2,.content h3,.content .note,.content .end-mark,.content .cover');
+  els.forEach(function(el){ el.classList.add('ink-in'); });
+  if(!('IntersectionObserver' in window)){
+    els.forEach(function(el){ el.classList.add('on'); });
+    return;
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('on'); io.unobserve(en.target); }
+    });
+  },{threshold:0.08});
+  els.forEach(function(el){ io.observe(el); });
+})();
 </script>
 </body>
 </html>
