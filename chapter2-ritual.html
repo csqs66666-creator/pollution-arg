@@ -570,10 +570,10 @@ body.crash-shake{animation:pageShake 0.08s steps(2,end) infinite}
 }
 
 /* ====== 精修特效层 ====== */
-/* 庙里长明灯：两侧摇曳暖光 */
+/* 庙里长明灯：两侧摇曳暖光（提亮版） */
 .lamp{
-  position:fixed;top:0;bottom:0;width:36vw;pointer-events:none;z-index:1;
-  background:radial-gradient(ellipse at 50% 40%, rgba(255,150,60,.13) 0%, rgba(255,90,30,.05) 40%, transparent 72%);
+  position:fixed;top:0;bottom:0;width:38vw;pointer-events:none;z-index:1;
+  background:radial-gradient(ellipse at 50% 40%, rgba(255,160,70,.26) 0%, rgba(255,95,35,.10) 40%, transparent 72%);
   animation:lampFlicker 3.4s ease-in-out infinite;
   mix-blend-mode:screen;
 }
@@ -611,15 +611,15 @@ p.dropcap::first-letter{
 
 /* 燃香阅读进度线：顶端一线暗红随阅读"燃"过去，末端一粒烬点 */
 .incense{
-  position:fixed;top:0;left:0;height:2px;width:0%;z-index:6;
-  background:linear-gradient(90deg,#3a0c0c,#a02020);
-  box-shadow:0 0 8px rgba(178,34,34,.65);
+  position:fixed;top:0;left:0;height:3px;width:0%;z-index:6;
+  background:linear-gradient(90deg,#5a1010,#e03030);
+  box-shadow:0 0 12px rgba(220,50,50,.85);
   transition:width .12s linear;
 }
 .incense::after{
-  content:"";position:absolute;right:-3px;top:-2px;width:6px;height:6px;border-radius:50%;
-  background:#ff6a4a;
-  box-shadow:0 0 10px rgba(255,90,60,.95),0 0 22px rgba(255,60,40,.55);
+  content:"";position:absolute;right:-4px;top:-2.5px;width:8px;height:8px;border-radius:50%;
+  background:#ff7a50;
+  box-shadow:0 0 14px rgba(255,110,70,1),0 0 30px rgba(255,70,40,.7);
   animation:emberPulse 1.6s ease-in-out infinite;
 }
 @keyframes emberPulse{0%,100%{opacity:.7}50%{opacity:1}}
@@ -1033,15 +1033,15 @@ function runBlinkStorm(stage){
   function size(){ W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
   size();
   window.addEventListener('resize', size);
-  var N = 26;
+  var N = 44;
   for(var i=0;i<N;i++){
     ps.push({
       x: Math.random()*window.innerWidth,
       y: Math.random()*window.innerHeight,
-      s: 0.8 + Math.random()*1.8,                 // 尺寸
-      v: 0.12 + Math.random()*0.4,                // 速度
+      s: 1.2 + Math.random()*2.4,                 // 尺寸
+      v: 0.18 + Math.random()*0.5,                // 速度
       sway: Math.random()*Math.PI*2,              // 摆动相位
-      ember: Math.random() < 0.3                  // 30% 是红烬（上浮），其余是香灰（下落）
+      ember: Math.random() < 0.35                 // 35% 是红烬（上浮），其余是香灰（下落）
     });
   }
   function tick(){
@@ -1052,14 +1052,15 @@ function runBlinkStorm(stage){
       if(p.ember){
         p.y -= p.v;
         if(p.y < -10){ p.y = H + 10; p.x = Math.random()*W; }
-        ctx.fillStyle = 'rgba(210,60,40,' + (0.16 + Math.random()*0.14).toFixed(2) + ')';
-        ctx.shadowColor = 'rgba(220,70,40,0.8)';
-        ctx.shadowBlur = 6;
+        ctx.fillStyle = 'rgba(235,90,55,' + (0.45 + Math.random()*0.30).toFixed(2) + ')';
+        ctx.shadowColor = 'rgba(255,90,45,0.95)';
+        ctx.shadowBlur = 12;
       }else{
         p.y += p.v * 0.7;
         if(p.y > H + 10){ p.y = -10; p.x = Math.random()*W; }
-        ctx.fillStyle = 'rgba(160,140,120,' + (0.10 + Math.random()*0.10).toFixed(2) + ')';
-        ctx.shadowBlur = 0;
+        ctx.fillStyle = 'rgba(190,170,145,' + (0.30 + Math.random()*0.22).toFixed(2) + ')';
+        ctx.shadowColor = 'rgba(200,180,150,0.4)';
+        ctx.shadowBlur = 3;
       }
       var x = p.x + Math.sin(p.sway)*14;
       ctx.beginPath();
@@ -1070,6 +1071,8 @@ function runBlinkStorm(stage){
     requestAnimationFrame(tick);
   }
   tick();
+})();
+
 /* ========== 燃香进度线 ========== */
 (function(){
   var bar = document.getElementById('incense');
