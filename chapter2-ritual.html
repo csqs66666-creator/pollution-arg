@@ -26,12 +26,23 @@ html,body{
 .page{
   width:100%;
   min-height:100vh;
-  background:linear-gradient(180deg, #080202 0%, #160606 60%, #080202 100%);
+  background:#080202 url('assets/desktop/chapter2-bg.jpg') center top/cover no-repeat;
+  background-attachment:fixed;
+  position:relative;
+}
+/* 暗纱：让底图的眼睛/DNA 纹理隐约透出，不抢正文 */
+.page::before{
+  content:"";
+  position:fixed;inset:0;
+  background:rgba(7,1,1,0.87);
+  z-index:0;pointer-events:none;
 }
 .article-wrap{
   max-width:780px;
   margin:0 auto;
   padding:0 32px 110px;
+  position:relative;
+  z-index:1;
 }
 @media (max-width:820px){
   .article-wrap{padding:0 22px 80px}
@@ -60,9 +71,10 @@ html,body{
 /* 干净版头（中央红字 + 副标） */
 .cover{
   position:relative;
+  z-index:1;
   width:100%;
   min-height:62vh;
-  background:linear-gradient(180deg, #0a0202 0%, #160606 60%, #080202 100%);
+  background:rgba(9,2,2,0.42);
   overflow:hidden;
   border-bottom:1px solid #3a0c0c;
 }
@@ -556,9 +568,95 @@ body.crash-shake{animation:pageShake 0.08s steps(2,end) infinite}
   letter-spacing:0.3em;
   margin:8px 0 0;
 }
+
+/* ====== 精修特效层 ====== */
+/* 庙里长明灯：两侧摇曳暖光 */
+.lamp{
+  position:fixed;top:0;bottom:0;width:36vw;pointer-events:none;z-index:1;
+  background:radial-gradient(ellipse at 50% 40%, rgba(255,150,60,.13) 0%, rgba(255,90,30,.05) 40%, transparent 72%);
+  animation:lampFlicker 3.4s ease-in-out infinite;
+  mix-blend-mode:screen;
+}
+.lamp.l{left:-14vw}
+.lamp.r{right:-14vw;animation-delay:1.7s}
+@keyframes lampFlicker{
+  0%,100%{opacity:.7}
+  16%{opacity:1}
+  42%{opacity:.55}
+  63%{opacity:.95}
+  81%{opacity:.68}
+}
+
+/* 「献 祭」二字呼吸红光 */
+.cover-text .big{animation:bigBreathe 3.8s ease-in-out infinite}
+@keyframes bigBreathe{
+  0%,100%{text-shadow:0 0 20px rgba(178,34,34,0.55), 3px 3px 0 #0a0a0a, -2px -2px 0 #1a0a0a}
+  50%{text-shadow:0 0 46px rgba(224,48,48,0.95), 0 0 90px rgba(178,34,34,0.4), 3px 3px 0 #0a0a0a, -2px -2px 0 #1a0a0a}
+}
+
+/* 血红首字下沉 */
+p.dropcap::first-letter{
+  float:left;
+  font-family:"Songti SC","STSong",serif;
+  font-size:3.1em;line-height:0.9;
+  color:#c03030;
+  text-shadow:0 0 16px rgba(178,34,34,0.85);
+  margin:5px 10px 0 0;
+  font-weight:900;
+}
+
+/* 文字入视口·墨迹洇开（暗版） */
+.ink-in{opacity:0;filter:blur(6px);transform:translateY(9px);transition:opacity 1.25s ease,filter 1.25s ease,transform 1.25s ease,color .6s ease}
+.ink-in.in{opacity:1;filter:blur(0);transform:none}
+
+/* 燃香阅读进度线：顶端一线暗红随阅读"燃"过去，末端一粒烬点 */
+.incense{
+  position:fixed;top:0;left:0;height:2px;width:0%;z-index:6;
+  background:linear-gradient(90deg,#3a0c0c,#a02020);
+  box-shadow:0 0 8px rgba(178,34,34,.65);
+  transition:width .12s linear;
+}
+.incense::after{
+  content:"";position:absolute;right:-3px;top:-2px;width:6px;height:6px;border-radius:50%;
+  background:#ff6a4a;
+  box-shadow:0 0 10px rgba(255,90,60,.95),0 0 22px rgba(255,60,40,.55);
+  animation:emberPulse 1.6s ease-in-out infinite;
+}
+@keyframes emberPulse{0%,100%{opacity:.7}50%{opacity:1}}
+
+/* h2 节标底线：入视口时从左往右生长 */
+h2{background:linear-gradient(90deg,#c04040,#5a0e0e) no-repeat left bottom/0% 1px;transition:background-size 1.4s ease .25s}
+h2.in{background-size:100% 1px}
+
+/* 图片烛光：默认微暗，悬停时像被烛光照亮 */
+.figure img{filter:brightness(.93);transition:filter .6s ease,box-shadow .6s ease}
+.figure img:hover{filter:brightness(1.03) saturate(1.05);box-shadow:0 4px 14px rgba(0,0,0,.55),0 0 30px rgba(178,34,34,.32)}
+
+/* 正文段落悬停微提亮（极轻，不抢注意） */
+.article-wrap p:hover{color:#ddcdb2}
+
+/* 雪禾录容器：供桌对角花 */
+.xuehe-container{position:relative}
+.xuehe-container::before,.xuehe-container::after{content:"";position:absolute;width:14px;height:14px;pointer-events:none}
+.xuehe-container::before{left:6px;top:6px;border-left:2px solid #8a2020;border-top:2px solid #8a2020}
+.xuehe-container::after{right:6px;bottom:6px;border-right:2px solid #8a2020;border-bottom:2px solid #8a2020}
+
+/* 平滑滚动 */
+html{scroll-behavior:smooth}
+
+/* 选中文字 = 血底 */
+::selection{background:#7a1414;color:#f2e2c8}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:#0a0303}
+::-webkit-scrollbar-thumb{background:#5a1010;border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:#8a1a1a}
 </style>
 </head>
 <body>
+<div class="lamp l"></div>
+<div class="lamp r"></div>
+<canvas id="ash-fx" style="position:fixed;inset:0;z-index:2;pointer-events:none"></canvas>
+<div class="incense" id="incense"></div>
 <div class="page">
 
   <div class="topbar">
@@ -582,24 +680,24 @@ body.crash-shake{animation:pageShake 0.08s steps(2,end) infinite}
 
     <!-- ========== Section 5 · 林茂才·献祭 ========== -->
     <h2 data-num="§ 5">§5 林茂才 · 献祭</h2>
-    <p>你绕到街后。回川的街后没有街，只有一条河灯幽暗的小弄，潮湿得发黏。你想透一口气。没透成。再一抬眼，远处湖面上，有一团<b>白光</b>。白光不动，水面却绕着它，一圈一圈。</p>
-    <p>你顺着田埂，踩着稀泥，爬上了一处枯芦苇台。</p>
+    <p class="dropcap">许多年以后，我仍然会想起那晚的湖。想起我绕到街后去——回川的街后没有街，只有一条河灯幽暗的小弄，潮得发黏。我想透一口气。没透成。再一抬眼，远处湖面上浮着一团<b>白光</b>。白光不动。水却绕着它，一圈，一圈，像在给它磕头。</p>
+    <p>我顺着田埂走，踩着稀泥，爬上一处枯芦苇台。芦苇割手。我没有停。</p>
     <p>湖心是一座<b>小岛</b>。岛上一座老庙。庙门半开，里面有人。</p>
 
     <!-- 切换图：点击 before → after（含 LinMaocai77 / family 红字） -->
     <div class="figure fig-swap" id="sacrificeSwap" onclick="swapSacrifice()">
       <img id="sacImg" class="default" src="assets/desktop/lin-sacrifice-before.jpg" alt="林茂才献祭·前">
-      <div class="alt" id="sacAlt" style="font-family:'Songti SC',serif">此刻你看见ta回头了<br>，签字、念珠与名字</div>
+      <div class="alt" id="sacAlt" style="font-family:'Songti SC',serif">此刻你看见他回头了<br>，签字、念珠与名字</div>
       <div class="cap" id="sacCap">点 击 图 片 · 继 续</div>
     </div>
 
     <div id="sac-detail" style="display:none">
-      <p>你看见了。</p>
-      <p>林茂才，一个人，跪在莲花座前。手里举着一沓ta自己签字的纸，水质公报、检测报告、台账、那一届的报告、那一天的报告，<b>ta在烧</b>。ta在将<b>自己</b>写过的字，烧在佛前，给那个</p>
+      <p>我看见了。</p>
+      <p>林茂才，一个人，跪在莲花座前。手里举着一沓他自己签过字的纸——水质公报、检测报告、台账、那一届的报告、那一天的报告。<b>他在烧</b>。他把自己写过的字，一张，一张，烧在佛前，给那个——</p>
       <p>庙后头的<b>东西</b>看。</p>
       <p>庙后头，是一片莲池。莲池里，<b>站着</b>一具具人形的枯荷。<span class="valley">枯荷的面孔，五官清楚。</span>枯荷的眼睛，看着烟，看着火，看得眼睛里也在<b>烧</b>。</p>
       <p>那东西不在池里。在池下。在更深。
-      <br>它在<b>笑</b>。你没听见它笑的声音，你只是听见了水里、空气里、芦苇里，<b>一齐在笑</b>。</p>
+      <br>它在<b>笑</b>。我没听见它笑的声音。我只是听见水里、空气里、芦苇里，<b>一齐在笑</b>。</p>
       <p class="quote" style="font-family:'Songti SC',serif">那笑，轻轻浅浅，没有声音。<br>
       一片一片红色的莲瓣，被<b>风</b>一拨。<br>
       那笑，不是笑。<br>
@@ -621,15 +719,15 @@ body.crash-shake{animation:pageShake 0.08s steps(2,end) infinite}
       <div class="blood"></div>
     </div>
 
-    <p>你手脚冰冷，<b>正想缩进芦苇堆里</b>，</p>
-    <p>一抬头，<b>对面正对着你</b>。</p>
-    <p>一丛枯荷，转过身来。两个小孔的眼窝，对着你，<b>笑</b>。<br>
+    <p>我手脚冰冷，<b>正想缩进芦苇堆里</b>，</p>
+    <p>一抬头，<b>对面正对着我</b>。</p>
+    <p>一丛枯荷，转过身来。两个小孔的眼窝，对着我，<b>笑</b>。<br>
     又一丛。<br>
     又一丛。<br>
     又一丛。<br>
     <span class="blink-warn">ta们全在笑。</span></p>
-    <p>你的眼睛看着ta们，ta们看着你，笑着；笑着，<b>嘴里没有舌头</b>。枯荷的嘴裂开，里面是一丝又一丝<b>青白的丝</b>，一丝一丝，丝丝缕缕。</p>
-    <p>你<b>听</b>到了那声音。</p>
+    <p>我看着ta们，ta们看着我，笑着；笑着，<b>嘴里没有舌头</b>。枯荷的嘴裂开，里面是一丝又一丝<b>青白的丝</b>，一丝，一丝，丝丝缕缕。</p>
+    <p>我<b>听</b>到了那声音。</p>
     <p class="valley" id="vShake">看看你自己。</p>
 
     <!-- 闪回血肉世界 -->
@@ -644,7 +742,7 @@ body.crash-shake{animation:pageShake 0.08s steps(2,end) infinite}
       <div class="cap">它 们 在 笑</div>
     </div>
 
-    <p>你的眼睛里，这边的芦苇、那座小庙、那一池枯荷，<b>全变了</b>。
+    <p>我的眼睛里，这边的芦苇、那座小庙、那一池枯荷，<b>全变了</b>。
     <br>墙上、地里、人身上、庙的瓦上、湖水里，<b>全是肉</b>。</p>
     <p>会抖。会动。会呼吸。
     <br>那团气，腥甜，让人想笑，让人想哭，让人恨不能把头埋进自己的胸腔里去，</p>
@@ -652,32 +750,32 @@ body.crash-shake{animation:pageShake 0.08s steps(2,end) infinite}
 
     <!-- ========== Section 6 · 逃 ========== -->
     <h2 data-num="§ 6">§6 逃</h2>
-    <p>你跑。脚踩在泥里，<b>泥是温的</b>。软。
-    <br>你跑。脚踩在<b>田梗</b>上，<b>梗是活的</b>。
-    <br>你跑。脚踩在<b>干草</b>上，干草里有一双眼睛，你不看，你只看前面，前面有路灯，路灯在亮，路灯边上站着一个人，那是，不，那是一根，你<b>不认得</b>了。</p>
-    <p>你在路边坐下。再也跑不动。</p>
-    <p>你眼睛里的世界没有停。它在变。
+    <p class="dropcap">我跑。脚踩在泥里，<b>泥是温的</b>。软。
+    <br>我跑。脚踩在<b>田埂</b>上，<b>埂是活的</b>。
+    <br>我跑。脚踩在<b>干草</b>上，干草里有一双眼睛。我不看。我只看前面。前面有路灯，路灯亮着，路灯边上站着一个人，那是——不，那是一根。我<b>不认得</b>了。</p>
+    <p>我在路边坐下。再也跑不动。</p>
+    <p>我眼睛里的世界没有停。它在变。
     <br>青莲、莲瓣、莲芯、莲蓬，一层一层，<b>全是肉</b>。
     <br>那根在笑。
     <br>那条鱼在笑。
     <br>那个朋友在笑。
-    <br><span class="blink-warn">你也在笑。</span></p>
-    <p>你摇了一下头。血漫上来。</p>
+    <br><span class="blink-warn">我也在笑。</span></p>
+    <p>我摇了一下头。血漫上来。</p>
 
     <!-- ========== Section 7 · 雪禾 ========== -->
     <div class="fold"></div>
 
     <h2 data-num="§ 7">§7 雪 禾</h2>
-    <p>你醒来的时候，是一片<b>藕塘</b>。</p>
-    <p>有个人蹲在你身边。个子矮小，脸庞是孩子的模样。<span class="valley" style="display:inline">冷调瓷白的脸，眼角猩红血色莲花纹路，唇色浅淡，头上冒着一朵还没开全的荷花</span>。</p>
-    <p>ta看了你一眼。</p>
+    <p class="dropcap">我醒来的时候，是一片<b>藕塘</b>。</p>
+    <p>有个人蹲在我身边。个子矮小，脸庞是孩子的模样。<span class="valley" style="display:inline">冷调瓷白的脸，眼角猩红血色莲花纹路，唇色浅淡，头上冒着一朵还没开全的荷花</span>。</p>
+    <p>他看了我一眼。</p>
     <p>「嗯。」</p>
     <p>「醒了？就你这点胆子，也配被莲之庭那群人吓得半死啊？」</p>
-    <p>你<b>不知道</b>ta是谁。</p>
-    <p>你只知道，你闻到了<b>甜味</b>。甜腻得要命的青莲幽香。从ta身上，从ta的头发，从ta嘴角抿着的那口<b>莲汁</b>，你一吸，吸进半口，整个人就要<b>晕</b>。你摇了摇。</p>
-    <p>ta伸出一根手指，<b>轻飘飘</b>把你下巴一挑。</p>
+    <p>我<b>不知道</b>他是谁。</p>
+    <p>我只知道，我闻到了<b>甜味</b>。甜腻得要命的青莲幽香。从他身上，从他的头发，从他嘴角抿着的那口<b>莲汁</b>。我吸了半口，整个人就要<b>晕</b>。我摇了摇。</p>
+    <p>他伸出一根手指，<b>轻飘飘</b>把我下巴一挑。</p>
     <p>「我呢，刚刚顺手救了一下你，戏还没演完呢，这么早死，不许。」</p>
-    <p>你张口想说谢谢。ta笑了。你，那笑，<span class="br-redacted" style="display:inline">那笑不是笑，是看蚂蚁的看法。</span></p>
+    <p>我张口想说谢谢。他笑了。那笑，<span class="br-redacted" style="display:inline">那笑不是笑，是看蚂蚁的看法。</span></p>
 
     <div class="xuehe-container">
       <h3>， 雪 禾 救 醒 录 音 ，</h3>
@@ -697,16 +795,16 @@ body.crash-shake{animation:pageShake 0.08s steps(2,end) infinite}
         <div class="xuehe-bar"><span id="xueheBar"></span></div>
       </div>
       <div class="vcap">
-        ， 那一晚，ta在藕塘边，把你弄醒。<br>
-        <span style="color:#a89978">（戏还没演完，ta说，还不许你下场。）</span><br>
+        ， 那一晚，他在藕塘边，把你弄醒。<br>
+        <span style="color:#a89978">（戏还没演完，他说，还不许你下场。）</span><br>
         <span class="sign">， 救 者 ： 雪 禾</span>
       </div>
     </div>
 
     <p>视频结束的时候，那个少年不见了。藕塘上，只剩一片<b>粉白色</b>的莲瓣，<b>半透明</b>，<b>在风里抖</b>。</p>
 
-    <p>你的眼睛里，世界又回到了原本的样子。正常的路、正常的草、正常的<b>冷</b>。
-    <br>你口袋里，有一张纸质存根。<br>
+    <p>我的眼睛里，世界又回到了原本的样子。正常的路、正常的草、正常的<b>冷</b>。
+    <br>我口袋里，有一张纸质存根。<br>
     <span class="stash-note">莲之庭·湖心岛侧门·存根·林</span></p>
 
     <!-- 视频播完后引导去水阁论坛归位（不再在本页输入） -->
@@ -897,6 +995,95 @@ function runBlinkStorm(stage){
     }, 400);
   }, 4000);
 }
+</script>
+<script>
+/* ========== 文字入视口 · 墨迹洇开 ========== */
+(function(){
+  var els = document.querySelectorAll('.article-wrap p, .article-wrap h2, .article-wrap h3, .article-wrap .figure');
+  for(var i=0;i<els.length;i++){
+    var el = els[i];
+    if(el.classList.contains('end-mark')) continue;
+    if(el.closest('.xuehe-container') || el.closest('#ritualReopen')) continue;
+    el.classList.add('ink-in');
+  }
+  function reveal(){
+    for(var j=0;j<els.length;j++){
+      var r = els[j].getBoundingClientRect();
+      if(r.top < window.innerHeight * 0.92 && r.bottom > 0) els[j].classList.add('in');
+    }
+  }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, {threshold:0.08});
+    for(var k=0;k<els.length;k++) io.observe(els[k]);
+  }
+  reveal();
+  window.addEventListener('resize', reveal);
+})();
+
+/* ========== 香灰飘落 · 红烬上浮（稀疏） ========== */
+(function(){
+  var cv = document.getElementById('ash-fx');
+  if(!cv) return;
+  var ctx = cv.getContext('2d');
+  var W, H, ps = [];
+  function size(){ W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
+  size();
+  window.addEventListener('resize', size);
+  var N = 26;
+  for(var i=0;i<N;i++){
+    ps.push({
+      x: Math.random()*window.innerWidth,
+      y: Math.random()*window.innerHeight,
+      s: 0.8 + Math.random()*1.8,                 // 尺寸
+      v: 0.12 + Math.random()*0.4,                // 速度
+      sway: Math.random()*Math.PI*2,              // 摆动相位
+      ember: Math.random() < 0.3                  // 30% 是红烬（上浮），其余是香灰（下落）
+    });
+  }
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<N;i++){
+      var p = ps[i];
+      p.sway += 0.008;
+      if(p.ember){
+        p.y -= p.v;
+        if(p.y < -10){ p.y = H + 10; p.x = Math.random()*W; }
+        ctx.fillStyle = 'rgba(210,60,40,' + (0.16 + Math.random()*0.14).toFixed(2) + ')';
+        ctx.shadowColor = 'rgba(220,70,40,0.8)';
+        ctx.shadowBlur = 6;
+      }else{
+        p.y += p.v * 0.7;
+        if(p.y > H + 10){ p.y = -10; p.x = Math.random()*W; }
+        ctx.fillStyle = 'rgba(160,140,120,' + (0.10 + Math.random()*0.10).toFixed(2) + ')';
+        ctx.shadowBlur = 0;
+      }
+      var x = p.x + Math.sin(p.sway)*14;
+      ctx.beginPath();
+      ctx.arc(x, p.y, p.s, 0, Math.PI*2);
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+    requestAnimationFrame(tick);
+  }
+  tick();
+/* ========== 燃香进度线 ========== */
+(function(){
+  var bar = document.getElementById('incense');
+  if(!bar) return;
+  function upd(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - window.innerHeight;
+    var p = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
+    bar.style.width = (p * 100).toFixed(2) + '%';
+  }
+  window.addEventListener('scroll', upd, {passive:true});
+  window.addEventListener('resize', upd);
+  upd();
+})();
 </script>
 </body>
 </html>
