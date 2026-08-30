@@ -317,18 +317,35 @@ body::after{
 ::-webkit-scrollbar-thumb{background:#20262e;border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:#333c46}
 
-/* 点击波纹 */
-.rip{
-  position:fixed;border-radius:50%;
-  border:1px solid rgba(230,240,250,0.55);
-  width:10px;height:10px;
+/* 点击波纹：三层水波，大范围扩散 */
+.rip-wrap{
+  position:fixed;left:0;top:0;width:0;height:0;
   pointer-events:none;z-index:9500;
-  transform:translate(-50%,-50%);
-  animation:ripFx 0.9s ease-out forwards;
 }
-@keyframes ripFx{
-  from{transform:translate(-50%,-50%) scale(0.5);opacity:0.8}
-  to  {transform:translate(-50%,-50%) scale(14);opacity:0}
+.rip{
+  position:absolute;left:0;top:0;
+  border-radius:50%;
+  width:12px;height:12px;
+  border:1.5px solid rgba(255,255,255,0.92);
+  box-shadow:
+    0 0 14px rgba(225,242,255,0.9),
+    inset 0 0 8px rgba(225,242,255,0.55);
+  transform:translate(-50%,-50%);
+}
+.rip.r1{animation:ripFx1 1.2s ease-out forwards}
+.rip.r2{animation:ripFx2 1.2s ease-out 0.14s forwards}
+.rip.r3{animation:ripFx3 1.2s ease-out 0.28s forwards}
+@keyframes ripFx1{
+  from{transform:translate(-50%,-50%) scale(0.4);opacity:1}
+  to  {transform:translate(-50%,-50%) scale(34);opacity:0}
+}
+@keyframes ripFx2{
+  from{transform:translate(-50%,-50%) scale(0.3);opacity:0.9}
+  to  {transform:translate(-50%,-50%) scale(50);opacity:0}
+}
+@keyframes ripFx3{
+  from{transform:translate(-50%,-50%) scale(0.25);opacity:0.75}
+  to  {transform:translate(-50%,-50%) scale(66);opacity:0}
 }
 
 /* 粒子萤火画布：全屏铺底，不挡点击 */
@@ -466,14 +483,19 @@ document.addEventListener('keydown', e => {
   tick();
 })();
 
-/* 点击波纹：银白涟漪 */
+/* 点击波纹：银白三层水波 */
 document.addEventListener('click', e => {
-  const s = document.createElement('span');
-  s.className = 'rip';
-  s.style.left = e.clientX + 'px';
-  s.style.top = e.clientY + 'px';
-  document.body.appendChild(s);
-  setTimeout(() => s.remove(), 950);
+  const w = document.createElement('span');
+  w.className = 'rip-wrap';
+  w.style.left = e.clientX + 'px';
+  w.style.top = e.clientY + 'px';
+  for(let i = 1; i <= 3; i++){
+    const s = document.createElement('span');
+    s.className = 'rip r' + i;
+    w.appendChild(s);
+  }
+  document.body.appendChild(w);
+  setTimeout(() => w.remove(), 1500);
 });
 </script>
 
