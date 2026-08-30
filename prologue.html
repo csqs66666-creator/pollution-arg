@@ -10,28 +10,27 @@
 html,body{margin:0;padding:0;height:100%}
 body{
   font-family:"Songti SC","STSong","宋体",SimSun,"Source Han Serif SC","Noto Serif CJK SC",serif;
-  background:#050709;
+  background:#050709 url('assets/desktop/prologue-cover.jpg') center/cover no-repeat fixed;
   color:#cfd2d6;
   letter-spacing:0.02em;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
-/* 整页阴森滤镜：微微降饱和、轻微青灰偏色 */
+/* 整页阴森滤镜：保留暗角，让底图透一点点 */
 body::before{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:9000;
   background:
-    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%),
-    linear-gradient(0deg, rgba(5,10,16,0.35), rgba(5,10,16,0.15));
-  mix-blend-mode:multiply;
+    radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.78) 100%),
+    linear-gradient(0deg, rgba(5,10,16,0.45), rgba(5,10,16,0.25));
 }
 /* 全屏缓慢呼吸动画 */
 @keyframes breathe{
-  0%,100%{filter:brightness(0.92) contrast(1.05)}
-  50%   {filter:brightness(1.05) contrast(1.02)}
+  0%,100%{filter:brightness(0.94) contrast(1.05)}
+  50%   {filter:brightness(1.04) contrast(1.02)}
 }
 body::after{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:9001;
-  background:radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.45) 100%);
+  background:radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.5) 100%);
   animation:breathe 7s ease-in-out infinite;
 }
 
@@ -113,12 +112,12 @@ body::after{
 }
 .figure.f1{animation-delay:2.2s}
 .figure.f2{animation-delay:5.5s}
-.figure img{
+.figure img,.figure video{
   display:block;width:100%;height:auto;
   filter:grayscale(0.18) contrast(1.05) brightness(0.78);
 }
-.figure.f1 img{filter:grayscale(0.35) contrast(1.08) brightness(0.65)}
-.figure.f2 img{
+.figure.f1 img,.figure.f1 video{filter:grayscale(0.35) contrast(1.08) brightness(0.65)}
+.figure.f2 img,.figure.f2 video{
   filter:grayscale(0.05) contrast(1.12) brightness(0.78) hue-rotate(-6deg);
   animation:huePulse 9s ease-in-out infinite;
 }
@@ -286,7 +285,7 @@ body::after{
   <p class="p">库水是灰绿色的，黏在岸边石头上，一层一层，干了又湿。你们在坝下蹲了整个下午，鱼漂一动不动，水汽闷得人皮肤发黏。快收竿的时候，才钓上来一条。鱼出水时活蹦乱跳，鳞光雪亮，新鲜得不像话。你们没多想，就在岸边简单收拾了，生火，做熟，准备吃。</p>
 
   <div class="figure f1" style="animation-delay:2.0s">
-    <img src="assets/desktop/prologue-lake.jpg" alt="回川水库 · 黄昏前">
+    <video src="assets/desktop/prologue-lake.mp4" autoplay muted loop playsinline preload="metadata" aria-label="回川水库 · 黄昏前"></video>
     <div class="grad"></div>
     <div class="cap">水库 · 鱼竿 · 静默</div>
   </div>
