@@ -1371,12 +1371,20 @@ function renderNpcDoc(key){
   GAME_STATE.npcTimes[key] = Date.now();
   try{ localStorage.setItem('hc_npcs', JSON.stringify(GAME_STATE.npcUnlocked));
        localStorage.setItem('hc_npc_times', JSON.stringify(GAME_STATE.npcTimes)); }catch(e){}
-  if(key==='linmaocai'){ GAME_STATE.linSeen = true; try{ localStorage.setItem('hc_lin_seen','1'); }catch(e){} }
+  if(key==='linmaocai'){
+    GAME_STATE.linSeen = true;
+    try{ localStorage.setItem('hc_lin_seen','1'); }catch(e){}
+    try{ triggerRitual(); }catch(e){}   // 点完林茂才档案即解锁：首页红链 + 档案卡直达隐藏公告
+  }
   document.body.classList.add('arg-mode');
   let sideface = d.sideface ? '<div class="sideface-flick"></div>' : '';
   const photoHtml = d.img
     ? `<img src="${esc(d.img)}" alt="${esc(d.name)}">`
     : `<div class="photo-big">${esc(d.coverIcon)}</div>`;
+  let ritualLink = '';
+  if(key==='linmaocai'){
+    ritualLink = '<a style="display:block;margin-top:22px;color:#8a1a1a;cursor:pointer;text-decoration:underline dotted;font-size:14px;letter-spacing:0.1em" onclick="window.go(\'#ritual\')">▸ 查看《关于林茂才同志因公殉职·内部归位事宜的通告》</a>';
+  }
   const body = `
     ${sideface}
     <div style="max-width:880px;margin:0 auto;padding:0 0 40px">
@@ -1400,6 +1408,7 @@ function renderNpcDoc(key){
           ⚠ 本档案为组织内部查阅件；严禁外传。如发现异常文字、闪烁字符、签字晕开等现象，请视为纸质老化所致，<b>不必上报</b>。
         </div>
       </div>
+      ${ritualLink}
       <button class="back-btn" style="margin-top:24px" onclick="go('#home')">← 返回首页</button>
     </div>`;
   $app.innerHTML = page('home', body);
