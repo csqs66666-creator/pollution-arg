@@ -959,8 +959,8 @@ function swapSacrifice(){
 })();
 
 function runBlinkStorm(stage){
-  // 注入 14 个眼睛，random 位置 / 大小 / 频率
-  var N = 14;
+  // 注入 17 个眼睛，random 位置 / 大小 / 频率（较原 14 增加约 20%）
+  var N = 17;
   for(var i=0;i<N;i++){
     var eb = document.createElement('div');
     eb.className = 'eb' + (i%3===1 ? ' c' : '');
@@ -1033,7 +1033,7 @@ function runBlinkStorm(stage){
   function size(){ W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
   size();
   window.addEventListener('resize', size);
-  var N = 44;
+  var N = 35;   // 香火粒子：较原 44 减少约 20%
   for(var i=0;i<N;i++){
     ps.push({
       x: Math.random()*window.innerWidth,
