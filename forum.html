@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 :root{
-  --ink:#7a5a1a;          /* 金深 · 主文字（青铜金） */
-  --ink2:#a67c00;         /* 次文字（中金） */
-  --line:#e6d5a0;         /* 淡金线 */
-  --line2:#f0e2b8;        /* 更淡金分隔 */
-  --red:#b8941f;          /* 金深 · 强调 */
-  --red2:#d4a017;         /* 金亮 */
-  --red3:#6d4a1a;         /* 金暗 */
-  --gold:#d4a017;
-  --gold2:#f0c75a;
+  --ink:#b8821a;          /* 阳光深金 · 主文字 */
+  --ink2:#f4c430;         /* 阳光中金 · 次文字 */
+  --line:#f0d890;         /* 淡金线 */
+  --line2:#f7e4a8;        /* 更淡金分隔 */
+  --red:#e8a91f;          /* 向阳金 · 强调 */
+  --red2:#f4c430;         /* 蜂蜜金 · 亮 */
+  --red3:#9c6a00;         /* 深暗金 */
+  --gold:#f4c430;
+  --gold2:#ffd700;        /* 纯向日葵金 · 高亮 */
   --night:#f2ead9;        /* 宣纸黄 · 背景 */
   --night2:#efe6d2;       /* 宣纸暗 */
   --bg:#f4ecdc;           /* 背景 */
@@ -22,7 +22,7 @@
   --paper2:#f7f0e1;       /* 纸二 */
   --blue:#3b6f9f;
   --lotus:#d98ba0;        /* 莲花粉（淡） */
-  --jade:#d4a848;         /* 金边 */
+  --jade:#e8b830;         /* 金边 */
 }
 *{box-sizing:border-box}
 html,body{
@@ -52,20 +52,20 @@ html,body{
 .topbar::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,transparent,var(--red2) 25%,var(--red) 50%,var(--red2) 75%,transparent);opacity:.55}
 .brand{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:0.35em;margin-right:8px;display:flex;align-items:center;gap:10px;font-family:"STKaiti","KaiTi",serif}
 .brand .dot{color:var(--red);animation:brandPulse 2.4s ease-in-out infinite}
-.brand .sub{font-size:10.5px;color:#8a6d1a;letter-spacing:0.4em;margin-left:10px;font-weight:400;font-family:"Microsoft YaHei",sans-serif}
+.brand .sub{font-size:10.5px;color:#b08220;letter-spacing:0.4em;margin-left:10px;font-weight:400;font-family:"Microsoft YaHei",sans-serif}
 .brand .logo-mark{width:34px;height:34px;display:inline-block;background:url('assets/desktop/forum-bs/lotus-jade-light.png') center/contain no-repeat;filter:drop-shadow(0 0 6px rgba(168,212,196,.5));flex-shrink:0}
-@keyframes brandPulse{0%,100%{color:var(--red);text-shadow:0 0 0 transparent}50%{color:var(--red2);text-shadow:0 0 10px rgba(184,148,31,.65)}}
+@keyframes brandPulse{0%,100%{color:var(--red);text-shadow:0 0 0 transparent}50%{color:var(--red2);text-shadow:0 0 10px rgba(232,169,31,.65)}}
 .navlinks{display:flex;gap:0;flex:1;margin-left:30px}
 .navlinks a{color:var(--ink2);text-decoration:none;padding:0 18px;height:60px;display:flex;align-items:center;font-size:13px;letter-spacing:0.15em;position:relative;transition:color .2s,background .2s;font-family:"Microsoft YaHei",sans-serif}
-.navlinks a:hover{color:var(--ink);background:rgba(184,148,31,.10)}
-.navlinks a.cur{color:var(--red);background:linear-gradient(180deg,rgba(184,148,31,.14),rgba(184,148,31,.04));border-bottom:2px solid var(--red);font-weight:600}
+.navlinks a:hover{color:var(--ink);background:rgba(232,169,31,.10)}
+.navlinks a.cur{color:var(--red);background:linear-gradient(180deg,rgba(232,169,31,.14),rgba(232,169,31,.04));border-bottom:2px solid var(--red);font-weight:600}
 .navlinks a.cur::before{content:"❀";font-size:9px;color:var(--red);margin-right:6px}
 .search{margin:0 0 0 auto;display:flex;gap:6px;align-items:center}
 .search input{background:rgba(255,255,255,.75);border:1px solid var(--line);color:var(--ink);padding:6px 12px;font-size:12px;width:200px;letter-spacing:0.06em;font-family:inherit;border-radius:2px;transition:border-color .2s,box-shadow .2s}
-.search input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 2px rgba(184,148,31,.18)}
-.search input::placeholder{color:#8a6d1a}
+.search input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 2px rgba(232,169,31,.18)}
+.search input::placeholder{color:#b08220}
 .search button{background:rgba(255,255,255,.75);border:1px solid var(--line);color:var(--ink2);padding:6px 14px;cursor:pointer;font-size:12px;letter-spacing:0.12em;border-radius:2px;transition:all .2s;font-family:inherit}
-.search button:hover{color:var(--red);border-color:var(--red);background:rgba(184,148,31,.10)}
+.search button:hover{color:var(--red);border-color:var(--red);background:rgba(232,169,31,.10)}
 
 /* ========== 主体 ========== */
 .wrap{max-width:1180px;margin:0 auto;padding:24px 24px 80px;display:grid;grid-template-columns:1fr 280px;gap:24px;position:relative;z-index:2}
@@ -89,27 +89,27 @@ html,body{
   animation:threadFadeIn .45s ease both;
 }
 @keyframes threadFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s ease, width .25s ease;box-shadow:0 0 10px rgba(184,148,31,.55)}
-.thread:hover{background:linear-gradient(90deg,rgba(184,148,31,.18),rgba(184,148,31,.04));padding-left:24px}
+.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s ease, width .25s ease;box-shadow:0 0 10px rgba(232,169,31,.55)}
+.thread:hover{background:linear-gradient(90deg,rgba(232,169,31,.18),rgba(232,169,31,.04));padding-left:24px}
 .thread:hover::before{transform:scaleY(1);width:5px}
 .thread:last-child{border-bottom:none}
-.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f0e2b8,#e6d5a0);display:flex;align-items:center;justify-content:center;font-size:13px;color:#7a5a1a;overflow:hidden;border:1.5px solid #d4a848;box-shadow:0 0 6px rgba(184,148,31,.20);position:relative;font-family:"STKaiti",serif;font-weight:700}
-.avatar::after{content:"";position:absolute;inset:2px;border-radius:50%;background:radial-gradient(circle,rgba(240,199,90,.18),transparent 70%);pointer-events:none}
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f7e4a8,#f0d890);display:flex;align-items:center;justify-content:center;font-size:13px;color:#b8821a;overflow:hidden;border:1.5px solid #e8b830;box-shadow:0 0 6px rgba(232,169,31,.20);position:relative;font-family:"STKaiti",serif;font-weight:700}
+.avatar::after{content:"";position:absolute;inset:2px;border-radius:50%;background:radial-gradient(circle,rgba(244,196,48,.18),transparent 70%);pointer-events:none}
 .avatar img{width:100%;height:100%;object-fit:cover}
-.avatar.red{background:linear-gradient(135deg,#d4a848,#d4a017);color:#fff;font-size:14px;border-color:#b8941f;box-shadow:0 0 8px rgba(184,148,31,.30)}
-.avatar.admin{background:linear-gradient(135deg,#e6d5a0,#c0a868);color:#6d4a1a;border-color:#d4a848;box-shadow:none}
+.avatar.red{background:linear-gradient(135deg,#e8b830,#f4c430);color:#fff;font-size:14px;border-color:#e8a91f;box-shadow:0 0 8px rgba(232,169,31,.30)}
+.avatar.admin{background:linear-gradient(135deg,#f0d890,#d4b870);color:#9c6a00;border-color:#e8b830;box-shadow:none}
 .thread .title{font-size:14.5px;color:var(--ink);font-weight:500;font-family:"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.5;text-shadow:0 1px 2px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)}
 .thread .title b,.thread .title strong{color:var(--red2);font-weight:700}
-.thread .title .tag{display:inline-block;font-size:10px;padding:1px 6px;margin-right:6px;border:1px solid #d4a848;color:var(--red);letter-spacing:0.1em;vertical-align:1px;background:rgba(184,148,31,.08)}
-.thread .title .tag.hot{border-color:var(--red);background:rgba(184,148,31,.18);color:var(--red2)}
-.thread .title .tag.danger{border-color:var(--red2);background:rgba(184,148,31,.24);color:var(--red2);animation:tagPulse 1.4s ease-in-out infinite}
+.thread .title .tag{display:inline-block;font-size:10px;padding:1px 6px;margin-right:6px;border:1px solid #e8b830;color:var(--red);letter-spacing:0.1em;vertical-align:1px;background:rgba(232,169,31,.08)}
+.thread .title .tag.hot{border-color:var(--red);background:rgba(232,169,31,.18);color:var(--red2)}
+.thread .title .tag.danger{border-color:var(--red2);background:rgba(232,169,31,.24);color:var(--red2);animation:tagPulse 1.4s ease-in-out infinite}
 @keyframes tagPulse{0%,100%{opacity:1}50%{opacity:0.6}}
 .thread .meta{font-size:11.5px;color:var(--ink2);line-height:1.5;margin-top:4px;text-shadow:0 1px 1px rgba(255,255,255,.5)}
 .thread .author{font-size:12px;color:var(--ink2);text-align:center}
 .thread .author.red{color:var(--red2);font-weight:600}
 .thread .author.admin{color:var(--ink)}
-.thread .last{font-size:11px;color:#8a6d1a;text-align:center;line-height:1.4}
-.thread .count{font-size:11px;color:#8a6d1a;text-align:center}
+.thread .last{font-size:11px;color:#b08220;text-align:center;line-height:1.4}
+.thread .count{font-size:11px;color:#b08220;text-align:center}
 .thread .count b{color:var(--red2);font-weight:700;font-size:13px}
 
 /* ========== 主题详情 ========== */
@@ -130,9 +130,9 @@ html,body{
 .post .ph .floor{font-size:11px;color:var(--ink2);border:1px solid var(--line);padding:1px 6px;letter-spacing:0.1em}
 .post .pb{padding:20px 22px;font-size:14px;line-height:2;color:var(--ink);letter-spacing:0.03em}
 .post .pb p{margin:0 0 12px}
-.post .pb .small{font-size:12px;color:#8a6d1a}
+.post .pb .small{font-size:12px;color:#b08220}
 .post .pb .quote{
-  border-left:3px solid var(--ink);padding:6px 12px;margin:10px 0;color:#8a6d1a;background:rgba(255,255,255,0.02);
+  border-left:3px solid var(--ink);padding:6px 12px;margin:10px 0;color:#b08220;background:rgba(255,255,255,0.02);
   font-size:13px;
 }
 .post .pb .quote b{color:var(--red)}
@@ -145,28 +145,28 @@ html,body{
 .post .pf .ops span:hover{color:var(--red)}
 
 /* 楼层内回复（含密码块） */
-.reply-list{padding:8px 22px 18px;background:rgba(184,148,31,.02)}
+.reply-list{padding:8px 22px 18px;background:rgba(232,169,31,.02)}
 .reply{
   padding:14px 0;border-bottom:1px dashed var(--line2);
   display:grid;grid-template-columns:36px 1fr;gap:12px;
 }
 .reply:last-child{border-bottom:none}
-.reply .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f0e2b8,#e6d5a0);display:flex;align-items:center;justify-content:center;font-size:11px;color:#7a5a1a;overflow:hidden;border:1px solid #d4a848}
-.reply .av.red{background:linear-gradient(135deg,#d4a848,#d4a017);color:#fff}
-.reply .av.admin{background:linear-gradient(135deg,#e6d5a0,#c0a868);color:#6d4a1a}
-.reply .who{font-size:12px;color:#a67c00;font-weight:600}
+.reply .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f7e4a8,#f0d890);display:flex;align-items:center;justify-content:center;font-size:11px;color:#b8821a;overflow:hidden;border:1px solid #e8b830}
+.reply .av.red{background:linear-gradient(135deg,#e8b830,#f4c430);color:#fff}
+.reply .av.admin{background:linear-gradient(135deg,#f0d890,#d4b870);color:#9c6a00}
+.reply .who{font-size:12px;color:#f4c430;font-weight:600}
 .reply .who.red{color:var(--red2)}
-.reply .who.admin{color:#6d4a1a}
-.reply .who small{color:#8a6d1a;font-weight:400;margin-left:6px}
+.reply .who.admin{color:#9c6a00}
+.reply .who small{color:#b08220;font-weight:400;margin-left:6px}
 .reply .body{font-size:13px;color:var(--ink);line-height:1.85;margin-top:4px}
 .reply .body .admin-cred{
   display:block;margin-top:8px;padding:6px 10px;
-  border:1px dashed #b8941f;background:rgba(184,148,31,.10);
-  color:#7a5a1a;font-family:monospace;letter-spacing:0.05em;font-size:12px;
+  border:1px dashed #e8a91f;background:rgba(232,169,31,.10);
+  color:#b8821a;font-family:monospace;letter-spacing:0.05em;font-size:12px;
 }
 .reply .body .bared{color:var(--red);font-weight:600}
 .reply .body .bared::after{content:" · 此用户已被永久禁言"}
-.reply .body .floornum{font-size:10.5px;color:#8a6d1a;margin-right:6px}
+.reply .body .floornum{font-size:10.5px;color:#b08220;margin-right:6px}
 
 /* ========== 侧栏 ========== */
 .side{display:flex;flex-direction:column;gap:14px;position:relative}
@@ -177,15 +177,15 @@ html,body{
 .sidebox ol li{margin:2px 0;cursor:pointer}
 .sidebox ol li:hover{color:var(--red)}
 .sidebox .admin-hint{
-  font-size:11.5px;color:#a67c00;line-height:1.7;background:rgba(184,148,31,.04);
-  border:1px solid #f0e2b8;padding:10px 12px;letter-spacing:0.06em;
+  font-size:11.5px;color:#f4c430;line-height:1.7;background:rgba(232,169,31,.04);
+  border:1px solid #f7e4a8;padding:10px 12px;letter-spacing:0.06em;
 }
 .sidebox .admin-hint b{color:var(--red)}
 
 /* ========== 底部 ========== */
 .foot{
   text-align:center;padding:30px 0;
-  color:#a67c00;font-size:11px;letter-spacing:0.4em;
+  color:#f4c430;font-size:11px;letter-spacing:0.4em;
 }
 
 /* ========== 主题切换：列表 / 详情 ========== */
@@ -197,7 +197,7 @@ html,body{
   margin:14px 0 8px;
   padding:14px 16px 12px;
   border:1px dashed var(--red);
-  background:rgba(184,148,31,.035);
+  background:rgba(232,169,31,.035);
 }
 .cred-title{
   font-size:11.5px;
@@ -215,7 +215,7 @@ html,body{
 }
 .cred-row label{
   width:54px;
-  color:#a67c00;
+  color:#f4c430;
   font-size:11.5px;
   letter-spacing:0.2em;
   text-align:right;
@@ -231,7 +231,7 @@ html,body{
   letter-spacing:0.05em;
   outline:none;
 }
-.cred-row input:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(184,148,31,.10)}
+.cred-row input:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(232,169,31,.10)}
 .cred-row input:disabled{opacity:0.5;cursor:not-allowed}
 .cred-actions{
   display:flex;
@@ -250,7 +250,7 @@ html,body{
   letter-spacing:0.2em;
 }
 .cred-actions button:hover{background:var(--red);color:#fff}
-.cred-box .admin-hint{font-size:11.5px;color:#a67c00;min-height:14px;letter-spacing:0.06em}
+.cred-box .admin-hint{font-size:11.5px;color:#f4c430;min-height:14px;letter-spacing:0.06em}
 .cred-box .admin-hint.ok{color:#80c080}
 .cred-box .admin-hint.err{color:#c04040}
 
@@ -259,7 +259,7 @@ html,body{
   margin-top:12px;
   padding:12px 16px 14px;
   border-top:1px dashed var(--red);
-  background:rgba(184,148,31,.03);
+  background:rgba(232,169,31,.03);
 }
 .cred-record .rec-title{
   font-size:11.5px;
@@ -270,7 +270,7 @@ html,body{
 }
 .cred-record p{
   font-size:12.5px;
-  color:#a67c00;
+  color:#f4c430;
   line-height:1.95;
   margin:6px 0;
   letter-spacing:0.04em;
@@ -278,7 +278,7 @@ html,body{
 .cred-record p.rec-sign{
   margin-top:10px;
   text-align:right;
-  color:#8a6d1a;
+  color:#b08220;
   font-size:11px;
   letter-spacing:0.3em;
 }
@@ -290,13 +290,13 @@ html,body{
   margin:28px 0 8px;
   padding:20px 24px;
   border:1px solid var(--red);
-  background:rgba(184,148,31,0.10);
+  background:rgba(232,169,31,0.10);
 }
 .ending-cta .a{
   display:inline-block;
   padding:11px 28px;
   border:1px solid var(--red);
-  color:#7a5a1a;
+  color:#b8821a;
   text-decoration:none;
   font-size:13px;
   letter-spacing:0.3em;
@@ -306,17 +306,17 @@ html,body{
 /* ========== 美化：标签呼吸光 · 行 hover 滑入 · 侧栏悬浮 ========== */
 .tag.danger{animation:tagPulse 1.6s ease-in-out infinite}
 .tag.hot{animation:tagPulse 2.4s ease-in-out infinite}
-@keyframes tagPulse{0%,100%{box-shadow:0 0 0 rgba(184,148,31,0)}50%{box-shadow:0 0 14px rgba(184,148,31,.55)}}
+@keyframes tagPulse{0%,100%{box-shadow:0 0 0 rgba(232,169,31,0)}50%{box-shadow:0 0 14px rgba(232,169,31,.55)}}
 
 /* 主题行 hover：左滑提示 */
 .thread{position:relative;overflow:hidden;background:rgba(255,255,255,0)}
-.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s ease,width .25s ease;box-shadow:0 0 10px rgba(184,148,31,.55)}
+.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s ease,width .25s ease;box-shadow:0 0 10px rgba(232,169,31,.55)}
 .thread:hover::before{transform:scaleY(1);width:5px}
-.thread:hover{background:linear-gradient(90deg,rgba(184,148,31,.10),rgba(184,148,31,.02))!important;padding-left:22px}
+.thread:hover{background:linear-gradient(90deg,rgba(232,169,31,.10),rgba(232,169,31,.02))!important;padding-left:22px}
 
 /* 侧栏模块悬浮 */
 .sidebox{transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease}
-.sidebox:hover{transform:translateY(-2px);border-color:#d4a848;box-shadow:0 6px 14px rgba(184,148,31,.15)}
+.sidebox:hover{transform:translateY(-2px);border-color:#e8b830;box-shadow:0 6px 14px rgba(232,169,31,.15)}
 
 /* 管理员名单 / 热议主题（样式清空：模块已删） */
 
@@ -356,33 +356,33 @@ html,body{
 
 /* 顶栏品牌：闪红点 */
 .brand .dot{animation:brandDot 2.2s ease-in-out infinite}
-@keyframes brandDot{0%,100%{opacity:.4;color:var(--red)}50%{opacity:1;color:var(--red2);text-shadow:0 0 8px rgba(184,148,31,.6)}}
+@keyframes brandDot{0%,100%{opacity:.4;color:var(--red)}50%{opacity:1;color:var(--red2);text-shadow:0 0 8px rgba(232,169,31,.6)}}
 
 .ending-cta .note{
   margin-top:12px;
   font-size:11.5px;
-  color:#8a6d1a;
+  color:#b08220;
   letter-spacing:0.2em;
 }
 
 
-a.xuehe-tab{color:#6d4a1a !important;letter-spacing:0.4em !important;animation:xueheTabPulse 3s ease-in-out infinite}
-@keyframes xueheTabPulse{0%,100%{text-shadow:0 0 0 rgba(240,199,90,0)}50%{text-shadow:0 0 10px rgba(240,199,90,.8)}}
-a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !important}
-.xuehe-av,.xuehe-av-big,.xuehe-av-mini{background:linear-gradient(135deg,#d4a848,#b8941f) !important;color:#fff !important;font-size:14px !important}
+a.xuehe-tab{color:#9c6a00 !important;letter-spacing:0.4em !important;animation:xueheTabPulse 3s ease-in-out infinite}
+@keyframes xueheTabPulse{0%,100%{text-shadow:0 0 0 rgba(244,196,48,0)}50%{text-shadow:0 0 10px rgba(244,196,48,.8)}}
+a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !important}
+.xuehe-av,.xuehe-av-big,.xuehe-av-mini{background:linear-gradient(135deg,#e8b830,#e8a91f) !important;color:#fff !important;font-size:14px !important}
 .xuehe-av-big{width:48px;height:48px;font-size:16px;position:relative;overflow:hidden}
 .xuehe-av-big::after{content:"莲";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);font-size:18px}
-.xuehe-title{color:#6d4a1a !important;text-shadow:0 0 8px rgba(212,160,23,.35);font-weight:700}
-.xuehe-name{color:#6d4a1a !important;font-weight:700}
+.xuehe-title{color:#9c6a00 !important;text-shadow:0 0 8px rgba(212,160,23,.35);font-weight:700}
+.xuehe-name{color:#9c6a00 !important;font-weight:700}
 .xuehe-post .xuehe-lotus-bg{position:absolute;right:-20px;top:30px;width:280px;height:280px;background:url("assets/desktop/forum-bs/lotus-leaves.jpg") center/contain no-repeat;opacity:0.08;pointer-events:none;z-index:0}
 .xuehe-post{position:relative;overflow:hidden}
 .xuehe-body{position:relative;z-index:1}
-.xuehe-quote{color:#b8941f;font-style:italic;text-align:right;margin-top:12px;font-size:12.5px;letter-spacing:0.1em}
-.xuehe-threat{color:var(--red2);font-weight:700;text-shadow:0 0 6px rgba(184,148,31,.45);animation:threatFlicker 2s ease-in-out infinite}
+.xuehe-quote{color:#e8a91f;font-style:italic;text-align:right;margin-top:12px;font-size:12.5px;letter-spacing:0.1em}
+.xuehe-threat{color:var(--red2);font-weight:700;text-shadow:0 0 6px rgba(232,169,31,.45);animation:threatFlicker 2s ease-in-out infinite}
 @keyframes threatFlicker{0%,90%,100%{opacity:1}92%{opacity:.3}94%{opacity:1}96%{opacity:.5}}
 .xuehe-flash{animation:xueheFlash 1.2s ease-in-out infinite}
-@keyframes xueheFlash{0%,100%{background:rgba(212,160,23,.25);border-color:#b8941f;color:#6d4a1a}50%{background:rgba(240,199,90,.32);border-color:var(--red);color:var(--ink)}}
-.xuehe-locked{opacity:0.65;background:rgba(184,148,31,.06) !important;border-color:#7a5a1a !important}
+@keyframes xueheFlash{0%,100%{background:rgba(212,160,23,.25);border-color:#e8a91f;color:#9c6a00}50%{background:rgba(244,196,48,.32);border-color:var(--red);color:var(--ink)}}
+.xuehe-locked{opacity:0.65;background:rgba(232,169,31,.06) !important;border-color:#b8821a !important}
 
 /* BSOD 警告框 */
 .xuehe-bsod{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center}
@@ -505,7 +505,7 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
 .xuehe-js .x-creep-item{position:absolute;transform:translate(-50%,-50%) rotate(var(--brt,0deg));color:#f5e8d4;font-family:"Microsoft YaHei","PingFang SC","STKaiti",serif;font-weight:400;text-shadow:0 0 8px rgba(255,220,180,.6),0 0 18px rgba(255,180,140,.4);mix-blend-mode:screen;opacity:var(--op,0.85);white-space:nowrap;animation:creepFlicker .15s steps(2,end) infinite var(--dly,0s),creepGlitch .3s steps(3,end) infinite;pointer-events:none;letter-spacing:0.05em}
 .xuehe-js .x-creep-item:nth-child(3n){color:#ffd0d0;text-shadow:0 0 8px rgba(255,160,160,.7),0 0 16px rgba(255,100,100,.4);animation-delay:0s,0.1s}
 .xuehe-js .x-creep-item:nth-child(5n){color:#fff5e0;font-style:italic;letter-spacing:0.15em}
-.xuehe-js .x-creep-item:nth-child(7n){color:#8a6d1a;font-size:.75em}
+.xuehe-js .x-creep-item:nth-child(7n){color:#b08220;font-size:.75em}
 .xuehe-js .x-creep-item::before{content:"👁️";position:absolute;left:-18px;top:0;font-size:.7em;opacity:.7}
 @keyframes creepFlicker{0%,92%,100%{opacity:var(--op,0.85)}94%{opacity:.4}96%{opacity:1}98%{opacity:.5}}
 @keyframes creepGlitch{0%{transform:translate(-50%,-50%) rotate(var(--brt,0deg))}33%{transform:translate(calc(-50% - 3px),calc(-50% + 2px)) rotate(calc(var(--brt,0deg) - 1deg))}66%{transform:translate(calc(-50% + 4px),calc(-50% - 2px)) rotate(calc(var(--brt,0deg) + 1deg))}}
@@ -521,23 +521,23 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
 /* 屏幕震动 */
 @keyframes pageShake{0%{transform:translate(0,0)}25%{transform:translate(-5px,4px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-4px,-5px)}100%{transform:translate(5px,4px)}}
 
-a.xuehe-tab{color:#6d4a1a !important;letter-spacing:0.4em !important;animation:xueheTabPulse 3s ease-in-out infinite}
-@keyframes xueheTabPulse{0%,100%{text-shadow:0 0 0 rgba(240,199,90,0)}50%{text-shadow:0 0 10px rgba(240,199,90,.8)}}
-a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !important}
-.xuehe-av,.xuehe-av-big,.xuehe-av-mini{background:linear-gradient(135deg,#d4a848,#b8941f) !important;color:#fff !important;font-size:14px !important}
+a.xuehe-tab{color:#9c6a00 !important;letter-spacing:0.4em !important;animation:xueheTabPulse 3s ease-in-out infinite}
+@keyframes xueheTabPulse{0%,100%{text-shadow:0 0 0 rgba(244,196,48,0)}50%{text-shadow:0 0 10px rgba(244,196,48,.8)}}
+a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !important}
+.xuehe-av,.xuehe-av-big,.xuehe-av-mini{background:linear-gradient(135deg,#e8b830,#e8a91f) !important;color:#fff !important;font-size:14px !important}
 .xuehe-av-big{width:48px;height:48px;font-size:16px;position:relative;overflow:hidden}
 .xuehe-av-big::after{content:"莲";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);font-size:18px}
-.xuehe-title{color:#6d4a1a !important;text-shadow:0 0 8px rgba(212,160,23,.35);font-weight:700}
-.xuehe-name{color:#6d4a1a !important;font-weight:700}
+.xuehe-title{color:#9c6a00 !important;text-shadow:0 0 8px rgba(212,160,23,.35);font-weight:700}
+.xuehe-name{color:#9c6a00 !important;font-weight:700}
 .xuehe-post .xuehe-lotus-bg{position:absolute;right:-20px;top:30px;width:280px;height:280px;background:url("assets/desktop/forum-bs/lotus-leaves.jpg") center/contain no-repeat;opacity:0.08;pointer-events:none;z-index:0}
 .xuehe-post{position:relative;overflow:hidden}
 .xuehe-body{position:relative;z-index:1}
-.xuehe-quote{color:#b8941f;font-style:italic;text-align:right;margin-top:12px;font-size:12.5px;letter-spacing:0.1em}
-.xuehe-threat{color:var(--red2);font-weight:700;text-shadow:0 0 6px rgba(184,148,31,.45);animation:threatFlicker 2s ease-in-out infinite}
+.xuehe-quote{color:#e8a91f;font-style:italic;text-align:right;margin-top:12px;font-size:12.5px;letter-spacing:0.1em}
+.xuehe-threat{color:var(--red2);font-weight:700;text-shadow:0 0 6px rgba(232,169,31,.45);animation:threatFlicker 2s ease-in-out infinite}
 @keyframes threatFlicker{0%,90%,100%{opacity:1}92%{opacity:.3}94%{opacity:1}96%{opacity:.5}}
 .xuehe-flash{animation:xueheFlash 1.2s ease-in-out infinite}
-@keyframes xueheFlash{0%,100%{background:rgba(212,160,23,.25);border-color:#b8941f;color:#6d4a1a}50%{background:rgba(240,199,90,.32);border-color:var(--red);color:var(--ink)}}
-.xuehe-locked{opacity:0.65;background:rgba(184,148,31,.06) !important;border-color:#7a5a1a !important}
+@keyframes xueheFlash{0%,100%{background:rgba(212,160,23,.25);border-color:#e8a91f;color:#9c6a00}50%{background:rgba(244,196,48,.32);border-color:var(--red);color:var(--ink)}}
+.xuehe-locked{opacity:0.65;background:rgba(232,169,31,.06) !important;border-color:#b8821a !important}
 .xuehe-bsod{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center}
 .xuehe-bsod .dl-box{background:#ece9d8;border:2px solid #0055ea;width:440px;box-shadow:0 0 0 2px #fff inset,4px 4px 12px rgba(0,0,0,.5);font-family:"Tahoma","Microsoft YaHei",sans-serif}
 .xuehe-bsod .dl-title{background:linear-gradient(180deg,#0055ea,#0a4cb8);color:#fff;padding:5px 10px;font-weight:bold;font-size:13px;display:flex;justify-content:space-between;align-items:center}
@@ -644,6 +644,99 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
   /* 输入框字号 >=16px，避免 iOS 聚焦时自动放大页面 */
   input,textarea,select{font-size:16px !important}
 }
+/* ========== 阳光特效：A1 金色光斑漂移 ========== */
+.gold-caustics{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;mix-blend-mode:screen}
+.caustic-spot{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(244,196,48,.45) 0%,rgba(244,196,48,.18) 35%,transparent 70%);filter:blur(2px);animation:causticDrift 18s ease-in-out infinite}
+.caustic-spot.c2{width:240px;height:240px;top:10%;left:20%;animation-delay:-3s}
+.caustic-spot.c3{width:180px;height:180px;top:30%;right:15%;animation-delay:-7s;animation-duration:22s}
+.caustic-spot.c4{width:300px;height:300px;bottom:18%;left:40%;animation-delay:-11s;animation-duration:26s}
+.caustic-spot.c5{width:150px;height:150px;top:55%;right:40%;animation-delay:-5s;animation-duration:20s}
+.caustic-spot.c6{width:200px;height:200px;bottom:8%;right:22%;animation-delay:-13s}
+@keyframes causticDrift{0%,100%{transform:translate(0,0) scale(1);opacity:.7}25%{transform:translate(40px,-30px) scale(1.15);opacity:.95}50%{transform:translate(-30px,40px) scale(.9);opacity:.55}75%{transform:translate(20px,20px) scale(1.08);opacity:.85}}
+
+/* ========== A4 气泡上浮 ========== */
+.bubbles{position:fixed;inset:0;pointer-events:none;z-index:3;overflow:hidden}
+.bubble{position:absolute;bottom:-40px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.75),rgba(244,196,48,.18) 55%,transparent 75%);border:1px solid rgba(255,255,255,.4);animation:bubbleRise linear infinite;box-shadow:0 0 4px rgba(255,255,255,.3)}
+.bubble.b1{left:8%;width:8px;height:8px;animation-duration:14s;animation-delay:0s}
+.bubble.b2{left:18%;width:5px;height:5px;animation-duration:18s;animation-delay:-3s}
+.bubble.b3{left:32%;width:11px;height:11px;animation-duration:22s;animation-delay:-7s}
+.bubble.b4{left:48%;width:7px;height:7px;animation-duration:16s;animation-delay:-2s}
+.bubble.b5{left:62%;width:9px;height:9px;animation-duration:20s;animation-delay:-11s}
+.bubble.b6{left:78%;width:6px;height:6px;animation-duration:17s;animation-delay:-5s}
+.bubble.b7{left:88%;width:10px;height:10px;animation-duration:24s;animation-delay:-9s}
+.bubble.b8{left:94%;width:5px;height:5px;animation-duration:15s;animation-delay:-13s}
+@keyframes bubbleRise{0%{transform:translateY(0) translateX(0);opacity:0}8%{opacity:.7}50%{transform:translateY(-50vh) translateX(15px);opacity:.95}92%{opacity:.35}100%{transform:translateY(-105vh) translateX(-10px);opacity:0}}
+
+/* ========== A7 金色卷云纹 4 角（替代被删的莲花角花） ========== */
+.gold-vine{position:fixed;pointer-events:none;z-index:0;opacity:.55;filter:drop-shadow(0 0 8px rgba(244,196,48,.35))}
+.gold-vine.tl{top:0;left:0;width:130px}
+.gold-vine.tr{top:0;right:0;width:130px;transform:scaleX(-1)}
+.gold-vine.bl{bottom:0;left:0;width:110px;transform:scaleY(-1)}
+.gold-vine.br{bottom:0;right:0;width:110px;transform:scaleX(-1) scaleY(-1)}
+@media (max-width:768px){.gold-vine{display:none}}
+
+/* ========== B2 金色渐变字（标题） ========== */
+.thread .title{
+  background:linear-gradient(90deg,#9c6a00 0%,#f4c430 45%,#ffd700 55%,#d4a017 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+  filter:drop-shadow(0 1px 1px rgba(255,255,255,.7)) drop-shadow(0 0 3px rgba(244,196,48,.25));
+  font-weight:600;
+}
+.thread .title b,.thread .title strong{
+  background:linear-gradient(90deg,#9c6a00,#f4c430,#ffd700);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+}
+
+/* ========== C2 卡片悬停金光晕 ========== */
+.thread{transition:background .25s ease,box-shadow .25s ease,padding-left .25s ease}
+.thread:hover{box-shadow:0 0 22px rgba(244,196,48,.45);background:linear-gradient(90deg,rgba(244,196,48,.16),rgba(244,196,48,.04));padding-left:24px}
+.sidebox{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.sidebox:hover{transform:translateY(-2px);border-color:#e8b830;box-shadow:0 6px 22px rgba(244,196,48,.45)}
+.post{transition:box-shadow .25s ease,border-color .25s ease}
+.post:hover{box-shadow:0 3px 26px rgba(244,196,48,.35);border-color:rgba(244,196,48,.5)}
+
+/* ========== C3 鼠标拖尾金光（canvas） ========== */
+#gold-trail{position:fixed;inset:0;pointer-events:none;z-index:100;mix-blend-mode:screen}
+
+/* ========== E1 锦鲤游过 ========== */
+.koi{position:fixed;pointer-events:none;z-index:2;mix-blend-mode:multiply;filter:drop-shadow(0 4px 14px rgba(58,46,34,.18))}
+.koi-1{top:55%;left:-260px;width:200px;animation:koiSwim1 36s linear infinite}
+.koi-2{top:18%;right:-200px;width:170px;animation:koiSwim2 44s linear infinite -8s;transform:scaleX(-1)}
+.koi-3{top:78%;left:-260px;width:180px;animation:koiSwim3 40s linear infinite -16s}
+@keyframes koiSwim1{
+  0%{transform:translateX(0) translateY(0) rotate(-6deg)}
+  25%{transform:translateX(40vw) translateY(-30px) rotate(2deg)}
+  50%{transform:translateX(75vw) translateY(15px) rotate(-4deg)}
+  75%{transform:translateX(110vw) translateY(-25px) rotate(6deg)}
+  100%{transform:translateX(calc(100vw + 280px)) translateY(0) rotate(0deg)}
+}
+@keyframes koiSwim2{
+  0%{transform:scaleX(-1) translateX(0) translateY(0) rotate(6deg)}
+  25%{transform:scaleX(-1) translateX(35vw) translateY(25px) rotate(-3deg)}
+  50%{transform:scaleX(-1) translateX(70vw) translateY(-20px) rotate(4deg)}
+  75%{transform:scaleX(-1) translateX(105vw) translateY(30px) rotate(-5deg)}
+  100%{transform:scaleX(-1) translateX(calc(100vw + 220px)) translateY(0) rotate(0)}
+}
+@keyframes koiSwim3{
+  0%{transform:translateX(0) translateY(0) rotate(-4deg)}
+  25%{transform:translateX(40vw) translateY(20px) rotate(3deg)}
+  50%{transform:translateX(75vw) translateY(-15px) rotate(-5deg)}
+  75%{transform:translateX(110vw) translateY(25px) rotate(2deg)}
+  100%{transform:translateX(calc(100vw + 260px)) translateY(0) rotate(0deg)}
+}
+@media (max-width:768px){.koi{display:none}}
+
+/* ========== E3 水墨晕染（切换视图时短暂扩散） ========== */
+.ink-wash{position:fixed;inset:0;pointer-events:none;z-index:99;background:radial-gradient(circle at center,rgba(20,15,8,.55) 0%,rgba(20,15,8,.3) 40%,transparent 75%);opacity:0;mix-blend-mode:multiply}
+.ink-wash.fire{animation:inkWash 1.2s ease-out forwards}
+@keyframes inkWash{0%{opacity:0;transform:scale(.4)}30%{opacity:1;transform:scale(1.2)}60%{opacity:.6;transform:scale(2)}100%{opacity:0;transform:scale(3)}}
+
 /* 触摸设备：禁用 hover 黏滞 */
 @media (hover: none){
   a:hover,button:hover,.icon:hover{background:inherit}
@@ -653,6 +746,68 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
 <body>
 
 <!-- 莲花角花装饰（已删） -->
+
+<!-- A7 金色卷云纹 4 角（替代莲花） -->
+<svg class="gold-vine tl" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,0 L130,0 L130,30 Q90,30 70,50 Q50,70 30,90 Q15,110 0,130 Z" fill="#f4c430" opacity=".22"/>
+  <path d="M0,0 Q40,20 60,50 Q70,70 50,90 Q30,75 20,55 Q10,30 0,0 Z" fill="none" stroke="#d4a017" stroke-width="1.2" opacity=".7"/>
+  <path d="M20,5 Q35,25 45,45 Q40,60 25,55 Q15,35 20,5 Z" fill="none" stroke="#ffd700" stroke-width=".8" opacity=".6"/>
+  <circle cx="12" cy="14" r="2" fill="#ffd700" opacity=".7"/>
+  <circle cx="40" cy="38" r="1.5" fill="#f4c430" opacity=".7"/>
+  <circle cx="28" cy="62" r="1.8" fill="#ffd700" opacity=".6"/>
+</svg>
+<svg class="gold-vine tr" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,0 L130,0 L130,30 Q90,30 70,50 Q50,70 30,90 Q15,110 0,130 Z" fill="#f4c430" opacity=".22"/>
+  <path d="M0,0 Q40,20 60,50 Q70,70 50,90 Q30,75 20,55 Q10,30 0,0 Z" fill="none" stroke="#d4a017" stroke-width="1.2" opacity=".7"/>
+  <path d="M20,5 Q35,25 45,45 Q40,60 25,55 Q15,35 20,5 Z" fill="none" stroke="#ffd700" stroke-width=".8" opacity=".6"/>
+  <circle cx="12" cy="14" r="2" fill="#ffd700" opacity=".7"/>
+  <circle cx="40" cy="38" r="1.5" fill="#f4c430" opacity=".7"/>
+  <circle cx="28" cy="62" r="1.8" fill="#ffd700" opacity=".6"/>
+</svg>
+<svg class="gold-vine bl" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,0 L110,0 L110,28 Q80,28 60,48 Q40,70 20,90 L0,110 Z" fill="#f4c430" opacity=".22"/>
+  <path d="M5,5 Q35,25 55,50 Q60,75 40,90 Q20,75 10,50 Q5,25 5,5 Z" fill="none" stroke="#d4a017" stroke-width="1.2" opacity=".7"/>
+  <circle cx="18" cy="20" r="1.8" fill="#ffd700" opacity=".7"/>
+  <circle cx="48" cy="50" r="1.5" fill="#f4c430" opacity=".7"/>
+</svg>
+<svg class="gold-vine br" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,0 L110,0 L110,28 Q80,28 60,48 Q40,70 20,90 L0,110 Z" fill="#f4c430" opacity=".22"/>
+  <path d="M5,5 Q35,25 55,50 Q60,75 40,90 Q20,75 10,50 Q5,25 5,5 Z" fill="none" stroke="#d4a017" stroke-width="1.2" opacity=".7"/>
+  <circle cx="18" cy="20" r="1.8" fill="#ffd700" opacity=".7"/>
+  <circle cx="48" cy="50" r="1.5" fill="#f4c430" opacity=".7"/>
+</svg>
+
+<!-- A1 金色光斑 -->
+<div class="gold-caustics" aria-hidden="true">
+  <div class="caustic-spot c2"></div>
+  <div class="caustic-spot c3"></div>
+  <div class="caustic-spot c4"></div>
+  <div class="caustic-spot c5"></div>
+  <div class="caustic-spot c6"></div>
+</div>
+
+<!-- A4 气泡 -->
+<div class="bubbles" aria-hidden="true">
+  <div class="bubble b1"></div>
+  <div class="bubble b2"></div>
+  <div class="bubble b3"></div>
+  <div class="bubble b4"></div>
+  <div class="bubble b5"></div>
+  <div class="bubble b6"></div>
+  <div class="bubble b7"></div>
+  <div class="bubble b8"></div>
+</div>
+
+<!-- E1 锦鲤游过 -->
+<img class="koi koi-1" src="assets/desktop/koi/koi-gold-big.png" alt="">
+<img class="koi koi-2" src="assets/desktop/koi/koi-red-white-black.jpg" alt="">
+<img class="koi koi-3" src="assets/desktop/koi/koi-red-black-with-lotus.png" alt="">
+
+<!-- E3 水墨晕染（切换触发） -->
+<div class="ink-wash" aria-hidden="true"></div>
+
+<!-- C3 鼠标拖尾 -->
+<canvas id="gold-trail"></canvas>
 
 <div class="topbar">
   <div class="brand"><img class="logo-mark" src="assets/desktop/forum-bs/lotus-jade-light.png" alt="">回 川 水 阁<span class="dot">·</span><span class="sub">民 间 论 坛</span></div>
@@ -827,7 +982,7 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
           <div class="quote">
             「材料齐了。湖心岛、底泥、库底红膜、库周取样、那份未公开的 4 月例检数据，一并打包。明天上午递上去。<br>
             各位同事，<b>如果我没回来</b>把这条消息截给沈清川。」<br>
-            <span style="color:#8a6d1a">03:11 许清</span>
+            <span style="color:#b08220">03:11 许清</span>
           </div>
           <p>第二天上午 9 点，他没来上班。人事科 11 点发的内部口径是「个人原因请假」。再过三天改口「已调往外地同系统兄弟单位」。再过一周变成「按本人意愿办理离职，相关档案已转出」。</p>
           <p>他工位上的电脑，至今还亮着。我远远拍了一张，屏幕停在那个「已发送」上，没人关过。</p>
@@ -869,10 +1024,10 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
               <div class="body">他发那条消息前一周，跟我喝过一次酒。他说他知道了一些事，但是，「说出来，会有人跟他一起走」。他没走，他先让 ta 走了。
               <div class="quote" style="margin-top:8px">
                 [工 作 群 截 图 · 2024-09-22 02:58]<br>
-                <b>清</b>（<span style="opacity:0.18;color:#8a6d1a">XuQing_0221</span>）：<br>
+                <b>清</b>（<span style="opacity:0.18;color:#b08220">XuQing_0221</span>）：<br>
                 「材料齐了。湖心岛、底泥、库底红膜、库周取样、那份未公开的 4 月例检数据，一并打包。明天上午递上去。<br>
                 各位同事，<b>如果我没回来</b>把这条消息截给沈清川。」<br>
-                <span style="color:#a67c00">状态栏：<span style="opacity:0.18;color:#8a6d1a">jiuHuLaiYe27</span> · 个 人 签 名 档 ：就 呼 来 业 已 满 27 岁</span>
+                <span style="color:#f4c430">状态栏：<span style="opacity:0.18;color:#b08220">jiuHuLaiYe27</span> · 个 人 签 名 档 ：就 呼 来 业 已 满 27 岁</span>
               </div>
               </div>
             </div>
@@ -986,10 +1141,10 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
               <div class="body"><span class="floornum">[2 楼]</span>我爸是 1985 年第一批建市干部，他 1986 年的工作笔记里写过一句：「沈清川来市档案馆报到，工龄表填 23 岁，长得跟 1978 年那张一样。」<br>他当时以为写错了，没改。
               <div class="quote" style="margin-top:8px">
                 [档 案 室 内 部 工 单 · 1985-12-14 · 永 久]<br>
-                编　号 ：<span style="opacity:0.18;color:#8a6d1a">ShenQingchuan_25</span><br>
+                编　号 ：<span style="opacity:0.18;color:#b08220">ShenQingchuan_25</span><br>
                 类　别 ：人 事 · 长 期 · 不 调 离<br>
                 工 龄 表 ：23 岁　·　<b>初 予 ！</b><br>
-                初 始 密 钥 ：<span style="opacity:0.18;color:#8a6d1a">chu-yu-2014</span>
+                初 始 密 钥 ：<span style="opacity:0.18;color:#b08220">chu-yu-2014</span>
               </div>
               
               </div>
@@ -1045,7 +1200,7 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
             </div>
           </div>
         </div>
-        <p style="margin-top:6px;color:#8a6d1a;font-size:11.5px;font-style:italic">管理员注：沈清川同志的旧档归位凭据，已在前期档案交互中给出（详见微信「四人之秘」聊天窗），本帖不再重复。</p>
+        <p style="margin-top:6px;color:#b08220;font-size:11.5px;font-style:italic">管理员注：沈清川同志的旧档归位凭据，已在前期档案交互中给出（详见微信「四人之秘」聊天窗），本帖不再重复。</p>
         <div class="pf">
           <span>此帖已被相关单位要求下沉 · 楼中含管理员口令，请勿截图</span>
           <div class="ops"><span>👍 480</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
@@ -1118,10 +1273,10 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
               <div class="body">那份底稿我签过销毁。我签的时候手抖。我手抖不是因为不会写字，是因为我那阵子已经明白，<b>下一份报告上，要写的字会变成我自己的名字。</b>
               <div class="quote" style="margin-top:8px">
                 [生 态 环 境 局 内 部 邮 件 · 抄 送 留 存 · 2024-05-11]<br>
-                发 件 人 ：<span style="opacity:0.18;color:#8a6d1a">LinMaocai77</span> @ 局 内 网<br>
+                发 件 人 ：<span style="opacity:0.18;color:#b08220">LinMaocai77</span> @ 局 内 网<br>
                 收 件 人 ：办 公 室 副 主 任 · 档 案 室 · 市 政 府 办<br>
                 主　　题 ：5 月 水 质 报 告 修 订（密）<br>
-                备　　注 ：<b>家 属 名</b>　·　登 录 口 令 ：<span style="opacity:0.18;color:#8a6d1a">family</span>
+                备　　注 ：<b>家 属 名</b>　·　登 录 口 令 ：<span style="opacity:0.18;color:#b08220">family</span>
               </div>
               </div>
             </div>
@@ -1161,14 +1316,14 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
               <div class="body">湖心岛祠堂里坐着的那位。他 没名字。他 也不需要名字。他 只认字，<b>凡是你主动写下来的、主动开口说的，他 都认。</b></div>
               <p style="margin-top:8px">我这条楼里所有许愿的细节、签过的字、烧过的报告，<b>都是为了让你看清他 是怎么一步步把人引过去的。</b></p>
               <p>我劝你 <b>打开这一页</b>看完那张图，再决定要不要去湖心岛。</p>
-              <p style="text-align:center;margin-top:14px"><a href="chapter2-ritual.html" style="display:inline-block;padding:8px 18px;border:1px solid var(--red);color:#8a6d1a;text-decoration:none;letter-spacing:0.2em;font-size:12px">▸ 打 开 那 张 献 祭 图</a></p>
-              <p style="margin-top:8px;font-size:11.5px;color:#8a6d1a;text-align:center">点开后，<b>点一下那张图</b>。那一栏里，会显出两个红字。<br>那两个红字，<span style="color:#a02020">就是</span>。</p>
+              <p style="text-align:center;margin-top:14px"><a href="chapter2-ritual.html" style="display:inline-block;padding:8px 18px;border:1px solid var(--red);color:#b08220;text-decoration:none;letter-spacing:0.2em;font-size:12px">▸ 打 开 那 张 献 祭 图</a></p>
+              <p style="margin-top:8px;font-size:11.5px;color:#b08220;text-align:center">点开后，<b>点一下那张图</b>。那一栏里，会显出两个红字。<br>那两个红字，<span style="color:#a02020">就是</span>。</p>
               <div class="admin-cred" style="margin-top:8px">林 局 留 了 一 句 话：</div>
               
             </div>
           </div>
         </div>
-        <p style="margin-top:6px;color:#8a6d1a;font-size:11.5px;font-style:italic">管理员注：林茂才同志的归位凭据，已在前期档案交互中给出（详见微信「四人之秘」聊天窗与归位通告正文），本帖不再重复。</p>
+        <p style="margin-top:6px;color:#b08220;font-size:11.5px;font-style:italic">管理员注：林茂才同志的归位凭据，已在前期档案交互中给出（详见微信「四人之秘」聊天窗与归位通告正文），本帖不再重复。</p>
         <div class="pf">
           <span>⚠ 此帖发布 11 小时 · 楼主尚未登录 · 已被相关单位要求下沉</span>
           <div class="ops"><span>👍 286</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
@@ -1193,7 +1348,7 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
           <p>二、关于「湖心岛夜间维护作业」系保障库区安全的常规水库管理工作。请市民不要过度联想。</p>
           <p>三、近期网传「湖心岛有异常光斑」「红纹鱼」「水面红雾」等说法，市生态环境局已多次公开说明，均系自然现象，不存在污染，请勿信谣传谣。</p>
           <p>四、对在水阁等平台发布不实信息、散步恐慌情绪的网民，相关部门将依法依规处理。</p>
-          <p class="small" style="color:#8a6d1a">市政府办公室</p>
+          <p class="small" style="color:#b08220">市政府办公室</p>
         </div>
         <div class="reply-list">
           <div class="reply">
@@ -1203,9 +1358,9 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
               <div class="body">周主任您好。请问湖心岛每月周三 00:00 那次「维护作业」，您亲自参加过几次？档案室 B3 层里有一份您 2024 年的签到表，十二次签到，签字笔迹与您日常办公笔迹比对相似度 78%，剩下的 22% 集中在字尾。我不是想问别的，我只是想问：<b>那一夜您是用哪支笔签的？</b>
               <div class="quote" style="margin-top:8px">
                 [签 到 表 · 2024 全 年 · B3-签-0072 · 翻 拍 留 底]<br>
-                姓　名 ：<span style="opacity:0.18;color:#8a6d1a">ZhouBinkun_72</span>　·　岗 位 ：办 公 室 副 主 任<br>
+                姓　名 ：<span style="opacity:0.18;color:#b08220">ZhouBinkun_72</span>　·　岗 位 ：办 公 室 副 主 任<br>
                 笔　具 ：0.38 蓝 黑 · 2018 停 产　·　纸 ：库 区 维 护 记 录 本<br>
-                备　注 ：<b>影</b>　·　登 录 口 令 ：<span style="opacity:0.18;color:#8a6d1a">ying_snow_2024</span>
+                备　注 ：<b>影</b>　·　登 录 口 令 ：<span style="opacity:0.18;color:#b08220">ying_snow_2024</span>
               </div>
               </div>
             </div>
@@ -1331,9 +1486,9 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
               <div class="body">我翻了。纸片背面有一行字，墨水很淡，是 2003 年才有的那种蓝黑水写的：<b>我 儿 子 吃 了</b>。
               <div class="quote" style="margin-top:8px">
                 [藕 心 纸 片 · 背 面 · 2003 蓝 黑 · 翻 拍 留 底]<br>
-                家长 ID ：<span style="opacity:0.18;color:#8a6d1a">hongwen_2017</span><br>
+                家长 ID ：<span style="opacity:0.18;color:#b08220">hongwen_2017</span><br>
                 留　言 ：<b>我 儿 子 吃 了</b><br>
-                留 言 拼 音 ：<span style="opacity:0.18;color:#8a6d1a">wo_er_zi_chi_le</span>
+                留 言 拼 音 ：<span style="opacity:0.18;color:#b08220">wo_er_zi_chi_le</span>
               </div>
               <p style="margin-top:6px">那一行字，是另一个人写的。ta 不是我。ta 是 2003 年另一个孩子吃了藕的家长。ta 把自己的话写下来，叠进藕心，留在下一节藕里。等着下一个找到这片藕的人。</p>
               <p>我不知道 ta 是怎么做到的。我只知道，<b>这片藕留给我，不是 ta 留的，是 ta 留的。</b></p>
@@ -1418,9 +1573,9 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
               <div class="body">沈姐。我懂。我那张表的复印件我也留了一份。
               <div class="quote" style="margin-top:8px">
                 [换 岗 申 请 表 · 2023-09-04 · 第 三 次 · 翻 拍]<br>
-                申 请 人 ：<span style="opacity:0.18;color:#8a6d1a">laochen_1963</span>　·　部 门 ：湖 心 岛 祠 堂 巡 逻 队<br>
+                申 请 人 ：<span style="opacity:0.18;color:#b08220">laochen_1963</span>　·　部 门 ：湖 心 岛 祠 堂 巡 逻 队<br>
                 理　由 ：<b>换 下 来 的 人 第 二 年 都 病 了</b>　·　<b>没 人 信 我</b><br>
-                理 由 拼 音 ：<span style="opacity:0.18;color:#8a6d1a">mei_you_ren_xin_wo</span><br>
+                理 由 拼 音 ：<span style="opacity:0.18;color:#b08220">mei_you_ren_xin_wo</span><br>
                 审 批 ：<b style="color:#a02020">缓</b>
               </div>
               <p style="margin-top:6px">这一份是我自己留的。我每次换岗不批，我都会留一份。我不知道 ta 为什么偏偏就只认这一份。我只知道 ta 一直在看。</p>
@@ -1498,7 +1653,7 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
               <div class="quote" style="margin-top:8px">
                 [藕 心 纸 片 · 1962 · 外 婆 遗 物 · 翻 拍]<br>
                 留 字 ：<b>7 月 15 日 · 莲 花 开 了</b><br>
-                留 字 拼 音 ：<span style="opacity:0.18;color:#8a6d1a">xuehe_0715</span>　·　<span style="opacity:0.18;color:#8a6d1a">lian_hua_kai_le</span>
+                留 字 拼 音 ：<span style="opacity:0.18;color:#b08220">xuehe_0715</span>　·　<span style="opacity:0.18;color:#b08220">lian_hua_kai_le</span>
               </div>
               <p style="margin-top:6px">我外婆留下的这一节藕，我没动过。我把它泡在矿泉水里，每一年换一个水。ta 没再来过。我猜 ta 是在等 ta 的字被人念出来。</p>
               <div class="cred-box" data-key="xuehe" style="margin-top:8px">
@@ -1588,8 +1743,8 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
               <div class="body">楼上那位识趣。剩下三个，<b>自己想清楚</b>。<br>汝等写的每一个字，吾都看得见。<br>汝等点的每一个赞，吾都数得清。<br>汝等搜的每一个名字——<br><span class="xuehe-threat">尤其是吾的。</span><br>汝自己想清楚再按。</div>
               <div class="cred-box xuehe-locked" data-key="xuehe-self" style="margin-top:8px">
                 <div class="cred-title">██ 此 栏 不 接 受 输 入 ██</div>
-                <div class="cred-row"><label>帐 号</label><input type="text" value="—" disabled style="color:#a67c00"></div>
-                <div class="cred-row"><label>密 钥</label><input type="password" value="———" disabled style="color:#a67c00"></div>
+                <div class="cred-row"><label>帐 号</label><input type="text" value="—" disabled style="color:#f4c430"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" value="———" disabled style="color:#f4c430"></div>
                 <div class="cred-actions"><button type="button" disabled style="opacity:0.4;cursor:not-allowed">▸ 归 位</button><span class="admin-hint err">， 汝 没 有 这 个 资 格 ，</span></div>
                 <div class="cred-record" style="display:none">
                   <div class="rec-title">， 莲 塘 边 那 位 · 莲 塘 自 述 ，</div>
@@ -1648,8 +1803,8 @@ a.xuehe-tab:hover{background:rgba(240,199,90,.08) !important;color:#fff !importa
               <div class="quote" style="margin-top:8px">
                 [B3 层 · 莲 之 庭 观 察 日 志 · 末 页 · 1996-04-21 贴 上]<br>
                 撕 下 来 的 一 句 ：<b>水 底 下 有</b><br>
-                撕 字 人 ：<span style="opacity:0.18;color:#8a6d1a">neigui_1996</span><br>
-                原 句 拼 音 ：<span style="opacity:0.18;color:#8a6d1a">shui_di_xia_you</span>
+                撕 字 人 ：<span style="opacity:0.18;color:#b08220">neigui_1996</span><br>
+                原 句 拼 音 ：<span style="opacity:0.18;color:#b08220">shui_di_xia_you</span>
               </div>
               <p style="margin-top:6px">底稿原句是「水底下有人」。我撕掉了一个「人」字。ta 后来抄了三遍，ta 抄的也是「水底下有」。ta 同意我把「人」撕掉。ta 也怕那一行字被人看见。</p>
               <p>ta 抄三遍，不是为了让 ta 自己看。ta 抄三遍，<b>是怕我撕错</b>。ta 让我把 ta 的字撕对了。</p>
@@ -1718,6 +1873,15 @@ function go(id){
   if(el) el.classList.add('cur');
   document.querySelectorAll('.navlinks a').forEach(a => a.classList.toggle('cur', a.dataset.go === id));
   window.scrollTo({top:0, behavior:'instant'});
+  inkWash();
+}
+function inkWash(){
+  var w = document.querySelector('.ink-wash');
+  if(!w) return;
+  w.classList.remove('fire');
+  void w.offsetWidth;
+  w.classList.add('fire');
+  setTimeout(function(){ w.classList.remove('fire'); }, 1300);
 }
 document.querySelectorAll('[data-go]').forEach(a => {
   a.addEventListener('click', e => {
@@ -2124,6 +2288,51 @@ function runXueheJumpscare(){
     if(sb) sb.value = '';
   }, 5500);
 }
+
+/* ========== C3 鼠标拖尾金光 ========== */
+(function(){
+  var c = document.getElementById('gold-trail');
+  if(!c) return;
+  var ctx = c.getContext('2d');
+  var dpr = window.devicePixelRatio || 1;
+  var w = 0, hh = 0;
+  function resize(){
+    w = window.innerWidth; hh = window.innerHeight;
+    c.width = w * dpr; c.height = hh * dpr;
+    c.style.width = w + 'px'; c.style.height = hh + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  var pts = [];
+  var last = 0;
+  window.addEventListener('mousemove', function(e){
+    var now = Date.now();
+    if(now - last > 14){ pts.push({x:e.clientX, y:e.clientY, t:now}); last = now; }
+    if(pts.length > 35) pts.shift();
+  });
+  window.addEventListener('mouseleave', function(){ pts = []; });
+  (function tick(){
+    ctx.clearRect(0, 0, w, hh);
+    var now = Date.now();
+    pts = pts.filter(function(p){ return now - p.t < 700; });
+    for(var i = 0; i < pts.length; i++){
+      var p = pts[i];
+      var age = (now - p.t) / 700;
+      var alpha = (1 - age) * 0.85;
+      var r = 4 + age * 14;
+      var grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+      grd.addColorStop(0, 'rgba(255,215,0,' + alpha + ')');
+      grd.addColorStop(0.4, 'rgba(244,196,48,' + (alpha * 0.6) + ')');
+      grd.addColorStop(1, 'rgba(244,196,48,0)');
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  })();
+})();
 
 </script>
 
