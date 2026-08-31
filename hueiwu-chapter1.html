@@ -87,6 +87,26 @@ p.quote{margin:18px 32px;padding:10px 16px;border-left:3px solid var(--red);back
 
 /* 总章 */
 .chap{font-size:10px;color:var(--ink2);letter-spacing:0.4em;text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 0;margin:0 auto 24px;width:60%}
+
+/* ===== 移动端通用适配（手机可玩） ===== */
+@media (max-width: 768px){
+  html,body{overflow-x:hidden;-webkit-text-size-adjust:100%}
+  img{max-width:100%;height:auto}
+  /* 通用容器左右留白收紧 */
+  .wrap,.container,.page,.main,.content,.article-wrap,.doc,.panel{
+    padding-left:12px !important;padding-right:12px !important;
+  }
+  /* 宽表格横向滚动，不撑破屏幕 */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  /* 长文本可换行，防止溢出 */
+  p,div,span,a{overflow-wrap:break-word;word-break:break-word}
+  /* 输入框字号 >=16px，避免 iOS 聚焦时自动放大页面 */
+  input,textarea,select{font-size:16px !important}
+}
+/* 触摸设备：禁用 hover 黏滞 */
+@media (hover: none){
+  a:hover,button:hover,.icon:hover{background:inherit}
+}
 </style>
 </head>
 <body>

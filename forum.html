@@ -51,7 +51,7 @@ body{
 .navlinks a{color:var(--ink2);text-decoration:none;padding:0 18px;height:54px;display:flex;align-items:center;font-size:13px;letter-spacing:0.12em}
 .navlinks a:hover{color:#c8b8a0;background:rgba(255,255,255,0.04)}
 .navlinks a.cur{color:#c8b8a0;background:rgba(139,26,26,0.18);border-bottom:2px solid #8b1a1a}
-.search{margin-left:auto;display:flex;gap:6px;align-items:center}
+.search{margin:0 0 0 auto;display:flex;gap:6px;align-items:center}
 .search input{background:#000;border:1px solid #2a2a2a;color:var(--ink);padding:5px 10px;font-size:12px;width:200px;letter-spacing:0.06em}
 .search input:focus{outline:none;border-color:#8b1a1a}
 .search button{background:transparent;border:1px solid #3a3a3a;color:var(--ink2);padding:5px 12px;cursor:pointer;font-size:12px;letter-spacing:0.1em}
@@ -528,7 +528,98 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-js .end-text.show{display:flex;animation:endFade 0.5s ease-out}
 @keyframes endFade{from{opacity:0}to{opacity:1}}
 @keyframes pageShake{0%{transform:translate(0,0)}25%{transform:translate(-6px,4px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-4px,-6px)}100%{transform:translate(6px,5px)}}
+/* ========== 移动端适配（手机可玩） ========== */
+@media (max-width: 860px){
+  /* 主体：单列，侧栏挪到下方 */
+  .wrap{grid-template-columns:1fr;padding:14px 12px 60px;gap:16px}
+  .side{order:2}
 
+  /* 顶栏：允许换行；导航横向滚动；搜索框压缩 */
+  .topbar{height:auto;min-height:54px;padding:8px 12px;flex-wrap:wrap;gap:8px}
+  .brand{font-size:15px;margin-right:0;letter-spacing:0.2em}
+  .brand .sub{display:none}
+  .navlinks{
+    margin-left:0;order:3;width:100%;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+    border-top:1px solid #2a2a2a;scrollbar-width:none;
+  }
+  .navlinks::-webkit-scrollbar{display:none}
+  .navlinks a{padding:0 12px;height:44px;font-size:12px;white-space:nowrap;flex-shrink:0}
+  .search{margin-left:auto}
+  .search input{width:120px}
+
+  /* 主题行：只留头像 + 标题，隐藏 作者/时间/回复数，加大触摸区 */
+  .thread{grid-template-columns:40px 1fr;gap:10px;padding:12px 12px;min-height:56px}
+  .thread .author,.thread .last,.thread .count{display:none}
+  .thread .title{font-size:14.5px;line-height:1.55}
+  .thread .meta{font-size:11.5px;line-height:1.5;margin-top:4px}
+  .avatar{width:32px;height:32px}
+
+  /* 帖子正文：留白收紧，行高放宽便于手机阅读 */
+  .post .pb{padding:16px 14px;font-size:14.5px;line-height:1.9}
+  .post .ph{padding:14px}
+  .post .ph .info .t{font-size:16px}
+  .reply{padding:12px 14px}
+  .reply .body{font-size:13.5px;line-height:1.85}
+  .sidebox{padding:12px 14px}
+}
+
+@media (max-width: 480px){
+  .wrap{padding:12px 8px 50px}
+  .search input{width:100px;font-size:12px}
+  .thread{padding:11px 10px;grid-template-columns:34px 1fr;gap:9px}
+  .thread .title{font-size:14px}
+  .thread .meta{font-size:11px}
+  .avatar{width:30px;height:30px}
+  .post .pb{padding:14px 12px;font-size:14.5px;line-height:1.95}
+  .post .ph .info .t{font-size:15px}
+  .post .ph .info .m{font-size:10.5px}
+  /* 凭据输入框：手机上放大便于填写 */
+  .cred-row input{font-size:15px !important;padding:8px 10px !important}
+  .cred-actions button{padding:8px 20px !important;font-size:13px !important}
+  /* 跳脸文字层手机上缩小，避免糊成一片 */
+  .xuehe-js .x-bnum{font-size:.85em}
+  .xuehe-js .x-creep-item{font-size:.85em}
+  .xuehe-js .x-bsod{--bsc:0.8}
+}
+
+/* 触摸设备：去掉 hover，避免点击后样式黏住 */
+@media (hover: none){
+  .thread:hover{background:transparent}
+  .sidebox:hover{transform:none;box-shadow:none}
+}
+
+/* 尊重系统"减少动态效果"设置：关闭跳脸抖动，避免不适 */
+@media (prefers-reduced-motion: reduce){
+  .xuehe-js.run{animation:none}
+  .xuehe-js .x-glitch,
+  .xuehe-js .x-bsod,
+  .xuehe-js .x-bnum,
+  .xuehe-js .x-creep-item,
+  .xuehe-js .x-bot,
+  .xuehe-js .xuehe-noise{animation:none !important}
+}
+
+
+/* ===== 移动端通用适配（手机可玩） ===== */
+@media (max-width: 768px){
+  html,body{overflow-x:hidden;-webkit-text-size-adjust:100%}
+  img{max-width:100%;height:auto}
+  /* 通用容器左右留白收紧 */
+  .wrap,.container,.page,.main,.content,.article-wrap,.doc,.panel{
+    padding-left:12px !important;padding-right:12px !important;
+  }
+  /* 宽表格横向滚动，不撑破屏幕 */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  /* 长文本可换行，防止溢出 */
+  p,div,span,a{overflow-wrap:break-word;word-break:break-word}
+  /* 输入框字号 >=16px，避免 iOS 聚焦时自动放大页面 */
+  input,textarea,select{font-size:16px !important}
+}
+/* 触摸设备：禁用 hover 黏滞 */
+@media (hover: none){
+  a:hover,button:hover,.icon:hover{background:inherit}
+}
 </style>
 </head>
 <body>
@@ -543,10 +634,10 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
     <a data-go="t-zhou">周秉坤</a>
     <a data-go="t-xuehe-self" class="xuehe-tab">雪 禾</a>
   </nav>
-  <div class="search">
-    <input type="text" placeholder="搜索关键词，如「红纹」「档案室」" id="searchIn">
-    <button onclick="xueheSearchClick()">搜索</button>
-  </div>
+  <form class="search" onsubmit="xueheSearchClick(); return false;">
+    <input type="text" placeholder="搜索关键词，如「红纹」「档案室」" id="searchIn" enterkeyhint="search" autocomplete="off">
+    <button type="submit">搜索</button>
+  </form>
 </div>
 
 <div class="wrap">
@@ -1718,6 +1809,23 @@ function checkAllUnlocked(){
   if(h && /^t-/.test(h)) go(h);
 })();
 
+/* 跳脸素材空闲预加载：页面空闲时后台悄悄拉取，触发时零等待（总量仅 ~400KB） */
+(function(){
+  var SRC = [
+    'assets/desktop/forum-bs/eye-winged-a.png',
+    'assets/desktop/forum-bs/robot-angel.png',
+    'assets/desktop/forum-bs/rose-eye-big.png'
+  ];
+  function preload(){
+    for (var i=0;i<SRC.length;i++){ var im = new Image(); im.src = SRC[i]; }
+  }
+  if (window.requestIdleCallback) {
+    window.requestIdleCallback(preload, {timeout: 4000});
+  } else {
+    window.addEventListener('load', function(){ setTimeout(preload, 1500); });
+  }
+})();
+
 /* === 雪禾触发：搜「雪禾」→ 警告 → 跳脸 → 回退到雪禾帖子 === */
 (function(){
   var sb = document.getElementById('searchIn');
@@ -1769,6 +1877,14 @@ function showXueheWarn(){
 }
 
 function runXueheJumpscare(){
+  // 手机端减量：元素太多会卡，按屏幕尺寸/触摸能力动态缩放
+  var IS_MOBILE = (window.innerWidth < 700) || (navigator.maxTouchPoints > 0 && window.innerWidth < 900);
+  var EYE_N   = IS_MOBILE ? 22 : 50;   // 眼睛元素
+  var BNUM_N  = IS_MOBILE ? 30 : 55;   // 血数字
+  var CREEP_N = IS_MOBILE ? 24 : 40;   // 诡异文字
+  var BOT_N   = IS_MOBILE ? 12 : 22;   // 我不是机器人
+  var BSOD_MS = IS_MOBILE ? 450 : 300; // 弹窗间隔（手机上弹慢一点）
+
   // glitch 堆叠：所有素材 + BSOD + 信息全部叠在一起，错位/红蓝重影/色相滚动
   // 关键素材：透明底 PNG，作为小点饰（80-220px）散落满屏（不再全屏占满）
   // === 3 张眼睛元素素材，重复利用 50 次铺满，作为"盯着你"的元素 ===
@@ -1778,7 +1894,7 @@ function runXueheJumpscare(){
     'assets/desktop/forum-bs/rose-eye-big.png'
   ];
   var imgs = [];
-  for (var ii=0; ii<50; ii++){ imgs.push(EYE_IMGS[ii % EYE_IMGS.length]); }
+  for (var ii=0; ii<EYE_N; ii++){ imgs.push(EYE_IMGS[ii % EYE_IMGS.length]); }
   var rng = function(min,max){ return Math.random()*(max-min)+min; };
   // 错位偏移（基于 img index）
   var offX = [], offY = [], scl = [], rot = [], bl = [], gs = [], hue = [], lw = [], lh = [], lpx = [], lpy = [];
@@ -1883,7 +1999,7 @@ function runXueheJumpscare(){
   // 由 setInterval 持续 5.5s 内每 ~300ms 弹一个
   // CAMERA 弹窗在 1.5s / 3.0s 弹 2 次（请求摄像头权限）
   // 55 个血红色/诡异文字数字：铺满屏幕闪（混合 hex/计数/错误码 + Zalgo 化诡异文字）
-  var BNUM_N = 55;
+
   html += '<div class="x-bloodnums">';
   for (var bn=0; bn<BNUM_N; bn++){
     var npx = rng(0, 100).toFixed(1);
@@ -1905,7 +2021,7 @@ function runXueheJumpscare(){
   }
   html += '</div>';
   // 22 个 I'm not a robot 满天飞
-  var BOT_N = 22;
+
   for (var bc=0; bc<BOT_N; bc++){
     var cpx = rng(0, 100).toFixed(1);
     var cpy = rng(0, 100).toFixed(1);
@@ -1919,7 +2035,7 @@ function runXueheJumpscare(){
     '</div>';
   }
   // 文字恐怖谷层：40 个米白/淡粉的"假温馨"文字（与血红数字对照）
-  var CREEP_N = 40;
+
   html += '<div class="x-creep">';
   for (var cr=0; cr<CREEP_N; cr++){
     var cpx = rng(0, 100).toFixed(1);
@@ -1993,7 +2109,7 @@ function runXueheJumpscare(){
     jsEl.appendChild(div);
   }
   // 启动：BSOD 每 300ms 弹一个；CAMERA 在 1.5s / 3.0s 各弹 1 次
-  var bsodTimer = setInterval(popBsod, 300);
+  var bsodTimer = setInterval(popBsod, BSOD_MS);
   setTimeout(popCamera, 1500);
   setTimeout(popCamera, 3000);
 

@@ -425,6 +425,26 @@ body.night-mode button,body.night-mode .btn,body.night-mode .btn-ghost{border-co
 .xuehe-clip .cap{margin-top:18px;font-size:13px;color:#999;letter-spacing:0.3em;text-align:center;max-width:520px}
 .xuehe-clip .close{margin-top:24px;padding:6px 20px;background:transparent;border:1px solid #555;color:#aaa;cursor:pointer;letter-spacing:0.2em}
 .xuehe-clip .close:hover{color:#fff;border-color:#888}
+
+/* ===== 移动端通用适配（手机可玩） ===== */
+@media (max-width: 768px){
+  html,body{overflow-x:hidden;-webkit-text-size-adjust:100%}
+  img{max-width:100%;height:auto}
+  /* 通用容器左右留白收紧 */
+  .wrap,.container,.page,.main,.content,.article-wrap,.doc,.panel{
+    padding-left:12px !important;padding-right:12px !important;
+  }
+  /* 宽表格横向滚动，不撑破屏幕 */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+  /* 长文本可换行，防止溢出 */
+  p,div,span,a{overflow-wrap:break-word;word-break:break-word}
+  /* 输入框字号 >=16px，避免 iOS 聚焦时自动放大页面 */
+  input,textarea,select{font-size:16px !important}
+}
+/* 触摸设备：禁用 hover 黏滞 */
+@media (hover: none){
+  a:hover,button:hover,.icon:hover{background:inherit}
+}
 </style>
 </head>
 <body>
