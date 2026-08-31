@@ -376,21 +376,23 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-js .xuehe-noise{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.04) 0 1px,transparent 1px 2px),repeating-linear-gradient(90deg,rgba(0,0,0,0.06) 0 1px,transparent 1px 2px);mix-blend-mode:difference;animation:noiseShift .08s steps(3,end) infinite;z-index:1}
 @keyframes noiseShift{0%{transform:translate(0,0)}33%{transform:translate(-2px,2px)}66%{transform:translate(3px,-2px)}}
 
-/* 全部素材层：自由定位 + 错位 + 错帧混合 + 红蓝重影 */
+/* 全部素材层：透明 PNG 小点饰（80-220px）散落满屏 */
 .xuehe-js .x-glitch{
   position:absolute;
-  inset:0;
-  background-size:100% 100%;
+  left:0;top:0;
+  background-size:contain;
+  background-repeat:no-repeat;
   background-position:center;
   mix-blend-mode:var(--bl,screen);
   opacity:var(--gs,0.85);
   filter:hue-rotate(var(--hue,0deg)) saturate(1.3) contrast(1.1);
-  transform:translate(var(--ox,0px),var(--oy,0px)) scale(var(--sc,1)) rotate(var(--rt,0deg));
+  transform:translate(-50%,-50%) translate(var(--ox,0px),var(--oy,0px)) scale(var(--sc,1)) rotate(var(--rt,0deg));
   animation:
     gShake .12s steps(2,end) infinite,
     gPos 1.4s steps(8,end) infinite,
     gSlice .18s steps(3,end) infinite;
   pointer-events:none;
+  z-index:2;
 }
 .xuehe-js .x-glitch[data-i="0"]{animation-delay:0s,.1s,.05s}
 .xuehe-js .x-glitch[data-i="1"]{animation-delay:.04s,.25s,.1s}
@@ -446,6 +448,7 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-js .x-bnum:nth-child(7n){color:#7a0000;mix-blend-mode:multiply}
 @keyframes bnumFlicker{0%,80%,100%{opacity:var(--op,0.7)}82%{opacity:.2}84%{opacity:1}86%{opacity:.3}}
 @keyframes bnumGlitch{0%{transform:translate(-50%,-50%) rotate(0)}33%{transform:translate(calc(-50% - 4px),calc(-50% + 2px)) rotate(-2deg)}66%{transform:translate(calc(-50% + 5px),calc(-50% - 3px)) rotate(2deg)}}
+@keyframes bnumFlickerSlow{0%,92%,100%{opacity:var(--op,0.7)}94%{opacity:.4}96%{opacity:1}98%{opacity:.5}}
 
 /* I'm not a robot 满天飞 */
 .xuehe-js .x-bot{position:absolute;left:0;top:0;transform:translate(-50%,-50%) scale(var(--bsc,1)) rotate(var(--brt,0deg));z-index:6;animation:gShake .15s steps(2,end) infinite}
@@ -463,7 +466,7 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-js .x-creep-item:nth-child(5n){color:#fff5e0;font-style:italic;letter-spacing:0.15em}
 .xuehe-js .x-creep-item:nth-child(7n){color:#888;font-size:.75em}
 .xuehe-js .x-creep-item::before{content:"👁️";position:absolute;left:-18px;top:0;font-size:.7em;opacity:.7}
-@keyframes creepFlicker{0%,85%,100%{opacity:var(--op,0.85)}87%{opacity:.3}89%{opacity:1}91%{opacity:.4}}
+@keyframes creepFlicker{0%,92%,100%{opacity:var(--op,0.85)}94%{opacity:.4}96%{opacity:1}98%{opacity:.5}}
 @keyframes creepGlitch{0%{transform:translate(-50%,-50%) rotate(var(--brt,0deg))}33%{transform:translate(calc(-50% - 3px),calc(-50% + 2px)) rotate(calc(var(--brt,0deg) - 1deg))}66%{transform:translate(calc(-50% + 4px),calc(-50% - 2px)) rotate(calc(var(--brt,0deg) + 1deg))}}
 
 /* console 灰白条 */
@@ -1756,8 +1759,8 @@ function showXueheWarn(){
 
 function runXueheJumpscare(){
   // glitch 堆叠：所有素材 + BSOD + 信息全部叠在一起，错位/红蓝重影/色相滚动
+  // 关键素材：透明底 PNG，作为小点饰（80-220px）散落满屏（不再全屏占满）
   var imgs = [
-    // 关键素材：玫瑰眼/翅膀眼/翅膀/血眼 重复利用，铺满屏幕
     'assets/desktop/forum-bs/rose-eye.png',
     'assets/desktop/forum-bs/eye-wings.png',
     'assets/desktop/forum-bs/robot-wings.png',
@@ -1765,29 +1768,23 @@ function runXueheJumpscare(){
     'assets/desktop/forum-bs/rose-eye.png',
     'assets/desktop/forum-bs/eye-wings.png',
     'assets/desktop/forum-bs/robot-wings.png',
-    'assets/desktop/forum-bs/eyes-bloodshot.jpg',
-    'assets/desktop/forum-bs/rose-eye.png',
-    'assets/desktop/forum-bs/eye-wings.png',
-    'assets/desktop/forum-bs/robot-wings.png',
-    'assets/desktop/forum-bs/eyes-bloodshot.jpg',
-    'assets/desktop/forum-bs/rose-eye.png',
-    'assets/desktop/forum-bs/eye-wings.png',
-    'assets/desktop/forum-bs/robot-wings.png',
-    'assets/desktop/forum-bs/eyes-bloodshot.jpg',
-    'assets/desktop/forum-bs/lotus-jade-green.png',
-    'assets/desktop/forum-bs/lotus-jade-white.png'
+    'assets/desktop/forum-bs/lotus-jade-green.png'
   ];
   var rng = function(min,max){ return Math.random()*(max-min)+min; };
   // 错位偏移（基于 img index）
-  var offX = [], offY = [], scl = [], rot = [], bl = [], gs = [], hue = [];
+  var offX = [], offY = [], scl = [], rot = [], bl = [], gs = [], hue = [], lw = [], lh = [], lpx = [], lpy = [];
   for(var k=0;k<imgs.length;k++){
-    offX[k] = rng(-150, 150).toFixed(1);
-    offY[k] = rng(-150, 150).toFixed(1);
-    scl[k]  = rng(1.6, 3.4).toFixed(2);
-    rot[k]  = rng(-18, 18).toFixed(1);
+    offX[k] = rng(-30, 30).toFixed(1);  // 小幅位移
+    offY[k] = rng(-30, 30).toFixed(1);
+    scl[k]  = rng(0.9, 1.15).toFixed(2); // 透明 PNG 已设尺寸，不再大缩放
+    rot[k]  = rng(-25, 25).toFixed(1);
     bl[k]   = ['screen','multiply','difference','overlay','lighten','hard-light'][Math.floor(Math.random()*6)];
-    gs[k]   = rng(0.55, 1.0).toFixed(2);
-    hue[k]  = rng(-45, 45).toFixed(0);
+    gs[k]   = rng(0.75, 1.0).toFixed(2);
+    hue[k]  = rng(-60, 60).toFixed(0);
+    lw[k]   = (80 + rng(0, 140)).toFixed(0);   // 80-220px 宽
+    lh[k]   = lw[k];                            // 正方形
+    lpx[k]  = rng(0, 100).toFixed(1);           // 0-100% 水平位置
+    lpy[k]  = rng(0, 100).toFixed(1);           // 0-100% 垂直位置
   }
 
   // 弹窗内容池（注意：之前是 dlMsgs 4 条；现在扩成 3 池随机抽，撑得起 28 个弹窗）
@@ -1862,10 +1859,12 @@ function runXueheJumpscare(){
   var html = '<div class="xuehe-js" id="xueheJS">';
   // 噪点底
   html += '<div class="xuehe-noise"></div>';
-  // 全部素材叠加
+  // 全部素材：作为小点饰（80-220px）散落满屏
   for (var i=0;i<imgs.length;i++){
     html += '<div class="layer x-glitch" data-i="'+i+'" style="'+
       'background-image:url('+imgs[i]+');'+
+      'left:'+lpx[i]+'%;top:'+lpy[i]+'%;'+
+      'width:'+lw[i]+'px;height:'+lh[i]+'px;'+
       '--ox:'+offX[i]+'px;--oy:'+offY[i]+'px;'+
       '--sc:'+scl[i]+';--rt:'+rot[i]+'deg;'+
       '--bl:'+bl[i]+';--gs:'+gs[i]+';--hue:'+hue[i]+'deg'+
@@ -1971,7 +1970,7 @@ function runXueheJumpscare(){
     try{ go('t-xuehe-self'); }catch(e){}
     var sb = document.getElementById('searchIn');
     if(sb) sb.value = '';
-  }, 5500);
+  }, 8000);
 }
 
 </script>
