@@ -502,7 +502,7 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
   </nav>
   <div class="search">
     <input type="text" placeholder="搜索关键词，如「红纹」「档案室」" id="searchIn">
-    <button onclick="alert('功能已屏蔽 · 请按主题列表查找')">搜索</button>
+    <button onclick="xueheSearchClick()">搜索</button>
   </div>
 </div>
 
@@ -1675,7 +1675,7 @@ function checkAllUnlocked(){
   if(h && /^t-/.test(h)) go(h);
 })();
 
-/* === 雪禾触发：搜「雪禾」→ 警告 → 跳脸 → 强制回退到序章 === */
+/* === 雪禾触发：搜「雪禾」→ 警告 → 跳脸 → 回退到雪禾帖子 === */
 (function(){
   var sb = document.getElementById('searchIn');
   if(!sb) return;
@@ -1688,6 +1688,14 @@ function checkAllUnlocked(){
     showXueheWarn();
   }, true);
 })();
+
+/* 搜索按钮：与回车同逻辑（输入「雪禾」→ 跳脸；否则提示按主题列表查找） */
+function xueheSearchClick(){
+  var sb = document.getElementById('searchIn');
+  var v = (sb && sb.value || '').trim();
+  if(v === '雪禾'){ showXueheWarn(); return; }
+  alert('功能已屏蔽 · 请按主题列表查找');
+}
 
 function showXueheWarn(){
   if(document.getElementById('xueheWarn')) return;
