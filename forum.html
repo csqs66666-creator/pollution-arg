@@ -431,11 +431,30 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
   80%{clip-path:inset(5% 0 75% 0)}
 }
 
-/* BSOD 框错位 */
-.xuehe-js .x-bsod{position:absolute;left:50%;top:50%;transform:translate(calc(-50% + var(--ox,0px)),calc(-50% + var(--oy,0px))) scale(1.18) rotate(calc(var(--ox,0px) * -0.04deg));filter:hue-rotate(var(--hue,0deg)) saturate(1.4) contrast(1.15);animation:gShake .14s steps(2,end) infinite}
-.xuehe-js .x-bsod:nth-child(2){filter:hue-rotate(-25deg) saturate(1.6);z-index:5}
-.xuehe-js .x-bsod:nth-child(3){filter:hue-rotate(180deg) saturate(1.6) blur(.4px);z-index:4}
-.xuehe-js .x-bsod:nth-child(4){filter:hue-rotate(50deg) saturate(1.5);z-index:6}
+/* BSOD 弹窗：absolute 铺满全屏（不再 center），大小/位置/旋转/色相抖动 */
+.xuehe-js .x-bsod{position:absolute;left:0;top:0;transform:translate(-50%,-50%) scale(var(--bsc,1)) rotate(var(--brt,0deg));filter:hue-rotate(var(--bhue,0deg)) saturate(1.4) contrast(1.15);animation:gShake .14s steps(2,end) infinite,dlBlink .3s steps(2,end) infinite;z-index:3}
+.xuehe-js .x-bsod .dl-box{animation:gSlice .18s steps(3,end) infinite}
+.xuehe-js .x-bsod:nth-child(odd){animation-delay:0s,.1s}
+.xuehe-js .x-bsod:nth-child(3n){filter:hue-rotate(calc(var(--bhue,0deg) + 180deg)) saturate(1.6);z-index:4}
+@keyframes dlBlink{0%,88%,100%{filter:hue-rotate(var(--bhue,0deg)) saturate(1.4) contrast(1.15)}90%{filter:hue-rotate(180deg) saturate(2.5) contrast(1.4)}92%{filter:hue-rotate(var(--bhue,0deg)) saturate(1.4) contrast(1.15)}94%{filter:hue-rotate(-90deg) saturate(2)}}
+
+/* 血红色数字：铺满屏幕闪 */
+.xuehe-js .x-bloodnums{position:absolute;inset:0;pointer-events:none;z-index:7;overflow:hidden}
+.xuehe-js .x-bnum{position:absolute;transform:translate(-50%,-50%) rotate(var(--brt,0deg));color:#a00808;font-family:"Consolas","Menlo","STKaiti",monospace;font-weight:700;text-shadow:0 0 6px #ff2030,0 0 12px #c0c0c0;mix-blend-mode:screen;opacity:var(--op,0.7);white-space:nowrap;animation:bnumFlicker .1s steps(2,end) infinite var(--dly,0s),bnumGlitch .25s steps(3,end) infinite;pointer-events:none}
+.xuehe-js .x-bnum:nth-child(3n){color:#c01020;font-size:1.2em;font-weight:900;animation-delay:0s,0.05s}
+.xuehe-js .x-bnum:nth-child(5n){color:#ff4040;font-size:0.85em}
+.xuehe-js .x-bnum:nth-child(7n){color:#7a0000;mix-blend-mode:multiply}
+@keyframes bnumFlicker{0%,80%,100%{opacity:var(--op,0.7)}82%{opacity:.2}84%{opacity:1}86%{opacity:.3}}
+@keyframes bnumGlitch{0%{transform:translate(-50%,-50%) rotate(0)}33%{transform:translate(calc(-50% - 4px),calc(-50% + 2px)) rotate(-2deg)}66%{transform:translate(calc(-50% + 5px),calc(-50% - 3px)) rotate(2deg)}}
+
+/* I'm not a robot 满天飞 */
+.xuehe-js .x-bot{position:absolute;left:0;top:0;transform:translate(-50%,-50%) scale(var(--bsc,1)) rotate(var(--brt,0deg));z-index:6;animation:gShake .15s steps(2,end) infinite}
+.xuehe-js .x-bot:nth-child(odd){animation-delay:.05s;z-index:5}
+.xuehe-js .x-bot:nth-child(3n){filter:hue-rotate(180deg);z-index:7}
+.xuehe-js .bot-box{display:flex;align-items:center;gap:8px;background:#f9f9f9;border:1px solid #d3d3d3;padding:8px 10px;box-shadow:0 2px 6px rgba(0,0,0,.4);font:11px/1.2 "Helvetica","Arial","Microsoft YaHei",sans-serif;color:#555;border-radius:2px}
+.xuehe-js .bot-cb{width:24px;height:24px;background:#fff;border:2px solid #c1c1c1;flex-shrink:0;position:relative;box-sizing:border-box}
+.xuehe-js .bot-cb::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#4285f4;font-size:18px;font-weight:bold;opacity:0}
+.xuehe-js .bot-text{color:#333;font-size:11px;line-height:1.2}
 
 /* console 灰白条 */
 .xuehe-js .x-logs{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:2px;padding:8px 14px 80px;background:linear-gradient(0deg,rgba(20,28,40,.85),rgba(20,28,40,0));z-index:8;max-height:42vh;overflow:hidden}
@@ -1752,12 +1771,32 @@ function runXueheJumpscare(){
     hue[k]  = rng(-45, 45).toFixed(0);
   }
 
-  // BSOD 框内容池（错位多个）
-  var dlMsgs = [
-    { icon:'⚠', head:'警   告', body:'汝 这 一 辈 子 的 点 击 ， 都 在 吾 的 账 本 上 。', btn:'汝 知 道 该 怎 么 做' },
-    { icon:'▲', head:'SYSTEM ERROR 0xC0DE1', body:'A fatal exception has occured at segment 0x0071.<br>The current request will be terminated.', btn:'Don\'t Send' },
-    { icon:'✕', head:'错 误 0x7733', body:'Processor thread stuck. Specified resource is not owned by this thread.', btn:'OK' },
-    { icon:'!', head:'Java.lang.NullPointerException', body:'at lian_tang_bian.listenForFools(Xuehe.class:64)<br>at yao_yuan.renderBacklash(Forum.class:13)', btn:'&Send Report' }
+  // 弹窗内容池（注意：之前是 dlMsgs 4 条；现在扩成 3 池随机抽，撑得起 28 个弹窗）
+  var bsodHeads  = ['警   告','Warning','SYSTEM ERROR 0xC0DE1','错 误 0x7733','Java.lang.NullPointerException','Access Violation','Stack Overflow','Segmentation Fault','Fatal Exception','KERNEL PANIC','CRITICAL FAULT','Memory corrupted','Security breach','Thread deadlocked','Assertion failed','Resource exhausted','Buffer overrun','Achtung','汝 别 再 按 任 何 键 了'];
+  var bsodBodies = [
+    '汝 这 一 辈 子 的 点 击 ， 都 在 吾 的 账 本 上 。',
+    'A fatal exception has occured at segment 0x0071.<br>The current request will be terminated.',
+    'Processor thread stuck. Specified resource is not owned by this thread.',
+    'at lian_tang_bian.listenForFools(Xuehe.class:64)<br>at yao_yuan.renderBacklash(Forum.class:13)',
+    'Your existence will now be erased.',
+    'Stack overflow at 0x0064:<br>&nbsp;&nbsp;lian_tang_bian.listenForFools()<br>&nbsp;&nbsp;yao_yuan.renderBacklash()',
+    'Segmentation fault (core dumped)',
+    'kernel panic - not syncing: fatal exception in interrupt',
+    '吾 数 到 99 ， 汝 就 属 于 吾 了',
+    'Assertion failed: heart.string == "still human"',
+    'Address 0xDEADBEEF is not stack-aligned',
+    'don\'t blink. don\'t even breathe.'
+  ];
+  var bsodBtns   = ['汝 知 道 该 怎 么 做','OK','Don\'t Send','取 消','Finally I\'ll be free','&Send Report','重 试','确 认','逃 离 这 里','静 静 等 待'];
+  // 血红色数字池（hex/计数/错误码/坐标/时间戳/雪禾相关）
+  var bloodNums = [
+    '0xA8B2C0','0xC0DE1337','0x7733AE','0xEE00FF','0xBB1122','0x04F71A','0x6E00DE',
+    '0042','0064','0199','0666','9999','0037','0101','1314',
+    'ERR_OVERSEER_LISTENING','ERR_FATAL','CRITICAL','FATAL','FOREWARNED',
+    'lat 30.6595 lon 104.0648','x: 64 y: -118','seg 0x0071','offset +0xA1',
+    '莲 塘 边 那 位','吾 听 见 了','腐 土 青 莲','小 仙','湖 心 岛 底',
+    '04:00:22','23:59:00','13:14:00','00:00:00','03:33:33',
+    'CUT HERE','-1.0E+99','NaN','∞','¶','#B22222','#A02020'
   ];
   // console.log 灰白条内容
   var logs = [
@@ -1789,20 +1828,58 @@ function runXueheJumpscare(){
       '--bl:'+bl[i]+';--gs:'+gs[i]+';--hue:'+hue[i]+'deg'+
       '"></div>';
   }
-  // 4 个 BSOD 框错位
-  var dOff = [[-30,-50],[60,40],[-80,80],[100,-30]];
-  for (var d=0; d<4; d++){
-    html += '<div class="x-bsod" style="--ox:'+dOff[d][0]+'px;--oy:'+dOff[d][1]+'px">'+
+  // 28 个 BSOD 弹窗：铺满屏幕 + 随机大小/位置/旋转 + glitch 闪烁
+  var BSOD_N = 28;
+  for (var d=0; d<BSOD_N; d++){
+    var bw = rng(220, 360).toFixed(0);
+    var bpx = rng(0, 100).toFixed(1);
+    var bpy = rng(0, 100).toFixed(1);
+    var brt = rng(-22, 22).toFixed(1);
+    var bsc = rng(0.55, 1.15).toFixed(2);
+    var bhue = rng(-90, 90).toFixed(0);
+    var bi = Math.floor(Math.random()*bsodHeads.length);
+    var bb = Math.floor(Math.random()*bsodBodies.length);
+    var btn1 = bsodBtns[Math.floor(Math.random()*bsodBtns.length)];
+    var btn2 = bsodBtns[Math.floor(Math.random()*bsodBtns.length)];
+    html += '<div class="x-bsod" style="left:'+bpx+'%;top:'+bpy+'%;width:'+bw+'px;--brt:'+brt+'deg;--bsc:'+bsc+';--bhue:'+bhue+'deg">'+
       '<div class="dl-box">'+
-        '<div class="dl-title"><span>'+dlMsgs[d].head+'</span><span class="x">×</span></div>'+
+        '<div class="dl-title"><span>'+bsodHeads[bi]+'</span><span class="x">×</span></div>'+
         '<div class="dl-body">'+
-          '<div class="dl-icon">'+dlMsgs[d].icon+'</div>'+
-          '<div class="dl-msg">'+dlMsgs[d].body+'</div>'+
+          '<div class="dl-icon">⚠</div>'+
+          '<div class="dl-msg">'+bsodBodies[bb]+'</div>'+
         '</div>'+
         '<div class="dl-btns">'+
-          '<button class="ok">'+dlMsgs[d].btn+'</button>'+
-          '<button>取 消</button>'+
+          '<button class="ok">'+btn1+'</button>'+
+          '<button>'+btn2+'</button>'+
         '</div>'+
+      '</div>'+
+    '</div>';
+  }
+  // 40 个血红色数字：铺满屏幕闪
+  var BNUM_N = 40;
+  html += '<div class="x-bloodnums">';
+  for (var bn=0; bn<BNUM_N; bn++){
+    var npx = rng(0, 100).toFixed(1);
+    var npy = rng(0, 100).toFixed(1);
+    var nfs = (10 + rng(0, 24)).toFixed(0);
+    var nop = (0.45 + rng(0, 0.55)).toFixed(2);
+    var ndly = (bn*0.04).toFixed(2);
+    var nrot = rng(-12, 12).toFixed(1);
+    var nt = bloodNums[Math.floor(Math.random()*bloodNums.length)];
+    html += '<div class="x-bnum" style="left:'+npx+'%;top:'+npy+'%;font-size:'+nfs+'px;--op:'+nop+';--dly:'+ndly+'s;--brt:'+nrot+'deg">'+nt+'</div>';
+  }
+  html += '</div>';
+  // 14 个 I'm not a robot 满天飞
+  var BOT_N = 14;
+  for (var bc=0; bc<BOT_N; bc++){
+    var cpx = rng(0, 100).toFixed(1);
+    var cpy = rng(0, 100).toFixed(1);
+    var crt = rng(-18, 18).toFixed(1);
+    var csc = rng(0.7, 1.3).toFixed(2);
+    html += '<div class="x-bot" style="left:'+cpx+'%;top:'+cpy+'%;--brt:'+crt+'deg;--bsc:'+csc+'">'+
+      '<div class="bot-box">'+
+        '<div class="bot-cb"></div>'+
+        '<div class="bot-text">I\'m not<br>a robot</div>'+
       '</div>'+
     '</div>';
   }
@@ -1827,7 +1904,7 @@ function runXueheJumpscare(){
     try{ go('t-xuehe-self'); }catch(e){}
     var sb = document.getElementById('searchIn');
     if(sb) sb.value = '';
-  }, 2400);
+  }, 2800);
 }
 
 </script>
