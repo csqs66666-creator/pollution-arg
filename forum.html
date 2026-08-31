@@ -456,6 +456,16 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-js .bot-cb::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#4285f4;font-size:18px;font-weight:bold;opacity:0}
 .xuehe-js .bot-text{color:#333;font-size:11px;line-height:1.2}
 
+/* 文字恐怖谷：米白/淡粉的"假温馨"文字，与血红文字形成对比 */
+.xuehe-js .x-creep{position:absolute;inset:0;pointer-events:none;z-index:9;overflow:hidden}
+.xuehe-js .x-creep-item{position:absolute;transform:translate(-50%,-50%) rotate(var(--brt,0deg));color:#f5e8d4;font-family:"Microsoft YaHei","PingFang SC","STKaiti",serif;font-weight:400;text-shadow:0 0 8px rgba(255,220,180,.6),0 0 18px rgba(255,180,140,.4);mix-blend-mode:screen;opacity:var(--op,0.85);white-space:nowrap;animation:creepFlicker .15s steps(2,end) infinite var(--dly,0s),creepGlitch .3s steps(3,end) infinite;pointer-events:none;letter-spacing:0.05em}
+.xuehe-js .x-creep-item:nth-child(3n){color:#ffd0d0;text-shadow:0 0 8px rgba(255,160,160,.7),0 0 16px rgba(255,100,100,.4);animation-delay:0s,0.1s}
+.xuehe-js .x-creep-item:nth-child(5n){color:#fff5e0;font-style:italic;letter-spacing:0.15em}
+.xuehe-js .x-creep-item:nth-child(7n){color:#888;font-size:.75em}
+.xuehe-js .x-creep-item::before{content:"👁️";position:absolute;left:-18px;top:0;font-size:.7em;opacity:.7}
+@keyframes creepFlicker{0%,85%,100%{opacity:var(--op,0.85)}87%{opacity:.3}89%{opacity:1}91%{opacity:.4}}
+@keyframes creepGlitch{0%{transform:translate(-50%,-50%) rotate(var(--brt,0deg))}33%{transform:translate(calc(-50% - 3px),calc(-50% + 2px)) rotate(calc(var(--brt,0deg) - 1deg))}66%{transform:translate(calc(-50% + 4px),calc(-50% - 2px)) rotate(calc(var(--brt,0deg) + 1deg))}}
+
 /* console 灰白条 */
 .xuehe-js .x-logs{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:2px;padding:8px 14px 80px;background:linear-gradient(0deg,rgba(20,28,40,.85),rgba(20,28,40,0));z-index:8;max-height:42vh;overflow:hidden}
 .xuehe-js .x-log{font:11px/1.4 "Consolas","Menlo",monospace;color:#b4d4ff;background:rgba(8,18,36,.55);border-left:3px solid #0066ff;padding:3px 8px;opacity:0;animation:logIn .18s steps(2,end) var(--dly,0s) forwards,logGlitch .2s steps(3,end) infinite alternate;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;mix-blend-mode:screen}
@@ -1747,14 +1757,23 @@ function showXueheWarn(){
 function runXueheJumpscare(){
   // glitch 堆叠：所有素材 + BSOD + 信息全部叠在一起，错位/红蓝重影/色相滚动
   var imgs = [
+    // 关键素材：玫瑰眼/翅膀眼/翅膀/血眼 重复利用，铺满屏幕
     'assets/desktop/forum-bs/rose-eye.png',
     'assets/desktop/forum-bs/eye-wings.png',
     'assets/desktop/forum-bs/robot-wings.png',
     'assets/desktop/forum-bs/eyes-bloodshot.jpg',
     'assets/desktop/forum-bs/rose-eye.png',
     'assets/desktop/forum-bs/eye-wings.png',
-    'assets/desktop/forum-bs/eyes-bloodshot.jpg',
     'assets/desktop/forum-bs/robot-wings.png',
+    'assets/desktop/forum-bs/eyes-bloodshot.jpg',
+    'assets/desktop/forum-bs/rose-eye.png',
+    'assets/desktop/forum-bs/eye-wings.png',
+    'assets/desktop/forum-bs/robot-wings.png',
+    'assets/desktop/forum-bs/eyes-bloodshot.jpg',
+    'assets/desktop/forum-bs/rose-eye.png',
+    'assets/desktop/forum-bs/eye-wings.png',
+    'assets/desktop/forum-bs/robot-wings.png',
+    'assets/desktop/forum-bs/eyes-bloodshot.jpg',
     'assets/desktop/forum-bs/lotus-jade-green.png',
     'assets/desktop/forum-bs/lotus-jade-white.png'
   ];
@@ -1798,6 +1817,30 @@ function runXueheJumpscare(){
     '04:00:22','23:59:00','13:14:00','00:00:00','03:33:33',
     'CUT HERE','-1.0E+99','NaN','∞','¶','#B22222','#A02020'
   ];
+  // === Zalgo 字符池（上下左右组合标记，让字符"破碎"） ===
+  var ZALGO_UP   = ['\u0300','\u0301','\u0302','\u0303','\u0304','\u0305','\u0306','\u0307','\u0308','\u0309','\u030A','\u030B','\u030C','\u030D','\u030E','\u030F'];
+  var ZALGO_MID  = ['\u0314','\u0315','\u0316','\u0317','\u0318','\u0319','\u031A','\u031B','\u031C','\u031D','\u031E','\u031F','\u0320','\u0321','\u0322','\u0323'];
+  var ZALGO_DOWN = ['\u0324','\u0325','\u0326','\u0327','\u0328','\u0329','\u032A','\u032B','\u032C','\u032D','\u032E','\u032F','\u0330','\u0331','\u0332','\u0333','\u0334','\u0335','\u0336','\u0337'];
+  function zalgo(s, intensity){
+    intensity = intensity || 12;
+    var out = '';
+    for(var i=0;i<s.length;i++){
+      out += s[i];
+      if(s[i] === ' ') { out += ' '; continue; }
+      var nUp = Math.floor(Math.random()*intensity);
+      var nMid = Math.floor(Math.random()*intensity/2);
+      var nDown = Math.floor(Math.random()*intensity);
+      for(var j=0;j<nUp;j++) out += ZALGO_UP[Math.floor(Math.random()*ZALGO_UP.length)];
+      for(var j=0;j<nMid;j++) out += ZALGO_MID[Math.floor(Math.random()*ZALGO_MID.length)];
+      for(var j=0;j<nDown;j++) out += ZALGO_DOWN[Math.floor(Math.random()*ZALGO_DOWN.length)];
+    }
+    return out;
+  }
+  // === 文字恐怖谷池（"月色真美"+ 伪温馨 + 诡异错字） ===
+  var creepyTexts = [
+    '月色真美','看看呗','世界 快乐 幸福','欢迎来到 幸福的世堺','你也想来 彁唱的世堺','彁 唱 跳 舞','幸福里每一个人','这座城市是温暖的','请不要再看了','回头吧','天国 召唤 你','开心 就好','永 远 在 这 儿','没有人离开','这里很安全','你没有错','不要怕','一起 一起','幸福正在逼近','别回 头','开 门','里面很暖','我们都是家人'
+  ];
+
   // console.log 灰白条内容
   var logs = [
     '[INFO  ] starting up a new tab',
@@ -1828,8 +1871,8 @@ function runXueheJumpscare(){
       '--bl:'+bl[i]+';--gs:'+gs[i]+';--hue:'+hue[i]+'deg'+
       '"></div>';
   }
-  // 28 个 BSOD 弹窗：铺满屏幕 + 随机大小/位置/旋转 + glitch 闪烁
-  var BSOD_N = 28;
+  // 40 个 BSOD 弹窗：铺满屏幕 + 随机大小/位置/旋转 + glitch 闪烁
+  var BSOD_N = 40;
   for (var d=0; d<BSOD_N; d++){
     var bw = rng(220, 360).toFixed(0);
     var bpx = rng(0, 100).toFixed(1);
@@ -1855,22 +1898,30 @@ function runXueheJumpscare(){
       '</div>'+
     '</div>';
   }
-  // 40 个血红色数字：铺满屏幕闪
-  var BNUM_N = 40;
+  // 55 个血红色/诡异文字数字：铺满屏幕闪（混合 hex/计数/错误码 + Zalgo 化诡异文字）
+  var BNUM_N = 55;
   html += '<div class="x-bloodnums">';
   for (var bn=0; bn<BNUM_N; bn++){
     var npx = rng(0, 100).toFixed(1);
     var npy = rng(0, 100).toFixed(1);
-    var nfs = (10 + rng(0, 24)).toFixed(0);
-    var nop = (0.45 + rng(0, 0.55)).toFixed(2);
-    var ndly = (bn*0.04).toFixed(2);
-    var nrot = rng(-12, 12).toFixed(1);
-    var nt = bloodNums[Math.floor(Math.random()*bloodNums.length)];
+    var nfs = (11 + rng(0, 28)).toFixed(0);
+    var nop = (0.5 + rng(0, 0.5)).toFixed(2);
+    var ndly = (bn*0.03).toFixed(2);
+    var nrot = rng(-15, 15).toFixed(1);
+    // 60% 概率取诡异文字（其中 65% 概率 Zalgo 化），40% 概率取普通血数字
+    var isCreep = Math.random() < 0.6;
+    var nt;
+    if(isCreep){
+      var t = creepyTexts[Math.floor(Math.random()*creepyTexts.length)];
+      nt = (Math.random() < 0.65) ? zalgo(t, 14) : t;
+    } else {
+      nt = bloodNums[Math.floor(Math.random()*bloodNums.length)];
+    }
     html += '<div class="x-bnum" style="left:'+npx+'%;top:'+npy+'%;font-size:'+nfs+'px;--op:'+nop+';--dly:'+ndly+'s;--brt:'+nrot+'deg">'+nt+'</div>';
   }
   html += '</div>';
-  // 14 个 I'm not a robot 满天飞
-  var BOT_N = 14;
+  // 22 个 I'm not a robot 满天飞
+  var BOT_N = 22;
   for (var bc=0; bc<BOT_N; bc++){
     var cpx = rng(0, 100).toFixed(1);
     var cpy = rng(0, 100).toFixed(1);
@@ -1883,6 +1934,22 @@ function runXueheJumpscare(){
       '</div>'+
     '</div>';
   }
+  // 文字恐怖谷层：40 个米白/淡粉的"假温馨"文字（与血红数字对照）
+  var CREEP_N = 40;
+  html += '<div class="x-creep">';
+  for (var cr=0; cr<CREEP_N; cr++){
+    var cpx = rng(0, 100).toFixed(1);
+    var cpy = rng(0, 100).toFixed(1);
+    var cfs = (13 + rng(0, 26)).toFixed(0);
+    var cop = (0.55 + rng(0, 0.4)).toFixed(2);
+    var cdly = (cr*0.035).toFixed(2);
+    var crot = rng(-18, 18).toFixed(1);
+    var ctxt = creepyTexts[Math.floor(Math.random()*creepyTexts.length)];
+    // 50% 概率 zalgo 化，强度比血数字低（更"勉强读得清"）
+    var cf = (Math.random() < 0.5) ? zalgo(ctxt, 8) : ctxt;
+    html += '<div class="x-creep-item" style="left:'+cpx+'%;top:'+cpy+'%;font-size:'+cfs+'px;--op:'+cop+';--dly:'+cdly+'s;--brt:'+crot+'deg">'+cf+'</div>';
+  }
+  html += '</div>';
   // console log 灰白条叠加（多条）
   html += '<div class="x-logs">';
   for (var li=0; li<logs.length; li++){
@@ -1904,7 +1971,7 @@ function runXueheJumpscare(){
     try{ go('t-xuehe-self'); }catch(e){}
     var sb = document.getElementById('searchIn');
     if(sb) sb.value = '';
-  }, 2800);
+  }, 5500);
 }
 
 </script>
