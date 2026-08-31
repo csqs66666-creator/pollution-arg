@@ -34,17 +34,17 @@ html,body{
   overflow-x:hidden;
 }
 /* ========== 莲花角花 ========== */
-.corner-lotus{position:fixed;pointer-events:none;z-index:0;opacity:.05}
-.corner-lotus.tl{top:40px;left:60px;width:150px}
-.corner-lotus.tr{top:40px;right:60px;width:150px;transform:scaleX(-1)}
-.corner-lotus.bl{bottom:60px;left:60px;width:130px;transform:scaleY(-1)}
-.corner-lotus.br{bottom:60px;right:60px;width:130px;transform:scaleX(-1) scaleY(-1)}
+.corner-lotus{position:fixed;pointer-events:none;z-index:0;opacity:.18;animation:lotusSway 6s ease-in-out infinite}
+.corner-lotus.tl{top:40px;left:60px;width:160px;--r:20deg}
+.corner-lotus.tr{top:40px;right:60px;width:160px;transform:scaleX(-1);--r:-20deg}
+.corner-lotus.bl{bottom:60px;left:60px;width:140px;transform:scaleY(-1);--r:-20deg}
+.corner-lotus.br{bottom:60px;right:60px;width:140px;transform:scaleX(-1) scaleY(-1);--r:20deg}
 @media (max-width:768px){.corner-lotus{display:none}}
-@keyframes lotusSway{0%,100%{opacity:.18;transform:rotate(var(--r,20deg)) translateY(0)}50%{opacity:.24;transform:rotate(var(--r,20deg)) translateY(6px) scale(1.02)}}
-.corner-lotus.tl{--r:20deg}
-.corner-lotus.tr{--r:-20deg}
-.corner-lotus.bl{--r:-20deg}
-.corner-lotus.br{--r:20deg}
+@keyframes lotusSway{0%,100%{opacity:.18;transform:rotate(var(--r,20deg)) translateY(0) scaleX(var(--mx,1)) scaleY(var(--my,1))}50%{opacity:.30;transform:rotate(var(--r,20deg)) translateY(8px) scale(1.03)}}
+.corner-lotus.tl{--mx:1;--my:1}
+.corner-lotus.tr{--mx:-1;--my:1}
+.corner-lotus.bl{--mx:1;--my:-1}
+.corner-lotus.br{--mx:-1;--my:-1}
 
 /* ========== 顶栏 ========== */
 .topbar{
@@ -83,29 +83,31 @@ html,body{
 /* 旧 .admin-box / .admin-msg 集中入口样式已移除 · 四把钥匙分散藏在四帖里 */
 
 /* ========== 主题列表 ========== */
-.thread-list{background:linear-gradient(180deg, rgba(252,248,238,.96), rgba(247,240,225,.98));border:1px solid var(--line);position:relative;overflow:hidden;border-radius:3px;box-shadow:0 3px 14px rgba(90,70,40,.10)}
-.thread-list::before{content:"";position:absolute;top:-30px;right:-40px;width:160px;height:160px;background:url('assets/desktop/forum-bs/lotus-jade-blue.png') center/contain no-repeat;opacity:.05;pointer-events:none;transform:rotate(15deg)}
-.thread-list::after{content:"";position:absolute;bottom:-40px;left:-30px;width:140px;height:140px;background:url('assets/desktop/forum-bs/lotus-pink-single.png') center/contain no-repeat;opacity:.04;pointer-events:none;transform:rotate(-30deg) scaleX(-1)}
+.thread-list{background:transparent;border:1px solid rgba(255,255,255,.45);position:relative;overflow:hidden;border-radius:3px;box-shadow:0 3px 18px rgba(20,40,55,.22)}
+.thread-list::before{content:"";position:absolute;top:-30px;right:-40px;width:160px;height:160px;background:url('assets/desktop/forum-bs/lotus-jade-blue.png') center/contain no-repeat;opacity:.15;pointer-events:none;transform:rotate(15deg)}
+.thread-list::after{content:"";position:absolute;bottom:-40px;left:-30px;width:140px;height:140px;background:url('assets/desktop/forum-bs/lotus-pink-single.png') center/contain no-repeat;opacity:.12;pointer-events:none;transform:rotate(-30deg) scaleX(-1)}
 .thread{
   display:grid;grid-template-columns:48px 1fr 110px 90px 70px;
   gap:12px;align-items:center;
   padding:14px 16px;
-  border-bottom:1px solid var(--line2);
+  border-bottom:1px dashed rgba(255,255,255,.5);
   cursor:pointer;transition:all .2s;
   text-decoration:none;color:inherit;
   position:relative;
   background:rgba(255,255,255,0);
+  animation:threadFadeIn .45s ease both;
 }
-.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s}
-.thread:hover{background:linear-gradient(90deg,rgba(176,58,46,.06),rgba(176,58,46,.015));padding-left:24px}
-.thread:hover::before{transform:scaleY(1)}
+@keyframes threadFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s ease, width .25s ease;box-shadow:0 0 10px rgba(192,57,43,.55)}
+.thread:hover{background:linear-gradient(90deg,rgba(176,58,46,.18),rgba(176,58,46,.04));padding-left:24px}
+.thread:hover::before{transform:scaleY(1);width:5px}
 .thread:last-child{border-bottom:none}
 .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#e8c8b8,#f0e0d0);display:flex;align-items:center;justify-content:center;font-size:13px;color:#9a4a3a;overflow:hidden;border:1.5px solid #d8b8a0;box-shadow:0 0 6px rgba(176,58,46,.12);position:relative;font-family:"STKaiti",serif;font-weight:700}
 .avatar::after{content:"";position:absolute;inset:2px;border-radius:50%;background:radial-gradient(circle,rgba(127,180,154,.12),transparent 70%);pointer-events:none}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .avatar.red{background:linear-gradient(135deg,#e0a898,#c86a5a);color:#fff;font-size:14px;border-color:#c8553f;box-shadow:0 0 8px rgba(176,58,46,.25)}
 .avatar.admin{background:linear-gradient(135deg,#d8ccb4,#c0b098);color:#6a5a40;border-color:#b0a088;box-shadow:none}
-.thread .title{font-size:14.5px;color:var(--ink);font-weight:500;font-family:"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.5}
+.thread .title{font-size:14.5px;color:var(--ink);font-weight:500;font-family:"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.5;text-shadow:0 1px 2px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)}
 .thread .title b,.thread .title strong{color:var(--red2);font-weight:700}
 .thread .title .tag{display:inline-block;font-size:10px;padding:1px 6px;margin-right:6px;border:1px solid #d8b8a0;color:var(--red);letter-spacing:0.1em;vertical-align:1px;background:rgba(176,58,46,.05)}
 .thread .title .tag.hot{border-color:var(--red);background:rgba(176,58,46,.10);color:var(--red2)}
@@ -121,9 +123,10 @@ html,body{
 
 /* ========== 主题详情 ========== */
 .post{
-  background:var(--paper);
-  border:1px solid var(--line);
+  background:transparent;
+  border:1px solid rgba(255,255,255,.45);
   margin-bottom:14px;
+  box-shadow:0 3px 18px rgba(20,40,55,.22);
 }
 .post .ph{
   padding:18px 22px;
@@ -176,7 +179,7 @@ html,body{
 
 /* ========== 侧栏 ========== */
 .side{display:flex;flex-direction:column;gap:14px;position:relative}
-.sidebox{background:linear-gradient(180deg,rgba(252,248,238,.96),rgba(247,240,225,.98));border:1px solid var(--line);padding:14px 16px;border-radius:3px;box-shadow:0 3px 10px rgba(90,70,40,.08);position:relative;overflow:hidden}
+.sidebox{background:transparent;border:1px solid rgba(255,255,255,.45);padding:14px 16px;border-radius:3px;box-shadow:0 3px 18px rgba(20,40,55,.22);position:relative;overflow:hidden}
 .sidebox::before{content:"";position:absolute;top:10px;right:10px;width:44px;height:44px;background:url('assets/desktop/forum-bs/lotus-pink-big.png') center/contain no-repeat;opacity:.06;pointer-events:none}
 .sidebox h3{margin:0 0 10px;font-size:13px;color:#5a4a38;letter-spacing:0.25em;border-bottom:1px solid var(--line2);padding-bottom:6px;font-family:"STKaiti","KaiTi",serif;font-weight:700}
 .sidebox ol{margin:0;padding-left:18px;font-size:12px;color:var(--ink2);line-height:1.85}
