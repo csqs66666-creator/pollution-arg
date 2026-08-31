@@ -282,6 +282,50 @@ body{
   transition:background .25s, color .25s;
 }
 .ending-cta .a:hover{background:#8b1a1a;color:#fff}
+/* ========== 美化：标签呼吸光 · 行 hover 滑入 · 侧栏悬浮 ========== */
+.tag.danger{animation:tagPulse 1.6s ease-in-out infinite}
+.tag.hot{animation:tagPulse 2.4s ease-in-out infinite}
+@keyframes tagPulse{0%,100%{box-shadow:0 0 0 rgba(178,34,34,0)}50%{box-shadow:0 0 14px rgba(178,34,34,.55)}}
+
+/* 主题行 hover：左滑提示 */
+.thread{position:relative;overflow:hidden}
+.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#8b1a1a,#c0392b);transform:scaleY(0);transform-origin:center;transition:transform .25s ease}
+.thread:hover::before{transform:scaleY(1)}
+.thread:hover{background:linear-gradient(90deg,rgba(139,26,26,.10),rgba(139,26,26,.02))!important;padding-left:22px}
+
+/* 侧栏模块悬浮 */
+.sidebox{transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease}
+.sidebox:hover{transform:translateY(-2px);border-color:#6a2020;box-shadow:0 6px 18px rgba(0,0,0,.45)}
+
+/* 热议主题：标题 + 标签 两行布局 */
+.hot-list{list-style:none;padding:0;margin:6px 0 0;counter-reset:hotc}
+.hot-list li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px dashed #2a2a2a;cursor:pointer;transition:background .2s;counter-increment:hotc}
+.hot-list li:last-child{border-bottom:none}
+.hot-list li::before{content:counter(hotc);display:inline-block;width:18px;color:#8b1a1a;font-weight:700;font-size:12px;text-align:center;flex-shrink:0}
+.hot-list li:hover{background:rgba(139,26,26,.08)}
+.hot-list li[data-go]{cursor:pointer}
+.hot-title{color:#cfc6b4;font-size:12.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hot-tag{font-size:10px;color:#8b1a1a;background:rgba(139,26,26,.12);border:1px solid #5a0e0e;padding:1px 6px;letter-spacing:.08em;flex-shrink:0}
+
+/* 管理员名单：名字 + 简介 */
+.admin-list{list-style:none;padding:0;margin:6px 0 0}
+.admin-list li{display:flex;align-items:baseline;gap:8px;padding:5px 0;border-bottom:1px dashed #222;font-size:12px}
+.admin-list li:last-child{border-bottom:none}
+.admin-name{color:#a89078;font-weight:600;flex-shrink:0;min-width:90px}
+.admin-desc{color:#888;font-size:11.5px;flex:1}
+
+/* 侧栏小标题：微动效 */
+.sidebox h3{position:relative;padding-left:0}
+.sidebox h3::after{content:"";display:block;width:0;height:1px;background:linear-gradient(90deg,#8b1a1a,transparent);transition:width .35s ease;margin-top:4px}
+.sidebox:hover h3::after{width:60%}
+
+/* 顶栏品牌：闪红点 */
+.brand .dot{animation:brandDot 2.2s ease-in-out infinite}
+@keyframes brandDot{0%,100%{opacity:.4;color:#8b1a1a}50%{opacity:1;color:#c0392b;text-shadow:0 0 8px rgba(192,57,43,.6)}}
+
+/* 整页：扫描线微动效（很轻，不抢眼） */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0,transparent 2px,rgba(255,255,255,0.012) 2px,rgba(255,255,255,0.012) 3px);z-index:100;mix-blend-mode:overlay}
+
 .ending-cta .note{
   margin-top:12px;
   font-size:11.5px;
@@ -318,8 +362,8 @@ body{
         <a class="thread" data-go="t-xuqing">
           <div class="avatar"></div>
           <div>
-            <div class="title"><span class="tag danger">置顶</span>许清最后那条工作群消息，已经过去 11 天</div>
-            <div class="meta">原水务局科员 · 失联第 11 天 · 微信不回 · 同事已被要求封口</div>
+            <div class="title"><span class="tag danger">置顶</span>许清失联第 11 天！工作群最后那条消息看得我头皮发麻</div>
+            <div class="meta">原水务局科员 · 微信不回 · 同事已被约谈要求"别乱说" · 我真的会谢</div>
           </div>
           <div class="author">西湾阿婆</div>
           <div class="last">15 分钟前</div>
@@ -328,8 +372,8 @@ body{
         <a class="thread" data-go="t-shen">
           <div class="avatar"></div>
           <div>
-            <div class="title"><span class="tag hot">热议</span>市档案馆那个沈清川，三十年来真的一张脸没换过？</div>
-            <div class="meta">工牌照片 vs 1995 年合影像素比对 · 99.6% 相似</div>
+            <div class="title"><span class="tag hot">热议</span>市档案馆那个沈姐，三十年了脸真的一点没变？我直接一个好家伙</div>
+            <div class="meta">1995 合影 vs 现在工牌照 像素比对 99.6% 相似 · 这合理吗？？？</div>
           </div>
           <div class="author">档案室小王</div>
           <div class="last">42 分钟前</div>
@@ -338,8 +382,8 @@ body{
         <a class="thread" data-go="t-lin">
           <div class="avatar red"></div>
           <div>
-            <div class="title"><span class="tag hot">热议</span>我孩子那年的事，许愿之后真的好了，可接下来这一年……</div>
-            <div class="meta">原生态环境局 · 已签字 · 已辞职 · 已签字</div>
+            <div class="title"><span class="tag hot">热议</span>许愿真的会成真，但代价你可能承受不起（亲身经历，看完别骂我）</div>
+            <div class="meta">原生态环境局 · 已签字 · 已辞职 · 已签字 · 懂的都懂</div>
           </div>
           <div class="author">老干部-49</div>
           <div class="last">1 小时前</div>
@@ -348,8 +392,8 @@ body{
         <a class="thread" data-go="t-zhou">
           <div class="avatar admin"></div>
           <div>
-            <div class="title"><span class="tag">官方</span>关于月荷水库湖心岛管理问题的统一回复</div>
-            <div class="meta">办公室 · 周 · 内部口径 · 严禁外传</div>
+            <div class="title"><span class="tag">官方</span>【统一回复】关于月荷水库那些事，懂的都懂别再问了</div>
+            <div class="meta">办公室 · 周 · 内部口径 · 看完别截图 · 谢谢配合 🙏</div>
           </div>
           <div class="author admin">z_h_72</div>
           <div class="last">3 小时前</div>
@@ -358,8 +402,8 @@ body{
         <a class="thread">
           <div class="avatar"></div>
           <div>
-            <div class="title">西湾露营区 3 号营位，今年春天关的，没解释</div>
-            <div class="meta">西湾郊野公园管理处至今未发公告</div>
+            <div class="title">西湾露营区 3 号营位说关就关，到现在也没人给个说法</div>
+            <div class="meta">西湾郊野公园管理处至今没发过任何公告 · 主打一个已读不回</div>
           </div>
           <div class="author">城南小胖</div>
           <div class="last">昨晚 22:14</div>
@@ -368,8 +412,8 @@ body{
         <a class="thread">
           <div class="avatar"></div>
           <div>
-            <div class="title">网传月荷水库「红纹鱼」吃了会失眠，我妈昨晚开始念叨了</div>
-            <div class="meta">市政府官网回复：不实信息 · 但我妈念叨的声气，跟那条鱼当时一模一样</div>
+            <div class="title">千万别吃月荷水库的「红纹鱼」！我妈昨晚开始不对劲了</div>
+            <div class="meta">官网说是不实信息 · 但我妈念叨的那个声气，跟我上次吃那条鱼时一模一样 · 蚌埠住了</div>
           </div>
           <div class="author">湖心岛渔民</div>
           <div class="last">昨夜 03:02</div>
@@ -378,8 +422,8 @@ body{
         <a class="thread">
           <div class="avatar"></div>
           <div>
-            <div class="title">南岸步道 K2+300 那段山体滑坡，夜里有人去修过</div>
-            <div class="meta">白天去看过 · 草是湿的 · 脚印朝湖心方向</div>
+            <div class="title">南岸步道 K2+300 那段塌方，夜里居然有人在修？脚印还朝着湖心岛方向</div>
+            <div class="meta">白天去看了 · 草是湿的 · 脚印朝湖心岛方向 · 这也太离谱了吧</div>
           </div>
           <div class="author">夜钓人</div>
           <div class="last">前天</div>
@@ -388,8 +432,8 @@ body{
         <a class="thread">
           <div class="avatar"></div>
           <div>
-            <div class="title">河西档案室那个姐姐，好漂亮啊……气质冷冷的</div>
-            <div class="meta">注：此帖已被下沉 · 楼中含管理员口令，请勿截图</div>
+            <div class="title">河西档案室那个姐姐也太仙了吧！气质绝绝子（但据说别随便看）</div>
+            <div class="meta">注：此帖已被下沉 · 楼中含管理员口令 · 求求你们别截图了 🙏🙏</div>
           </div>
           <div class="author">吃瓜</div>
           <div class="last">上周</div>
@@ -398,8 +442,8 @@ body{
         <a class="thread" data-go="t-hongwen">
           <div class="avatar red"></div>
           <div>
-            <div class="title">我家孩子去年吃了一节藕，第二天开始念叨「湖心岛底」</div>
-            <div class="meta">已签字 · 已就诊 · 已停药 · 仍念叨</div>
+            <div class="title">孩子吃了一节藕之后开始念叨「湖心岛底」，退退退这也太吓人了</div>
+            <div class="meta">已签字 · 已就诊 · 已停药 · 仍在念叨 · 心态崩了</div>
           </div>
           <div class="author">匿名网友·2017</div>
           <div class="last">昨天 23:51</div>
@@ -408,8 +452,8 @@ body{
         <a class="thread" data-go="t-laochen">
           <div class="avatar"></div>
           <div>
-            <div class="title">我是湖心岛祠堂巡逻员，3 年里换了 4 批人，没人信我</div>
-            <div class="meta">第七次申请换岗 · 第三次申请离职 · 均未批</div>
+            <div class="title">在湖心岛祠堂巡逻 3 年，换了 4 批同事没人信我说的，我麻了</div>
+            <div class="meta">第 7 次申请换岗 · 第 3 次申请离职 · 均未批 · 这班是上到头了</div>
           </div>
           <div class="author">老陈-63</div>
           <div class="last">2 天前</div>
@@ -418,8 +462,8 @@ body{
         <a class="thread" data-go="t-xuehe">
           <div class="avatar red"></div>
           <div>
-            <div class="title">你们说的那位「正太小仙」，我外婆小时候就见过</div>
-            <div class="meta">从藕塘边接你回家那一节藕，今夜还吃吗</div>
+            <div class="title">你们说的那个「正太小仙」，我外婆小时候就见过！家人们谁懂啊</div>
+            <div class="meta">从藕塘边接你回家那一节藕 · 今夜还吃吗？不敢不敢不敢</div>
           </div>
           <div class="author">藕塘的娃</div>
           <div class="last">3 天前</div>
@@ -428,8 +472,8 @@ body{
         <a class="thread" data-go="t-neigui">
           <div class="avatar admin"></div>
           <div>
-            <div class="title">内鬼自首：1996 年那份底稿是我埋的，但我不是内鬼</div>
-            <div class="meta">封存前最后一刻，我把一句话撕下来贴在了档案室 B3</div>
+            <div class="title">自首一下：1996 年那份底稿是我埋的，但我真不是内鬼啊！</div>
+            <div class="meta">封存前最后一刻，我把一句话撕下来贴在了档案室 B3 · 惹到我你算是踢到棉花了</div>
           </div>
           <div class="author">内鬼·1996</div>
           <div class="last">7 天前</div>
@@ -1264,45 +1308,46 @@ body{
     <div class="sidebox">
       <h3>本 站 声 明</h3>
       <div class="admin-hint">
-        本站为民间论坛，所发内容不代表回川市政府立场。涉及具体案件、人员线索，已同步至站内站务。管理员口令 <b>请勿外传</b>如已在站内见到，请立即关掉此页。
+        本站为民间小破站，所发内容不代表回川市政府立场（别来找我们，求求了 🙏）。涉及案件、人员的帖子，已悄悄同步给站务（你猜是谁）。管理员口令 <b>请勿外传</b>，看完就忘，别截图，<b>别截图</b>，别截图 🙏🙏 你懂的。
       </div>
     </div>
     <div class="sidebox">
       <h3>热 议 主 题</h3>
-      <ol>
-        <li data-go="t-xuqing">许清失联第 11 天</li>
-        <li data-go="t-shen">沈清川三十年不换脸</li>
-        <li data-go="t-lin">许愿的代价</li>
-        <li data-go="t-zhou">湖心岛「维护作业」</li>
-        <li data-go="t-hongwen">孩子吃了藕</li>
-        <li data-go="t-xuehe">「正太小仙」见过</li>
-        <li data-go="t-laochen">巡逻员 3 年</li>
-        <li data-go="t-neigui">1996 年底稿</li>
-        <li>西湾 3 号营位关闭</li>
-        <li>红纹鱼吃了会失眠</li>
+      <ol class="hot-list">
+        <li data-go="t-xuqing"><span class="hot-title">许清失联第 11 天</span><span class="hot-tag">头皮发麻</span></li>
+        <li data-go="t-shen"><span class="hot-title">沈清川三十年不换脸</span><span class="hot-tag">好家伙</span></li>
+        <li data-go="t-lin"><span class="hot-title">许愿的代价</span><span class="hot-tag">懂的都懂</span></li>
+        <li data-go="t-zhou"><span class="hot-title">湖心岛「维护作业」</span><span class="hot-tag">已读不回</span></li>
+        <li data-go="t-hongwen"><span class="hot-title">孩子吃了藕</span><span class="hot-tag">退退退</span></li>
+        <li data-go="t-xuehe"><span class="hot-title">「正太小仙」见过</span><span class="hot-tag">家人们谁懂啊</span></li>
+        <li data-go="t-laochen"><span class="hot-title">巡逻员 3 年</span><span class="hot-tag">我麻了</span></li>
+        <li data-go="t-neigui"><span class="hot-title">1996 年底稿</span><span class="hot-tag">自首现场</span></li>
+        <li><span class="hot-title">西湾 3 号营位关闭</span><span class="hot-tag">这合理吗</span></li>
+        <li><span class="hot-title">红纹鱼吃了会失眠</span><span class="hot-tag">蚌埠住了</span></li>
       </ol>
     </div>
     <div class="sidebox">
       <h3>站 内 提 示</h3>
       <div class="admin-hint">
-        · 22:00—04:00 期间发主题容易失败<br>
-        · 涉及「湖心岛」「湖心」「红纹」「水底」等关键词的主题，<b>后台不会真的删除</b>只是从列表里沉下去<br>
-        · 如果您是第一次来本站，<b>不要</b>点开顶部那个灰色的入口<br>
-        · 凭据共 <b>8 段</b>（4 主角 + 4 目击者），<b>全归</b>后终局入口浮现
+        · 22:00—04:00 发帖容易失败（不是你的问题，是服务器在摸鱼）<br>
+        · 涉及「湖心岛」「红纹」「水底」等关键词的主题，后台<b>不会真的删除</b>，只是从列表里沉下去（已读不回 懂？🐶）<br>
+        · 如果您是第一次来本站，<b>不要</b>点开顶部那个灰色的入口（点了别怪我没提醒）<br>
+        · 凭据共 <b>8 段</b>（4 主角 + 4 目击者），<b>全归</b>后终局入口浮现（完事了才能下班）<br>
+        · 本站没有"删帖"按钮，因为删了也没用 🤡
       </div>
     </div>
     <div class="sidebox">
       <h3>管 理 员 名 单</h3>
-      <div class="admin-hint" style="font-size:11.5px;color:#888;line-height:1.7;margin-bottom:8px">八位凭据 · 四位主角 + 四位目击者</div>
-      <ol style="list-style:none;padding:0">
-        <li>· z_h_72（市政府办公室）</li>
-        <li>· 旁观者·1956（市档案馆）</li>
-        <li>· 老干部-49（已离职）</li>
-        <li>· 湖心岛渔民（认证渔民）</li>
-        <li>· 匿名网友·2017（红纹鱼家长）</li>
-        <li>· 藕塘的娃（雪禾延伸）</li>
-        <li>· 老陈-63（祠堂巡逻员）</li>
-        <li>· 内鬼·1996（档案室 B3）</li>
+      <div class="admin-hint" style="font-size:11.5px;color:#888;line-height:1.7;margin-bottom:8px">八位凭据 · 四位主角 + 四位目击者 · 全归了才能下班</div>
+      <ol class="admin-list">
+        <li><span class="admin-name">z_h_72</span><span class="admin-desc">市政府办公室 · 官方口径发言人</span></li>
+        <li><span class="admin-name">旁观者·1956</span><span class="admin-desc">市档案馆 · 活久见的沈姐 yyds</span></li>
+        <li><span class="admin-name">老干部-49</span><span class="admin-desc">已离职 · 懂的自然懂</span></li>
+        <li><span class="admin-name">湖心岛渔民</span><span class="admin-desc">认证渔民 · 下湖四十年</span></li>
+        <li><span class="admin-name">匿名网友·2017</span><span class="admin-desc">红纹鱼家长 · 心态崩了</span></li>
+        <li><span class="admin-name">藕塘的娃</span><span class="admin-desc">雪禾延伸 · 念了 64 年</span></li>
+        <li><span class="admin-name">老陈-63</span><span class="admin-desc">祠堂巡逻员 · 麻了·已读不回</span></li>
+        <li><span class="admin-name">内鬼·1996</span><span class="admin-desc">档案室 B3 · 自首现场</span></li>
       </ol>
     </div>
   </aside>
