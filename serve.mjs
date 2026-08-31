@@ -56,7 +56,13 @@ const server = createServer(async (req, res) => {
       }
     }
     const type = MIME[extname(filePath)] || 'application/octet-stream';
-    res.writeHead(200, { 'Content-Type': type });
+    // 本地预览永远拿最新改动，避免浏览器 disk cache 导致"改了看不到"（需要手动 Ctrl+F5）
+    res.writeHead(200, {
+      'Content-Type': type,
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
     res.end(data);
   } catch (e) {
     res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
