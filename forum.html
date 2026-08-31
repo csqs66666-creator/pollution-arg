@@ -25,14 +25,12 @@
 *{box-sizing:border-box}
 html,body{
   margin:0;padding:0;
-  /* 底图：用户给的水波纹 + 70% 米黄覆盖，让水波若隐若现，仍是浅色档案调 */
-  background-color:#eae5d4;
-  background-image:
-    linear-gradient(rgba(244,236,220,.70),rgba(244,236,220,.72)),
-    url('assets/desktop/water-ripple.jpg');
-  background-size:cover,cover;
-  background-position:center,center;
-  background-attachment:fixed,fixed;
+  /* 底图：用户给的水波纹直接做底，米白卡片漂浮其上 */
+  background-color:#d8d6c8;
+  background-image:url('assets/desktop/water-ripple.jpg');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
   color:var(--ink);
   font-family:"Microsoft YaHei","PingFang SC","STKaiti",serif;
   letter-spacing:0.03em;
@@ -43,8 +41,8 @@ html,body{
 body::before{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
   background-image:
-    radial-gradient(circle at 15% 25%, rgba(217,139,160,.06), transparent 35%),
-    radial-gradient(circle at 85% 75%, rgba(127,180,154,.05), transparent 35%);
+    radial-gradient(circle at 15% 25%, rgba(217,139,160,.04), transparent 35%),
+    radial-gradient(circle at 85% 75%, rgba(127,180,154,.04), transparent 35%);
 }
 /* ========== 莲花角花 ========== */
 .corner-lotus{position:fixed;pointer-events:none;z-index:0;opacity:.05}
