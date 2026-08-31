@@ -332,6 +332,92 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
   color:#7a5a5a;
   letter-spacing:0.2em;
 }
+
+
+a.xuehe-tab{color:#9fd9c4 !important;letter-spacing:0.4em !important;animation:xueheTabPulse 3s ease-in-out infinite}
+@keyframes xueheTabPulse{0%,100%{text-shadow:0 0 0 rgba(159,217,196,0)}50%{text-shadow:0 0 10px rgba(159,217,196,.8)}}
+a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !important}
+.xuehe-av,.xuehe-av-big,.xuehe-av-mini{background:linear-gradient(135deg,#3a8060,#1a4030) !important;color:#d0f0e0 !important;font-size:14px !important}
+.xuehe-av-big{width:48px;height:48px;font-size:16px;position:relative;overflow:hidden}
+.xuehe-av-big::after{content:"莲";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);font-size:18px}
+.xuehe-title{color:#9fd9c4 !important;text-shadow:0 0 8px rgba(159,217,196,.3)}
+.xuehe-name{color:#9fd9c4 !important;font-weight:600}
+.xuehe-post .xuehe-lotus-bg{position:absolute;right:-20px;top:30px;width:280px;height:280px;background:url("assets/desktop/forum-bs/lotus-leaves.jpg") center/contain no-repeat;opacity:0.08;pointer-events:none;z-index:0}
+.xuehe-post{position:relative;overflow:hidden}
+.xuehe-body{position:relative;z-index:1}
+.xuehe-quote{color:#9fd9c4;font-style:italic;text-align:right;margin-top:12px;font-size:12.5px;letter-spacing:0.1em}
+.xuehe-threat{color:#a02020;font-weight:700;text-shadow:0 0 6px rgba(178,34,34,.6);animation:threatFlicker 2s ease-in-out infinite}
+@keyframes threatFlicker{0%,90%,100%{opacity:1}92%{opacity:.3}94%{opacity:1}96%{opacity:.5}}
+.xuehe-flash{animation:xueheFlash 1.2s ease-in-out infinite}
+@keyframes xueheFlash{0%,100%{background:rgba(159,217,196,.2);border-color:#5a8a70;color:#9fd9c4}50%{background:rgba(178,34,34,.3);border-color:#b22222;color:#ff8080}}
+.xuehe-locked{opacity:0.65;background:rgba(178,34,34,.05) !important;border-color:#5a0e0e !important}
+.hot-list li.xuehe-hot .hot-title{color:#9fd9c4}
+.hot-list li.xuehe-hot .hot-tag{color:#9fd9c4;background:rgba(159,217,196,.1);border-color:#3a8060}
+
+/* BSOD 警告框 */
+.xuehe-bsod{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center}
+.xuehe-bsod .dl-box{background:#ece9d8;border:2px solid #0055ea;width:440px;box-shadow:0 0 0 2px #fff inset,4px 4px 12px rgba(0,0,0,.5);font-family:"Tahoma","Microsoft YaHei",sans-serif}
+.xuehe-bsod .dl-title{background:linear-gradient(180deg,#0055ea,#0a4cb8);color:#fff;padding:5px 10px;font-weight:bold;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.xuehe-bsod .dl-title .x{font-size:14px;cursor:pointer;padding:0 4px}
+.xuehe-bsod .dl-body{padding:20px;display:flex;gap:14px;align-items:center;color:#000}
+.xuehe-bsod .dl-icon{font-size:42px;color:#ffcc00;-webkit-text-stroke:1px #000;text-shadow:1px 1px 0 #000}
+.xuehe-bsod .dl-msg{font-size:13px;line-height:1.6;color:#000}
+.xuehe-bsod .dl-msg b{color:#a02020}
+.xuehe-bsod .dl-btns{padding:0 20px 18px;text-align:right}
+.xuehe-bsod .dl-btns button{background:#ece9d8;border:1px solid #707070;padding:4px 24px;font-family:inherit;font-size:12px;cursor:pointer;min-width:82px;margin-left:6px}
+.xuehe-bsod .dl-btns button:hover{background:#dcdad3}
+.xuehe-bsod .dl-btns .ok{border:2px outset #fff;outline:1px solid #000;outline-offset:-3px}
+
+/* 跳脸 */
+.xuehe-js{position:fixed;inset:0;z-index:10000;background:#000;display:none}
+.xuehe-js.run{display:block;animation:pageShake 0.06s steps(2,end) infinite}
+.xuehe-js .layer{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .04s}
+.xuehe-js .layer.on{opacity:1}
+.xuehe-js .end-text{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:#fff;font-size:32px;text-align:center;text-shadow:0 0 14px #b22222,0 0 28px #b22222;font-family:"STKaiti","KaiTi",serif;letter-spacing:0.2em;line-height:1.8;z-index:10;padding:0 30px}
+.xuehe-js .end-text.show{display:flex;animation:endFade 0.5s ease-out}
+@keyframes endFade{from{opacity:0}to{opacity:1}}
+@keyframes pageShake{0%{transform:translate(0,0)}25%{transform:translate(-6px,4px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-4px,-6px)}100%{transform:translate(6px,5px)}}
+
+a.xuehe-tab{color:#9fd9c4 !important;letter-spacing:0.4em !important;animation:xueheTabPulse 3s ease-in-out infinite}
+@keyframes xueheTabPulse{0%,100%{text-shadow:0 0 0 rgba(159,217,196,0)}50%{text-shadow:0 0 10px rgba(159,217,196,.8)}}
+a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !important}
+.xuehe-av,.xuehe-av-big,.xuehe-av-mini{background:linear-gradient(135deg,#3a8060,#1a4030) !important;color:#d0f0e0 !important;font-size:14px !important}
+.xuehe-av-big{width:48px;height:48px;font-size:16px;position:relative;overflow:hidden}
+.xuehe-av-big::after{content:"莲";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.6);font-size:18px}
+.xuehe-title{color:#9fd9c4 !important;text-shadow:0 0 8px rgba(159,217,196,.3)}
+.xuehe-name{color:#9fd9c4 !important;font-weight:600}
+.xuehe-post .xuehe-lotus-bg{position:absolute;right:-20px;top:30px;width:280px;height:280px;background:url("assets/desktop/forum-bs/lotus-leaves.jpg") center/contain no-repeat;opacity:0.08;pointer-events:none;z-index:0}
+.xuehe-post{position:relative;overflow:hidden}
+.xuehe-body{position:relative;z-index:1}
+.xuehe-quote{color:#9fd9c4;font-style:italic;text-align:right;margin-top:12px;font-size:12.5px;letter-spacing:0.1em}
+.xuehe-threat{color:#a02020;font-weight:700;text-shadow:0 0 6px rgba(178,34,34,.6);animation:threatFlicker 2s ease-in-out infinite}
+@keyframes threatFlicker{0%,90%,100%{opacity:1}92%{opacity:.3}94%{opacity:1}96%{opacity:.5}}
+.xuehe-flash{animation:xueheFlash 1.2s ease-in-out infinite}
+@keyframes xueheFlash{0%,100%{background:rgba(159,217,196,.2);border-color:#5a8a70;color:#9fd9c4}50%{background:rgba(178,34,34,.3);border-color:#b22222;color:#ff8080}}
+.xuehe-locked{opacity:0.65;background:rgba(178,34,34,.05) !important;border-color:#5a0e0e !important}
+.hot-list li.xuehe-hot .hot-title{color:#9fd9c4}
+.hot-list li.xuehe-hot .hot-tag{color:#9fd9c4;background:rgba(159,217,196,.1);border-color:#3a8060}
+.xuehe-bsod{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center}
+.xuehe-bsod .dl-box{background:#ece9d8;border:2px solid #0055ea;width:440px;box-shadow:0 0 0 2px #fff inset,4px 4px 12px rgba(0,0,0,.5);font-family:"Tahoma","Microsoft YaHei",sans-serif}
+.xuehe-bsod .dl-title{background:linear-gradient(180deg,#0055ea,#0a4cb8);color:#fff;padding:5px 10px;font-weight:bold;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.xuehe-bsod .dl-title .x{font-size:14px;cursor:pointer;padding:0 4px}
+.xuehe-bsod .dl-body{padding:20px;display:flex;gap:14px;align-items:center;color:#000}
+.xuehe-bsod .dl-icon{font-size:42px;color:#ffcc00;-webkit-text-stroke:1px #000;text-shadow:1px 1px 0 #000}
+.xuehe-bsod .dl-msg{font-size:13px;line-height:1.6;color:#000}
+.xuehe-bsod .dl-msg b{color:#a02020}
+.xuehe-bsod .dl-btns{padding:0 20px 18px;text-align:right}
+.xuehe-bsod .dl-btns button{background:#ece9d8;border:1px solid #707070;padding:4px 24px;font-family:inherit;font-size:12px;cursor:pointer;min-width:82px;margin-left:6px}
+.xuehe-bsod .dl-btns button:hover{background:#dcdad3}
+.xuehe-bsod .dl-btns .ok{border:2px outset #fff;outline:1px solid #000;outline-offset:-3px}
+.xuehe-js{position:fixed;inset:0;z-index:10000;background:#000;display:none}
+.xuehe-js.run{display:block;animation:pageShake 0.06s steps(2,end) infinite}
+.xuehe-js .layer{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .04s}
+.xuehe-js .layer.on{opacity:1}
+.xuehe-js .end-text{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:#fff;font-size:32px;text-align:center;text-shadow:0 0 14px #b22222,0 0 28px #b22222;font-family:"STKaiti","KaiTi",serif;letter-spacing:0.2em;line-height:1.8;z-index:10;padding:0 30px}
+.xuehe-js .end-text.show{display:flex;animation:endFade 0.5s ease-out}
+@keyframes endFade{from{opacity:0}to{opacity:1}}
+@keyframes pageShake{0%{transform:translate(0,0)}25%{transform:translate(-6px,4px)}50%{transform:translate(5px,-5px)}75%{transform:translate(-4px,-6px)}100%{transform:translate(6px,5px)}}
+
 </style>
 </head>
 <body>
@@ -344,6 +430,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
     <a data-go="t-lin">林茂才</a>
     <a data-go="t-shen">沈清川</a>
     <a data-go="t-zhou">周秉坤</a>
+    <a data-go="t-xuehe-self" class="xuehe-tab">雪 禾</a>
   </nav>
   <div class="search">
     <input type="text" placeholder="搜索关键词，如「红纹」「档案室」" id="searchIn">
@@ -359,11 +446,21 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
     <!-- ====== 主题列表视图 ====== -->
     <div class="view cur" id="v-list">
       <div class="thread-list">
+        <a class="thread" data-go="t-xuehe-self">
+          <div class="avatar xuehe-av"></div>
+          <div>
+            <div class="title"><span class="tag danger xuehe-flash">置顶</span>汝等替吾说话，吾可没请汝——莲塘边那位</div>
+            <div class="meta">ID: 莲塘边那位 · 发帖于 刚才 · 莲塘边 · 刚睡醒 · 别回</div>
+          </div>
+          <div class="author red xuehe-name">莲 塘 边 那 位</div>
+          <div class="last">刚刚</div>
+          <div class="count">回复 <b>4</b></div>
+        </a>
         <a class="thread" data-go="t-xuqing">
           <div class="avatar"></div>
           <div>
             <div class="title"><span class="tag danger">置顶</span>许清失联第 11 天！工作群最后那条消息看得我头皮发麻</div>
-            <div class="meta">原水务局科员 · 微信不回 · 同事已被约谈要求"别乱说" · 我真的会谢</div>
+            <div class="meta">原水务局科员 · 微信不回 · 同事已被约谈要求"别乱说" · 谢谢啊</div>
           </div>
           <div class="author">西湾阿婆</div>
           <div class="last">15 分钟前</div>
@@ -462,7 +559,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
         <a class="thread" data-go="t-xuehe">
           <div class="avatar red"></div>
           <div>
-            <div class="title">你们说的那个「正太小仙」，我外婆小时候就见过！家人们谁懂啊</div>
+            <div class="title">你们说的那个「正太小仙」，我外婆小时候就见过！你猜怎么着</div>
             <div class="meta">从藕塘边接你回家那一节藕 · 今夜还吃吗？不敢不敢不敢</div>
           </div>
           <div class="author">藕塘的娃</div>
@@ -662,22 +759,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
                 工 龄 表 ：23 岁　·　<b>初 予 ！</b><br>
                 初 始 密 钥 ：<span style="opacity:0.18;color:#888">chu-yu-2014</span>
               </div>
-              <div class="cred-box" data-key="shen" style="margin-top:8px">
-                <div class="cred-title">██ 内 部 凭 据 校 验 ██</div>
-                <div class="cred-row"><label>帐 号</label><input type="text" id="u-shen" autocomplete="off" spellcheck="false"></div>
-                <div class="cred-row"><label>密 钥</label><input type="password" id="p-shen" autocomplete="off" spellcheck="false"></div>
-                <div class="cred-actions"><button onclick="tryVerify('shen')" type="button">▸ 归 位</button><span class="admin-hint" id="h-shen"></span></div>
-                <div class="cred-record" id="rec-shen" style="display:none">
-                  <div class="rec-title">， 不 老 者 · 沈 清 川 · 归 位 后 自 述 ，</div>
-                  <p>我叫沈清川。我在这座城里活了很久。久到我已经不算自己的年岁。</p>
-                  <p>1956 年那一晚，库区出水，我在岸边。哭了很久。后来我再没哭过。我记的事太多，多到写不完。我用三十年写一本《莲之庭观察日志》，记下的事比这座城的人都多。</p>
-                  <p>我不阻止。我不加入。我只记。</p>
-                  <p>我不拦你们去湖心岛。我不拦林茂才去。我不拦许清去。我也不拦你。我只在你走到头的时候，站在对岸，替你把灯点亮。</p>
-                  <p>桌上有张照片。1956 年下湖那批人。ta 们笑着。我盯着那张照片。ta 们走的时候，没回头。我替 ta 们回头看过一次。一次就够。</p>
-                  <p>你把我这条钥匙归了位。我替你多记一行。</p>
-                  <p class="rec-sign">， 不 老 者 · 档 案 室 员 · 沈 清 川 ，</p>
-                </div>
-              </div>
+              
               </div>
             </div>
           </div>
@@ -731,6 +813,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
             </div>
           </div>
         </div>
+        <p style="margin-top:6px;color:#888;font-size:11.5px;font-style:italic">管理员注：沈清川同志的旧档归位凭据，已在前期档案交互中给出（详见微信「四人之秘」聊天窗），本帖不再重复。</p>
         <div class="pf">
           <span>此帖已被相关单位要求下沉 · 楼中含管理员口令，请勿截图</span>
           <div class="ops"><span>👍 480</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
@@ -849,28 +932,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
               <p style="text-align:center;margin-top:14px"><a href="chapter2-ritual.html" style="display:inline-block;padding:8px 18px;border:1px solid #6a2020;color:#c8a8a8;text-decoration:none;letter-spacing:0.2em;font-size:12px">▸ 打 开 那 张 献 祭 图</a></p>
               <p style="margin-top:8px;font-size:11.5px;color:#888;text-align:center">点开后，<b>点一下那张图</b>。那一栏里，会显出两个红字。<br>那两个红字，<span style="color:#a02020">就是</span>。</p>
               <div class="admin-cred" style="margin-top:8px">林 局 留 了 一 句 话：</div>
-              <div class="cred-box" data-key="lin" style="margin-top:8px">
-                <div class="cred-title">██ 内 部 凭 据 校 验 ██</div>
-                <div class="cred-row"><label>帐 号</label><input type="text" id="u-lin" autocomplete="off" spellcheck="false"></div>
-                <div class="cred-row"><label>密 钥</label><input type="password" id="p-lin" autocomplete="off" spellcheck="false"></div>
-                <div class="cred-actions"><button onclick="tryVerify('lin')" type="button">▸ 归 位</button><span class="admin-hint" id="h-lin"></span></div>
-                <div class="cred-record" id="rec-lin" style="display:none">
-                  <div class="rec-title">， 献 祭 者 · 林 茂 才 · 归 位 后 自 述 ，</div>
-                  <p>那天晚上我到了湖心岛。ta 已经坐在那里了。ta 没动。ta 让我坐下。我坐下。</p>
-                  <p>ta 把一碗凉粥端到我面前。我没动。ta 也没催。过了很久，ta 说：「你改过的字，我都替你记着。」</p>
-                  <p>我说：「我知道。」</p>
-                  <p>ta 说：「那你来做什么？」</p>
-                  <p>我说：「把字还给你。」</p>
-                  <p>ta 说：「你写的字，还不回来。」</p>
-                  <p>我说：「我知道。」</p>
-                  <p>ta 没再说话。ta 把粥端走了。走之前，ta 让我把那张合影烧了。1985 年那一批。我烧了。</p>
-                  <p>烧的时候，烟是紫色的。跟我那年孩子吃的那节藕，一样。</p>
-                  <p class="rec-sign">， 献 祭 者 · 林 茂 才 ，</p>
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
+        <p style="margin-top:6px;color:#888;font-size:11.5px;font-style:italic">管理员注：林茂才同志的归位凭据，已在前期档案交互中给出（详见微信「四人之秘」聊天窗与归位通告正文），本帖不再重复。</p>
         <div class="pf">
           <span>⚠ 此帖发布 11 小时 · 楼主尚未登录 · 已被相关单位要求下沉</span>
           <div class="ops"><span>👍 286</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
@@ -1230,6 +1296,86 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
       </div>
     </div>
 
+    <!-- ====== 主题：雪禾·自己发 ====== -->
+    <div class="view" id="v-t-xuehe-self">
+      <div class="post xuehe-post">
+        <div class="ph">
+          <div class="avatar xuehe-av-big"></div>
+          <div class="info">
+            <div class="t xuehe-title">汝等替吾说话，吾可没请汝</div>
+            <div class="m">楼主：莲塘边那位 · 发帖于 刚才 · 莲塘边 · 刚睡醒 · 别回</div>
+          </div>
+          <div class="floor">1 楼</div>
+        </div>
+        <div class="pb xuehe-body">
+          <div class="xuehe-lotus-bg"></div>
+          <p>吾看了会儿你们的帖子。挺有意思的。</p>
+          <p>你们这帮凡人，明明活不过一百年，却乐此不疲地替一个素未谋面的存在"记这记那"。"ta 在莲塘里"、"ta 给过谁藕"、"ta 的花瓣是粉的"——是又怎样？不是又怎样？</p>
+          <p>吾就问一句：你们写下的这些字，<b>ta 看得见吗？</b></p>
+          <p>看得见，又如何。看不见，又如何。</p>
+          <p>你们写完了，会死吗？不会。</p>
+          <p>那不就得了。继续写吧。吾看着挺乐呵的。</p>
+          <p>只是别哪天，被 ta 顺着你们的字"找上门"了，又哭着问"怎么躲"。</p>
+          <p>到那时，<b>别说吾没提醒。</b></p>
+          <p class="xuehe-quote">——莲塘边那位。闲来无事。</p>
+          <p class="xuehe-ask" style="margin-top:18px;text-align:center;font-size:13px;color:#d0a0a0;letter-spacing:0.1em">（附：汝若真有想不开的事，<b>问吾</b>便是。<br>吾只会答一句。五个字。汝自己掂量。）</p>
+        </div>
+        <div class="reply-list">
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">档案室小王 <small>2 楼 · 1 分钟前</small></div>
+              <div class="body">楼主你谁啊？这语气看得我后背发凉，但又……有点想看下去？</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av red"></div>
+            <div>
+              <div class="who red">湖心岛渔民 <small>3 楼 · 1 分钟前</small></div>
+              <div class="body">我跟湖打了四十年交道。这帖子的味道我闻过。在湖心岛。不是人味儿。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av"></div>
+            <div>
+              <div class="who">西湾阿婆 <small>4 楼 · 刚刚</small></div>
+              <div class="body">楼主，我劝你这条别更了。跟他们一样，说多了 ta 就顺着字找上门。我见过。</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av admin"></div>
+            <div>
+              <div class="who admin">旁观者·1956 <small>5 楼 · 刚刚</small></div>
+              <div class="body">我认识你。你也认识我。<br>这一次你我都不该再多说。<br>——1956</div>
+            </div>
+          </div>
+          <div class="reply">
+            <div class="av xuehe-av-mini"></div>
+            <div>
+              <div class="who xuehe-name">莲塘边那位 <small>6 楼 · 楼主 · 刚刚</small></div>
+              <div class="body">楼上那位识趣。剩下三个，<b>自己想清楚</b>。<br>汝等写的每一个字，吾都看得见。<br>汝等点的每一个赞，吾都数得清。<br>汝等搜的每一个名字——<br><span class="xuehe-threat">尤其是吾的。</span><br>汝自己想清楚再按。</div>
+              <div class="cred-box xuehe-locked" data-key="xuehe-self" style="margin-top:8px">
+                <div class="cred-title">██ 此 栏 不 接 受 输 入 ██</div>
+                <div class="cred-row"><label>帐 号</label><input type="text" value="—" disabled style="color:#666"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" value="———" disabled style="color:#666"></div>
+                <div class="cred-actions"><button type="button" disabled style="opacity:0.4;cursor:not-allowed">▸ 归 位</button><span class="admin-hint err">， 汝 没 有 这 个 资 格 ，</span></div>
+                <div class="cred-record" style="display:none">
+                  <div class="rec-title">， 莲 塘 边 那 位 · 莲 塘 自 述 ，</div>
+                  <p>吾 不 归 位 。</p>
+                  <p>吾 就 是 归 位 本 身 。</p>
+                  <p class="rec-sign">， 腐 土 青 莲 · 雪 禾 ，</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pf">
+          <span>此帖已被后台设为"<b>不可删除</b>" · 占有人 <b>知道汝在读</b> · <span style="color:#a02020">求求汝别搜吾</span></span>
+          <div class="ops"><span>👍 1</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
+        </div>
+      </div>
+    </div>
+
     <!-- ====== 主题：内鬼·1996 ====== -->
     <div class="view" id="v-t-neigui">
       <div class="post">
@@ -1319,7 +1465,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;background:rep
         <li data-go="t-lin"><span class="hot-title">许愿的代价</span><span class="hot-tag">懂的都懂</span></li>
         <li data-go="t-zhou"><span class="hot-title">湖心岛「维护作业」</span><span class="hot-tag">已读不回</span></li>
         <li data-go="t-hongwen"><span class="hot-title">孩子吃了藕</span><span class="hot-tag">退退退</span></li>
-        <li data-go="t-xuehe"><span class="hot-title">「正太小仙」见过</span><span class="hot-tag">家人们谁懂啊</span></li>
+        <li data-go="t-xuehe-self" class="xuehe-hot"><span class="hot-title">汝等替吾说话，吾可没请汝</span><span class="hot-tag">你猜怎么着</span></li>
+        <li data-go="t-xuehe"><span class="hot-title">「正太小仙」见过</span><span class="hot-tag">你猜怎么着</span></li>
         <li data-go="t-laochen"><span class="hot-title">巡逻员 3 年</span><span class="hot-tag">我麻了</span></li>
         <li data-go="t-neigui"><span class="hot-title">1996 年底稿</span><span class="hot-tag">自首现场</span></li>
         <li><span class="hot-title">西湾 3 号营位关闭</span><span class="hot-tag">这合理吗</span></li>
@@ -1459,6 +1606,92 @@ function checkAllUnlocked(){
   const h = (location.hash || '').replace('#','');
   if(h && /^t-/.test(h)) go(h);
 })();
+
+/* === 雪禾触发：搜「雪禾」→ 警告 → 跳脸 → 强制回退到序章 === */
+(function(){
+  var sb = document.getElementById('searchIn');
+  if(!sb) return;
+  sb.addEventListener('keydown', function(e){
+    if(e.key !== 'Enter') return;
+    var v = (sb.value || '').trim();
+    if(v !== '雪禾') return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    showXueheWarn();
+  }, true);
+})();
+
+function showXueheWarn(){
+  if(document.getElementById('xueheWarn')) return;
+  var html = '<div class="xuehe-bsod" id="xueheWarn">'+
+    '<div class="dl-box">'+
+      '<div class="dl-title"><span>警 告</span><span class="x" id="xueheX">×</span></div>'+
+      '<div class="dl-body">'+
+        '<div class="dl-icon">⚠</div>'+
+        '<div class="dl-msg">汝 确 定 要 搜 吾 ？<br><b>汝 这 一 辈 子 的 点 击 ， 都 在 吾 的 账 本 上 。</b></div>'+
+      '</div>'+
+      '<div class="dl-btns">'+
+        '<button class="ok" id="xueheOk">确 定</button>'+
+        '<button id="xueheCancel">取 消</button>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+  var dismiss = function(){
+    var el = document.getElementById('xueheWarn');
+    if(el) el.remove();
+  };
+  document.getElementById('xueheCancel').onclick = dismiss;
+  document.getElementById('xueheX').onclick = dismiss;
+  document.getElementById('xueheOk').onclick = function(){
+    dismiss();
+    runXueheJumpscare();
+  };
+}
+
+function runXueheJumpscare(){
+  var imgs = [
+    'assets/desktop/forum-bs/rose-eye.png',
+    'assets/desktop/forum-bs/eye-wings.png',
+    'assets/desktop/forum-bs/robot-wings.png',
+    'assets/desktop/forum-bs/eyes-bloodshot.jpg',
+    'assets/desktop/forum-bs/rose-eye.png',
+    'assets/desktop/forum-bs/eye-wings.png',
+    'assets/desktop/forum-bs/eyes-bloodshot.jpg',
+    'assets/desktop/forum-bs/robot-wings.png'
+  ];
+  var html = '<div class="xuehe-js" id="xueheJS">';
+  for(var i=0;i<imgs.length;i++){
+    html += '<div class="layer" data-i="'+i+'" style="background-image:url('+imgs[i]+')"></div>';
+  }
+  html += '<div class="end-text" id="xueheEnd">汝 看 到 了 。<br>现 在 ， 轮 到 吾 看 汝 。<br><span style="font-size:18px;color:#a02020;display:block;margin-top:30px;letter-spacing:0.4em">， 强 行 回 退 中 ，</span></div>';
+  html += '</div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+
+  var jsEl = document.getElementById('xueheJS');
+  var layers = jsEl.querySelectorAll('.layer');
+  var idx = 0, cycle = 0, MAX = 14;
+
+  function next(){
+    if(cycle >= MAX){
+      for(var i=0;i<layers.length;i++) layers[i].classList.remove('on');
+      jsEl.classList.remove('run');
+      document.getElementById('xueheEnd').classList.add('show');
+      setTimeout(function(){ window.location.href = 'prologue.html'; }, 2200);
+      return;
+    }
+    for(var j=0;j<layers.length;j++) layers[j].classList.remove('on');
+    layers[idx].classList.add('on');
+    idx = (idx+1) % layers.length;
+    if(idx === 0) cycle++;
+    setTimeout(next, 70);
+  }
+  jsEl.classList.add('run');
+  jsEl.style.display = 'block';
+  next();
+}
+
 </script>
+
 </body>
 </html>
