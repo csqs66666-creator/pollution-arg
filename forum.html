@@ -25,10 +25,14 @@
 *{box-sizing:border-box}
 html,body{
   margin:0;padding:0;
-  background-color:#f2ead9;
+  /* 底图：用户给的水波纹 + 70% 米黄覆盖，让水波若隐若现，仍是浅色档案调 */
+  background-color:#eae5d4;
   background-image:
-    url('assets/desktop/paper-texture.jpg');
-  background-size:cover;background-position:center;background-attachment:fixed;
+    linear-gradient(rgba(244,236,220,.70),rgba(244,236,220,.72)),
+    url('assets/desktop/water-ripple.jpg');
+  background-size:cover,cover;
+  background-position:center,center;
+  background-attachment:fixed,fixed;
   color:var(--ink);
   font-family:"Microsoft YaHei","PingFang SC","STKaiti",serif;
   letter-spacing:0.03em;
@@ -341,22 +345,36 @@ body{
 .sidebox{transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease}
 .sidebox:hover{transform:translateY(-2px);border-color:#d8b8a0;box-shadow:0 6px 14px rgba(90,70,40,.12)}
 
-/* 热议主题：标题 + 标签 两行布局 */
-.hot-list{list-style:none;padding:0;margin:6px 0 0;counter-reset:hotc}
-.hot-list li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px dashed #2a2a2a;cursor:pointer;transition:background .2s;counter-increment:hotc}
-.hot-list li:last-child{border-bottom:none}
-.hot-list li::before{content:counter(hotc);display:inline-block;width:18px;color:#8b1a1a;font-weight:700;font-size:12px;text-align:center;flex-shrink:0}
-.hot-list li:hover{background:rgba(139,26,26,.08)}
-.hot-list li[data-go]{cursor:pointer}
-.hot-title{color:#5a4a38;font-size:12.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.hot-tag{font-size:10px;color:var(--red);background:rgba(176,58,46,.07);border:1px solid #d8b8a0;padding:1px 6px;letter-spacing:.08em;flex-shrink:0}
+/* 管理员名单 / 热议主题（样式清空：模块已删） */
 
-/* 管理员名单：名字 + 简介 */
-.admin-list{list-style:none;padding:0;margin:6px 0 0}
-.admin-list li{display:flex;align-items:baseline;gap:8px;padding:5px 0;border-bottom:1px dashed var(--line2);font-size:12px}
-.admin-list li:last-child{border-bottom:none}
-.admin-name{color:#6a5a40;font-weight:600;flex-shrink:0;min-width:90px}
-.admin-desc{color:#8a7a66;font-size:11.5px;flex:1}
+/* ========== 底部莲花拼贴（footer 上方） ========== */
+.lotus-strip{
+  position:relative;
+  margin:48px auto -10px;
+  max-width:1280px;
+  padding:36px 24px 8px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap:10px;
+  overflow:hidden;
+  pointer-events:none;
+}
+.lotus-strip img{
+  display:block;
+  flex-shrink:0;
+  filter:drop-shadow(0 6px 14px rgba(58,46,34,.14));
+}
+@media (max-width:860px){
+  .lotus-strip{margin:30px auto -8px;padding:24px 12px 6px;gap:6px}
+  .lotus-strip img[style*="200"]{width:150px!important}
+  .lotus-strip img[style*="160"]{width:120px!important}
+}
+@media (max-width:480px){
+  .lotus-strip{padding:18px 8px 4px;gap:4px}
+  .lotus-strip img[style*="200"]{width:120px!important}
+  .lotus-strip img[style*="160"]{width:90px!important}
+}
 
 /* 侧栏小标题：微动效 */
 .sidebox h3{position:relative;padding-left:0}
@@ -395,8 +413,6 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-flash{animation:xueheFlash 1.2s ease-in-out infinite}
 @keyframes xueheFlash{0%,100%{background:rgba(127,180,154,.25);border-color:#4a8a6a;color:#2f6b52}50%{background:rgba(176,58,46,.22);border-color:var(--red);color:var(--red2)}}
 .xuehe-locked{opacity:0.65;background:rgba(178,34,34,.05) !important;border-color:#5a0e0e !important}
-.hot-list li.xuehe-hot .hot-title{color:#9fd9c4}
-.hot-list li.xuehe-hot .hot-tag{color:#9fd9c4;background:rgba(159,217,196,.1);border-color:#3a8060}
 
 /* BSOD 警告框 */
 .xuehe-bsod{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center}
@@ -552,8 +568,6 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-flash{animation:xueheFlash 1.2s ease-in-out infinite}
 @keyframes xueheFlash{0%,100%{background:rgba(127,180,154,.25);border-color:#4a8a6a;color:#2f6b52}50%{background:rgba(176,58,46,.22);border-color:var(--red);color:var(--red2)}}
 .xuehe-locked{opacity:0.65;background:rgba(178,34,34,.05) !important;border-color:#5a0e0e !important}
-.hot-list li.xuehe-hot .hot-title{color:#9fd9c4}
-.hot-list li.xuehe-hot .hot-tag{color:#9fd9c4;background:rgba(159,217,196,.1);border-color:#3a8060}
 .xuehe-bsod{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center}
 .xuehe-bsod .dl-box{background:#ece9d8;border:2px solid #0055ea;width:440px;box-shadow:0 0 0 2px #fff inset,4px 4px 12px rgba(0,0,0,.5);font-family:"Tahoma","Microsoft YaHei",sans-serif}
 .xuehe-bsod .dl-title{background:linear-gradient(180deg,#0055ea,#0a4cb8);color:#fff;padding:5px 10px;font-weight:bold;font-size:13px;display:flex;justify-content:space-between;align-items:center}
@@ -1709,52 +1723,23 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
         本站为民间小破站，所发内容不代表回川市政府立场（别来找我们，求求了 🙏）。涉及案件、人员的帖子，已悄悄同步给站务（你猜是谁）。管理员口令 <b>请勿外传</b>，看完就忘，别截图，<b>别截图</b>，别截图 🙏🙏 你懂的。
       </div>
     </div>
-    <div class="sidebox">
-      <h3>热 议 主 题</h3>
-      <ol class="hot-list">
-        <li data-go="t-xuqing"><span class="hot-title">许清失联第 11 天</span><span class="hot-tag">头皮发麻</span></li>
-        <li data-go="t-shen"><span class="hot-title">沈清川三十年不换脸</span><span class="hot-tag">好家伙</span></li>
-        <li data-go="t-lin"><span class="hot-title">许愿的代价</span><span class="hot-tag">懂的都懂</span></li>
-        <li data-go="t-zhou"><span class="hot-title">湖心岛「维护作业」</span><span class="hot-tag">已读不回</span></li>
-        <li data-go="t-hongwen"><span class="hot-title">孩子吃了藕</span><span class="hot-tag">求求了</span></li>
-        <li data-go="t-xuehe-self" class="xuehe-hot"><span class="hot-title">汝等替吾说话，吾可没请汝</span><span class="hot-tag">你猜怎么着</span></li>
-        <li data-go="t-xuehe"><span class="hot-title">「那位小仙」见过</span><span class="hot-tag">你猜怎么着</span></li>
-        <li data-go="t-laochen"><span class="hot-title">巡逻员 3 年</span><span class="hot-tag">我麻了</span></li>
-        <li data-go="t-neigui"><span class="hot-title">1996 年底稿</span><span class="hot-tag">自首现场</span></li>
-        <li><span class="hot-title">西湾 3 号营位关闭</span><span class="hot-tag">这合理吗</span></li>
-        <li><span class="hot-title">红纹鱼吃了会失眠</span><span class="hot-tag">绷不住了</span></li>
-      </ol>
-    </div>
-    <div class="sidebox">
-      <h3>站 内 提 示</h3>
-      <div class="admin-hint">
-        · 22:00—04:00 发帖容易失败（不是你的问题，是服务器在摸鱼）<br>
-        · 涉及「湖心岛」「红纹」「水底」等关键词的主题，后台<b>不会真的删除</b>，只是从列表里沉下去（已读不回 懂？🐶）<br>
-        · 如果您是第一次来本站，<b>不要</b>点开顶部那个灰色的入口（点了别怪我没提醒）<br>
-        · 凭据共 <b>8 段</b>（4 主角 + 4 目击者），<b>全归</b>后终局入口浮现（完事了才能下班）<br>
-        · 本站没有"删帖"按钮，因为删了也没用 🤡
-      </div>
-    </div>
-    <div class="sidebox">
-      <h3>管 理 员 名 单</h3>
-      <div class="admin-hint" style="font-size:11.5px;color:#888;line-height:1.7;margin-bottom:8px">八位凭据 · 四位主角 + 四位目击者 · 全归了才能下班</div>
-      <ol class="admin-list">
-        <li><span class="admin-name">z_h_72</span><span class="admin-desc">市政府办公室 · 官方口径发言人</span></li>
-        <li><span class="admin-name">旁观者·1956</span><span class="admin-desc">市档案馆 · 活久见的沈姐 这水平</span></li>
-        <li><span class="admin-name">老干部-49</span><span class="admin-desc">已离职 · 懂的自然懂</span></li>
-        <li><span class="admin-name">湖心岛渔民</span><span class="admin-desc">认证渔民 · 下湖四十年</span></li>
-        <li><span class="admin-name">匿名网友·2017</span><span class="admin-desc">红纹鱼家长 · 心态崩了</span></li>
-        <li><span class="admin-name">藕塘的娃</span><span class="admin-desc">雪禾延伸 · 念了 64 年</span></li>
-        <li><span class="admin-name">老陈-63</span><span class="admin-desc">祠堂巡逻员 · 麻了·已读不回</span></li>
-        <li><span class="admin-name">内鬼·1996</span><span class="admin-desc">档案室 B3 · 自首现场</span></li>
-      </ol>
-    </div>
   </aside>
   <!-- 八钥归位后浮现的终局入口 -->
   <div class="ending-cta" id="endingCta">
     <a class="a" href="gov-portal.html#finale" id="endingBtn">▸ 八 钥 归 位 · 真 相 揭 示</a>
     <div class="note">， 终 局 不 在 此 处 写 · 终 局 在 那 一 边 落 ，</div>
   </div>
+</div>
+
+<!-- 底部莲花拼贴（7 张不同尺寸/角度，沿水平方向错位散落） -->
+<div class="lotus-strip" aria-hidden="true">
+  <img src="assets/desktop/forum-bs/lotus-jade-blue.png" style="width:120px;opacity:.42;transform:rotate(-12deg) translateY(6px)">
+  <img src="assets/desktop/forum-bs/lotus-large-pink.png" style="width:160px;opacity:.48;transform:rotate(8deg) translateY(14px)">
+  <img src="assets/desktop/forum-bs/lotus-jade-green.png" style="width:130px;opacity:.42;transform:rotate(-6deg)">
+  <img src="assets/desktop/forum-bs/lotus-cluster-pink.png" style="width:200px;opacity:.52;transform:translateY(-6px)">
+  <img src="assets/desktop/forum-bs/lotus-jade-white.png" style="width:140px;opacity:.38;transform:rotate(14deg) translateY(10px)">
+  <img src="assets/desktop/forum-bs/lotus-pink-single.png" style="width:110px;opacity:.40;transform:rotate(-18deg) translateY(4px)">
+  <img src="assets/desktop/forum-bs/lotus-jade-blue.png" style="width:100px;opacity:.38;transform:rotate(20deg) translateY(12px)">
 </div>
 
 <div class="foot">© 回川水阁 · 民间论坛 · 仅供市民交流 · 不作政务用途</div>
