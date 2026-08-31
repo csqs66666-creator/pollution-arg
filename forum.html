@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 :root{
-  --ink:#b8821a;          /* 阳光深金 · 主文字 */
-  --ink2:#f4c430;         /* 阳光中金 · 次文字 */
+  --ink:#6b4a0e;          /* 深金褐 · 主文字（浅水底上可读） */
+  --ink2:#95690f;         /* 次文字（暗金，可读） */
   --line:#f0d890;         /* 淡金线 */
   --line2:#f7e4a8;        /* 更淡金分隔 */
   --red:#e8a91f;          /* 向阳金 · 强调 */
@@ -32,6 +32,7 @@ html,body{
   font-family:"Microsoft YaHei","PingFang SC","STKaiti",serif;
   letter-spacing:0.03em;
   font-size:13px;
+  text-shadow:0 1px 2px rgba(255,255,255,.75),0 0 6px rgba(255,255,255,.45);
   position:relative;
   overflow-x:hidden;
 }
@@ -93,7 +94,7 @@ html,body{
 .thread:hover{background:linear-gradient(90deg,rgba(232,169,31,.18),rgba(232,169,31,.04));padding-left:24px}
 .thread:hover::before{transform:scaleY(1);width:5px}
 .thread:last-child{border-bottom:none}
-.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f7e4a8,#f0d890);display:flex;align-items:center;justify-content:center;font-size:13px;color:#b8821a;overflow:hidden;border:1.5px solid #e8b830;box-shadow:0 0 6px rgba(232,169,31,.20);position:relative;font-family:"STKaiti",serif;font-weight:700}
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f7e4a8,#f0d890);display:flex;align-items:center;justify-content:center;font-size:13px;color:#6b4a0e;overflow:hidden;border:1.5px solid #e8b830;box-shadow:0 0 6px rgba(232,169,31,.20);position:relative;font-family:"STKaiti",serif;font-weight:700}
 .avatar::after{content:"";position:absolute;inset:2px;border-radius:50%;background:radial-gradient(circle,rgba(244,196,48,.18),transparent 70%);pointer-events:none}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .avatar.red{background:linear-gradient(135deg,#e8b830,#f4c430);color:#fff;font-size:14px;border-color:#e8a91f;box-shadow:0 0 8px rgba(232,169,31,.30)}
@@ -151,10 +152,10 @@ html,body{
   display:grid;grid-template-columns:36px 1fr;gap:12px;
 }
 .reply:last-child{border-bottom:none}
-.reply .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f7e4a8,#f0d890);display:flex;align-items:center;justify-content:center;font-size:11px;color:#b8821a;overflow:hidden;border:1px solid #e8b830}
+.reply .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f7e4a8,#f0d890);display:flex;align-items:center;justify-content:center;font-size:11px;color:#6b4a0e;overflow:hidden;border:1px solid #e8b830}
 .reply .av.red{background:linear-gradient(135deg,#e8b830,#f4c430);color:#fff}
 .reply .av.admin{background:linear-gradient(135deg,#f0d890,#d4b870);color:#9c6a00}
-.reply .who{font-size:12px;color:#f4c430;font-weight:600}
+.reply .who{font-size:12px;color:#8a6210;font-weight:600}
 .reply .who.red{color:var(--red2)}
 .reply .who.admin{color:#9c6a00}
 .reply .who small{color:#b08220;font-weight:400;margin-left:6px}
@@ -162,7 +163,7 @@ html,body{
 .reply .body .admin-cred{
   display:block;margin-top:8px;padding:6px 10px;
   border:1px dashed #e8a91f;background:rgba(232,169,31,.10);
-  color:#b8821a;font-family:monospace;letter-spacing:0.05em;font-size:12px;
+  color:#6b4a0e;font-family:monospace;letter-spacing:0.05em;font-size:12px;
 }
 .reply .body .bared{color:var(--red);font-weight:600}
 .reply .body .bared::after{content:" · 此用户已被永久禁言"}
@@ -177,7 +178,7 @@ html,body{
 .sidebox ol li{margin:2px 0;cursor:pointer}
 .sidebox ol li:hover{color:var(--red)}
 .sidebox .admin-hint{
-  font-size:11.5px;color:#f4c430;line-height:1.7;background:rgba(232,169,31,.04);
+  font-size:11.5px;color:#8a6210;line-height:1.7;background:rgba(232,169,31,.04);
   border:1px solid #f7e4a8;padding:10px 12px;letter-spacing:0.06em;
 }
 .sidebox .admin-hint b{color:var(--red)}
@@ -185,7 +186,7 @@ html,body{
 /* ========== 底部 ========== */
 .foot{
   text-align:center;padding:30px 0;
-  color:#f4c430;font-size:11px;letter-spacing:0.4em;
+  color:#8a6210;font-size:11px;letter-spacing:0.4em;
 }
 
 /* ========== 主题切换：列表 / 详情 ========== */
@@ -215,7 +216,7 @@ html,body{
 }
 .cred-row label{
   width:54px;
-  color:#f4c430;
+  color:#8a6210;
   font-size:11.5px;
   letter-spacing:0.2em;
   text-align:right;
@@ -250,7 +251,7 @@ html,body{
   letter-spacing:0.2em;
 }
 .cred-actions button:hover{background:var(--red);color:#fff}
-.cred-box .admin-hint{font-size:11.5px;color:#f4c430;min-height:14px;letter-spacing:0.06em}
+.cred-box .admin-hint{font-size:11.5px;color:#8a6210;min-height:14px;letter-spacing:0.06em}
 .cred-box .admin-hint.ok{color:#80c080}
 .cred-box .admin-hint.err{color:#c04040}
 
@@ -270,7 +271,7 @@ html,body{
 }
 .cred-record p{
   font-size:12.5px;
-  color:#f4c430;
+  color:#8a6210;
   line-height:1.95;
   margin:6px 0;
   letter-spacing:0.04em;
@@ -296,7 +297,7 @@ html,body{
   display:inline-block;
   padding:11px 28px;
   border:1px solid var(--red);
-  color:#b8821a;
+  color:#6b4a0e;
   text-decoration:none;
   font-size:13px;
   letter-spacing:0.3em;
@@ -382,7 +383,7 @@ a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !importa
 @keyframes threatFlicker{0%,90%,100%{opacity:1}92%{opacity:.3}94%{opacity:1}96%{opacity:.5}}
 .xuehe-flash{animation:xueheFlash 1.2s ease-in-out infinite}
 @keyframes xueheFlash{0%,100%{background:rgba(212,160,23,.25);border-color:#e8a91f;color:#9c6a00}50%{background:rgba(244,196,48,.32);border-color:var(--red);color:var(--ink)}}
-.xuehe-locked{opacity:0.65;background:rgba(232,169,31,.06) !important;border-color:#b8821a !important}
+.xuehe-locked{opacity:0.65;background:rgba(232,169,31,.06) !important;border-color:#6b4a0e !important}
 
 /* BSOD 警告框 */
 .xuehe-bsod{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center}
@@ -537,7 +538,7 @@ a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !importa
 @keyframes threatFlicker{0%,90%,100%{opacity:1}92%{opacity:.3}94%{opacity:1}96%{opacity:.5}}
 .xuehe-flash{animation:xueheFlash 1.2s ease-in-out infinite}
 @keyframes xueheFlash{0%,100%{background:rgba(212,160,23,.25);border-color:#e8a91f;color:#9c6a00}50%{background:rgba(244,196,48,.32);border-color:var(--red);color:var(--ink)}}
-.xuehe-locked{opacity:0.65;background:rgba(232,169,31,.06) !important;border-color:#b8821a !important}
+.xuehe-locked{opacity:0.65;background:rgba(232,169,31,.06) !important;border-color:#6b4a0e !important}
 .xuehe-bsod{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center}
 .xuehe-bsod .dl-box{background:#ece9d8;border:2px solid #0055ea;width:440px;box-shadow:0 0 0 2px #fff inset,4px 4px 12px rgba(0,0,0,.5);font-family:"Tahoma","Microsoft YaHei",sans-serif}
 .xuehe-bsod .dl-title{background:linear-gradient(180deg,#0055ea,#0a4cb8);color:#fff;padding:5px 10px;font-weight:bold;font-size:13px;display:flex;justify-content:space-between;align-items:center}
@@ -654,18 +655,19 @@ a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !importa
 .caustic-spot.c6{width:200px;height:200px;bottom:8%;right:22%;animation-delay:-13s}
 @keyframes causticDrift{0%,100%{transform:translate(0,0) scale(1);opacity:.7}25%{transform:translate(40px,-30px) scale(1.15);opacity:.95}50%{transform:translate(-30px,40px) scale(.9);opacity:.55}75%{transform:translate(20px,20px) scale(1.08);opacity:.85}}
 
-/* ========== A4 气泡上浮 ========== */
+/* ========== A4 气泡上浮（大颗 · 梦幻光晕版） ========== */
 .bubbles{position:fixed;inset:0;pointer-events:none;z-index:3;overflow:hidden}
-.bubble{position:absolute;bottom:-40px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.75),rgba(244,196,48,.18) 55%,transparent 75%);border:1px solid rgba(255,255,255,.4);animation:bubbleRise linear infinite;box-shadow:0 0 4px rgba(255,255,255,.3)}
-.bubble.b1{left:8%;width:8px;height:8px;animation-duration:14s;animation-delay:0s}
-.bubble.b2{left:18%;width:5px;height:5px;animation-duration:18s;animation-delay:-3s}
-.bubble.b3{left:32%;width:11px;height:11px;animation-duration:22s;animation-delay:-7s}
-.bubble.b4{left:48%;width:7px;height:7px;animation-duration:16s;animation-delay:-2s}
-.bubble.b5{left:62%;width:9px;height:9px;animation-duration:20s;animation-delay:-11s}
-.bubble.b6{left:78%;width:6px;height:6px;animation-duration:17s;animation-delay:-5s}
-.bubble.b7{left:88%;width:10px;height:10px;animation-duration:24s;animation-delay:-9s}
-.bubble.b8{left:94%;width:5px;height:5px;animation-duration:15s;animation-delay:-13s}
-@keyframes bubbleRise{0%{transform:translateY(0) translateX(0);opacity:0}8%{opacity:.7}50%{transform:translateY(-50vh) translateX(15px);opacity:.95}92%{opacity:.35}100%{transform:translateY(-105vh) translateX(-10px);opacity:0}}
+.bubble{position:absolute;bottom:-70px;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.95),rgba(255,255,255,.35) 40%,rgba(244,196,48,.14) 68%,transparent 78%);box-shadow:0 0 22px rgba(255,255,255,.6),0 0 44px rgba(244,196,48,.28),inset 0 0 14px rgba(255,255,255,.55);filter:blur(.6px);animation:bubbleRise linear infinite}
+.bubble::after{content:"";position:absolute;top:18%;left:22%;width:26%;height:18%;border-radius:50%;background:rgba(255,255,255,.9);filter:blur(1.5px);transform:rotate(-25deg)}
+.bubble.b1{left:6%;width:26px;height:26px;animation-duration:20s;animation-delay:0s}
+.bubble.b2{left:17%;width:15px;height:15px;animation-duration:26s;animation-delay:-4s}
+.bubble.b3{left:30%;width:34px;height:34px;animation-duration:30s;animation-delay:-9s}
+.bubble.b4{left:46%;width:19px;height:19px;animation-duration:23s;animation-delay:-2s}
+.bubble.b5{left:60%;width:30px;height:30px;animation-duration:27s;animation-delay:-14s}
+.bubble.b6{left:76%;width:16px;height:16px;animation-duration:24s;animation-delay:-6s}
+.bubble.b7{left:86%;width:38px;height:38px;animation-duration:33s;animation-delay:-11s}
+.bubble.b8{left:94%;width:13px;height:13px;animation-duration:21s;animation-delay:-16s}
+@keyframes bubbleRise{0%{transform:translateY(0) translateX(0) scale(.8);opacity:0}8%{opacity:.85}30%{transform:translateY(-32vh) translateX(22px) scale(1)}55%{transform:translateY(-58vh) translateX(-16px) scale(1.06)}80%{opacity:.5}100%{transform:translateY(-108vh) translateX(12px) scale(1.12);opacity:0}}
 
 /* ========== A7 金色卷云纹 4 角（替代被删的莲花角花） ========== */
 .gold-vine{position:fixed;pointer-events:none;z-index:0;opacity:.55;filter:drop-shadow(0 0 8px rgba(244,196,48,.35))}
@@ -677,16 +679,17 @@ a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !importa
 
 /* ========== B2 金色渐变字（标题） ========== */
 .thread .title{
-  background:linear-gradient(90deg,#9c6a00 0%,#f4c430 45%,#ffd700 55%,#d4a017 100%);
+  background:linear-gradient(90deg,#8a5e00 0%,#d4a017 38%,#ffd700 52%,#b8821a 100%);
   -webkit-background-clip:text;
   background-clip:text;
   -webkit-text-fill-color:transparent;
   color:transparent;
-  filter:drop-shadow(0 1px 1px rgba(255,255,255,.7)) drop-shadow(0 0 3px rgba(244,196,48,.25));
+  text-shadow:none;
+  filter:drop-shadow(0 1px 1px rgba(255,255,255,.95)) drop-shadow(0 0 5px rgba(255,255,255,.75)) drop-shadow(0 0 2px rgba(156,106,0,.35));
   font-weight:600;
 }
 .thread .title b,.thread .title strong{
-  background:linear-gradient(90deg,#9c6a00,#f4c430,#ffd700);
+  background:linear-gradient(90deg,#8a5e00,#d4a017,#ffd700);
   -webkit-background-clip:text;
   background-clip:text;
   -webkit-text-fill-color:transparent;
@@ -704,11 +707,11 @@ a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !importa
 /* ========== C3 鼠标拖尾金光（canvas） ========== */
 #gold-trail{position:fixed;inset:0;pointer-events:none;z-index:100;mix-blend-mode:screen}
 
-/* ========== E1 锦鲤游过 ========== */
-.koi{position:fixed;pointer-events:none;z-index:2;mix-blend-mode:multiply;filter:drop-shadow(0 4px 14px rgba(58,46,34,.18))}
-.koi-1{top:55%;left:-260px;width:200px;animation:koiSwim1 36s linear infinite}
-.koi-2{top:18%;right:-200px;width:170px;animation:koiSwim2 44s linear infinite -8s;transform:scaleX(-1)}
-.koi-3{top:78%;left:-260px;width:180px;animation:koiSwim3 40s linear infinite -16s}
+/* ========== E1 锦鲤游过（水下背景鱼：淡 + 模糊 + 慢速，游在内容层后面） ========== */
+.koi{position:fixed;pointer-events:none;z-index:1;opacity:.45;filter:blur(1.2px) drop-shadow(0 6px 16px rgba(58,46,34,.15))}
+.koi-1{top:58%;left:-200px;width:130px;animation:koiSwim1 64s linear infinite}
+.koi-2{top:10%;right:-190px;width:115px;animation:koiSwim2 80s linear infinite -22s;opacity:.38}
+.koi-3{top:82%;left:-220px;width:110px;animation:koiSwim3 72s linear infinite -45s;opacity:.42}
 @keyframes koiSwim1{
   0%{transform:translateX(0) translateY(0) rotate(-6deg)}
   25%{transform:translateX(40vw) translateY(-30px) rotate(2deg)}
@@ -798,10 +801,10 @@ a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !importa
   <div class="bubble b8"></div>
 </div>
 
-<!-- E1 锦鲤游过 -->
-<img class="koi koi-1" src="assets/desktop/koi/koi-gold-big.png" alt="">
-<img class="koi koi-2" src="assets/desktop/koi/koi-red-white-black.jpg" alt="">
-<img class="koi koi-3" src="assets/desktop/koi/koi-red-black-with-lotus.png" alt="">
+<!-- E1 锦鲤游过（已抠透明底） -->
+<img class="koi koi-1" src="assets/desktop/koi/koi-gold-big-alpha.png" alt="">
+<img class="koi koi-2" src="assets/desktop/koi/koi-pair-alpha.png" alt="">
+<img class="koi koi-3" src="assets/desktop/koi/koi-red-black-alpha.png" alt="">
 
 <!-- E3 水墨晕染（切换触发） -->
 <div class="ink-wash" aria-hidden="true"></div>
@@ -1027,7 +1030,7 @@ a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !importa
                 <b>清</b>（<span style="opacity:0.18;color:#b08220">XuQing_0221</span>）：<br>
                 「材料齐了。湖心岛、底泥、库底红膜、库周取样、那份未公开的 4 月例检数据，一并打包。明天上午递上去。<br>
                 各位同事，<b>如果我没回来</b>把这条消息截给沈清川。」<br>
-                <span style="color:#f4c430">状态栏：<span style="opacity:0.18;color:#b08220">jiuHuLaiYe27</span> · 个 人 签 名 档 ：就 呼 来 业 已 满 27 岁</span>
+                <span style="color:#8a6210">状态栏：<span style="opacity:0.18;color:#b08220">jiuHuLaiYe27</span> · 个 人 签 名 档 ：就 呼 来 业 已 满 27 岁</span>
               </div>
               </div>
             </div>
@@ -1743,8 +1746,8 @@ a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !importa
               <div class="body">楼上那位识趣。剩下三个，<b>自己想清楚</b>。<br>汝等写的每一个字，吾都看得见。<br>汝等点的每一个赞，吾都数得清。<br>汝等搜的每一个名字——<br><span class="xuehe-threat">尤其是吾的。</span><br>汝自己想清楚再按。</div>
               <div class="cred-box xuehe-locked" data-key="xuehe-self" style="margin-top:8px">
                 <div class="cred-title">██ 此 栏 不 接 受 输 入 ██</div>
-                <div class="cred-row"><label>帐 号</label><input type="text" value="—" disabled style="color:#f4c430"></div>
-                <div class="cred-row"><label>密 钥</label><input type="password" value="———" disabled style="color:#f4c430"></div>
+                <div class="cred-row"><label>帐 号</label><input type="text" value="—" disabled style="color:#8a6210"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" value="———" disabled style="color:#8a6210"></div>
                 <div class="cred-actions"><button type="button" disabled style="opacity:0.4;cursor:not-allowed">▸ 归 位</button><span class="admin-hint err">， 汝 没 有 这 个 资 格 ，</span></div>
                 <div class="cred-record" style="display:none">
                   <div class="rec-title">， 莲 塘 边 那 位 · 莲 塘 自 述 ，</div>
