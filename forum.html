@@ -25,7 +25,7 @@
 *{box-sizing:border-box}
 html,body{
   margin:0;padding:0;
-  background:url('assets/desktop/water-surface.jpg') center center / cover no-repeat fixed;
+  background:#f2ead9;
   color:var(--ink);
   font-family:"Microsoft YaHei","PingFang SC","STKaiti",serif;
   letter-spacing:0.03em;
@@ -198,8 +198,17 @@ body{
 /* ========== 底部 ========== */
 .foot{
   text-align:center;padding:30px 0;
-  color:#a09080;font-size:11px;letter-spacing:0.4em;
-  border-top:1px solid var(--line2);margin-top:40px;
+  color:#5a4a38;font-size:11px;letter-spacing:0.4em;
+}
+/* 论坛最底下的水景区：水波图 cover 作为这段区域的背景，莲花拼贴 + 页脚浮在水波上 */
+.bottom-water{
+  position:relative;
+  width:100%;
+  margin-top:40px;
+  padding:36px 12px 22px;
+  background:url('assets/desktop/water-surface.jpg') center center / cover no-repeat;
+  background-color:#cfe0e6;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
 }
 
 /* ========== 主题切换：列表 / 详情 ========== */
@@ -356,11 +365,13 @@ body{
   .lotus-strip{margin:30px auto -8px;padding:24px 12px 6px;gap:6px}
   .lotus-strip img[style*="200"]{width:150px!important}
   .lotus-strip img[style*="160"]{width:120px!important}
+  .bottom-water{padding:24px 8px 16px}
 }
 @media (max-width:480px){
   .lotus-strip{padding:18px 8px 4px;gap:4px}
   .lotus-strip img[style*="200"]{width:120px!important}
   .lotus-strip img[style*="160"]{width:90px!important}
+  .bottom-water{padding:18px 6px 12px;margin-top:24px}
 }
 
 /* 侧栏小标题：微动效 */
@@ -1715,18 +1726,19 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
   </div>
 </div>
 
-<!-- 底部莲花拼贴（7 张不同尺寸/角度，沿水平方向错位散落） -->
-<div class="lotus-strip" aria-hidden="true">
-  <img src="assets/desktop/forum-bs/lotus-jade-blue.png" style="width:120px;opacity:.42;transform:rotate(-12deg) translateY(6px)">
-  <img src="assets/desktop/forum-bs/lotus-large-pink.png" style="width:160px;opacity:.48;transform:rotate(8deg) translateY(14px)">
-  <img src="assets/desktop/forum-bs/lotus-jade-green.png" style="width:130px;opacity:.42;transform:rotate(-6deg)">
-  <img src="assets/desktop/forum-bs/lotus-cluster-pink.png" style="width:200px;opacity:.52;transform:translateY(-6px)">
-  <img src="assets/desktop/forum-bs/lotus-jade-white.png" style="width:140px;opacity:.38;transform:rotate(14deg) translateY(10px)">
-  <img src="assets/desktop/forum-bs/lotus-pink-single.png" style="width:110px;opacity:.40;transform:rotate(-18deg) translateY(4px)">
-  <img src="assets/desktop/forum-bs/lotus-jade-blue.png" style="width:100px;opacity:.38;transform:rotate(20deg) translateY(12px)">
-</div>
-
-<div class="foot">© 回川水阁 · 民间论坛 · 仅供市民交流 · 不作政务用途</div>
+<!-- 底部水景区：水波图作为这段区域的背景，莲花拼贴 + 页脚都漂在水波之上 -->
+<section class="bottom-water">
+  <div class="lotus-strip" aria-hidden="true">
+    <img src="assets/desktop/forum-bs/lotus-jade-blue.png" style="width:120px;opacity:.55;transform:rotate(-12deg) translateY(6px)">
+    <img src="assets/desktop/forum-bs/lotus-large-pink.png" style="width:160px;opacity:.62;transform:rotate(8deg) translateY(14px)">
+    <img src="assets/desktop/forum-bs/lotus-jade-green.png" style="width:130px;opacity:.55;transform:rotate(-6deg)">
+    <img src="assets/desktop/forum-bs/lotus-cluster-pink.png" style="width:200px;opacity:.68;transform:translateY(-6px)">
+    <img src="assets/desktop/forum-bs/lotus-jade-white.png" style="width:140px;opacity:.50;transform:rotate(14deg) translateY(10px)">
+    <img src="assets/desktop/forum-bs/lotus-pink-single.png" style="width:110px;opacity:.52;transform:rotate(-18deg) translateY(4px)">
+    <img src="assets/desktop/forum-bs/lotus-jade-blue.png" style="width:100px;opacity:.50;transform:rotate(20deg) translateY(12px)">
+  </div>
+  <div class="foot">© 回川水阁 · 民间论坛 · 仅供市民交流 · 不作政务用途</div>
+</section>
 
 <script>
 /* 视图切换：list / t-xuqing / t-shen / t-lin / t-zhou */
