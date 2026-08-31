@@ -6,13 +6,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 :root{
-  --ink:#3a2e22;          /* 墨褐 · 主文字 */
-  --ink2:#8a7a66;         /* 次文字 */
-  --line:#d8cbb0;         /* 淡墨线 */
-  --line2:#e8dfca;        /* 更淡分隔 */
-  --red:#b03a2e;          /* 朱砂红（点缀用） */
-  --red2:#c8553f;         /* 朱砂亮 */
-  --red3:#8a2518;         /* 朱砂暗 */
+  --ink:#3a5a2a;          /* 黄绿深 · 主文字（草绿/橄榄） */
+  --ink2:#6a8a3a;         /* 次文字（中黄绿） */
+  --line:#cce0a8;         /* 淡黄绿线 */
+  --line2:#dde8c0;        /* 更淡分隔 */
+  --red:#5a7a2e;          /* 橄榄深 · 强调（替代原朱砂红，统一黄绿系） */
+  --red2:#6b8e23;         /* 橄榄亮 */
+  --red3:#4a5a1e;         /* 橄榄暗 */
   --night:#f2ead9;        /* 宣纸黄 · 背景 */
   --night2:#efe6d2;       /* 宣纸暗 */
   --bg:#f4ecdc;           /* 背景 */
@@ -20,12 +20,12 @@
   --paper2:#f7f0e1;       /* 纸二 */
   --blue:#3b6f9f;
   --lotus:#d98ba0;        /* 莲花粉（淡） */
-  --jade:#7fb49a;         /* 莲花绿（淡） */
+  --jade:#a8d97f;         /* 莲花绿（黄绿调） */
 }
 *{box-sizing:border-box}
 html,body{
   margin:0;padding:0;
-  background:url('assets/desktop/water-surface.jpg') center center / cover no-repeat fixed;
+  background:url('assets/desktop/water-ripple.jpg') center center / cover no-repeat fixed;
   color:var(--ink);
   font-family:"Microsoft YaHei","PingFang SC","STKaiti",serif;
   letter-spacing:0.03em;
@@ -59,22 +59,22 @@ html,body{
   -webkit-backdrop-filter:blur(8px);
 }
 .topbar::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,transparent,var(--red2) 25%,var(--red) 50%,var(--red2) 75%,transparent);opacity:.55}
-.brand{font-size:17px;font-weight:700;color:#4a3b2a;letter-spacing:0.35em;margin-right:8px;display:flex;align-items:center;gap:10px;font-family:"STKaiti","KaiTi",serif}
+.brand{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:0.35em;margin-right:8px;display:flex;align-items:center;gap:10px;font-family:"STKaiti","KaiTi",serif}
 .brand .dot{color:var(--red);animation:brandPulse 2.4s ease-in-out infinite}
-.brand .sub{font-size:10.5px;color:#a09080;letter-spacing:0.4em;margin-left:10px;font-weight:400;font-family:"Microsoft YaHei",sans-serif}
-.brand .logo-mark{width:34px;height:34px;display:inline-block;background:url('assets/desktop/forum-bs/lotus-jade-light.png') center/contain no-repeat;filter:drop-shadow(0 0 6px rgba(168,212,196,.4));flex-shrink:0}
-@keyframes brandPulse{0%,100%{color:var(--red);text-shadow:0 0 0 transparent}50%{color:var(--red2);text-shadow:0 0 10px rgba(200,85,63,.6)}}
+.brand .sub{font-size:10.5px;color:#7a8a4a;letter-spacing:0.4em;margin-left:10px;font-weight:400;font-family:"Microsoft YaHei",sans-serif}
+.brand .logo-mark{width:34px;height:34px;display:inline-block;background:url('assets/desktop/forum-bs/lotus-jade-light.png') center/contain no-repeat;filter:drop-shadow(0 0 6px rgba(168,212,196,.5));flex-shrink:0}
+@keyframes brandPulse{0%,100%{color:var(--red);text-shadow:0 0 0 transparent}50%{color:var(--red2);text-shadow:0 0 10px rgba(107,142,35,.65)}}
 .navlinks{display:flex;gap:0;flex:1;margin-left:30px}
 .navlinks a{color:var(--ink2);text-decoration:none;padding:0 18px;height:60px;display:flex;align-items:center;font-size:13px;letter-spacing:0.15em;position:relative;transition:color .2s,background .2s;font-family:"Microsoft YaHei",sans-serif}
-.navlinks a:hover{color:var(--ink);background:rgba(176,58,46,.06)}
-.navlinks a.cur{color:var(--red);background:linear-gradient(180deg,rgba(176,58,46,.08),rgba(176,58,46,.02));border-bottom:2px solid var(--red);font-weight:600}
+.navlinks a:hover{color:var(--ink);background:rgba(107,142,35,.10)}
+.navlinks a.cur{color:var(--red);background:linear-gradient(180deg,rgba(107,142,35,.14),rgba(107,142,35,.04));border-bottom:2px solid var(--red);font-weight:600}
 .navlinks a.cur::before{content:"❀";font-size:9px;color:var(--red);margin-right:6px}
 .search{margin:0 0 0 auto;display:flex;gap:6px;align-items:center}
-.search input{background:#fffdf6;border:1px solid var(--line);color:var(--ink);padding:6px 12px;font-size:12px;width:200px;letter-spacing:0.06em;font-family:inherit;border-radius:2px;transition:border-color .2s,box-shadow .2s}
-.search input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 2px rgba(176,58,46,.12)}
-.search input::placeholder{color:#b0a088}
-.search button{background:#fffdf6;border:1px solid var(--line);color:var(--ink2);padding:6px 14px;cursor:pointer;font-size:12px;letter-spacing:0.12em;border-radius:2px;transition:all .2s;font-family:inherit}
-.search button:hover{color:var(--red);border-color:var(--red);background:rgba(176,58,46,.06)}
+.search input{background:rgba(255,255,255,.75);border:1px solid var(--line);color:var(--ink);padding:6px 12px;font-size:12px;width:200px;letter-spacing:0.06em;font-family:inherit;border-radius:2px;transition:border-color .2s,box-shadow .2s}
+.search input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 2px rgba(107,142,35,.18)}
+.search input::placeholder{color:#9aa07a}
+.search button{background:rgba(255,255,255,.75);border:1px solid var(--line);color:var(--ink2);padding:6px 14px;cursor:pointer;font-size:12px;letter-spacing:0.12em;border-radius:2px;transition:all .2s;font-family:inherit}
+.search button:hover{color:var(--red);border-color:var(--red);background:rgba(107,142,35,.10)}
 
 /* ========== 主体 ========== */
 .wrap{max-width:1180px;margin:0 auto;padding:24px 24px 80px;display:grid;grid-template-columns:1fr 280px;gap:24px;position:relative;z-index:2}
@@ -98,27 +98,27 @@ html,body{
   animation:threadFadeIn .45s ease both;
 }
 @keyframes threadFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s ease, width .25s ease;box-shadow:0 0 10px rgba(192,57,43,.55)}
-.thread:hover{background:linear-gradient(90deg,rgba(176,58,46,.18),rgba(176,58,46,.04));padding-left:24px}
+.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s ease, width .25s ease;box-shadow:0 0 10px rgba(107,142,35,.55)}
+.thread:hover{background:linear-gradient(90deg,rgba(107,142,35,.18),rgba(107,142,35,.04));padding-left:24px}
 .thread:hover::before{transform:scaleY(1);width:5px}
 .thread:last-child{border-bottom:none}
-.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#e8c8b8,#f0e0d0);display:flex;align-items:center;justify-content:center;font-size:13px;color:#9a4a3a;overflow:hidden;border:1.5px solid #d8b8a0;box-shadow:0 0 6px rgba(176,58,46,.12);position:relative;font-family:"STKaiti",serif;font-weight:700}
-.avatar::after{content:"";position:absolute;inset:2px;border-radius:50%;background:radial-gradient(circle,rgba(127,180,154,.12),transparent 70%);pointer-events:none}
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#dde8b8,#cce0a8);display:flex;align-items:center;justify-content:center;font-size:13px;color:#3a5a2a;overflow:hidden;border:1.5px solid #a8c97a;box-shadow:0 0 6px rgba(107,142,35,.20);position:relative;font-family:"STKaiti",serif;font-weight:700}
+.avatar::after{content:"";position:absolute;inset:2px;border-radius:50%;background:radial-gradient(circle,rgba(168,217,127,.18),transparent 70%);pointer-events:none}
 .avatar img{width:100%;height:100%;object-fit:cover}
-.avatar.red{background:linear-gradient(135deg,#e0a898,#c86a5a);color:#fff;font-size:14px;border-color:#c8553f;box-shadow:0 0 8px rgba(176,58,46,.25)}
-.avatar.admin{background:linear-gradient(135deg,#d8ccb4,#c0b098);color:#6a5a40;border-color:#b0a088;box-shadow:none}
+.avatar.red{background:linear-gradient(135deg,#a8c97a,#6b8e23);color:#fff;font-size:14px;border-color:#5a7a2e;box-shadow:0 0 8px rgba(107,142,35,.30)}
+.avatar.admin{background:linear-gradient(135deg,#c8d8a8,#b0c088);color:#4a5a1e;border-color:#a8c97a;box-shadow:none}
 .thread .title{font-size:14.5px;color:var(--ink);font-weight:500;font-family:"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.5;text-shadow:0 1px 2px rgba(255,255,255,.55), 0 0 4px rgba(255,255,255,.35)}
 .thread .title b,.thread .title strong{color:var(--red2);font-weight:700}
-.thread .title .tag{display:inline-block;font-size:10px;padding:1px 6px;margin-right:6px;border:1px solid #d8b8a0;color:var(--red);letter-spacing:0.1em;vertical-align:1px;background:rgba(176,58,46,.05)}
-.thread .title .tag.hot{border-color:var(--red);background:rgba(176,58,46,.10);color:var(--red2)}
-.thread .title .tag.danger{border-color:var(--red2);background:rgba(176,58,46,.14);color:var(--red2);animation:tagPulse 1.4s ease-in-out infinite}
+.thread .title .tag{display:inline-block;font-size:10px;padding:1px 6px;margin-right:6px;border:1px solid #a8c97a;color:var(--red);letter-spacing:0.1em;vertical-align:1px;background:rgba(107,142,35,.08)}
+.thread .title .tag.hot{border-color:var(--red);background:rgba(107,142,35,.18);color:var(--red2)}
+.thread .title .tag.danger{border-color:var(--red2);background:rgba(107,142,35,.24);color:var(--red2);animation:tagPulse 1.4s ease-in-out infinite}
 @keyframes tagPulse{0%,100%{opacity:1}50%{opacity:0.6}}
-.thread .meta{font-size:11.5px;color:#8a7a66;line-height:1.5;margin-top:4px}
+.thread .meta{font-size:11.5px;color:var(--ink2);line-height:1.5;margin-top:4px;text-shadow:0 1px 1px rgba(255,255,255,.5)}
 .thread .author{font-size:12px;color:var(--ink2);text-align:center}
 .thread .author.red{color:var(--red2);font-weight:600}
-.thread .author.admin{color:#6a5a40}
-.thread .last{font-size:11px;color:#a09080;text-align:center;line-height:1.4}
-.thread .count{font-size:11px;color:#a09080;text-align:center}
+.thread .author.admin{color:var(--ink)}
+.thread .last{font-size:11px;color:#7a8a4a;text-align:center;line-height:1.4}
+.thread .count{font-size:11px;color:#7a8a4a;text-align:center}
 .thread .count b{color:var(--red2);font-weight:700;font-size:13px}
 
 /* ========== 主题详情 ========== */
@@ -134,67 +134,67 @@ html,body{
   display:flex;align-items:center;gap:10px;
 }
 .post .ph .info{flex:1;min-width:0}
-.post .ph .info .t{font-size:15px;color:#3a2e22;font-weight:600}
-.post .ph .info .m{font-size:11px;color:#8a7a66;margin-top:3px;letter-spacing:0.05em}
-.post .ph .floor{font-size:11px;color:#8a7a66;border:1px solid var(--line);padding:1px 6px;letter-spacing:0.1em}
-.post .pb{padding:20px 22px;font-size:14px;line-height:2;color:#4a3b2a;letter-spacing:0.03em}
+.post .ph .info .t{font-size:15px;color:var(--ink);font-weight:600}
+.post .ph .info .m{font-size:11px;color:var(--ink2);margin-top:3px;letter-spacing:0.05em}
+.post .ph .floor{font-size:11px;color:var(--ink2);border:1px solid var(--line);padding:1px 6px;letter-spacing:0.1em}
+.post .pb{padding:20px 22px;font-size:14px;line-height:2;color:var(--ink);letter-spacing:0.03em}
 .post .pb p{margin:0 0 12px}
-.post .pb .small{font-size:12px;color:#a09080}
+.post .pb .small{font-size:12px;color:#7a8a4a}
 .post .pb .quote{
-  border-left:3px solid #3a3a3a;padding:6px 12px;margin:10px 0;color:#888;background:rgba(255,255,255,0.02);
+  border-left:3px solid var(--ink);padding:6px 12px;margin:10px 0;color:#7a8a4a;background:rgba(255,255,255,0.02);
   font-size:13px;
 }
 .post .pb .quote b{color:var(--red)}
 .post .pf{
   padding:10px 22px;border-top:1px solid var(--line2);
-  display:flex;gap:16px;align-items:center;font-size:11.5px;color:#666;
+  display:flex;gap:16px;align-items:center;font-size:11.5px;color:var(--ink2);
 }
 .post .pf .ops{margin-left:auto;display:flex;gap:14px}
 .post .pf .ops span{cursor:pointer}
 .post .pf .ops span:hover{color:var(--red)}
 
 /* 楼层内回复（含密码块） */
-.reply-list{padding:8px 22px 18px;background:rgba(176,58,46,.02)}
+.reply-list{padding:8px 22px 18px;background:rgba(107,142,35,.02)}
 .reply{
   padding:14px 0;border-bottom:1px dashed var(--line2);
   display:grid;grid-template-columns:36px 1fr;gap:12px;
 }
 .reply:last-child{border-bottom:none}
-.reply .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#e8c8b8,#f0e0d0);display:flex;align-items:center;justify-content:center;font-size:11px;color:#9a4a3a;overflow:hidden;border:1px solid #d8b8a0}
-.reply .av.red{background:linear-gradient(135deg,#e0a898,#c86a5a);color:#fff}
-.reply .av.admin{background:linear-gradient(135deg,#d8ccb4,#c0b098);color:#6a5a40}
-.reply .who{font-size:12px;color:#6a5a40;font-weight:600}
+.reply .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#dde8b8,#cce0a8);display:flex;align-items:center;justify-content:center;font-size:11px;color:#3a5a2a;overflow:hidden;border:1px solid #a8c97a}
+.reply .av.red{background:linear-gradient(135deg,#a8c97a,#6b8e23);color:#fff}
+.reply .av.admin{background:linear-gradient(135deg,#c8d8a8,#b0c088);color:#4a5a1e}
+.reply .who{font-size:12px;color:#6a8a3a;font-weight:600}
 .reply .who.red{color:var(--red2)}
-.reply .who.admin{color:#6a5a40}
-.reply .who small{color:#a09080;font-weight:400;margin-left:6px}
-.reply .body{font-size:13px;color:#4a3b2a;line-height:1.85;margin-top:4px}
+.reply .who.admin{color:#4a5a1e}
+.reply .who small{color:#7a8a4a;font-weight:400;margin-left:6px}
+.reply .body{font-size:13px;color:var(--ink);line-height:1.85;margin-top:4px}
 .reply .body .admin-cred{
   display:block;margin-top:8px;padding:6px 10px;
-  border:1px dashed #6a2020;background:rgba(139,26,26,0.08);
-  color:#c04040;font-family:monospace;letter-spacing:0.05em;font-size:12px;
+  border:1px dashed #5a7a2e;background:rgba(107,142,35,.10);
+  color:#3a5a2a;font-family:monospace;letter-spacing:0.05em;font-size:12px;
 }
 .reply .body .bared{color:var(--red);font-weight:600}
 .reply .body .bared::after{content:" · 此用户已被永久禁言"}
-.reply .body .floornum{font-size:10.5px;color:#a09080;margin-right:6px}
+.reply .body .floornum{font-size:10.5px;color:#7a8a4a;margin-right:6px}
 
 /* ========== 侧栏 ========== */
 .side{display:flex;flex-direction:column;gap:14px;position:relative}
 .sidebox{background:transparent;border:1px solid rgba(255,255,255,.45);padding:14px 16px;border-radius:3px;box-shadow:0 3px 18px rgba(20,40,55,.22);position:relative;overflow:hidden}
 .sidebox::before{content:"";position:absolute;top:10px;right:10px;width:44px;height:44px;background:url('assets/desktop/forum-bs/lotus-pink-big.png') center/contain no-repeat;opacity:.06;pointer-events:none}
-.sidebox h3{margin:0 0 10px;font-size:13px;color:#5a4a38;letter-spacing:0.25em;border-bottom:1px solid var(--line2);padding-bottom:6px;font-family:"STKaiti","KaiTi",serif;font-weight:700}
+.sidebox h3{margin:0 0 10px;font-size:13px;color:var(--ink);letter-spacing:0.25em;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:6px;font-family:"STKaiti","KaiTi",serif;font-weight:700;text-shadow:0 1px 2px rgba(255,255,255,.5)}
 .sidebox ol{margin:0;padding-left:18px;font-size:12px;color:var(--ink2);line-height:1.85}
 .sidebox ol li{margin:2px 0;cursor:pointer}
 .sidebox ol li:hover{color:var(--red)}
 .sidebox .admin-hint{
-  font-size:11.5px;color:#6a5a40;line-height:1.7;background:rgba(176,58,46,.04);
-  border:1px solid #e0d4bc;padding:10px 12px;letter-spacing:0.06em;
+  font-size:11.5px;color:#6a8a3a;line-height:1.7;background:rgba(107,142,35,.04);
+  border:1px solid #dde8c0;padding:10px 12px;letter-spacing:0.06em;
 }
 .sidebox .admin-hint b{color:var(--red)}
 
 /* ========== 底部 ========== */
 .foot{
   text-align:center;padding:30px 0;
-  color:#5a4a38;font-size:11px;letter-spacing:0.4em;
+  color:#6a8a3a;font-size:11px;letter-spacing:0.4em;
 }
 
 /* ========== 主题切换：列表 / 详情 ========== */
@@ -206,7 +206,7 @@ html,body{
   margin:14px 0 8px;
   padding:14px 16px 12px;
   border:1px dashed var(--red);
-  background:rgba(176,58,46,.035);
+  background:rgba(107,142,35,.035);
 }
 .cred-title{
   font-size:11.5px;
@@ -224,7 +224,7 @@ html,body{
 }
 .cred-row label{
   width:54px;
-  color:#6a5a40;
+  color:#6a8a3a;
   font-size:11.5px;
   letter-spacing:0.2em;
   text-align:right;
@@ -233,14 +233,14 @@ html,body{
   flex:1;
   background:#fffdf6;
   border:1px solid var(--line);
-  color:#4a3b2a;
+  color:var(--ink);
   font-family:monospace;
   font-size:12px;
   padding:6px 10px;
   letter-spacing:0.05em;
   outline:none;
 }
-.cred-row input:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(176,58,46,.10)}
+.cred-row input:focus{border-color:var(--red);box-shadow:0 0 0 2px rgba(107,142,35,.10)}
 .cred-row input:disabled{opacity:0.5;cursor:not-allowed}
 .cred-actions{
   display:flex;
@@ -259,7 +259,7 @@ html,body{
   letter-spacing:0.2em;
 }
 .cred-actions button:hover{background:var(--red);color:#fff}
-.cred-box .admin-hint{font-size:11.5px;color:#8a7a66;min-height:14px;letter-spacing:0.06em}
+.cred-box .admin-hint{font-size:11.5px;color:#6a8a3a;min-height:14px;letter-spacing:0.06em}
 .cred-box .admin-hint.ok{color:#80c080}
 .cred-box .admin-hint.err{color:#c04040}
 
@@ -268,18 +268,18 @@ html,body{
   margin-top:12px;
   padding:12px 16px 14px;
   border-top:1px dashed var(--red);
-  background:rgba(176,58,46,.03);
+  background:rgba(107,142,35,.03);
 }
 .cred-record .rec-title{
   font-size:11.5px;
-  color:#a02020;
+  color:var(--red2);
   letter-spacing:0.3em;
   text-align:center;
   margin:0 0 8px;
 }
 .cred-record p{
   font-size:12.5px;
-  color:#5a4a38;
+  color:#6a8a3a;
   line-height:1.95;
   margin:6px 0;
   letter-spacing:0.04em;
@@ -287,7 +287,7 @@ html,body{
 .cred-record p.rec-sign{
   margin-top:10px;
   text-align:right;
-  color:#7a5a5a;
+  color:#7a8a4a;
   font-size:11px;
   letter-spacing:0.3em;
 }
@@ -298,34 +298,34 @@ html,body{
   text-align:center;
   margin:28px 0 8px;
   padding:20px 24px;
-  border:1px solid #8b1a1a;
-  background:rgba(139,26,26,0.10);
+  border:1px solid var(--red);
+  background:rgba(107,142,35,0.10);
 }
 .ending-cta .a{
   display:inline-block;
   padding:11px 28px;
-  border:1px solid #8b1a1a;
-  color:#c8a8a8;
+  border:1px solid var(--red);
+  color:#3a5a2a;
   text-decoration:none;
   font-size:13px;
   letter-spacing:0.3em;
   transition:background .25s, color .25s;
 }
-.ending-cta .a:hover{background:#8b1a1a;color:#fff}
+.ending-cta .a:hover{background:var(--red);color:#fff}
 /* ========== 美化：标签呼吸光 · 行 hover 滑入 · 侧栏悬浮 ========== */
 .tag.danger{animation:tagPulse 1.6s ease-in-out infinite}
 .tag.hot{animation:tagPulse 2.4s ease-in-out infinite}
-@keyframes tagPulse{0%,100%{box-shadow:0 0 0 rgba(178,34,34,0)}50%{box-shadow:0 0 14px rgba(178,34,34,.55)}}
+@keyframes tagPulse{0%,100%{box-shadow:0 0 0 rgba(107,142,35,0)}50%{box-shadow:0 0 14px rgba(107,142,35,.55)}}
 
 /* 主题行 hover：左滑提示 */
 .thread{position:relative;overflow:hidden;background:rgba(255,255,255,0)}
-.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#8b1a1a,#c0392b);transform:scaleY(0);transform-origin:center;transition:transform .25s ease}
-.thread:hover::before{transform:scaleY(1)}
-.thread:hover{background:linear-gradient(90deg,rgba(139,26,26,.10),rgba(139,26,26,.02))!important;padding-left:22px}
+.thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s ease,width .25s ease;box-shadow:0 0 10px rgba(107,142,35,.55)}
+.thread:hover::before{transform:scaleY(1);width:5px}
+.thread:hover{background:linear-gradient(90deg,rgba(107,142,35,.10),rgba(107,142,35,.02))!important;padding-left:22px}
 
 /* 侧栏模块悬浮 */
 .sidebox{transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease}
-.sidebox:hover{transform:translateY(-2px);border-color:#d8b8a0;box-shadow:0 6px 14px rgba(90,70,40,.12)}
+.sidebox:hover{transform:translateY(-2px);border-color:#a8c97a;box-shadow:0 6px 14px rgba(107,142,35,.15)}
 
 /* 管理员名单 / 热议主题（样式清空：模块已删） */
 
@@ -365,12 +365,12 @@ html,body{
 
 /* 顶栏品牌：闪红点 */
 .brand .dot{animation:brandDot 2.2s ease-in-out infinite}
-@keyframes brandDot{0%,100%{opacity:.4;color:#8b1a1a}50%{opacity:1;color:#c0392b;text-shadow:0 0 8px rgba(192,57,43,.6)}}
+@keyframes brandDot{0%,100%{opacity:.4;color:var(--red)}50%{opacity:1;color:var(--red2);text-shadow:0 0 8px rgba(107,142,35,.6)}}
 
 .ending-cta .note{
   margin-top:12px;
   font-size:11.5px;
-  color:#7a5a5a;
+  color:#7a8a4a;
   letter-spacing:0.2em;
 }
 
@@ -387,11 +387,11 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-post{position:relative;overflow:hidden}
 .xuehe-body{position:relative;z-index:1}
 .xuehe-quote{color:#4a8a6a;font-style:italic;text-align:right;margin-top:12px;font-size:12.5px;letter-spacing:0.1em}
-.xuehe-threat{color:var(--red2);font-weight:700;text-shadow:0 0 6px rgba(176,58,46,.35);animation:threatFlicker 2s ease-in-out infinite}
+.xuehe-threat{color:var(--red2);font-weight:700;text-shadow:0 0 6px rgba(107,142,35,.45);animation:threatFlicker 2s ease-in-out infinite}
 @keyframes threatFlicker{0%,90%,100%{opacity:1}92%{opacity:.3}94%{opacity:1}96%{opacity:.5}}
 .xuehe-flash{animation:xueheFlash 1.2s ease-in-out infinite}
-@keyframes xueheFlash{0%,100%{background:rgba(127,180,154,.25);border-color:#4a8a6a;color:#2f6b52}50%{background:rgba(176,58,46,.22);border-color:var(--red);color:var(--red2)}}
-.xuehe-locked{opacity:0.65;background:rgba(178,34,34,.05) !important;border-color:#5a0e0e !important}
+@keyframes xueheFlash{0%,100%{background:rgba(127,180,154,.25);border-color:#4a8a6a;color:#2f6b52}50%{background:rgba(168,217,127,.32);border-color:var(--red);color:var(--ink)}}
+.xuehe-locked{opacity:0.65;background:rgba(107,142,35,.06) !important;border-color:#3a5a2a !important}
 
 /* BSOD 警告框 */
 .xuehe-bsod{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center}
@@ -514,7 +514,7 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-js .x-creep-item{position:absolute;transform:translate(-50%,-50%) rotate(var(--brt,0deg));color:#f5e8d4;font-family:"Microsoft YaHei","PingFang SC","STKaiti",serif;font-weight:400;text-shadow:0 0 8px rgba(255,220,180,.6),0 0 18px rgba(255,180,140,.4);mix-blend-mode:screen;opacity:var(--op,0.85);white-space:nowrap;animation:creepFlicker .15s steps(2,end) infinite var(--dly,0s),creepGlitch .3s steps(3,end) infinite;pointer-events:none;letter-spacing:0.05em}
 .xuehe-js .x-creep-item:nth-child(3n){color:#ffd0d0;text-shadow:0 0 8px rgba(255,160,160,.7),0 0 16px rgba(255,100,100,.4);animation-delay:0s,0.1s}
 .xuehe-js .x-creep-item:nth-child(5n){color:#fff5e0;font-style:italic;letter-spacing:0.15em}
-.xuehe-js .x-creep-item:nth-child(7n){color:#888;font-size:.75em}
+.xuehe-js .x-creep-item:nth-child(7n){color:#9aa07a;font-size:.75em}
 .xuehe-js .x-creep-item::before{content:"👁️";position:absolute;left:-18px;top:0;font-size:.7em;opacity:.7}
 @keyframes creepFlicker{0%,92%,100%{opacity:var(--op,0.85)}94%{opacity:.4}96%{opacity:1}98%{opacity:.5}}
 @keyframes creepGlitch{0%{transform:translate(-50%,-50%) rotate(var(--brt,0deg))}33%{transform:translate(calc(-50% - 3px),calc(-50% + 2px)) rotate(calc(var(--brt,0deg) - 1deg))}66%{transform:translate(calc(-50% + 4px),calc(-50% - 2px)) rotate(calc(var(--brt,0deg) + 1deg))}}
@@ -542,11 +542,11 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-post{position:relative;overflow:hidden}
 .xuehe-body{position:relative;z-index:1}
 .xuehe-quote{color:#4a8a6a;font-style:italic;text-align:right;margin-top:12px;font-size:12.5px;letter-spacing:0.1em}
-.xuehe-threat{color:var(--red2);font-weight:700;text-shadow:0 0 6px rgba(176,58,46,.35);animation:threatFlicker 2s ease-in-out infinite}
+.xuehe-threat{color:var(--red2);font-weight:700;text-shadow:0 0 6px rgba(107,142,35,.45);animation:threatFlicker 2s ease-in-out infinite}
 @keyframes threatFlicker{0%,90%,100%{opacity:1}92%{opacity:.3}94%{opacity:1}96%{opacity:.5}}
 .xuehe-flash{animation:xueheFlash 1.2s ease-in-out infinite}
-@keyframes xueheFlash{0%,100%{background:rgba(127,180,154,.25);border-color:#4a8a6a;color:#2f6b52}50%{background:rgba(176,58,46,.22);border-color:var(--red);color:var(--red2)}}
-.xuehe-locked{opacity:0.65;background:rgba(178,34,34,.05) !important;border-color:#5a0e0e !important}
+@keyframes xueheFlash{0%,100%{background:rgba(127,180,154,.25);border-color:#4a8a6a;color:#2f6b52}50%{background:rgba(168,217,127,.32);border-color:var(--red);color:var(--ink)}}
+.xuehe-locked{opacity:0.65;background:rgba(107,142,35,.06) !important;border-color:#3a5a2a !important}
 .xuehe-bsod{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center}
 .xuehe-bsod .dl-box{background:#ece9d8;border:2px solid #0055ea;width:440px;box-shadow:0 0 0 2px #fff inset,4px 4px 12px rgba(0,0,0,.5);font-family:"Tahoma","Microsoft YaHei",sans-serif}
 .xuehe-bsod .dl-title{background:linear-gradient(180deg,#0055ea,#0a4cb8);color:#fff;padding:5px 10px;font-weight:bold;font-size:13px;display:flex;justify-content:space-between;align-items:center}
@@ -840,7 +840,7 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
           <div class="quote">
             「材料齐了。湖心岛、底泥、库底红膜、库周取样、那份未公开的 4 月例检数据，一并打包。明天上午递上去。<br>
             各位同事，<b>如果我没回来</b>把这条消息截给沈清川。」<br>
-            <span style="color:#888">03:11 许清</span>
+            <span style="color:#9aa07a">03:11 许清</span>
           </div>
           <p>第二天上午 9 点，他没来上班。人事科 11 点发的内部口径是「个人原因请假」。再过三天改口「已调往外地同系统兄弟单位」。再过一周变成「按本人意愿办理离职，相关档案已转出」。</p>
           <p>他工位上的电脑，至今还亮着。我远远拍了一张，屏幕停在那个「已发送」上，没人关过。</p>
@@ -882,10 +882,10 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
               <div class="body">他发那条消息前一周，跟我喝过一次酒。他说他知道了一些事，但是，「说出来，会有人跟他一起走」。他没走，他先让 ta 走了。
               <div class="quote" style="margin-top:8px">
                 [工 作 群 截 图 · 2024-09-22 02:58]<br>
-                <b>清</b>（<span style="opacity:0.18;color:#888">XuQing_0221</span>）：<br>
+                <b>清</b>（<span style="opacity:0.18;color:#9aa07a">XuQing_0221</span>）：<br>
                 「材料齐了。湖心岛、底泥、库底红膜、库周取样、那份未公开的 4 月例检数据，一并打包。明天上午递上去。<br>
                 各位同事，<b>如果我没回来</b>把这条消息截给沈清川。」<br>
-                <span style="color:#666">状态栏：<span style="opacity:0.18;color:#888">jiuHuLaiYe27</span> · 个 人 签 名 档 ：就 呼 来 业 已 满 27 岁</span>
+                <span style="color:#6a8a3a">状态栏：<span style="opacity:0.18;color:#9aa07a">jiuHuLaiYe27</span> · 个 人 签 名 档 ：就 呼 来 业 已 满 27 岁</span>
               </div>
               </div>
             </div>
@@ -999,10 +999,10 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
               <div class="body"><span class="floornum">[2 楼]</span>我爸是 1985 年第一批建市干部，他 1986 年的工作笔记里写过一句：「沈清川来市档案馆报到，工龄表填 23 岁，长得跟 1978 年那张一样。」<br>他当时以为写错了，没改。
               <div class="quote" style="margin-top:8px">
                 [档 案 室 内 部 工 单 · 1985-12-14 · 永 久]<br>
-                编　号 ：<span style="opacity:0.18;color:#888">ShenQingchuan_25</span><br>
+                编　号 ：<span style="opacity:0.18;color:#9aa07a">ShenQingchuan_25</span><br>
                 类　别 ：人 事 · 长 期 · 不 调 离<br>
                 工 龄 表 ：23 岁　·　<b>初 予 ！</b><br>
-                初 始 密 钥 ：<span style="opacity:0.18;color:#888">chu-yu-2014</span>
+                初 始 密 钥 ：<span style="opacity:0.18;color:#9aa07a">chu-yu-2014</span>
               </div>
               
               </div>
@@ -1058,7 +1058,7 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
             </div>
           </div>
         </div>
-        <p style="margin-top:6px;color:#888;font-size:11.5px;font-style:italic">管理员注：沈清川同志的旧档归位凭据，已在前期档案交互中给出（详见微信「四人之秘」聊天窗），本帖不再重复。</p>
+        <p style="margin-top:6px;color:#9aa07a;font-size:11.5px;font-style:italic">管理员注：沈清川同志的旧档归位凭据，已在前期档案交互中给出（详见微信「四人之秘」聊天窗），本帖不再重复。</p>
         <div class="pf">
           <span>此帖已被相关单位要求下沉 · 楼中含管理员口令，请勿截图</span>
           <div class="ops"><span>👍 480</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
@@ -1131,10 +1131,10 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
               <div class="body">那份底稿我签过销毁。我签的时候手抖。我手抖不是因为不会写字，是因为我那阵子已经明白，<b>下一份报告上，要写的字会变成我自己的名字。</b>
               <div class="quote" style="margin-top:8px">
                 [生 态 环 境 局 内 部 邮 件 · 抄 送 留 存 · 2024-05-11]<br>
-                发 件 人 ：<span style="opacity:0.18;color:#888">LinMaocai77</span> @ 局 内 网<br>
+                发 件 人 ：<span style="opacity:0.18;color:#9aa07a">LinMaocai77</span> @ 局 内 网<br>
                 收 件 人 ：办 公 室 副 主 任 · 档 案 室 · 市 政 府 办<br>
                 主　　题 ：5 月 水 质 报 告 修 订（密）<br>
-                备　　注 ：<b>家 属 名</b>　·　登 录 口 令 ：<span style="opacity:0.18;color:#888">family</span>
+                备　　注 ：<b>家 属 名</b>　·　登 录 口 令 ：<span style="opacity:0.18;color:#9aa07a">family</span>
               </div>
               </div>
             </div>
@@ -1174,14 +1174,14 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
               <div class="body">湖心岛祠堂里坐着的那位。他 没名字。他 也不需要名字。他 只认字，<b>凡是你主动写下来的、主动开口说的，他 都认。</b></div>
               <p style="margin-top:8px">我这条楼里所有许愿的细节、签过的字、烧过的报告，<b>都是为了让你看清他 是怎么一步步把人引过去的。</b></p>
               <p>我劝你 <b>打开这一页</b>看完那张图，再决定要不要去湖心岛。</p>
-              <p style="text-align:center;margin-top:14px"><a href="chapter2-ritual.html" style="display:inline-block;padding:8px 18px;border:1px solid #6a2020;color:#c8a8a8;text-decoration:none;letter-spacing:0.2em;font-size:12px">▸ 打 开 那 张 献 祭 图</a></p>
-              <p style="margin-top:8px;font-size:11.5px;color:#888;text-align:center">点开后，<b>点一下那张图</b>。那一栏里，会显出两个红字。<br>那两个红字，<span style="color:#a02020">就是</span>。</p>
+              <p style="text-align:center;margin-top:14px"><a href="chapter2-ritual.html" style="display:inline-block;padding:8px 18px;border:1px solid var(--red);color:#9aa07a;text-decoration:none;letter-spacing:0.2em;font-size:12px">▸ 打 开 那 张 献 祭 图</a></p>
+              <p style="margin-top:8px;font-size:11.5px;color:#9aa07a;text-align:center">点开后，<b>点一下那张图</b>。那一栏里，会显出两个红字。<br>那两个红字，<span style="color:#a02020">就是</span>。</p>
               <div class="admin-cred" style="margin-top:8px">林 局 留 了 一 句 话：</div>
               
             </div>
           </div>
         </div>
-        <p style="margin-top:6px;color:#888;font-size:11.5px;font-style:italic">管理员注：林茂才同志的归位凭据，已在前期档案交互中给出（详见微信「四人之秘」聊天窗与归位通告正文），本帖不再重复。</p>
+        <p style="margin-top:6px;color:#9aa07a;font-size:11.5px;font-style:italic">管理员注：林茂才同志的归位凭据，已在前期档案交互中给出（详见微信「四人之秘」聊天窗与归位通告正文），本帖不再重复。</p>
         <div class="pf">
           <span>⚠ 此帖发布 11 小时 · 楼主尚未登录 · 已被相关单位要求下沉</span>
           <div class="ops"><span>👍 286</span><span>💬 回复</span><span>⭐ 收藏</span><span>↗ 分享</span></div>
@@ -1206,7 +1206,7 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
           <p>二、关于「湖心岛夜间维护作业」系保障库区安全的常规水库管理工作。请市民不要过度联想。</p>
           <p>三、近期网传「湖心岛有异常光斑」「红纹鱼」「水面红雾」等说法，市生态环境局已多次公开说明，均系自然现象，不存在污染，请勿信谣传谣。</p>
           <p>四、对在水阁等平台发布不实信息、散步恐慌情绪的网民，相关部门将依法依规处理。</p>
-          <p class="small" style="color:#888">市政府办公室</p>
+          <p class="small" style="color:#9aa07a">市政府办公室</p>
         </div>
         <div class="reply-list">
           <div class="reply">
@@ -1216,9 +1216,9 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
               <div class="body">周主任您好。请问湖心岛每月周三 00:00 那次「维护作业」，您亲自参加过几次？档案室 B3 层里有一份您 2024 年的签到表，十二次签到，签字笔迹与您日常办公笔迹比对相似度 78%，剩下的 22% 集中在字尾。我不是想问别的，我只是想问：<b>那一夜您是用哪支笔签的？</b>
               <div class="quote" style="margin-top:8px">
                 [签 到 表 · 2024 全 年 · B3-签-0072 · 翻 拍 留 底]<br>
-                姓　名 ：<span style="opacity:0.18;color:#888">ZhouBinkun_72</span>　·　岗 位 ：办 公 室 副 主 任<br>
+                姓　名 ：<span style="opacity:0.18;color:#9aa07a">ZhouBinkun_72</span>　·　岗 位 ：办 公 室 副 主 任<br>
                 笔　具 ：0.38 蓝 黑 · 2018 停 产　·　纸 ：库 区 维 护 记 录 本<br>
-                备　注 ：<b>影</b>　·　登 录 口 令 ：<span style="opacity:0.18;color:#888">ying_snow_2024</span>
+                备　注 ：<b>影</b>　·　登 录 口 令 ：<span style="opacity:0.18;color:#9aa07a">ying_snow_2024</span>
               </div>
               </div>
             </div>
@@ -1344,9 +1344,9 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
               <div class="body">我翻了。纸片背面有一行字，墨水很淡，是 2003 年才有的那种蓝黑水写的：<b>我 儿 子 吃 了</b>。
               <div class="quote" style="margin-top:8px">
                 [藕 心 纸 片 · 背 面 · 2003 蓝 黑 · 翻 拍 留 底]<br>
-                家长 ID ：<span style="opacity:0.18;color:#888">hongwen_2017</span><br>
+                家长 ID ：<span style="opacity:0.18;color:#9aa07a">hongwen_2017</span><br>
                 留　言 ：<b>我 儿 子 吃 了</b><br>
-                留 言 拼 音 ：<span style="opacity:0.18;color:#888">wo_er_zi_chi_le</span>
+                留 言 拼 音 ：<span style="opacity:0.18;color:#9aa07a">wo_er_zi_chi_le</span>
               </div>
               <p style="margin-top:6px">那一行字，是另一个人写的。ta 不是我。ta 是 2003 年另一个孩子吃了藕的家长。ta 把自己的话写下来，叠进藕心，留在下一节藕里。等着下一个找到这片藕的人。</p>
               <p>我不知道 ta 是怎么做到的。我只知道，<b>这片藕留给我，不是 ta 留的，是 ta 留的。</b></p>
@@ -1431,9 +1431,9 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
               <div class="body">沈姐。我懂。我那张表的复印件我也留了一份。
               <div class="quote" style="margin-top:8px">
                 [换 岗 申 请 表 · 2023-09-04 · 第 三 次 · 翻 拍]<br>
-                申 请 人 ：<span style="opacity:0.18;color:#888">laochen_1963</span>　·　部 门 ：湖 心 岛 祠 堂 巡 逻 队<br>
+                申 请 人 ：<span style="opacity:0.18;color:#9aa07a">laochen_1963</span>　·　部 门 ：湖 心 岛 祠 堂 巡 逻 队<br>
                 理　由 ：<b>换 下 来 的 人 第 二 年 都 病 了</b>　·　<b>没 人 信 我</b><br>
-                理 由 拼 音 ：<span style="opacity:0.18;color:#888">mei_you_ren_xin_wo</span><br>
+                理 由 拼 音 ：<span style="opacity:0.18;color:#9aa07a">mei_you_ren_xin_wo</span><br>
                 审 批 ：<b style="color:#a02020">缓</b>
               </div>
               <p style="margin-top:6px">这一份是我自己留的。我每次换岗不批，我都会留一份。我不知道 ta 为什么偏偏就只认这一份。我只知道 ta 一直在看。</p>
@@ -1511,7 +1511,7 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
               <div class="quote" style="margin-top:8px">
                 [藕 心 纸 片 · 1962 · 外 婆 遗 物 · 翻 拍]<br>
                 留 字 ：<b>7 月 15 日 · 莲 花 开 了</b><br>
-                留 字 拼 音 ：<span style="opacity:0.18;color:#888">xuehe_0715</span>　·　<span style="opacity:0.18;color:#888">lian_hua_kai_le</span>
+                留 字 拼 音 ：<span style="opacity:0.18;color:#9aa07a">xuehe_0715</span>　·　<span style="opacity:0.18;color:#9aa07a">lian_hua_kai_le</span>
               </div>
               <p style="margin-top:6px">我外婆留下的这一节藕，我没动过。我把它泡在矿泉水里，每一年换一个水。ta 没再来过。我猜 ta 是在等 ta 的字被人念出来。</p>
               <div class="cred-box" data-key="xuehe" style="margin-top:8px">
@@ -1601,8 +1601,8 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
               <div class="body">楼上那位识趣。剩下三个，<b>自己想清楚</b>。<br>汝等写的每一个字，吾都看得见。<br>汝等点的每一个赞，吾都数得清。<br>汝等搜的每一个名字——<br><span class="xuehe-threat">尤其是吾的。</span><br>汝自己想清楚再按。</div>
               <div class="cred-box xuehe-locked" data-key="xuehe-self" style="margin-top:8px">
                 <div class="cred-title">██ 此 栏 不 接 受 输 入 ██</div>
-                <div class="cred-row"><label>帐 号</label><input type="text" value="—" disabled style="color:#666"></div>
-                <div class="cred-row"><label>密 钥</label><input type="password" value="———" disabled style="color:#666"></div>
+                <div class="cred-row"><label>帐 号</label><input type="text" value="—" disabled style="color:#6a8a3a"></div>
+                <div class="cred-row"><label>密 钥</label><input type="password" value="———" disabled style="color:#6a8a3a"></div>
                 <div class="cred-actions"><button type="button" disabled style="opacity:0.4;cursor:not-allowed">▸ 归 位</button><span class="admin-hint err">， 汝 没 有 这 个 资 格 ，</span></div>
                 <div class="cred-record" style="display:none">
                   <div class="rec-title">， 莲 塘 边 那 位 · 莲 塘 自 述 ，</div>
@@ -1661,8 +1661,8 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
               <div class="quote" style="margin-top:8px">
                 [B3 层 · 莲 之 庭 观 察 日 志 · 末 页 · 1996-04-21 贴 上]<br>
                 撕 下 来 的 一 句 ：<b>水 底 下 有</b><br>
-                撕 字 人 ：<span style="opacity:0.18;color:#888">neigui_1996</span><br>
-                原 句 拼 音 ：<span style="opacity:0.18;color:#888">shui_di_xia_you</span>
+                撕 字 人 ：<span style="opacity:0.18;color:#9aa07a">neigui_1996</span><br>
+                原 句 拼 音 ：<span style="opacity:0.18;color:#9aa07a">shui_di_xia_you</span>
               </div>
               <p style="margin-top:6px">底稿原句是「水底下有人」。我撕掉了一个「人」字。ta 后来抄了三遍，ta 抄的也是「水底下有」。ta 同意我把「人」撕掉。ta 也怕那一行字被人看见。</p>
               <p>ta 抄三遍，不是为了让 ta 自己看。ta 抄三遍，<b>是怕我撕错</b>。ta 让我把 ta 的字撕对了。</p>
