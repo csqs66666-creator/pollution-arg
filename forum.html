@@ -380,7 +380,7 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-js .x-glitch{
   position:absolute;
   inset:0;
-  background-size:cover;
+  background-size:100% 100%;
   background-position:center;
   mix-blend-mode:var(--bl,screen);
   opacity:var(--gs,0.85);
@@ -432,7 +432,7 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 }
 
 /* BSOD 框错位 */
-.xuehe-js .x-bsod{position:absolute;left:50%;top:50%;transform:translate(calc(-50% + var(--ox,0px)),calc(-50% + var(--oy,0px))) rotate(calc(var(--ox,0px) * -0.04deg));filter:hue-rotate(var(--hue,0deg)) saturate(1.4) contrast(1.15);animation:gShake .14s steps(2,end) infinite}
+.xuehe-js .x-bsod{position:absolute;left:50%;top:50%;transform:translate(calc(-50% + var(--ox,0px)),calc(-50% + var(--oy,0px))) scale(1.18) rotate(calc(var(--ox,0px) * -0.04deg));filter:hue-rotate(var(--hue,0deg)) saturate(1.4) contrast(1.15);animation:gShake .14s steps(2,end) infinite}
 .xuehe-js .x-bsod:nth-child(2){filter:hue-rotate(-25deg) saturate(1.6);z-index:5}
 .xuehe-js .x-bsod:nth-child(3){filter:hue-rotate(180deg) saturate(1.6) blur(.4px);z-index:4}
 .xuehe-js .x-bsod:nth-child(4){filter:hue-rotate(50deg) saturate(1.5);z-index:6}
@@ -481,8 +481,6 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-bsod .dl-btns .ok{border:2px outset #fff;outline:1px solid #000;outline-offset:-3px}
 .xuehe-js{position:fixed;inset:0;z-index:10000;background:#000;display:none}
 .xuehe-js.run{display:block;animation:pageShake 0.06s steps(2,end) infinite}
-.xuehe-js .layer{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .04s}
-.xuehe-js .layer.on{opacity:1}
 .xuehe-js .end-text{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:#fff;font-size:32px;text-align:center;text-shadow:0 0 14px #b22222,0 0 28px #b22222;font-family:"STKaiti","KaiTi",serif;letter-spacing:0.2em;line-height:1.8;z-index:10;padding:0 30px}
 .xuehe-js .end-text.show{display:flex;animation:endFade 0.5s ease-out}
 @keyframes endFade{from{opacity:0}to{opacity:1}}
@@ -1737,10 +1735,10 @@ function runXueheJumpscare(){
   // 错位偏移（基于 img index）
   var offX = [], offY = [], scl = [], rot = [], bl = [], gs = [], hue = [];
   for(var k=0;k<imgs.length;k++){
-    offX[k] = rng(-60, 60).toFixed(1);
-    offY[k] = rng(-80, 80).toFixed(1);
-    scl[k]  = rng(0.6, 1.6).toFixed(2);
-    rot[k]  = rng(-12, 12).toFixed(1);
+    offX[k] = rng(-150, 150).toFixed(1);
+    offY[k] = rng(-150, 150).toFixed(1);
+    scl[k]  = rng(1.6, 3.4).toFixed(2);
+    rot[k]  = rng(-18, 18).toFixed(1);
     bl[k]   = ['screen','multiply','difference','overlay','lighten','hard-light'][Math.floor(Math.random()*6)];
     gs[k]   = rng(0.55, 1.0).toFixed(2);
     hue[k]  = rng(-45, 45).toFixed(0);
