@@ -457,6 +457,17 @@ a.xuehe-tab:hover{background:rgba(159,217,196,.08) !important;color:#fff !import
 .xuehe-js .bot-box{display:flex;align-items:center;gap:8px;background:#f9f9f9;border:1px solid #d3d3d3;padding:8px 10px;box-shadow:0 2px 6px rgba(0,0,0,.4);font:11px/1.2 "Helvetica","Arial","Microsoft YaHei",sans-serif;color:#555;border-radius:2px}
 .xuehe-js .bot-cb{width:24px;height:24px;background:#fff;border:2px solid #c1c1c1;flex-shrink:0;position:relative;box-sizing:border-box}
 .xuehe-js .bot-cb::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#4285f4;font-size:18px;font-weight:bold;opacity:0}
+
+/* CAMERA 弹窗：仿浏览器摄像头权限请求，伪装 Chrome 地址栏风格 */
+.xuehe-js .x-bsod.x-camera .dl-box{background:#fff;border:1px solid #5f6368;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 8px 24px rgba(0,0,0,.4)}
+.xuehe-js .x-bsod.x-camera .dl-title{background:linear-gradient(180deg,#f1f3f4,#dadce0);color:#202124;border-bottom:1px solid #5f6368;text-shadow:none}
+.xuehe-js .x-bsod.x-camera .dl-title .x{color:#5f6368;text-shadow:none}
+.xuehe-js .x-bsod.x-camera .dl-body{background:#fff;color:#202124}
+.xuehe-js .x-bsod.x-camera .dl-msg{color:#202124;text-shadow:none;font-weight:400}
+.xuehe-js .x-bsod.x-camera .dl-icon{filter:none}
+.xuehe-js .x-bsod.x-camera .dl-btns{border-top:1px solid #dadce0}
+.xuehe-js .x-bsod.x-camera .dl-btns button{background:#fff;color:#202124;border:1px solid #dadce0;text-shadow:none;border-radius:4px;padding:6px 18px}
+.xuehe-js .x-bsod.x-camera .dl-btns button:hover{background:#f1f3f4}
 .xuehe-js .bot-text{color:#333;font-size:11px;line-height:1.2}
 
 /* 文字恐怖谷：米白/淡粉的"假温馨"文字，与血红文字形成对比 */
@@ -1760,23 +1771,21 @@ function showXueheWarn(){
 function runXueheJumpscare(){
   // glitch 堆叠：所有素材 + BSOD + 信息全部叠在一起，错位/红蓝重影/色相滚动
   // 关键素材：透明底 PNG，作为小点饰（80-220px）散落满屏（不再全屏占满）
-  var imgs = [
-    'assets/desktop/forum-bs/rose-eye.png',
-    'assets/desktop/forum-bs/eye-wings.png',
-    'assets/desktop/forum-bs/robot-wings.png',
-    'assets/desktop/forum-bs/eyes-bloodshot.jpg',
-    'assets/desktop/forum-bs/rose-eye.png',
-    'assets/desktop/forum-bs/eye-wings.png',
-    'assets/desktop/forum-bs/robot-wings.png',
-    'assets/desktop/forum-bs/lotus-jade-green.png'
+  // === 3 张眼睛元素素材，重复利用 50 次铺满，作为"盯着你"的元素 ===
+  var EYE_IMGS = [
+    'assets/desktop/forum-bs/eye-winged-a.png',
+    'assets/desktop/forum-bs/robot-angel.png',
+    'assets/desktop/forum-bs/rose-eye-big.png'
   ];
+  var imgs = [];
+  for (var ii=0; ii<50; ii++){ imgs.push(EYE_IMGS[ii % EYE_IMGS.length]); }
   var rng = function(min,max){ return Math.random()*(max-min)+min; };
   // 错位偏移（基于 img index）
   var offX = [], offY = [], scl = [], rot = [], bl = [], gs = [], hue = [], lw = [], lh = [], lpx = [], lpy = [];
   for(var k=0;k<imgs.length;k++){
     offX[k] = rng(-30, 30).toFixed(1);  // 小幅位移
     offY[k] = rng(-30, 30).toFixed(1);
-    scl[k]  = rng(0.9, 1.15).toFixed(2); // 透明 PNG 已设尺寸，不再大缩放
+    scl[k]  = rng(0.5, 1.0).toFixed(2); // 缩小：作为点缀不再大
     rot[k]  = rng(-25, 25).toFixed(1);
     bl[k]   = ['screen','multiply','difference','overlay','lighten','hard-light'][Math.floor(Math.random()*6)];
     gs[k]   = rng(0.75, 1.0).toFixed(2);
@@ -1870,33 +1879,9 @@ function runXueheJumpscare(){
       '--bl:'+bl[i]+';--gs:'+gs[i]+';--hue:'+hue[i]+'deg'+
       '"></div>';
   }
-  // 40 个 BSOD 弹窗：铺满屏幕 + 随机大小/位置/旋转 + glitch 闪烁
-  var BSOD_N = 40;
-  for (var d=0; d<BSOD_N; d++){
-    var bw = rng(220, 360).toFixed(0);
-    var bpx = rng(0, 100).toFixed(1);
-    var bpy = rng(0, 100).toFixed(1);
-    var brt = rng(-22, 22).toFixed(1);
-    var bsc = rng(0.55, 1.15).toFixed(2);
-    var bhue = rng(-90, 90).toFixed(0);
-    var bi = Math.floor(Math.random()*bsodHeads.length);
-    var bb = Math.floor(Math.random()*bsodBodies.length);
-    var btn1 = bsodBtns[Math.floor(Math.random()*bsodBtns.length)];
-    var btn2 = bsodBtns[Math.floor(Math.random()*bsodBtns.length)];
-    html += '<div class="x-bsod" style="left:'+bpx+'%;top:'+bpy+'%;width:'+bw+'px;--brt:'+brt+'deg;--bsc:'+bsc+';--bhue:'+bhue+'deg">'+
-      '<div class="dl-box">'+
-        '<div class="dl-title"><span>'+bsodHeads[bi]+'</span><span class="x">×</span></div>'+
-        '<div class="dl-body">'+
-          '<div class="dl-icon">⚠</div>'+
-          '<div class="dl-msg">'+bsodBodies[bb]+'</div>'+
-        '</div>'+
-        '<div class="dl-btns">'+
-          '<button class="ok">'+btn1+'</button>'+
-          '<button>'+btn2+'</button>'+
-        '</div>'+
-      '</div>'+
-    '</div>';
-  }
+  // BSOD 弹窗改为「持续弹出可点掉」模式：先定义 popBsod 函数（动态 appendChild，绑关闭按钮）
+  // 由 setInterval 持续 5.5s 内每 ~300ms 弹一个
+  // CAMERA 弹窗在 1.5s / 3.0s 弹 2 次（请求摄像头权限）
   // 55 个血红色/诡异文字数字：铺满屏幕闪（混合 hex/计数/错误码 + Zalgo 化诡异文字）
   var BNUM_N = 55;
   html += '<div class="x-bloodnums">';
@@ -1963,14 +1948,64 @@ function runXueheJumpscare(){
   var jsEl = document.getElementById('xueheJS');
   jsEl.classList.add('run');
   jsEl.style.display = 'block';
-  // 一次性显示 2.4s 后回退到雪禾帖子
+
+  // === BSOD 弹窗持续弹出（可点掉，但一直弹） ===
+  function popBsod(){
+    var bw = (240 + Math.floor(Math.random()*120)).toFixed(0);
+    var bpx = (2 + Math.random()*96).toFixed(1);
+    var bpy = (2 + Math.random()*96).toFixed(1);
+    var brt = (Math.random()*44-22).toFixed(1);
+    var bsc = (0.7 + Math.random()*0.45).toFixed(2);
+    var bhue = (Math.random()*180-90).toFixed(0);
+    var bi = Math.floor(Math.random()*bsodHeads.length);
+    var bb = Math.floor(Math.random()*bsodBodies.length);
+    var btn1 = bsodBtns[Math.floor(Math.random()*bsodBtns.length)];
+    var btn2 = bsodBtns[Math.floor(Math.random()*bsodBtns.length)];
+    var div = document.createElement('div');
+    div.className = 'x-bsod';
+    div.style.cssText = 'left:'+bpx+'%;top:'+bpy+'%;width:'+bw+'px;--brt:'+brt+'deg;--bsc:'+bsc+';--bhue:'+bhue+'deg';
+    div.innerHTML = '<div class="dl-box">'+
+      '<div class="dl-title"><span>'+bsodHeads[bi]+'</span><span class="x">×</span></div>'+
+      '<div class="dl-body"><div class="dl-icon">⚠</div><div class="dl-msg">'+bsodBodies[bb]+'</div></div>'+
+      '<div class="dl-btns"><button class="ok">'+btn1+'</button><button>'+btn2+'</button></div>'+
+    '</div>';
+    var closeFn = function(){ if(div.parentNode) div.parentNode.removeChild(div); };
+    div.querySelector('.x').onclick = closeFn;
+    div.querySelectorAll('.dl-btns button').forEach(function(b){ b.onclick = closeFn; });
+    jsEl.appendChild(div);
+  }
+  // === CAMERA 请求弹窗（请求摄像头权限） ===
+  function popCamera(){
+    var bw = (320 + Math.floor(Math.random()*60)).toFixed(0);
+    var bpx = (20 + Math.random()*60).toFixed(1);
+    var bpy = (15 + Math.random()*70).toFixed(1);
+    var div = document.createElement('div');
+    div.className = 'x-bsod x-camera';
+    div.style.cssText = 'left:'+bpx+'%;top:'+bpy+'%;width:'+bw+'px;--brt:0deg;--bsc:1;--bhue:0deg;z-index:50';
+    div.innerHTML = '<div class="dl-box">'+
+      '<div class="dl-title"><span>📹 Camera Access Request</span><span class="x">×</span></div>'+
+      '<div class="dl-body"><div class="dl-icon" style="color:#1a1a1a;font-size:42px">📹</div><div class="dl-msg" style="color:#1a1a1a"><b style="color:#a02020">此 页 面 想 要 使 用 您 的 摄 像 头 。</b><br><br>汝 在 看 吾 ， 吾 也 在 看 汝 。<br>小 仙 已 等 汝 许 久 了 。<br><br><small>使用过程中将点亮摄像头指示灯</small></div></div>'+
+      '<div class="dl-btns"><button class="ok" style="color:#fff;background:#1a73e8;border:1px solid #1a73e8">允 许</button><button>阻 止</button></div>'+
+    '</div>';
+    var closeFn = function(){ if(div.parentNode) div.parentNode.removeChild(div); };
+    div.querySelector('.x').onclick = closeFn;
+    div.querySelectorAll('.dl-btns button').forEach(function(b){ b.onclick = closeFn; });
+    jsEl.appendChild(div);
+  }
+  // 启动：BSOD 每 300ms 弹一个；CAMERA 在 1.5s / 3.0s 各弹 1 次
+  var bsodTimer = setInterval(popBsod, 300);
+  setTimeout(popCamera, 1500);
+  setTimeout(popCamera, 3000);
+
+  // 一次性显示 5.5s 后回退到雪禾帖子
   setTimeout(function(){
+    clearInterval(bsodTimer);
     jsEl.style.display = 'none';
     location.hash = '#t-xuehe-self';
     try{ go('t-xuehe-self'); }catch(e){}
     var sb = document.getElementById('searchIn');
     if(sb) sb.value = '';
-  }, 8000);
+  }, 5500);
 }
 
 </script>
