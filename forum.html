@@ -86,12 +86,14 @@ html,body{
   cursor:pointer;transition:all .2s;
   text-decoration:none;color:inherit;
   position:relative;
-  background:rgba(255,255,255,0);
+  background-color:rgba(255,255,255,.58);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
   animation:threadFadeIn .45s ease both;
 }
 @keyframes threadFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s ease, width .25s ease;box-shadow:0 0 10px rgba(232,169,31,.55)}
-.thread:hover{background:linear-gradient(90deg,rgba(232,169,31,.18),rgba(232,169,31,.04));padding-left:24px}
+.thread:hover{background-image:linear-gradient(90deg,rgba(244,169,0,.18),rgba(244,169,0,.04));padding-left:24px}
 .thread:hover::before{transform:scaleY(1);width:5px}
 .thread:last-child{border-bottom:none}
 .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f7e4a8,#f0d890);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink);overflow:hidden;border:1.5px solid #e8b830;box-shadow:0 0 6px rgba(232,169,31,.20);position:relative;font-family:"STKaiti",serif;font-weight:700}
@@ -115,7 +117,9 @@ html,body{
 
 /* ========== 主题详情 ========== */
 .post{
-  background:transparent;
+  background-color:rgba(255,255,255,.58);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
   border:1px solid rgba(255,255,255,.45);
   margin-bottom:14px;
   box-shadow:0 3px 18px rgba(20,40,55,.22);
@@ -171,7 +175,7 @@ html,body{
 
 /* ========== 侧栏 ========== */
 .side{display:flex;flex-direction:column;gap:14px;position:relative}
-.sidebox{background:transparent;border:1px solid rgba(255,255,255,.45);padding:14px 16px;border-radius:3px;box-shadow:0 3px 18px rgba(20,40,55,.22);position:relative;overflow:hidden}
+.sidebox{background-color:rgba(255,255,255,.58);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.45);padding:14px 16px;border-radius:3px;box-shadow:0 3px 18px rgba(20,40,55,.22);position:relative;overflow:hidden}
 .sidebox::before{content:"";position:absolute;top:10px;right:10px;width:44px;height:44px;background:url('assets/desktop/forum-bs/lotus-pink-big.png') center/contain no-repeat;opacity:.06;pointer-events:none}
 .sidebox h3{margin:0 0 10px;font-size:13px;color:var(--ink);letter-spacing:0.25em;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:6px;font-family:"STKaiti","KaiTi",serif;font-weight:700;text-shadow:none}
 .sidebox ol{margin:0;padding-left:18px;font-size:12px;color:var(--ink2);line-height:1.85}
@@ -310,10 +314,10 @@ html,body{
 @keyframes tagPulse{0%,100%{box-shadow:0 0 0 rgba(232,169,31,0)}50%{box-shadow:0 0 14px rgba(232,169,31,.55)}}
 
 /* 主题行 hover：左滑提示 */
-.thread{position:relative;overflow:hidden;background:rgba(255,255,255,0)}
+.thread{position:relative;overflow:hidden}
 .thread::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red2),var(--red));transform:scaleY(0);transform-origin:center;transition:transform .25s ease,width .25s ease;box-shadow:0 0 10px rgba(232,169,31,.55)}
 .thread:hover::before{transform:scaleY(1);width:5px}
-.thread:hover{background:linear-gradient(90deg,rgba(232,169,31,.10),rgba(232,169,31,.02))!important;padding-left:22px}
+.thread:hover{background-image:linear-gradient(90deg,rgba(244,169,0,.10),rgba(244,169,0,.02))!important;padding-left:22px}
 
 /* 侧栏模块悬浮 */
 .sidebox{transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease}
@@ -692,7 +696,7 @@ a.xuehe-tab:hover{background:rgba(244,196,48,.08) !important;color:#fff !importa
 
 /* ========== C2 卡片悬停金光晕 ========== */
 .thread{transition:background .25s ease,box-shadow .25s ease,padding-left .25s ease}
-.thread:hover{box-shadow:0 0 22px rgba(244,196,48,.45);background:linear-gradient(90deg,rgba(244,196,48,.16),rgba(244,196,48,.04));padding-left:24px}
+.thread:hover{box-shadow:0 0 22px rgba(244,196,48,.45);background-image:linear-gradient(90deg,rgba(244,196,48,.16),rgba(244,196,48,.04));padding-left:24px}
 .sidebox{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
 .sidebox:hover{transform:translateY(-2px);border-color:#e8b830;box-shadow:0 6px 22px rgba(244,196,48,.45)}
 .post{transition:box-shadow .25s ease,border-color .25s ease}
